@@ -1,4 +1,24 @@
 {
-  "name": "node-essentials",
-  "packageManager": "yarn@4.4.1"
+	"private": true,
+	"workspaces": [
+		"packages/*",
+		"privatePackages/*",
+		"types/*",
+		"tools",
+		"util/*"
+	],
+	"scripts": {
+		"postinstall": "is-ci || lefthook install",
+		"biome:check": "biome check --error-on-warnings --no-errors-on-unmatched --files-ignore-unknown=true",
+		"biome:fix": "biome check --error-on-warnings --no-errors-on-unmatched --files-ignore-unknown=true --write",
+		"clean-all": "yarn workspaces foreach -Ap run clean",
+		"build-all": "yarn workspaces foreach -Apt run build",
+		"publish-all": "yarn workspaces foreach -A --no-private npm publish --tolerate-republish"
+	},
+	"packageManager": "yarn@4.4.1",
+	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
+		"is-ci": "3.0.1",
+		"lefthook": "1.7.15"
+	}
 }

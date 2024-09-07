@@ -1,0 +1,24 @@
+{
+	"name": "@ac-essentials/misc-util",
+	"version": "0.1.0",
+	"type": "module",
+	"main": "./src/index.ts",
+	"publishConfig": {
+		"access": "public",
+		"main": "./dist/index.js"
+	},
+	"files": ["dist"],
+	"devDependencies": {
+		"@ac-essentials/tsconfig": "workspace:*",
+		"rimraf": "6.0.1",
+		"typescript": "5.5.4"
+	},
+	"scripts": {
+		"tsc:compile": "tsc -outDir dist",
+		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn tsc:compile",
+		"test": "echo 'No test'",
+		"prepublish": "yarn test && yarn build"
+	}
+}

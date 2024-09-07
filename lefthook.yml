@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    tsc:
+      glob: "*.{ts,tsx,cts,mts}"
+      run: yarn workspaces foreach -Ap run tsc:check
+    biome:
+      glob: "*"
+      run: yarn run biome:check -- {staged_files}
+
+skip_output:
+  - meta
+  - success
+  - empty_summary
+  - execution
