@@ -1,10 +1,6 @@
 import { exec as exec_ } from "node:child_process";
 import { promisify } from "node:util";
-import {
-	type EnvVarName,
-	type EnvVarValue,
-	escapeSQE,
-} from "@ac-essentials/misc-util";
+import { escapeSQE } from "@ac-essentials/misc-util";
 
 const exec = promisify(exec_);
 
