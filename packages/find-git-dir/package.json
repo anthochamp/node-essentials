@@ -9,7 +9,7 @@
 	},
 	"files": ["dist"],
 	"dependencies": {
-		"find-up": "7.0.0"
+		"find-up": "^7.0.0"
 	},
 	"devDependencies": {
 		"@ac-essentials/tsconfig": "workspace:*",
