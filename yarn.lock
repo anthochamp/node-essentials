@@ -35,6 +35,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ac-essentials/markdownlint-cli2-config@workspace:packages/markdownlint-cli2-config":
+  version: 0.0.0-use.local
+  resolution: "@ac-essentials/markdownlint-cli2-config@workspace:packages/markdownlint-cli2-config"
+  dependencies:
+    "@ac-essentials/markdownlint-config": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@ac-essentials/markdownlint-config@workspace:^, @ac-essentials/markdownlint-config@workspace:packages/markdownlint-config":
+  version: 0.0.0-use.local
+  resolution: "@ac-essentials/markdownlint-config@workspace:packages/markdownlint-config"
+  languageName: unknown
+  linkType: soft
+
 "@ac-essentials/misc-util@workspace:*, @ac-essentials/misc-util@workspace:packages/misc-util":
   version: 0.0.0-use.local
   resolution: "@ac-essentials/misc-util@workspace:packages/misc-util"
