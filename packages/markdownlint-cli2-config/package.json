@@ -1,0 +1,11 @@
+{
+	"name": "@ac-essentials/markdownlint-cli2-config",
+	"version": "0.1.0",
+	"main": "./index.js",
+	"publishConfig": {
+		"access": "public"
+	},
+	"dependencies": {
+		"@ac-essentials/markdownlint-config": "workspace:^"
+	}
+}
