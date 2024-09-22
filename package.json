@@ -23,7 +23,7 @@
 	"packageManager": "yarn@4.5.0",
 	"devDependencies": {
 		"@ac-essentials/biome-config": "workspace:*",
-		"@biomejs/biome": "1.8.3",
+		"@biomejs/biome": "1.9.2",
 		"is-ci": "3.0.1",
 		"lefthook": "1.7.15",
 		"markdownlint-cli": "0.41.0"
