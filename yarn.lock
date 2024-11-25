@@ -17,7 +17,7 @@ __metadata:
   dependencies:
     "@ac-essentials/misc-util": "workspace:*"
     "@ac-essentials/tsconfig": "workspace:*"
-    "@types/node": "npm:22.6.1"
+    "@types/node": "npm:22.9.3"
     rimraf: "npm:6.0.1"
     typescript: "npm:5.7.2"
   languageName: unknown
@@ -28,7 +28,7 @@ __metadata:
   resolution: "@ac-essentials/find-git-dir@workspace:packages/find-git-dir"
   dependencies:
     "@ac-essentials/tsconfig": "workspace:*"
-    "@types/node": "npm:22.6.1"
+    "@types/node": "npm:22.9.3"
     find-up: "npm:^7.0.0"
     rimraf: "npm:6.0.1"
     typescript: "npm:5.7.2"
@@ -211,12 +211,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.6.1":
-  version: 22.6.1
-  resolution: "@types/node@npm:22.6.1"
+"@types/node@npm:22.9.3":
+  version: 22.9.3
+  resolution: "@types/node@npm:22.9.3"
   dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10c0/79fdb14f268070eb21d25f3e81811b73c10dfcc65a638a6546fd97aa3e7dfe473f31a547fd21c43b8559a435b6ab26057066a47b5453bd1b1cdffe14430ac399
+    undici-types: "npm:~6.19.8"
+  checksum: 10c0/954ec72bf29436ea62425a9563914a9c1e93f97b18194acd51d74d13998a701977547ed2985ed3a0e97211b785436d28377116e5f613bfcf3182d9bd81d784dc
   languageName: node
   linkType: hard
 
@@ -979,7 +979,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.19.2":
+"undici-types@npm:~6.19.8":
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
   checksum: 10c0/078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
