@@ -25,7 +25,7 @@
 		"@ac-essentials/biome-config": "workspace:*",
 		"@ac-essentials/markdownlint-cli2-config": "workspace:*",
 		"@biomejs/biome": "1.9.4",
-		"is-ci": "3.0.1",
+		"is-ci": "4.1.0",
 		"lefthook": "1.8.4",
 		"markdownlint-cli2": "0.15.0"
 	}
