@@ -15,7 +15,7 @@
 		"@ac-essentials/tsconfig": "workspace:*",
 		"@types/node": "22.13.11",
 		"rimraf": "6.0.1",
-		"typescript": "5.8.2"
+		"typescript": "5.8.3"
 	},
 	"scripts": {
 		"tsc:compile": "tsc -outDir dist",
