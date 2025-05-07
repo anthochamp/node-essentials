@@ -11,7 +11,7 @@
 	"devDependencies": {
 		"@ac-essentials/tsconfig": "workspace:*",
 		"rimraf": "6.0.1",
-		"typescript": "5.8.2"
+		"typescript": "5.8.3"
 	},
 	"scripts": {
 		"tsc:compile": "tsc -outDir dist",
