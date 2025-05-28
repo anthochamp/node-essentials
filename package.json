@@ -27,6 +27,6 @@
 		"@biomejs/biome": "1.9.4",
 		"is-ci": "4.1.0",
 		"lefthook": "1.11.12",
-		"markdownlint-cli2": "0.17.2"
+		"markdownlint-cli2": "0.18.1"
 	}
 }
