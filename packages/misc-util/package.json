@@ -1,13 +1,15 @@
 {
 	"name": "@ac-essentials/misc-util",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"type": "module",
 	"main": "./src/index.ts",
 	"publishConfig": {
 		"access": "public",
 		"main": "./dist/index.js"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"devDependencies": {
 		"@ac-essentials/tsconfig": "workspace:*",
 		"rimraf": "6.0.1",

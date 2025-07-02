@@ -7,7 +7,9 @@
 		"access": "public",
 		"main": "./dist/index.js"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"dependencies": {
 		"@ac-essentials/misc-util": "workspace:*"
 	},

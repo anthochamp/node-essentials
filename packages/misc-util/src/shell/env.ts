@@ -1,6 +1,5 @@
 export type EnvVarName = string;
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export type EnvVarValue = any;
+export type EnvVarValue = unknown;
 
 export type EnvVars = Record<EnvVarName, EnvVarValue>;
 
