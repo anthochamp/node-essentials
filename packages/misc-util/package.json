@@ -1,6 +1,6 @@
 {
 	"name": "@ac-essentials/misc-util",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"type": "module",
 	"main": "./src/index.ts",
 	"publishConfig": {
@@ -21,6 +21,7 @@
 		"clean": "rimraf dist",
 		"build": "yarn clean && yarn tsc:compile",
 		"test": "echo 'No test'",
-		"prepublish": "yarn test && yarn build"
+		"prepack": "yarn build",
+		"prepublish": "yarn test"
 	}
 }

@@ -25,6 +25,7 @@
 		"clean": "rimraf dist",
 		"build": "yarn clean && yarn tsc:compile",
 		"test": "echo 'No test'",
-		"prepublish": "yarn test && yarn build"
+		"prepack": "yarn build",
+		"prepublish": "yarn test"
 	}
 }
