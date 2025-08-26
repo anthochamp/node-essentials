@@ -20,7 +20,7 @@
 		"build": "yarn workspaces foreach -Apt run build",
 		"publish": "yarn workspaces foreach -A --no-private npm publish --tolerate-republish"
 	},
-	"packageManager": "yarn@4.9.2",
+	"packageManager": "yarn@4.9.4",
 	"devDependencies": {
 		"@ac-essentials/biome-config": "workspace:*",
 		"@ac-essentials/markdownlint-cli2-config": "workspace:*",
