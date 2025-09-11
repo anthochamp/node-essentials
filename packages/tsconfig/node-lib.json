@@ -1,6 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"compilerOptions": {
+		"isolatedDeclarations": true,
+
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,

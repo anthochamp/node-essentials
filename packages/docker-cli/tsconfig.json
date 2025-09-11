@@ -1,4 +1,0 @@
-{
-	"include": ["package.json", "src/**/*", "src/**/*.json"],
-	"extends": "@ac-essentials/tsconfig/node-lib"
-}
