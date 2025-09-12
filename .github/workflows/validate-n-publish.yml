@@ -19,7 +19,9 @@ on:
 
 jobs:
   validate:
-    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@5c5ea198cee033a8b546566d7ba71662323e5d9a
+    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@e17e661312e4e5d926343d5519b49f2326308fbc
+    with:
+      node-package-manager: 'yarn'
 
   check_version_change:
     runs-on: ubuntu-latest
