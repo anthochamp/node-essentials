@@ -36,13 +36,26 @@ jobs:
         run: |
           set -e
           last_tag_commit=$(git rev-list --tags --max-count=1)
+          if [ -z "$last_tag_commit" ]; then
+            # No tags exist yet, use the empty tree as the base
+            last_tag_commit=$(git hash-object -t tree /dev/null)
+          fi
           changed=false
           for file in $(git diff --name-only $last_tag_commit ${{ github.sha }} | grep 'package.json$'); do
-            old_version=$(git show $last_tag_commit:$file | jq -r .version)
+            if [ "$last_tag_commit" = "$(git hash-object -t tree /dev/null)" ]; then
+              # No tag, treat all as changed
+              new_version=$(cat $file | jq -r .version)
+              echo "🔄 $file: (no previous version) → $new_version"
+              changed=true
+              continue
+            fi
+            old_version=$(git show $last_tag_commit:$file | jq -r .version 2>/dev/null || echo "")
             new_version=$(cat $file | jq -r .version)
             if [ "$old_version" != "$new_version" ]; then
+              echo "🔄 $file: $old_version → $new_version"
               changed=true
-              break
+            else
+              echo "ℹ️ $file: version unchanged ($new_version)"
             fi
           done
           echo "version_changed=$changed" >> $GITHUB_OUTPUT
@@ -67,7 +80,9 @@ jobs:
           node-version: 20
           cache: 'yarn'
       - name: Install dependencies
-        run: yarn install
+        run: |
+          corepack enable
+          yarn install
       - name: Publish Packages
         id: publish
         run: |
@@ -141,7 +156,9 @@ jobs:
           node-version: 24
           cache: 'yarn'
       - name: Install dependencies
-        run: yarn install
+        run: |
+          corepack enable
+          yarn install
       - name: Build TypeDoc docs for all packages
         run: |
           yarn run build-doc
