@@ -30,6 +30,7 @@ describe("json-file", () => {
 		it("should read and parse JSON file with default encoding", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
+				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 			);
 
@@ -44,6 +45,7 @@ describe("json-file", () => {
 		it("should read and parse JSON file with specified encoding", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
+				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 			);
 
@@ -62,6 +64,7 @@ describe("json-file", () => {
 		it("should read and parse JSON file with reviver", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
+				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 			);
 
@@ -116,6 +119,7 @@ describe("json-file", () => {
 			await writeJsonFile("/path/to/file.json", jsonContent);
 			expect(writeFileMock).toHaveBeenCalledWith(
 				"/path/to/file.json",
+				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 				expect.anything(),
 			);
@@ -135,6 +139,7 @@ describe("json-file", () => {
 			});
 			expect(writeFileMock).toHaveBeenCalledWith(
 				"/path/to/file.json",
+				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent, replacer, space)!),
 				expect.objectContaining({
 					encoding: null,
@@ -151,6 +156,7 @@ describe("json-file", () => {
 			).rejects.toThrow("Write error");
 			expect(writeFileMock).toHaveBeenCalledWith(
 				"/path/to/file.json",
+				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 				expect.anything(),
 			);

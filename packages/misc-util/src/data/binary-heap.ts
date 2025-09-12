@@ -186,27 +186,21 @@ export class BinaryHeap<T> extends NativeListCollection<T> implements IHeap<T> {
 	 * @param index The index to heapify down from.
 	 */
 	private heapifyDown(index: number): void {
-		let currentIndex = index;
 		const count = this.data.count();
 
+		let currentIndex = index;
+		let current = this.data.get(currentIndex);
+
 		let leftChildIndex = this.getLeftChildIndex(currentIndex);
-
-		while (leftChildIndex < count) {
-			const rightChildIndex = this.getRightChildIndex(currentIndex);
-			let candidateIndex = currentIndex;
-
-			const current = this.data.get(currentIndex);
-			const leftChild = this.data.get(leftChildIndex);
-			const rightChild =
-				rightChildIndex < count ? this.data.get(rightChildIndex) : undefined;
-
+		while (current !== undefined && leftChildIndex < count) {
 			// Determine candidate for swap
+			let candidateIndex = currentIndex;
 			let candidate = current;
 
 			// Compare with left child
+			const leftChild = this.data.get(leftChildIndex);
 			if (
 				leftChild !== undefined &&
-				candidate !== undefined &&
 				!this.isItemOrdered(candidate, leftChild)
 			) {
 				candidateIndex = leftChildIndex;
@@ -214,9 +208,11 @@ export class BinaryHeap<T> extends NativeListCollection<T> implements IHeap<T> {
 			}
 
 			// Compare with right child
+			const rightChildIndex = this.getRightChildIndex(currentIndex);
+			const rightChild =
+				rightChildIndex < count ? this.data.get(rightChildIndex) : undefined;
 			if (
 				rightChild !== undefined &&
-				candidate !== undefined &&
 				!this.isItemOrdered(candidate, rightChild)
 			) {
 				candidateIndex = rightChildIndex;
@@ -229,10 +225,12 @@ export class BinaryHeap<T> extends NativeListCollection<T> implements IHeap<T> {
 			}
 
 			// Swap current with candidate
-			this.data.set(currentIndex, candidate!);
-			this.data.set(candidateIndex, current!);
+			this.data.set(currentIndex, candidate);
+			this.data.set(candidateIndex, current);
 
 			currentIndex = candidateIndex;
+			current = this.data.get(currentIndex);
+
 			leftChildIndex = this.getLeftChildIndex(currentIndex);
 		}
 	}

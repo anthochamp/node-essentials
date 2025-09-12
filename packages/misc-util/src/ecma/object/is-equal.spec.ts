@@ -105,6 +105,7 @@ describe("isEqual", () => {
 	});
 
 	it("should throw for unimplemented strategies", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		expect(() => isEqual(1, 1, "unknown" as any)).toThrow("strategy unknown");
 	});
 });

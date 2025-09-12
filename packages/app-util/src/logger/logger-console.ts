@@ -263,6 +263,7 @@ export class LoggerConsole implements Console {
 			}
 		}
 
+		// biome-ignore lint/nursery/noUnnecessaryConditions: false positive
 		const selectedProperties = properties
 			? properties.filter((p) => allProperties.has(p))
 			: Array.from(allProperties);

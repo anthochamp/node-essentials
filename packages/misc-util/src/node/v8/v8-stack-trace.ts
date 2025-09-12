@@ -4,6 +4,7 @@ export type V8StackFrame = {
 	// the type of this as a string. This is the name of the function stored in the constructor field of this, if available, otherwise the object’s [[Class]] internal property.
 	typeName: string | null;
 	// the current function
+	// biome-ignore lint/complexity/noBannedTypes: intended
 	function: Function | undefined;
 	// the name of the current function, typically its name property. If a name property is not available an attempt is made to infer a name from the function’s context.
 	functionName: string | null;

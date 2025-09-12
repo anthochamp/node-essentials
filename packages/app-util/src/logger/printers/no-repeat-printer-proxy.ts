@@ -122,13 +122,13 @@ export class NoRepeatPrinterProxy implements ILoggerPrinter {
 
 			this.lastRecord = record;
 
-			const skipPrint = recordEqual && !counterResetted;
+			const shouldSkipPrint = recordEqual && !counterResetted;
 
-			if (skipPrint) {
+			if (shouldSkipPrint) {
 				this.lastRecordSkipCount++;
 			}
 
-			return skipPrint;
+			return shouldSkipPrint;
 		});
 
 		if (!skipPrint) {

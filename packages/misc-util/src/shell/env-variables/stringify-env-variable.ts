@@ -45,6 +45,7 @@ export function stringifyEnvVariableBoolValue(
 	value: boolean,
 	flavor: EnvVariableBoolValueFlavor,
 ): string {
+	// biome-ignore lint/nursery/noUnnecessaryConditions: false positive
 	switch (flavor) {
 		case "1/0":
 			return value ? "1" : "0";

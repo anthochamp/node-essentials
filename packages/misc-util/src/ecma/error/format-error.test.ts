@@ -332,13 +332,13 @@ describe("formatError", () => {
 		const errorB = new Error("Error B", { cause: errorA });
 		errorA.cause = errorB; // Create circular reference
 
-		const aggregateError = new AggregateError(
+		const circularAggregateError = new AggregateError(
 			[errorA, errorB],
 			"Aggregate with circular causes",
 		);
-		aggregateError.errors.push(aggregateError); // Create circular reference in AggregateError
+		circularAggregateError.errors.push(circularAggregateError); // Create circular reference in AggregateError
 
-		const formatted = formatError(aggregateError, { stackTrace: true });
+		const formatted = formatError(circularAggregateError, { stackTrace: true });
 		const lines = formatted.split("\n");
 		expect(lines[0]).toBe("AggregateError: Aggregate with circular causes");
 		expect(lines.length).toBeGreaterThan(1);

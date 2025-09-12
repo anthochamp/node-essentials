@@ -60,7 +60,7 @@ describe("jsonSerialize", () => {
 
 	it("should use the replacer function if provided", () => {
 		const obj = { a: 1, b: 2, c: 3 };
-		const replacer: JsonReplacer = (key, value) => {
+		const replacer: JsonReplacer = (_key, value) => {
 			if (typeof value === "number") {
 				return value * 10;
 			}
@@ -76,7 +76,7 @@ describe("jsonSerialize", () => {
 
 	it("should call the replacer function with correct arguments", () => {
 		const obj = { a: 1, b: 2 };
-		const replacer = vi.fn((key, value) => value);
+		const replacer = vi.fn((_key, value) => value);
 		jsonSerialize(obj, replacer);
 		expect(replacer).toHaveBeenCalled();
 		expect(replacer).toHaveBeenCalledWith("", obj);

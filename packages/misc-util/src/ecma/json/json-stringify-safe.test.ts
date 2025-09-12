@@ -9,6 +9,7 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it("should handle circular references", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
 		obj.self = obj;
 		const result = jsonStringifySafe(obj);
@@ -16,6 +17,7 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it("should handle nested circular references", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: { b: { c: {} } } };
 		obj.a.b.c.self = obj.a;
 		const result = jsonStringifySafe(obj);
@@ -23,6 +25,7 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it("should handle arrays with circular references", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const arr: any[] = [1, 2, 3];
 		arr.push(arr);
 		const result = jsonStringifySafe(arr);
@@ -30,6 +33,7 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it("should handle complex objects with multiple circular references", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { name: "root" };
 		obj.child1 = { name: "child1", parent: obj };
 		obj.child2 = { name: "child2", parent: obj };
@@ -79,6 +83,7 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it("should handle deeply nested objects with circular references", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { level1: { level2: { level3: {} } } };
 		obj.level1.level2.level3.self = obj.level1;
 		const result = jsonStringifySafe(obj);
@@ -88,6 +93,7 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it("should handle large objects with multiple circular references", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1, b: 2 };
 		obj.self = obj;
 		obj.nested = { parent: obj };
@@ -98,7 +104,9 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it.skip("should handle arrays of objects with circular references", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj1: any = { name: "obj1" };
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj2: any = { name: "obj2", ref: obj1 };
 		obj1.ref = obj2;
 		const arr = [obj1, obj2];
@@ -109,6 +117,7 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it("should handle mixed data types with circular references", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = {
 			num: 1,
 			str: "test",
@@ -124,7 +133,7 @@ describe("jsonStringifySafe", () => {
 	});
 
 	it("should handle objects with non-enumerable properties", () => {
-		const obj: any = { a: 1 };
+		const obj = { a: 1 };
 		Object.defineProperty(obj, "b", {
 			value: 2,
 			enumerable: false,
@@ -134,13 +143,14 @@ describe("jsonStringifySafe", () => {
 	});
 	it("should handle objects with symbol properties", () => {
 		const sym = Symbol("test");
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
 		obj[sym] = 2;
 		const result = jsonStringifySafe(obj);
 		expect(result).toBe('{"a":1}');
 	});
 	it("should handle objects with large depth", () => {
-		const createDeepObject = (depth: number): any => {
+		const createDeepObject = (depth: number): unknown => {
 			if (depth === 0) return { value: "end" };
 			return { next: createDeepObject(depth - 1) };
 		};
@@ -149,6 +159,7 @@ describe("jsonStringifySafe", () => {
 		expect(result).toBeDefined();
 	});
 	it("should handle objects with circular references in arrays", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { name: "root" };
 		const arr = [obj];
 		obj.arr = arr;

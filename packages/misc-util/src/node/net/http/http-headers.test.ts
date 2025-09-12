@@ -49,7 +49,7 @@ describe("http-headers", () => {
 
 	describe("httpFilterHeaders", () => {
 		it("should filter headers by a predicate", () => {
-			const filtered = httpFilterHeaders(headers, (name, value) => {
+			const filtered = httpFilterHeaders(headers, (name, _value) => {
 				return name.toLowerCase() === "accept";
 			});
 

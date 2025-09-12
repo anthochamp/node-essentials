@@ -56,7 +56,7 @@ function internalTraverseError(
 	}
 	visited.add(error);
 
-	const shouldContinue = callback(error, parent ?? null, source ?? null);
+	let shouldContinue = callback(error, parent ?? null, source ?? null);
 	if (shouldContinue === false) {
 		return false;
 	}
@@ -64,7 +64,7 @@ function internalTraverseError(
 	if (options.traverseAggregateErrors && isAggregateErrorLike(error)) {
 		for (const innerError of error.errors) {
 			if (isErrorLike(innerError)) {
-				const shouldContinue = internalTraverseError(
+				shouldContinue = internalTraverseError(
 					innerError,
 					callback,
 					options,
@@ -81,7 +81,7 @@ function internalTraverseError(
 	}
 
 	if (options.traverseCauses && isErrorLike(error.cause)) {
-		const shouldContinue = internalTraverseError(
+		shouldContinue = internalTraverseError(
 			error.cause,
 			callback,
 			options,

@@ -66,6 +66,18 @@ const GET_PROCESSES_SNAPSHOT_DEFAULT_OPTIONS: Required<GetProcessesSnapshotOptio
 		signal: null,
 	};
 
+const PROCESS_INFO_TO_PS_FIELD: Record<keyof ProcessInfo, keyof PsResult> = {
+	parentId: "ppid",
+	id: "pid",
+	command: "args",
+	userName: "user",
+	groupName: "group",
+	memoryUsage: "vsz",
+	cpuUsage: "pcpu",
+	accumulatedCpuUsageMs: "time",
+	startTime: "etime",
+} as const;
+
 export async function getProcessesSnapshotPosix<
 	O extends GetProcessesSnapshotOptions = GetProcessesSnapshotOptions,
 	R = O["fields"] extends never[]
@@ -76,18 +88,6 @@ export async function getProcessesSnapshotPosix<
 		options,
 		GET_PROCESSES_SNAPSHOT_DEFAULT_OPTIONS,
 	);
-
-	const PROCESS_INFO_TO_PS_FIELD: Record<keyof ProcessInfo, keyof PsResult> = {
-		parentId: "ppid",
-		id: "pid",
-		command: "args",
-		userName: "user",
-		groupName: "group",
-		memoryUsage: "vsz",
-		cpuUsage: "pcpu",
-		accumulatedCpuUsageMs: "time",
-		startTime: "etime",
-	};
 
 	if (!fields || fields.length === 0) {
 		fields = Object.keys(PROCESS_INFO_TO_PS_FIELD) as (keyof ProcessInfo)[];
@@ -180,24 +180,27 @@ export async function getProcessesSnapshotPosix<
 
 	if (additionalFiltersFields.length > 0) {
 		result = result.filter((entry) => {
-			if (filters?.parentId && entry.parentId !== filters.parentId) {
+			if (
+				filters?.parentId !== undefined &&
+				entry.parentId !== filters.parentId
+			) {
 				return false;
 			}
-			if (filters?.command) {
+			if (filters?.command !== undefined && entry.command !== undefined) {
 				const [cmd, ...args] = filters.command;
 				if (typeof cmd === "string") {
-					if (entry.command![0] !== cmd) {
+					if (entry.command[0] !== cmd) {
 						return false;
 					}
 				} else {
-					if (!cmd.test(entry.command![0])) {
+					if (!cmd.test(entry.command[0])) {
 						return false;
 					}
 				}
 
 				for (let i = 0; i < args.length; i++) {
 					const arg = args[i];
-					const entryArg = entry.command![i + 1];
+					const entryArg = entry.command[i + 1];
 					if (typeof arg === "string") {
 						if (entryArg !== arg) {
 							return false;
@@ -210,40 +213,63 @@ export async function getProcessesSnapshotPosix<
 				}
 			}
 			if (
-				filters?.minMemoryUsage &&
-				entry.memoryUsage! < filters.minMemoryUsage
+				filters?.minMemoryUsage !== undefined &&
+				entry.memoryUsage !== undefined &&
+				entry.memoryUsage < filters.minMemoryUsage
 			) {
 				return false;
 			}
 			if (
-				filters?.maxMemoryUsage &&
-				entry.memoryUsage! > filters.maxMemoryUsage
+				filters?.maxMemoryUsage !== undefined &&
+				entry.memoryUsage !== undefined &&
+				entry.memoryUsage > filters.maxMemoryUsage
 			) {
 				return false;
 			}
-			if (filters?.minCpuUsage && entry.cpuUsage! < filters.minCpuUsage) {
-				return false;
+			if (entry.cpuUsage !== undefined) {
+				if (
+					filters?.minCpuUsage !== undefined &&
+					entry.cpuUsage < filters.minCpuUsage
+				) {
+					return false;
+				}
+
+				if (
+					filters?.maxCpuUsage !== undefined &&
+					entry.cpuUsage > filters.maxCpuUsage
+				) {
+					return false;
+				}
 			}
-			if (filters?.maxCpuUsage && entry.cpuUsage! > filters.maxCpuUsage) {
-				return false;
+
+			if (entry.accumulatedCpuUsageMs !== undefined) {
+				if (
+					filters?.minAccumulatedCpuUsageMs !== undefined &&
+					entry.accumulatedCpuUsageMs < filters.minAccumulatedCpuUsageMs
+				) {
+					return false;
+				}
+				if (
+					filters?.maxAccumulatedCpuUsageMs !== undefined &&
+					entry.accumulatedCpuUsageMs > filters.maxAccumulatedCpuUsageMs
+				) {
+					return false;
+				}
 			}
-			if (
-				filters?.minAccumulatedCpuUsageMs &&
-				entry.accumulatedCpuUsageMs! < filters.minAccumulatedCpuUsageMs
-			) {
-				return false;
-			}
-			if (
-				filters?.maxAccumulatedCpuUsageMs &&
-				entry.accumulatedCpuUsageMs! > filters.maxAccumulatedCpuUsageMs
-			) {
-				return false;
-			}
-			if (filters?.minStartTime && entry.startTime! < filters.minStartTime) {
-				return false;
-			}
-			if (filters?.maxStartTime && entry.startTime! > filters.maxStartTime) {
-				return false;
+
+			if (entry.startTime !== undefined) {
+				if (
+					filters?.minStartTime !== undefined &&
+					entry.startTime < filters.minStartTime
+				) {
+					return false;
+				}
+				if (
+					filters?.maxStartTime !== undefined &&
+					entry.startTime > filters.maxStartTime
+				) {
+					return false;
+				}
 			}
 
 			return true;

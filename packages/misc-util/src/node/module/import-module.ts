@@ -13,6 +13,7 @@ export async function importModule<T>(
 	id: string,
 	resolvePaths?: string[],
 ): Promise<T> {
+	// biome-ignore lint/nursery/noUnnecessaryConditions: false positive
 	if (resolvePaths && resolvePaths.length > 0) {
 		id = require.resolve(id, { paths: resolvePaths });
 	}

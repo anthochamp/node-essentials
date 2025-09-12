@@ -10,6 +10,7 @@ export function promiseValueToAsyncIterableIterator<T>(
 	let done = false;
 	return {
 		async next() {
+			// biome-ignore lint/nursery/noUnnecessaryConditions: false positive
 			if (done) {
 				return { value: undefined, done: true };
 			}
