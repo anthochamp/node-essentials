@@ -179,7 +179,7 @@ jobs:
     permissions:
       contents: read
       pages: write
-    needs: publish
+    needs: create_tags
     runs-on: ubuntu-latest
     if: github.event.inputs.dry_run != 'true'
     steps:
