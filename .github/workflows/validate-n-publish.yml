@@ -108,81 +108,11 @@ jobs:
         env:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  create_tags:
-    permissions:
-      contents: write
-    needs: publish
-    runs-on: ubuntu-latest
-    if: github.event.inputs.dry_run != 'true'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Fetch all tags
-        run: git fetch --tags
-      - name: Create and push tags for all package versions
-        run: |
-          set -e
-          find . -name package.json -not -path '*/node_modules/*' | while read file; do
-            if [ "$(jq -r .private \"$file\" 2>/dev/null)" = "true" ]; then
-              echo "$file is private, skipping."
-              continue
-            fi
-            name=$(jq -r .name "$file")
-            version=$(jq -r .version "$file")
-            name_stripped=${name#$PACKAGE_SCOPE}
-            tag="${name_stripped}_v${version}"
-            if git rev-parse "$tag" >/dev/null 2>&1; then
-              echo "Tag $tag already exists, skipping."
-            else
-              echo "Creating tag: $tag"
-              git tag "$tag"
-            fi
-          done
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git push --tags
-
-  generate_release_notes:
-    permissions:
-      contents: write
-    needs: create_tags
-    runs-on: ubuntu-latest
-    if: github.event.inputs.dry_run != 'true'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Fetch all tags
-        run: git fetch --tags
-      - name: Generate release notes for new tags
-        id: notes
-        run: |
-          # Find all tags matching the <package_name>_v<version> pattern created in this run
-          new_tags=$(git tag --list '*_v*' --sort=creatordate | tail -n $(git rev-list --count HEAD ^HEAD~1))
-          echo "# Release Notes" > release-notes.md
-          for tag in $new_tags; do
-            if [ -z "$(git tag -l --format='%(contents:subject)' "$tag")" ]; then
-              echo "\n## $tag" >> release-notes.md
-              git log --pretty=format:'- %s (%h)' "$tag"^.."$tag" >> release-notes.md
-            fi
-          done
-          cat release-notes.md
-      - name: Create GitHub Releases for new tags
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: multi-package-release-${{ github.sha }}
-          name: Multi-package release ${{ github.sha }}
-          body_path: release-notes.md
-          draft: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   generate_and_publish_doc:
     permissions:
       contents: write
       pages: write
-    needs: create_tags
+    needs: publish
     runs-on: ubuntu-latest
     if: github.event.inputs.dry_run != 'true'
     steps:
@@ -202,11 +132,9 @@ jobs:
       - name: Prepare docs for GitHub Pages
         run: |
           mkdir gh-pages
-          # Only prepare docs for packages with new tags
-          for tag in $(git tag --list '*_v*' --sort=creatordate | tail -n $(git rev-list --count HEAD ^HEAD~1)); do
-            pkg=$(echo "$tag" | sed 's/_v.*$//')
-            pkg_full="$PACKAGE_SCOPE$pkg"
-            pkg_dir=$(yarn workspaces list --json | jq -r --arg name "$pkg_full" 'select(.name==$name) | .location')
+          # Prepare docs for all packages
+          for pkg_dir in $(yarn workspaces list --json | jq -r '.location'); do
+            pkg=$(basename "$pkg_dir")
             if [ -d "$pkg_dir/doc/generated" ]; then
               mkdir -p "gh-pages/$pkg"
               cp -r "$pkg_dir/doc/generated/." "gh-pages/$pkg/"
@@ -218,3 +146,70 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./gh-pages
           force_orphan: true
+
+  release:
+    permissions:
+      contents: write
+    needs: publish
+    runs-on: ubuntu-latest
+    if: github.event.inputs.dry_run != 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch all tags
+        run: git fetch --tags
+      - name: Create and push tags for all package versions
+        run: |
+          set -e
+          > new-tags.txt
+          find . -name package.json -not -path '*/node_modules/*' | while read file; do
+            if [ "$(jq -r .private \"$file\" 2>/dev/null)" = "true" ]; then
+              echo "$file is private, skipping."
+              continue
+            fi
+            name=$(jq -r .name "$file")
+            version=$(jq -r .version "$file")
+            name_stripped=${name#$PACKAGE_SCOPE}
+            tag="${name_stripped}_v${version}"
+            if git rev-parse "$tag" >/dev/null 2>&1; then
+              echo "Tag $tag already exists, skipping."
+            else
+              echo "Creating tag: $tag"
+              git tag "$tag"
+              echo "$tag" >> new-tags.txt
+            fi
+          done
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git push --tags
+      - name: Generate release notes for new tags and check if should publish
+        id: notes
+        run: |
+          echo "# Release Notes" > release-notes.md
+          has_release_notes=false
+          if [ -s new-tags.txt ]; then
+            for tag in $(cat new-tags.txt); do
+              if [ -z "$(git tag -l --format='%(contents:subject)' "$tag")" ]; then
+                echo "\n## $tag" >> release-notes.md
+                git log --pretty=format:'- %s (%h)' "$tag"^.."$tag" >> release-notes.md
+                has_release_notes=true
+              fi
+            done
+          fi
+          if ! $has_release_notes; then
+            echo "No new tags created in this run." >> release-notes.md
+          fi
+          echo "has_release_notes=$has_release_notes" >> $GITHUB_OUTPUT
+          cat release-notes.md
+      - name: Create GitHub Releases for new tags
+        if: steps.notes.outputs.has_release_notes == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: multi-package-release-${{ github.sha }}
+          name: Multi-package release ${{ github.sha }}
+          body_path: release-notes.md
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
