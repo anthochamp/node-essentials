@@ -12,7 +12,7 @@ __metadata:
     "@ac-essentials/cli": "workspace:*"
     "@ac-essentials/misc-util": "workspace:*"
     "@ac-essentials/tsconfig": "workspace:*"
-    "@ac-essentials/typedoc": "workspace:*"
+    "@ac-essentials/typedoc-config": "workspace:*"
     "@types/node": "npm:22.18.0"
     cosmiconfig: "npm:^9.0.0"
     find-up: "npm:^7.0.0"
@@ -36,7 +36,7 @@ __metadata:
   dependencies:
     "@ac-essentials/misc-util": "workspace:*"
     "@ac-essentials/tsconfig": "workspace:*"
-    "@ac-essentials/typedoc": "workspace:*"
+    "@ac-essentials/typedoc-config": "workspace:*"
     "@types/node": "npm:22.18.0"
     rimraf: "npm:6.0.1"
     type-fest: "npm:^4.41.0"
@@ -64,7 +64,7 @@ __metadata:
   resolution: "@ac-essentials/misc-util@workspace:packages/misc-util"
   dependencies:
     "@ac-essentials/tsconfig": "workspace:*"
-    "@ac-essentials/typedoc": "workspace:*"
+    "@ac-essentials/typedoc-config": "workspace:*"
     "@ltd/j-toml": "npm:^1.38.0"
     "@types/fs-ext": "npm:^2.0.3"
     "@types/ini": "npm:^4.1.1"
@@ -92,9 +92,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ac-essentials/typedoc@workspace:*, @ac-essentials/typedoc@workspace:packages/typedoc":
+"@ac-essentials/typedoc-config@workspace:*, @ac-essentials/typedoc-config@workspace:packages/typedoc-config":
   version: 0.0.0-use.local
-  resolution: "@ac-essentials/typedoc@workspace:packages/typedoc"
+  resolution: "@ac-essentials/typedoc-config@workspace:packages/typedoc-config"
   languageName: unknown
   linkType: soft
 
