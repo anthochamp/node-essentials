@@ -1,8 +1,14 @@
-import { describe, expect, it, vi } from "vitest";
-import { sleep } from "./sleep.js";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Timer } from "./timer.js";
 
 describe("Timer", () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+	afterEach(() => {
+		vi.useRealTimers();
+	});
+
 	it("should start and fire the timer", async () => {
 		const callback = vi.fn();
 		const timer = new Timer(callback, 10);
@@ -13,9 +19,9 @@ describe("Timer", () => {
 
 		expect(timer.isActive()).toBe(true);
 
-		await vi.waitFor(() => {
-			expect(callback).toHaveBeenCalledOnce();
-		});
+		vi.advanceTimersByTime(10);
+		vi.runAllTicks();
+		expect(callback).toHaveBeenCalledOnce();
 		expect(timer.isActive()).toBe(false);
 	});
 
@@ -26,12 +32,14 @@ describe("Timer", () => {
 		timer.start();
 		expect(timer.isActive()).toBe(true);
 
-		await sleep(20);
+		vi.advanceTimersByTime(20);
+		vi.runAllTicks();
 
 		timer.start();
 		expect(timer.isActive()).toBe(true);
 
-		await sleep(30);
+		vi.advanceTimersByTime(30);
+		vi.runAllTicks();
 
 		expect(callback).toHaveBeenCalledOnce();
 		expect(timer.isActive()).toBe(false);
@@ -44,16 +52,19 @@ describe("Timer", () => {
 		timer.start();
 		expect(timer.isActive()).toBe(true);
 
-		await sleep(20);
+		vi.advanceTimersByTime(20);
+		vi.runAllTicks();
 
 		timer.restart();
 		expect(timer.isActive()).toBe(true);
 
-		await sleep(30);
+		vi.advanceTimersByTime(30);
+		vi.runAllTicks();
 		expect(callback).not.toHaveBeenCalled();
 		expect(timer.isActive()).toBe(true);
 
-		await sleep(40);
+		vi.advanceTimersByTime(40);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledOnce();
 		expect(timer.isActive()).toBe(false);
 	});
@@ -65,12 +76,14 @@ describe("Timer", () => {
 		timer.start();
 		expect(timer.isActive()).toBe(true);
 
-		await sleep(20);
+		vi.advanceTimersByTime(20);
+		vi.runAllTicks();
 
 		timer.cancel();
 		expect(timer.isActive()).toBe(false);
 
-		await sleep(30);
+		vi.advanceTimersByTime(30);
+		vi.runAllTicks();
 		expect(callback).not.toHaveBeenCalled();
 		expect(timer.isActive()).toBe(false);
 	});
@@ -87,9 +100,9 @@ describe("Timer", () => {
 
 		timer.start();
 
-		await vi.waitFor(() => {
-			expect(callback).toHaveBeenCalledOnce();
-		});
+		vi.advanceTimersByTime(10);
+		vi.runAllTicks();
+		expect(callback).toHaveBeenCalledOnce();
 
 		await vi.waitFor(() => {
 			expect(uncaughtExceptionHandler).toHaveBeenCalledOnce();
@@ -111,9 +124,9 @@ describe("Timer", () => {
 
 		timer.start();
 
-		await vi.waitFor(() => {
-			expect(callback).toHaveBeenCalledOnce();
-		});
+		vi.advanceTimersByTime(10);
+		vi.runAllTicks();
+		expect(callback).toHaveBeenCalledOnce();
 
 		await vi.waitFor(() => {
 			expect(unhandledRejectionHandler).toHaveBeenCalledOnce();

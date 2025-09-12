@@ -21,7 +21,7 @@ export function noThrow<A extends unknown[], R, T>(
 			// only catch sync errors
 			return func.apply(this, args);
 		} catch (error) {
-			setImmediate(() => {
+			queueMicrotask(() => {
 				throw error;
 			});
 		}
@@ -47,7 +47,7 @@ export function noThrowAsync<A extends unknown[], R, T>(
 			// catch sync errors
 			result = func.apply(this, args);
 		} catch (error) {
-			setImmediate(() => {
+			queueMicrotask(() => {
 				throw error;
 			});
 
@@ -58,7 +58,7 @@ export function noThrowAsync<A extends unknown[], R, T>(
 			// catch async errors
 			return await result;
 		} catch (error) {
-			setImmediate(() => {
+			queueMicrotask(() => {
 				// biome-ignore lint/nursery/noFloatingPromises: intentional
 				Promise.reject(error);
 			});

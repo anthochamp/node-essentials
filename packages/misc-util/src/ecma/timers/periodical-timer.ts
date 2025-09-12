@@ -51,7 +51,7 @@ export class PeriodicalTimer {
 		this.started = true;
 
 		if (this.options.tickOnStart) {
-			void this.onTick();
+			this.onTick();
 		} else {
 			this.scheduleNextTick();
 		}

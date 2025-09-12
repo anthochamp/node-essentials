@@ -1,11 +1,17 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PeriodicalTimer } from "./periodical-timer.js";
 import { sleep } from "./sleep.js";
 
-const MARGIN_MS = 10;
 const INTERVAL_MS = 20;
 
 describe("PeriodicalTimer", () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+	afterEach(() => {
+		vi.useRealTimers();
+	});
+
 	it("should start and stop the timer correctly", async () => {
 		const callback = vi.fn();
 		const timer = new PeriodicalTimer(callback, INTERVAL_MS);
@@ -15,14 +21,16 @@ describe("PeriodicalTimer", () => {
 		timer.start();
 		expect(timer.isStarted()).toBe(true);
 
-		await sleep(INTERVAL_MS * 2 + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS * 2);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledTimes(2);
 
 		timer.stop();
 		expect(timer.isStarted()).toBe(false);
 
 		const finalTickCount = callback.mock.calls.length;
-		await sleep(INTERVAL_MS + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledTimes(finalTickCount);
 	});
 
@@ -35,7 +43,8 @@ describe("PeriodicalTimer", () => {
 		timer.start();
 		expect(callback).toHaveBeenCalledOnce();
 
-		await sleep(INTERVAL_MS * 2 + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS * 2);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledTimes(3);
 
 		timer.stop();
@@ -48,7 +57,8 @@ describe("PeriodicalTimer", () => {
 		timer.start();
 		timer.stop();
 
-		await sleep(INTERVAL_MS + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS);
+		vi.runAllTicks();
 		expect(callback).not.toHaveBeenCalled();
 	});
 
@@ -62,7 +72,8 @@ describe("PeriodicalTimer", () => {
 
 		timer.start();
 
-		await sleep(INTERVAL_MS * 2 + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS * 2);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledTimes(1);
 
 		timer.stop();
@@ -78,7 +89,8 @@ describe("PeriodicalTimer", () => {
 
 		timer.start();
 
-		await sleep(INTERVAL_MS + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledOnce();
 
 		timer.stop();
@@ -105,7 +117,8 @@ describe("PeriodicalTimer", () => {
 
 		timer.start();
 
-		await sleep(INTERVAL_MS + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledOnce();
 
 		timer.stop();
@@ -132,7 +145,8 @@ describe("PeriodicalTimer", () => {
 
 		timer.start();
 
-		await sleep(INTERVAL_MS + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledOnce();
 
 		timer.stop();
@@ -161,7 +175,8 @@ describe("PeriodicalTimer", () => {
 
 		timer.start();
 
-		await sleep(INTERVAL_MS + MARGIN_MS);
+		vi.advanceTimersByTime(INTERVAL_MS);
+		vi.runAllTicks();
 		expect(callback).toHaveBeenCalledOnce();
 
 		timer.stop();
