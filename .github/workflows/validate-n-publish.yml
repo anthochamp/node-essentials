@@ -35,9 +35,10 @@ jobs:
         id: version_check
         run: |
           set -e
+          last_tag_commit=$(git rev-list --tags --max-count=1)
           changed=false
-          for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'package.json$'); do
-            old_version=$(git show ${{ github.event.before }}:$file | jq -r .version)
+          for file in $(git diff --name-only $last_tag_commit ${{ github.sha }} | grep 'package.json$'); do
+            old_version=$(git show $last_tag_commit:$file | jq -r .version)
             new_version=$(cat $file | jq -r .version)
             if [ "$old_version" != "$new_version" ]; then
               changed=true
@@ -45,11 +46,18 @@ jobs:
             fi
           done
           echo "version_changed=$changed" >> $GITHUB_OUTPUT
+          if [ "$changed" = true ]; then
+            echo '🔄 Version change detected: true'
+          else
+            echo 'ℹ️ No version change detected: false'
+          fi
 
   publish_and_release:
-    needs: [validate, check_version_change]
-    if: needs.check_version_change.outputs.version_changed == 'true' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'release/')))
     runs-on: ubuntu-latest
+    needs: [check_version_change, validate]
+    if: |
+      (github.event_name == 'workflow_dispatch') ||
+      (github.event_name == 'push' && needs.check_version_change.outputs.version_changed == 'true')
     steps:
       - uses: actions/checkout@v4
         with:
@@ -123,7 +131,7 @@ jobs:
   generate_and_publish_doc:
     needs: publish_and_release
     runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+    if: github.event.inputs.dry_run != 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
