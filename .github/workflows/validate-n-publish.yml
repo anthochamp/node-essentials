@@ -31,14 +31,21 @@ jobs:
     with:
       node-package-manager: 'yarn'
 
-  check_version_change:
+  publish:
+    permissions:
+      contents: write
+      packages: write
     runs-on: ubuntu-latest
+    needs: [validate]
     outputs:
       version_changed: ${{ steps.version_check.outputs.version_changed }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
       - name: Check for package.json version changes
         id: version_check
         run: |
@@ -72,28 +79,15 @@ jobs:
           else
             echo 'ℹ️ No version change detected: false'
           fi
-
-  publish_and_release:
-    permissions:
-      contents: write
-      packages: write
-    runs-on: ubuntu-latest
-    needs: [check_version_change, validate]
-    if: |
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.force == 'true') ||
-      (needs.check_version_change.outputs.version_changed == 'true')
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
       - name: Install dependencies
+        if: |
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.force == 'true') || steps.version_check.outputs.version_changed == 'true'
         run: |
           corepack enable
           yarn install
       - name: Publish Packages
+        if: |
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.force == 'true') || steps.version_check.outputs.version_changed == 'true'
         id: publish
         run: |
           set -e
@@ -110,60 +104,74 @@ jobs:
           fi
         env:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Extract published packages
-        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
-        run: |
-          if [ -f publish.log ]; then
-            grep '"type":"success"' publish.log | while read line; do
-              echo "$line" | jq -r '.data.name + "@" + .data.version'
-            done > published-packages.txt
-          fi
-          echo '--- published-packages.txt ---'
-          if [ -f published-packages.txt ]; then
-            cat published-packages.txt
-          else
-            echo 'published-packages.txt not found.'
-          fi
-      - name: Create and push tags for published packages
-        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+
+  create_tags:
+    permissions:
+      contents: write
+    needs: publish
+    runs-on: ubuntu-latest
+    if: github.event.inputs.dry_run != 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch all tags
+        run: git fetch --tags
+      - name: Create and push tags for all package versions
         run: |
           set -e
-          if [ -f published-packages.txt ]; then
-            while read pkgver; do
-              tag=$(echo "$pkgver" | tr '/' '-')
+          find . -name package.json -not -path '*/node_modules/*' | while read file; do
+            if [ "$(jq -r .private "$file" 2>/dev/null)" = "true" ]; then
+              echo "$file is private, skipping."
+              continue
+            fi
+            name=$(jq -r .name "$file")
+            version=$(jq -r .version "$file")
+            tag="${name}_v${version}"
+            if git rev-parse "$tag" >/dev/null 2>&1; then
+              echo "Tag $tag already exists, skipping."
+            else
               echo "Creating tag: $tag"
               git tag "$tag"
-            done < published-packages.txt
-            git config user.name github-actions
-            git config user.email github-actions@github.com
-            git push --tags
-          fi
-      - name: Generate release notes
-        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+            fi
+          done
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git push --tags
+
+  generate_release_notes:
+    permissions:
+      contents: write
+    needs: create_tags
+    runs-on: ubuntu-latest
+    if: github.event.inputs.dry_run != 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch all tags
+        run: git fetch --tags
+      - name: Generate release notes for new tags
         id: notes
         run: |
-          if [ -f published-packages.txt ]; then
-            echo '### Published packages:' > release-notes.md
-            while read pkgver; do
-              echo "- $pkgver" >> release-notes.md
-            done < published-packages.txt
-            echo '' >> release-notes.md
-            echo '### Commits included in this release:' >> release-notes.md
-            git log --pretty=format:'- %s (%h)' ${{ github.event.before }}..${{ github.sha }} >> release-notes.md
-            echo "release_body<<EOF" >> $GITHUB_OUTPUT
-            cat release-notes.md >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-          fi
-      - name: Create GitHub Releases
-        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+          # Find all tags matching the <package_name>_v<version> pattern created in this run
+          new_tags=$(git tag --list '*_v*' --sort=creatordate | tail -n $(git rev-list --count HEAD ^HEAD~1))
+          for tag in $new_tags; do
+            if [ -z "$(git tag -l --format='%(contents:subject)' "$tag")" ]; then
+              echo "Generating release notes for $tag"
+              echo "### $tag" > release-notes-$tag.md
+              git log --pretty=format:'- %s (%h)' "$tag"^.."$tag" >> release-notes-$tag.md
+            else
+              echo "Release notes for $tag already exist, skipping."
+            fi
+          done
+      - name: Create GitHub Releases for new tags
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: multi-package-release-${{ github.sha }}
-          name: Multi-package release ${{ github.sha }}
-          body: ${{ steps.notes.outputs.release_body }}
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body_path: release-notes-${{ github.ref_name }}.md
           draft: true
-          files: |
-            packages/*/dist/**
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -171,7 +179,7 @@ jobs:
     permissions:
       contents: read
       pages: write
-    needs: publish_and_release
+    needs: publish
     runs-on: ubuntu-latest
     if: github.event.inputs.dry_run != 'true'
     steps:
@@ -191,11 +199,13 @@ jobs:
       - name: Prepare docs for GitHub Pages
         run: |
           mkdir gh-pages
-          yarn workspaces list --json | jq -r '.location' | while read pkg; do
-            name=$(basename "$pkg")
-            if [ -d "$pkg/doc/generated" ]; then
-              mkdir -p "gh-pages/$name"
-              cp -r "$pkg/doc/generated/." "gh-pages/$name/"
+          # Only prepare docs for packages with new tags
+          for tag in $(git tag --list '*_v*' --sort=creatordate | tail -n $(git rev-list --count HEAD ^HEAD~1)); do
+            pkg=$(echo "$tag" | sed 's/_v.*$//')
+            pkg_dir=$(yarn workspaces list --json | jq -r --arg name "$pkg" 'select(.name==$name) | .location')
+            if [ -d "$pkg_dir/doc/generated" ]; then
+              mkdir -p "gh-pages/$pkg"
+              cp -r "$pkg_dir/doc/generated/." "gh-pages/$pkg/"
             fi
           done
       - name: Deploy to GitHub Pages
