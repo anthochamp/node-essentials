@@ -8,6 +8,6 @@ on:
 
 jobs:
   validate:
-    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@e17e661312e4e5d926343d5519b49f2326308fbc
+    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@0229da1f71114254ba19c62b209147e490e227e3
     with:
       node-package-manager: 'yarn'
