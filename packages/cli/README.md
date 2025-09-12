@@ -50,7 +50,7 @@ const { stdout } = await exec('ls -la');
 console.log(stdout);
 ```
 
-For more detailed documentation and examples, please refer to the [official documentation](https://github.com/anthochamp/node-essentials).
+For more detailed documentation and examples, please refer to the [official documentation](https://anthochamp.github.io/node-essentials/cli/).
 
 ## Contributing
 

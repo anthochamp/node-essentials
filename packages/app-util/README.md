@@ -48,6 +48,16 @@ Here's a categorized summary of the main utilities available in this package (se
 - [process-kill-by-pid-file](src/system/os/process-kill-by-pid-file.ts): Kill a process by reading its PID from a file.
 - [process-wait-pid](src/system/os/process-wait-pid.ts): Wait for a process to terminate by PID.
 
+## Usage
+
+You can import and use the utilities in your project as follows:
+
+```typescript
+import { Logger } from '@ac-essentials/app-util';
+```
+
+For more detailed documentation and examples, please refer to the [official documentation](https://anthochamp.github.io/node-essentials/app-util/).
+
 ## Contributing
 
 Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/anthochamp/node-essentials).

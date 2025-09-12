@@ -153,7 +153,7 @@ const shortString = truncate("This is a very long string that needs to be trunca
 console.log(shortString); // Output: "This is a very lo..."
 ```
 
-For more detailed documentation and examples, please refer to the [official documentation](https://github.io/anthochamp/node-essentials).
+For more detailed documentation and examples, please refer to the [official documentation](https://anthochamp.github.io/node-essentials/misc-util/).
 
 ## Contributing
 

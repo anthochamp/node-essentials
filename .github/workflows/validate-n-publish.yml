@@ -16,14 +16,6 @@ on:
         options:
           - 'false'
           - 'true'
-      force:
-        description: 'Force publish/release even if no version changed'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'false'
-          - 'true'
 
 env:
   PACKAGE_SCOPE: "@ac-essentials/"
@@ -40,8 +32,6 @@ jobs:
       packages: write
     runs-on: ubuntu-latest
     needs: [validate]
-    outputs:
-      version_changed: ${{ steps.version_check.outputs.version_changed }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,61 +39,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-      - name: Check for package.json version changes
-        id: version_check
-        run: |
-          set -e
-          last_tag_commit=$(git rev-list --tags --max-count=1)
-          if [ -z "$last_tag_commit" ]; then
-            # No tags exist yet, use the empty tree as the base
-            last_tag_commit=$(git hash-object -t tree /dev/null)
-          fi
-          changed=false
-          for file in $(git diff --name-only $last_tag_commit ${{ github.sha }} | grep 'package.json$'); do
-            if [ "$last_tag_commit" = "$(git hash-object -t tree /dev/null)" ]; then
-              # No tag, treat all as changed
-              new_version=$(cat $file | jq -r .version)
-              echo "🔄 $file: (no previous version) → $new_version"
-              changed=true
-              continue
-            fi
-            old_version=$(git show $last_tag_commit:$file | jq -r .version 2>/dev/null || echo "")
-            new_version=$(cat $file | jq -r .version)
-            if [ "$old_version" != "$new_version" ]; then
-              echo "🔄 $file: $old_version → $new_version"
-              changed=true
-            else
-              echo "ℹ️ $file: version unchanged ($new_version)"
-            fi
-          done
-          echo "version_changed=$changed" >> $GITHUB_OUTPUT
-          if [ "$changed" = true ]; then
-            echo '🔄 Version change detected: true'
-          else
-            echo 'ℹ️ No version change detected: false'
-          fi
       - name: Install dependencies
-        if: |
-          (github.event_name == 'workflow_dispatch' && github.event.inputs.force == 'true') || steps.version_check.outputs.version_changed == 'true'
         run: |
           corepack enable
           yarn install
       - name: Publish Packages
-        if: |
-          (github.event_name == 'workflow_dispatch' && github.event.inputs.force == 'true') || steps.version_check.outputs.version_changed == 'true'
         id: publish
         run: |
-          set -e
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.dry_run }}" == "true" ]]; then
-            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --dry-run || true
+            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --dry-run
           else
-            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --json > publish.log || true
-          fi
-          echo '--- publish.log ---'
-          if [ -f publish.log ]; then
-            cat publish.log
-          else
-            echo 'publish.log not found.'
+            yarn workspaces foreach -A --no-private npm publish --tolerate-republish
           fi
         env:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -164,7 +110,7 @@ jobs:
           set -e
           > new-tags.txt
           find . -name package.json -not -path '*/node_modules/*' | while read file; do
-            if [ "$(jq -r .private \"$file\" 2>/dev/null)" = "true" ]; then
+            if [ "$(jq -r .private $file 2>/dev/null)" = "true" ]; then
               echo "$file is private, skipping."
               continue
             fi
@@ -190,11 +136,17 @@ jobs:
           has_release_notes=false
           if [ -s new-tags.txt ]; then
             for tag in $(cat new-tags.txt); do
-              if [ -z "$(git tag -l --format='%(contents:subject)' "$tag")" ]; then
-                echo "\n## $tag" >> release-notes.md
-                git log --pretty=format:'- %s (%h)' "$tag"^.."$tag" >> release-notes.md
-                has_release_notes=true
+              # Extract the package id (everything before _v)
+              pkg_id="${tag%_v*}"
+              # Find the previous tag for this package, excluding the current tag
+              prev_tag=$(git tag --list "${pkg_id}_*" --sort=-v:refname | grep -v "^${tag}$" | head -n 1)
+              echo -e "\n## $tag" >> release-notes.md
+              if [ -n "$prev_tag" ]; then
+                git log --pretty=format:'- %s (%h)' "$prev_tag".."$tag" >> release-notes.md
+              else
+                git log --pretty=format:'- %s (%h)' "$tag" >> release-notes.md
               fi
+              has_release_notes=true
             done
           fi
           if ! $has_release_notes; then
