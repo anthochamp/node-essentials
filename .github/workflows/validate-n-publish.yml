@@ -25,6 +25,9 @@ on:
           - 'false'
           - 'true'
 
+env:
+  PACKAGE_SCOPE: "@ac-essentials/"
+
 jobs:
   validate:
     uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@0229da1f71114254ba19c62b209147e490e227e3
@@ -121,13 +124,14 @@ jobs:
         run: |
           set -e
           find . -name package.json -not -path '*/node_modules/*' | while read file; do
-            if [ "$(jq -r .private "$file" 2>/dev/null)" = "true" ]; then
+            if [ "$(jq -r .private \"$file\" 2>/dev/null)" = "true" ]; then
               echo "$file is private, skipping."
               continue
             fi
             name=$(jq -r .name "$file")
             version=$(jq -r .version "$file")
-            tag="${name}_v${version}"
+            name_stripped=${name#$PACKAGE_SCOPE}
+            tag="${name_stripped}_v${version}"
             if git rev-parse "$tag" >/dev/null 2>&1; then
               echo "Tag $tag already exists, skipping."
             else
@@ -156,28 +160,27 @@ jobs:
         run: |
           # Find all tags matching the <package_name>_v<version> pattern created in this run
           new_tags=$(git tag --list '*_v*' --sort=creatordate | tail -n $(git rev-list --count HEAD ^HEAD~1))
+          echo "# Release Notes" > release-notes.md
           for tag in $new_tags; do
             if [ -z "$(git tag -l --format='%(contents:subject)' "$tag")" ]; then
-              echo "Generating release notes for $tag"
-              echo "### $tag" > release-notes-$tag.md
-              git log --pretty=format:'- %s (%h)' "$tag"^.."$tag" >> release-notes-$tag.md
-            else
-              echo "Release notes for $tag already exist, skipping."
+              echo "\n## $tag" >> release-notes.md
+              git log --pretty=format:'- %s (%h)' "$tag"^.."$tag" >> release-notes.md
             fi
           done
+          cat release-notes.md
       - name: Create GitHub Releases for new tags
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          body_path: release-notes-${{ github.ref_name }}.md
+          tag_name: multi-package-release-${{ github.sha }}
+          name: Multi-package release ${{ github.sha }}
+          body_path: release-notes.md
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   generate_and_publish_doc:
     permissions:
-      contents: read
+      contents: write
       pages: write
     needs: create_tags
     runs-on: ubuntu-latest
@@ -202,7 +205,8 @@ jobs:
           # Only prepare docs for packages with new tags
           for tag in $(git tag --list '*_v*' --sort=creatordate | tail -n $(git rev-list --count HEAD ^HEAD~1)); do
             pkg=$(echo "$tag" | sed 's/_v.*$//')
-            pkg_dir=$(yarn workspaces list --json | jq -r --arg name "$pkg" 'select(.name==$name) | .location')
+            pkg_full="$PACKAGE_SCOPE$pkg"
+            pkg_dir=$(yarn workspaces list --json | jq -r --arg name "$pkg_full" 'select(.name==$name) | .location')
             if [ -d "$pkg_dir/doc/generated" ]; then
               mkdir -p "gh-pages/$pkg"
               cp -r "$pkg_dir/doc/generated/." "gh-pages/$pkg/"
@@ -213,5 +217,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./gh-pages
-          publish_branch: gh-pages
           force_orphan: true
