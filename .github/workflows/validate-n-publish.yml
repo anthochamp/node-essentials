@@ -10,6 +10,14 @@ on:
     inputs:
       dry_run:
         description: 'Run publish in dry-run mode (no actual publishing)'
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      force:
+        description: 'Force publish/release even if no version changed'
         required: false
         default: 'false'
         type: choice
@@ -69,8 +77,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check_version_change, validate]
     if: |
-      (github.event_name == 'workflow_dispatch') ||
-      (github.event_name == 'push' && needs.check_version_change.outputs.version_changed == 'true')
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.force == 'true') ||
+      (needs.check_version_change.outputs.version_changed == 'true')
     steps:
       - uses: actions/checkout@v4
         with:
@@ -85,10 +93,17 @@ jobs:
       - name: Publish Packages
         id: publish
         run: |
+          set -e
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.dry_run }}" == "true" ]]; then
-            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --dry-run
+            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --dry-run || true
           else
-            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --json > publish.log
+            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --json > publish.log || true
+          fi
+          echo '--- publish.log ---'
+          if [ -f publish.log ]; then
+            cat publish.log
+          else
+            echo 'publish.log not found.'
           fi
         env:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -100,6 +115,12 @@ jobs:
               echo "$line" | jq -r '.data.name + "@" + .data.version'
             done > published-packages.txt
           fi
+          echo '--- published-packages.txt ---'
+          if [ -f published-packages.txt ]; then
+            cat published-packages.txt
+          else
+            echo 'published-packages.txt not found.'
+          fi
       - name: Create and push tags for published packages
         if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
         run: |
@@ -107,6 +128,7 @@ jobs:
           if [ -f published-packages.txt ]; then
             while read pkgver; do
               tag=$(echo "$pkgver" | tr '/' '-')
+              echo "Creating tag: $tag"
               git tag "$tag"
             done < published-packages.txt
             git config user.name github-actions
