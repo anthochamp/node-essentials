@@ -7,8 +7,16 @@ import {
 import type { ILoggerPrinter } from "../logger-printer.js";
 import type { LoggerRecord } from "../logger-record.js";
 
+/**
+ * Options for `IdleMarkPrinterProxy`.
+ */
 export type IdleMarkPrinterProxyOptions = {
-	// The time to wait before printing an idle mark.
+	/**
+	 * Delay in milliseconds after which a "MARK" log entry is printed if no other
+	 * log entries were printed during that time.
+	 *
+	 * Default is 20 minutes.
+	 */
 	idleMarkDelayMs?: number;
 };
 
@@ -16,11 +24,21 @@ const IDLE_MARK_PRINTER_PROXY_OPTIONS: Required<IdleMarkPrinterProxyOptions> = {
 	idleMarkDelayMs: 20 * MS_PER_MINUTE,
 };
 
+/**
+ * Logger printer proxy that prints a "MARK" log entry if no other log entries
+ * were printed for a certain period of time.
+ */
 export class IdleMarkPrinterProxy implements ILoggerPrinter {
 	private readonly options: Required<IdleMarkPrinterProxyOptions>;
 	private lastNonIdleTime = Date.now();
 	private periodicalTimer: PeriodicalTimer;
 
+	/**
+	 * Constructs a new `IdleMarkPrinterProxy`.
+	 *
+	 * @param printer The underlying logger printer to which log entries are forwarded.
+	 * @param options Options for the proxy.
+	 */
 	constructor(
 		private readonly printer: ILoggerPrinter,
 		options?: IdleMarkPrinterProxyOptions,

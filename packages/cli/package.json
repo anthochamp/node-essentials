@@ -11,12 +11,15 @@
 		"dist"
 	],
 	"dependencies": {
-		"@ac-essentials/misc-util": "workspace:*"
+		"@ac-essentials/misc-util": "workspace:*",
+		"type-fest": "^4.41.0"
 	},
 	"devDependencies": {
 		"@ac-essentials/tsconfig": "workspace:*",
+		"@ac-essentials/typedoc": "workspace:*",
 		"@types/node": "22.18.0",
 		"rimraf": "6.0.1",
+		"typedoc": "0.28.12",
 		"typescript": "5.9.2"
 	},
 	"scripts": {

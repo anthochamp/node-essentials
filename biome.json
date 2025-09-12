@@ -4,29 +4,5 @@
 	"root": true,
 	"files": {
 		"includes": ["**", "!packages/tsconfig/*.json"]
-	},
-	"linter": {
-		"rules": {
-			"suspicious": {
-				"noAssignInExpressions": "off"
-			},
-			"correctness": {
-				"noUnusedFunctionParameters": "info"
-			},
-			"nursery": {
-				"noFloatingPromises": "error",
-				"noImportCycles": {
-					"level": "error",
-					"options": {
-						"ignoreTypes": false
-					}
-				},
-				"noMisusedPromises": "error",
-				"noShadow": "info",
-				"noUnnecessaryConditions": "warn",
-				"noUselessUndefined": "error",
-				"useExhaustiveSwitchCases": "error"
-			}
-		}
 	}
 }

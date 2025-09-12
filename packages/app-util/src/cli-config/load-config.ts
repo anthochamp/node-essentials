@@ -9,7 +9,13 @@ import {
 	resolveExtendableConfig,
 } from "./extendable-config/resolve-extendable-config.js";
 
+/**
+ * Options for loading CLI configuration.
+ */
 export type LoadConfigOptions = {
+	/**
+	 * Options for resolving "extends" field in the configuration.
+	 */
 	resolveExtendsOptions?: ResolveExtendableConfigOptions;
 };
 
@@ -17,6 +23,15 @@ const DEFAULT_LOAD_CONFIG_OPTIONS: Required<LoadConfigOptions> = {
 	resolveExtendsOptions: {},
 };
 
+/**
+ * Load a CLI configuration file using cosmiconfig, supporting "extends" field.
+ *
+ * @param configId The configuration ID (name) to search for.
+ * @param configParser A parser to validate/transform the config object.
+ * @param defaultConfig Default configuration values.
+ * @param options Optional settings for loading and resolving the config.
+ * @returns The resolved configuration object without the "extends" field.
+ */
 export async function loadCliConfig<T extends ExtendableConfig>(
 	configId: string,
 	configParser: ExtendableConfigParser,

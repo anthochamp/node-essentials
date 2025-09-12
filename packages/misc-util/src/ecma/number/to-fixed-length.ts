@@ -3,8 +3,25 @@ import { type RoundingMethod, round } from "../math/round.js";
 import { defaults } from "../object/defaults.js";
 
 export type ToFixedLengthOptions = {
+	/**
+	 * Maximum number of fraction digits to include in the output.
+	 * Default is `0`.
+	 */
 	maxFractionDigits?: number;
+
+	/**
+	 * Whether to always include the maximum number of fraction digits,
+	 * even if it means adding trailing zeros. Default is `false`.
+	 *
+	 * If `false`, the function will try to reduce the number of fraction digits
+	 * to fit the specified length.
+	 */
 	fixedFractionDigits?: boolean;
+
+	/**
+	 * Rounding method to use when rounding the number.
+	 * Default is `"round"`.
+	 */
 	roundingMethod?: RoundingMethod;
 };
 

@@ -1,4 +1,5 @@
 {
+	"private": true,
 	"name": "logger-example",
 	"type": "module",
 	"dependencies": {

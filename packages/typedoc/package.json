@@ -1,0 +1,8 @@
+{
+	"name": "@ac-essentials/typedoc",
+	"version": "0.1.0",
+	"main": "./typedoc.json",
+	"publishConfig": {
+		"access": "public"
+	}
+}

@@ -53,6 +53,10 @@ const FILE_PRINTER_DEFAULT_OPTIONS: Required<FilePrinterOptions> = {
 	useCompression: false,
 };
 
+/**
+ * A logger printer that writes log records to a file, with support for log
+ * rotation based on file size or age.
+ */
 export class FilePrinter implements ILoggerPrinter {
 	private readonly options: Required<FilePrinterOptions>;
 	private fileStream: WriteStream | null = null;
@@ -63,6 +67,12 @@ export class FilePrinter implements ILoggerPrinter {
 		this.handleRotation(),
 	);
 
+	/**
+	 * Creates a new FilePrinter instance.
+	 *
+	 * @param filePath The path to the log file.
+	 * @param options Optional settings for the file printer.
+	 */
 	constructor(
 		private readonly filePath: string,
 		options?: FilePrinterOptions,
@@ -70,6 +80,10 @@ export class FilePrinter implements ILoggerPrinter {
 		this.options = defaults(options, FILE_PRINTER_DEFAULT_OPTIONS);
 	}
 
+	/**
+	 * Closes the file printer, ensuring all pending log records are flushed
+	 * and the file stream is properly closed.
+	 */
 	async close(): Promise<void> {
 		await this.streamPrinterLock.withLock(async () => {
 			await this._unprotected_close();
@@ -78,18 +92,29 @@ export class FilePrinter implements ILoggerPrinter {
 		await this.handleRotationDebounced();
 	}
 
+	/**
+	 * Flushes any buffered log records to the file.
+	 */
 	async flush(): Promise<void> {
 		await this.textStreamPrinter?.flush();
 
 		await this.handleRotationDebounced();
 	}
 
+	/**
+	 * This method is a no-op for FilePrinter.
+	 */
 	async clear(): Promise<void> {
 		await this.textStreamPrinter?.clear();
 
 		await this.handleRotationDebounced();
 	}
 
+	/**
+	 * Prints a log record to the file.
+	 *
+	 * @param record The log record to print.
+	 */
 	async print(record: LoggerRecord): Promise<void> {
 		await this.streamPrinterLock.withLock(async () => {
 			const textStreamPrinter = await this._unprotected_open();

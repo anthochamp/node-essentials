@@ -43,7 +43,7 @@ export type GitStatusOptions = {
 /**
  * Retrieves the git status in porcelain v1 format, optionally limited to the specified path(s).
  *
- * @documentation https://git-scm.com/docs/git-status#_porcelain_format_version_1
+ * @see https://git-scm.com/docs/git-status#_porcelain_format_version_1
  * @param pathSpec Array of paths to limit the status to.
  * @param options Options for the git status command.
  * @returns Array of git status entries.

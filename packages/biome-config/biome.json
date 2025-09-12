@@ -8,5 +8,29 @@
 		"enabled": true,
 		"clientKind": "git",
 		"useIgnoreFile": true
+	},
+	"linter": {
+		"rules": {
+			"suspicious": {
+				"noAssignInExpressions": "off"
+			},
+			"correctness": {
+				"noUnusedFunctionParameters": "info"
+			},
+			"nursery": {
+				"noFloatingPromises": "error",
+				"noImportCycles": {
+					"level": "error",
+					"options": {
+						"ignoreTypes": false
+					}
+				},
+				"noMisusedPromises": "error",
+				"noShadow": "info",
+				"noUnnecessaryConditions": "warn",
+				"noUselessUndefined": "error",
+				"useExhaustiveSwitchCases": "error"
+			}
+		}
 	}
 }

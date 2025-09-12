@@ -35,7 +35,7 @@ export class Semaphore {
 	 * Creates a new semaphore with the given initial number of permits and maximum number of permits.
 	 *
 	 * @param maxValue The maximum number of permits.
-	 * @param value The initial number of permits available. Defaults to `maxValue`.
+	 * @param initialValue The initial number of permits available. Defaults to `maxValue`.
 	 */
 	constructor(
 		private readonly maxValue: number,

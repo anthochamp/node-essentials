@@ -1,8 +1,9 @@
 import { resolveModule } from "@ac-essentials/misc-util";
 
 /**
- * Resolve a configuration "extends"-property value (in the style of
- * eslint/babel "extends"-property).
+ * @internal
+ *
+ * Resolve the value of an "extends" property in a configuration file.
  *
  * Rules:
  * 1) If the value starts with a @, it is a scoped package. If it does not contain

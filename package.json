@@ -20,6 +20,7 @@
 		"test:watch": "vitest watch",
 		"test:coverage": "vitest run --coverage",
 		"clean": "yarn workspaces foreach -Ap run clean",
+		"build-doc": "./scripts/yarn-workspaces-exec-if-dep.sh devDependencies typedoc typedoc",
 		"build": "yarn workspaces foreach -Apt run build",
 		"publish": "yarn workspaces foreach -A --no-private npm publish --tolerate-republish"
 	},

@@ -1,0 +1,11 @@
+name: Validate
+
+on:
+  push:
+    branches: [ '!main', 'v[0-9]+', 'v[0-9]+.[0-9]+' ]
+    tags-ignore: [ 'v[0-9]+.[0-9]+.[0-9]+' ]
+  pull_request:
+
+jobs:
+  validate:
+    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@5c5ea198cee033a8b546566d7ba71662323e5d9a

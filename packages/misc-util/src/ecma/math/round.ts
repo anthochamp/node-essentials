@@ -1,5 +1,8 @@
 import { defaults } from "../object/defaults.js";
 
+/**
+ * Supported rounding methods.
+ */
 export type RoundingMethod = "round" | "floor" | "ceil";
 
 export type RoundOptions = {

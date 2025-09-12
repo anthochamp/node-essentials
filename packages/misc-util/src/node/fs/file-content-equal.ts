@@ -1,3 +1,4 @@
+import type { PathLike } from "node:fs";
 import { open, stat } from "node:fs/promises";
 import { BYTES_PER_KIB } from "../../constants.js";
 import { defaults } from "../../ecma/object/defaults.js";
@@ -22,13 +23,13 @@ const DEFAULT_FILE_CONTENT_EQUAL_OPTIONS: Required<FileContentEqualOptions> = {
 /**
  * Compares the content of a file with the provided data.
  *
- * @param filePath The path to the file to compare.
+ * @param path The path to the file to compare.
  * @param data The data to compare with the file content.
  * @param options Options for the file comparison.
  * @returns True if the file content is equal to the provided data, false otherwise.
  */
 export async function fileContentEqual(
-	path: string,
+	path: PathLike,
 	data: Buffer,
 	options?: FileContentEqualOptions,
 ): Promise<boolean> {

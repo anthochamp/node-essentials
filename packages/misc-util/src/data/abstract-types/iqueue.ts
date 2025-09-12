@@ -36,7 +36,6 @@ export interface IQueue<T = unknown> extends ICollection<T> {
 	 * Removes and returns the item at the front of the queue.
 	 *
 	 * @returns The item at the front of the queue, or `undefined` if the queue is empty.
-	 * @param signal Optional AbortSignal to cancel the operation.
 	 */
 	dequeue(): Promisable<T | undefined>;
 
@@ -44,7 +43,6 @@ export interface IQueue<T = unknown> extends ICollection<T> {
 	 * Returns the item at the front of the queue without removing it.
 	 *
 	 * @returns The item at the front of the queue, or `undefined` if the queue is empty.
-	 * @param signal Optional AbortSignal to cancel the operation.
 	 */
 	front(): Promisable<T | undefined>;
 }
