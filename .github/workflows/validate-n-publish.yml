@@ -1,0 +1,156 @@
+name: Publish Packages and Docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/package.json'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run publish in dry-run mode (no actual publishing)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  validate:
+    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@0229da1f71114254ba19c62b209147e490e227e3
+    with:
+      node-package-manager: 'yarn'
+
+  check_version_change:
+    runs-on: ubuntu-latest
+    outputs:
+      version_changed: ${{ steps.version_check.outputs.version_changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check for package.json version changes
+        id: version_check
+        run: |
+          set -e
+          changed=false
+          for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'package.json$'); do
+            old_version=$(git show ${{ github.event.before }}:$file | jq -r .version)
+            new_version=$(cat $file | jq -r .version)
+            if [ "$old_version" != "$new_version" ]; then
+              changed=true
+              break
+            fi
+          done
+          echo "version_changed=$changed" >> $GITHUB_OUTPUT
+
+  publish_and_release:
+    needs: [validate, check_version_change]
+    if: needs.check_version_change.outputs.version_changed == 'true' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'release/')))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install
+      - name: Publish Packages
+        id: publish
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.dry_run }}" == "true" ]]; then
+            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --dry-run
+          else
+            yarn workspaces foreach -A --no-private npm publish --tolerate-republish --json > publish.log
+          fi
+        env:
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Extract published packages
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+        run: |
+          if [ -f publish.log ]; then
+            grep '"type":"success"' publish.log | while read line; do
+              echo "$line" | jq -r '.data.name + "@" + .data.version'
+            done > published-packages.txt
+          fi
+      - name: Create and push tags for published packages
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+        run: |
+          set -e
+          if [ -f published-packages.txt ]; then
+            while read pkgver; do
+              tag=$(echo "$pkgver" | tr '/' '-')
+              git tag "$tag"
+            done < published-packages.txt
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git push --tags
+          fi
+      - name: Generate release notes
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+        id: notes
+        run: |
+          if [ -f published-packages.txt ]; then
+            echo '### Published packages:' > release-notes.md
+            while read pkgver; do
+              echo "- $pkgver" >> release-notes.md
+            done < published-packages.txt
+            echo '' >> release-notes.md
+            echo '### Commits included in this release:' >> release-notes.md
+            git log --pretty=format:'- %s (%h)' ${{ github.event.before }}..${{ github.sha }} >> release-notes.md
+            echo "release_body<<EOF" >> $GITHUB_OUTPUT
+            cat release-notes.md >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+      - name: Create GitHub Releases
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: multi-package-release-${{ github.sha }}
+          name: Multi-package release ${{ github.sha }}
+          body: ${{ steps.notes.outputs.release_body }}
+          draft: true
+          files: |
+            packages/*/dist/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  generate_and_publish_doc:
+    needs: publish_and_release
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry_run != 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install
+      - name: Build TypeDoc docs for all packages
+        run: |
+          yarn run build-doc
+      - name: Prepare docs for GitHub Pages
+        run: |
+          mkdir gh-pages
+          yarn workspaces list --json | jq -r '.location' | while read pkg; do
+            name=$(basename "$pkg")
+            if [ -d "$pkg/doc/generated" ]; then
+              mkdir -p "gh-pages/$name"
+              cp -r "$pkg/doc/generated/." "gh-pages/$name/"
+            fi
+          done
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh-pages
+          publish_branch: gh-pages
+          force_orphan: true

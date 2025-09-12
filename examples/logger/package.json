@@ -1,0 +1,14 @@
+{
+	"private": true,
+	"name": "logger-example",
+	"type": "module",
+	"dependencies": {
+		"@ac-essentials/app-util": "workspace:*"
+	},
+	"devDependencies": {
+		"tsx": "4.20.5"
+	},
+	"scripts": {
+		"start": "tsx ./src/index.ts"
+	}
+}

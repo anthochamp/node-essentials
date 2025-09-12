@@ -5,7 +5,8 @@
 		"privatePackages/*",
 		"types/*",
 		"tools",
-		"util/*"
+		"util/*",
+		"examples/*"
 	],
 	"scripts": {
 		"postinstall": "is-ci || lefthook install",
@@ -15,8 +16,11 @@
 		"biome:fix-unsafe": "biome check --write --unsafe",
 		"markdownlint:check": "markdownlint -p .gitignore '**/*.md' '**/*.mdx'",
 		"markdownlint:fix": "markdownlint -p .gitignore --fix '**/*.md' '**/*.mdx'",
-		"test": "yarn workspaces foreach -Ap run test",
+		"test": "vitest run",
+		"test:watch": "vitest watch",
+		"test:coverage": "vitest run --coverage",
 		"clean": "yarn workspaces foreach -Ap run clean",
+		"build-doc": "./scripts/yarn-workspaces-exec-if-dep.sh devDependencies typedoc typedoc",
 		"build": "yarn workspaces foreach -Apt run build",
 		"publish": "yarn workspaces foreach -A --no-private npm publish --tolerate-republish"
 	},
@@ -25,8 +29,10 @@
 		"@ac-essentials/biome-config": "workspace:*",
 		"@ac-essentials/markdownlint-cli2-config": "workspace:*",
 		"@biomejs/biome": "2.2.2",
+		"@vitest/coverage-v8": "3.2.4",
 		"is-ci": "4.1.0",
 		"lefthook": "1.12.3",
-		"markdownlint-cli2": "0.18.1"
+		"markdownlint-cli2": "0.18.1",
+		"vitest": "3.2.4"
 	}
 }

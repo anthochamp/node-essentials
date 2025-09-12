@@ -1,0 +1,4 @@
+{
+	"include": ["src/**/*"],
+	"extends": "@ac-essentials/tsconfig/node-cli"
+}

@@ -1,6 +1,8 @@
 .temp/
 dist/
 node_modules/
+*-generated.*
+generated/
 
 .yarn/*
 !.yarn/patches
@@ -15,3 +17,4 @@ node_modules/
 
 #!.yarn/cache
 .pnp.*
+

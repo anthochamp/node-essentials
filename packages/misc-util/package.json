@@ -1,6 +1,6 @@
 {
 	"name": "@ac-essentials/misc-util",
-	"version": "0.1.5",
+	"version": "0.2.0",
 	"type": "module",
 	"main": "./src/index.ts",
 	"publishConfig": {
@@ -12,15 +12,34 @@
 	],
 	"devDependencies": {
 		"@ac-essentials/tsconfig": "workspace:*",
+		"@ac-essentials/typedoc": "workspace:*",
+		"@types/shallow-clone": "3.0.1",
 		"rimraf": "6.0.1",
+		"typedoc": "0.28.12",
 		"typescript": "5.9.2"
 	},
+	"dependencies": {
+		"@ltd/j-toml": "^1.38.0",
+		"@types/fs-ext": "^2.0.3",
+		"@types/ini": "^4.1.1",
+		"@types/node": "^24.3.1",
+		"chardet": "^2.1.0",
+		"editorconfig": "^3.0.1",
+		"fs-ext": "^2.1.1",
+		"iconv-lite": "^0.7.0",
+		"ini": "^5.0.0",
+		"json5": "^2.2.3",
+		"jsonc-parser": "^3.3.1",
+		"shallow-clone": "^3.0.1",
+		"type-fest": "^4.41.0",
+		"yaml": "^2.8.1"
+	},
 	"scripts": {
-		"tsc:compile": "tsc -outDir dist",
+		"compile": "tsc -p ./tsconfig.build.json -outDir dist",
 		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
 		"clean": "rimraf dist",
-		"build": "yarn clean && yarn tsc:compile",
-		"test": "echo 'No test'",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run  --project @ac-essentials/misc-util",
 		"prepack": "yarn build",
 		"prepublish": "yarn test"
 	}

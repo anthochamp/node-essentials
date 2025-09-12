@@ -1,0 +1,7 @@
+{
+	"include": ["src/**/*"],
+	"extends": "@ac-essentials/tsconfig/node-lib",
+	"compilerOptions": {
+		"rootDir": "src"
+	}
+}

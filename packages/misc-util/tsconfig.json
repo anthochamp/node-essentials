@@ -1,4 +1,7 @@
 {
-	"include": ["package.json", "src/**/*", "src/**/*.json"],
-	"extends": "@ac-essentials/tsconfig/node-lib"
+	"extends": "@ac-essentials/tsconfig/node-lib",
+	"include": ["src/**/*"],
+	"compilerOptions": {
+		"rootDir": "src"
+	}
 }
