@@ -1,6 +1,6 @@
 {
 	"name": "@ac-essentials/misc-util",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"type": "module",
 	"main": "./src/index.ts",
 	"publishConfig": {
@@ -10,6 +10,7 @@
 	"files": [
 		"dist"
 	],
+	"sideEffects": false,
 	"devDependencies": {
 		"@ac-essentials/tsconfig": "workspace:*",
 		"@ac-essentials/typedoc-config": "workspace:*",

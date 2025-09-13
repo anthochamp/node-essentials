@@ -1,6 +1,6 @@
 {
 	"name": "@ac-essentials/app-util",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"type": "module",
 	"main": "./src/index.ts",
 	"publishConfig": {
@@ -10,6 +10,7 @@
 	"files": [
 		"dist"
 	],
+	"sideEffects": false,
 	"dependencies": {
 		"@ac-essentials/cli": "workspace:*",
 		"@ac-essentials/misc-util": "workspace:*",
