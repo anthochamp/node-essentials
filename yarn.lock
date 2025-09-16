@@ -69,7 +69,7 @@ __metadata:
     "@types/fs-ext": "npm:^2.0.3"
     "@types/ini": "npm:^4.1.1"
     "@types/node": "npm:^24.3.1"
-    "@types/shallow-clone": "npm:3.0.1"
+    "@types/shallow-clone": "npm:3.0.2"
     chardet: "npm:^2.1.0"
     editorconfig: "npm:^3.0.1"
     fs-ext: "npm:^2.1.1"
@@ -862,10 +862,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/shallow-clone@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@types/shallow-clone@npm:3.0.1"
-  checksum: 10c0/12aed605bac46e2e5f5eb8d10eaf09f30f69f10e8d968eed5655847dafa58376530dea5a9b55e8a673191cdc906b33259a56f84828d6fadf7236ec25bf959681
+"@types/shallow-clone@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@types/shallow-clone@npm:3.0.2"
+  checksum: 10c0/0adee98b953895b049ef867939b1d58d62dff9b3d15eb34d7e4061ca29b7649c4d0d8d090761b42ea42704e8de231d0acaf891d00ec3c559d2644e6fb9504bf9
   languageName: node
   linkType: hard
 
