@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
 import type { IStack } from "../abstract-types/istack.js";
 import { Stack } from "../stack.js";
@@ -9,7 +9,7 @@ import { Stack } from "../stack.js";
  * These tests ensure that the Stack adheres to the IStack interface.
  */
 
-describe.each<{
+suite.each<{
 	description: string;
 	factory: Callable<
 		[iterator?: Iterable<number>, capacity?: number],
@@ -21,7 +21,7 @@ describe.each<{
 		factory: (iterator) => new Stack(iterator),
 	},
 ])("$description IStack compliance", ({ factory }) => {
-	it("should handle initial items correctly", () => {
+	test("should handle initial items correctly", () => {
 		const stack: IStack<number> = factory([1, 2, 3]);
 
 		expect(stack.count()).toBe(3);
@@ -32,7 +32,7 @@ describe.each<{
 		expect(stack.count()).toBe(0);
 	});
 
-	it("should push and pop elements in LIFO order", () => {
+	test("should push and pop elements in LIFO order", () => {
 		const stack: IStack<number> = factory();
 		expect(stack.count()).toBe(0);
 
@@ -48,7 +48,7 @@ describe.each<{
 		expect(stack.count()).toBe(0);
 	});
 
-	it("should return the top element without removing it", () => {
+	test("should return the top element without removing test", () => {
 		const stack: IStack<number> = factory();
 		stack.push(1);
 		stack.push(2);

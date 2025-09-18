@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { isAggregateErrorLike } from "./aggregate-error.js";
 
-describe("isAggregateErrorLike", () => {
-	it("should return true for Error instances", () => {
+suite("isAggregateErrorLike", () => {
+	test("should return true for Error instances", () => {
 		expect(isAggregateErrorLike(new AggregateError([], "Test error"))).toBe(
 			true,
 		);
@@ -14,7 +14,7 @@ describe("isAggregateErrorLike", () => {
 		).toBe(true);
 	});
 
-	it("should return true for objects with name, message and errors properties", () => {
+	test("should return true for objects with name, message and errors properties", () => {
 		expect(
 			isAggregateErrorLike({
 				name: "CustomError",
@@ -24,7 +24,7 @@ describe("isAggregateErrorLike", () => {
 		).toBe(true);
 	});
 
-	it("should return false for objects missing name or message properties", () => {
+	test("should return false for objects missing name or message properties", () => {
 		expect(isAggregateErrorLike(new Error("Test error"))).toBe(false);
 		expect(
 			isAggregateErrorLike(new (class MyError extends Error {})("Test error")),
@@ -40,7 +40,7 @@ describe("isAggregateErrorLike", () => {
 		expect(isAggregateErrorLike({})).toBe(false);
 	});
 
-	it("should return false for non-object values", () => {
+	test("should return false for non-object values", () => {
 		expect(isAggregateErrorLike(null)).toBe(false);
 		expect(isAggregateErrorLike(undefined)).toBe(false);
 		expect(isAggregateErrorLike(42)).toBe(false);

@@ -1,5 +1,5 @@
 import { Writable } from "node:stream";
-import { describe, expect, it, vi } from "vitest";
+import { expect, suite, test, vi } from "vitest";
 import { ProcessExitError } from "./process-exit-error.js";
 import { shellExec } from "./shell-exec.js";
 
@@ -23,17 +23,17 @@ class WritableMock extends Writable {
 	}
 }
 
-describe("shell-exec", () => {
-	it("should execute a simple command successfully", async () => {
+suite("shell-exec", () => {
+	test("should execute a simple command successfully", async () => {
 		await expect(shellExec("echo 'Hello, World!'")).resolves.toBeUndefined();
 	});
 
-	it("should handle a command that fails", async () => {
+	test("should handle a command that fails", async () => {
 		await expect(shellExec("false")).rejects.toThrow(ProcessExitError);
 	});
 
-	describe("onStderrLine", () => {
-		it("should not call onStderrLine for stdout output", async () => {
+	suite("onStderrLine", () => {
+		test("should not call onStderrLine for stdout output", async () => {
 			const handleStderrLine = vi.fn();
 
 			await expect(
@@ -45,7 +45,7 @@ describe("shell-exec", () => {
 			expect(handleStderrLine).not.toHaveBeenCalled();
 		});
 
-		it("should capture stderr output", async () => {
+		test("should capture stderr output", async () => {
 			const handleStderrLine = vi.fn();
 
 			await expect(
@@ -58,7 +58,7 @@ describe("shell-exec", () => {
 			expect(handleStderrLine).toHaveBeenCalledWith("Error message");
 		});
 
-		it("should capture multiple lines of stderr output", async () => {
+		test("should capture multiple lines of stderr output", async () => {
 			const handleStderrLine = vi.fn();
 
 			await expect(
@@ -76,8 +76,8 @@ describe("shell-exec", () => {
 		});
 	});
 
-	describe("outputStream", () => {
-		it("should pipe stdout and stderr to a writable stream", async () => {
+	suite("outputStream", () => {
+		test("should pipe stdout and stderr to a writable stream", async () => {
 			const handleWrite = vi.fn();
 			const writable = new WritableMock(handleWrite);
 			await expect(
@@ -103,8 +103,8 @@ describe("shell-exec", () => {
 		});
 	});
 
-	describe("combined onStderrLine and outputStream", () => {
-		it("should call onStderrLine and pipe to outputStream", async () => {
+	suite("combined onStderrLine and outputStream", () => {
+		test("should call onStderrLine and pipe to outputStream", async () => {
 			const handleStderrLine = vi.fn();
 			const handleWrite = vi.fn();
 			const writable = new WritableMock(handleWrite);

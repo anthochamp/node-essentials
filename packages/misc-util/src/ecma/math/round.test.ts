@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { round } from "./round.js";
 
-describe("round", () => {
-	it("should round numbers correctly", () => {
+suite("round", () => {
+	test("should round numbers correctly", () => {
 		expect(round(1.2345)).toBe(1);
 		expect(round(1.2345, { fractionDigits: 2 })).toBeCloseTo(1.23, 2);
 		expect(round(1.2355, { fractionDigits: 2 })).toBeCloseTo(1.24, 2);
@@ -11,7 +11,7 @@ describe("round", () => {
 		expect(round(-1.2355, { fractionDigits: 2 })).toBeCloseTo(-1.24, 2);
 	});
 
-	it("should floor numbers correctly", () => {
+	test("should floor numbers correctly", () => {
 		expect(round(1.2345, { roundingMethod: "floor" })).toBe(1);
 		expect(
 			round(1.2345, { roundingMethod: "floor", fractionDigits: 2 }),
@@ -28,7 +28,7 @@ describe("round", () => {
 		).toBeCloseTo(-1.24, 2);
 	});
 
-	it("should ceil numbers correctly", () => {
+	test("should ceil numbers correctly", () => {
 		expect(round(1.2345, { roundingMethod: "ceil" })).toBe(2);
 		expect(
 			round(1.2345, { roundingMethod: "ceil", fractionDigits: 2 }),
@@ -45,7 +45,7 @@ describe("round", () => {
 		).toBeCloseTo(-1.23, 2);
 	});
 
-	it("should use default options when none are provided", () => {
+	test("should use default options when none are provided", () => {
 		expect(round(1.5678)).toBe(2);
 		expect(round(1.5678, {})).toBe(2);
 		expect(round(1.5678, { fractionDigits: undefined })).toBe(2);

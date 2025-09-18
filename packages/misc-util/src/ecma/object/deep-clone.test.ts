@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { deepClone } from "./deep-clone.js";
 
-describe("deepClone", () => {
-	it("should deep clone plain objects", () => {
+suite("deepClone", () => {
+	test("should deep clone plain objects", () => {
 		const obj = { a: 1, b: { c: 2 } };
 		const cloned = deepClone(obj);
 
@@ -11,7 +11,7 @@ describe("deepClone", () => {
 		expect(cloned.b).not.toBe(obj.b); // Deep clone, nested objects are different references
 	});
 
-	it("should deep clone arrays", () => {
+	test("should deep clone arrays", () => {
 		const arr = [1, 2, { a: 3 }];
 		const cloned = deepClone(arr);
 
@@ -20,7 +20,7 @@ describe("deepClone", () => {
 		expect(cloned[2]).not.toBe(arr[2]); // Deep clone, nested objects are different references
 	});
 
-	it("should return primitives as is", () => {
+	test("should return primitives as is", () => {
 		expect(deepClone(42)).toBe(42);
 		expect(deepClone("hello")).toBe("hello");
 		expect(deepClone(true)).toBe(true);
@@ -28,21 +28,21 @@ describe("deepClone", () => {
 		expect(deepClone(undefined)).toBe(undefined);
 	});
 
-	it("should clone Date objects", () => {
+	test("should clone Date objects", () => {
 		const date = new Date();
 		const cloned = deepClone(date);
 		expect(cloned).not.toBe(date);
 		expect(cloned).toEqual(date);
 	});
 
-	it("should clone RegExp objects", () => {
+	test("should clone RegExp objects", () => {
 		const regex = /test/;
 		const cloned = deepClone(regex);
 		expect(cloned).not.toBe(regex);
 		expect(cloned).toEqual(regex);
 	});
 
-	it("should deep clone Map objects", () => {
+	test("should deep clone Map objects", () => {
 		const map = new Map();
 		map.set("a", 1);
 		map.set("b", { c: 2 });
@@ -53,7 +53,7 @@ describe("deepClone", () => {
 		expect(cloned.get("b")).not.toBe(map.get("b")); // Deep clone, nested objects are different references
 	});
 
-	it("should deep clone Set objects", () => {
+	test("should deep clone Set objects", () => {
 		const set = new Set([1, 2, { a: 3 }]);
 		const cloned = deepClone(set);
 

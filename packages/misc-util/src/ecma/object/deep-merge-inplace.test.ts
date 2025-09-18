@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import {
 	deepMergeArrayInplace,
 	deepMergeInplace,
@@ -7,9 +7,9 @@ import {
 	deepMergeSetInplace,
 } from "./deep-merge-inplace.js";
 
-describe("deepMergeInplace", () => {
-	describe("deepMergeInplace", () => {
-		it("should merge plain objects in place", () => {
+suite("deepMergeInplace", () => {
+	suite("deepMergeInplace", () => {
+		test("should merge plain objects in place", () => {
 			const target = { a: 1, b: { c: 2 } };
 			const source = { b: { d: 3 }, e: 4 };
 
@@ -19,7 +19,7 @@ describe("deepMergeInplace", () => {
 			expect(target).toEqual({ a: 1, b: { c: 2, d: 3 }, e: 4 });
 		});
 
-		it("should merge arrays in place", () => {
+		test("should merge arrays in place", () => {
 			const target = [1, 2, 3];
 			const source = [4, 5];
 
@@ -31,7 +31,7 @@ describe("deepMergeInplace", () => {
 			expect(target).toEqual([1, 2, 3, 4, 5]);
 		});
 
-		it("should merge maps in place", () => {
+		test("should merge maps in place", () => {
 			const target = new Map<string, unknown>([
 				["a", 1],
 				["b", { c: 2 }],
@@ -53,7 +53,7 @@ describe("deepMergeInplace", () => {
 			);
 		});
 
-		it("should merge sets in place", () => {
+		test("should merge sets in place", () => {
 			const target = new Set<number | object>([1, 2, { a: 3 }]);
 			const source = new Set<number | object>([{ b: 4 }, 5]);
 
@@ -65,7 +65,7 @@ describe("deepMergeInplace", () => {
 			);
 		});
 
-		it("should return source for non-object-like values", () => {
+		test("should return source for non-object-like values", () => {
 			const target = 1;
 			const source = { a: 1 };
 
@@ -74,7 +74,7 @@ describe("deepMergeInplace", () => {
 			expect(result).toBe(source);
 		});
 
-		it("should return source when target and source are of different types", () => {
+		test("should return source when target and source are of different types", () => {
 			const target = { a: 1 };
 			const source = [1, 2, 3];
 
@@ -83,7 +83,7 @@ describe("deepMergeInplace", () => {
 			expect(result).toBe(source);
 		});
 
-		it("should return source when source is a non-recursive object", () => {
+		test("should return source when source is a non-recursive object", () => {
 			const target = { a: 1, b: { c: 2 } };
 			let source: unknown = new Date();
 
@@ -111,7 +111,7 @@ describe("deepMergeInplace", () => {
 			expect(result6).toBe(source);
 		});
 
-		it("should clone source when cloneSource option is true", () => {
+		test("should clone source when cloneSource option is true", () => {
 			const target = { a: 1 };
 			const source = { b: { d: 3 } };
 
@@ -123,7 +123,7 @@ describe("deepMergeInplace", () => {
 			expect(result.b).not.toBe(source.b);
 		});
 
-		it("should not clone source when cloneSource option is false", () => {
+		test("should not clone source when cloneSource option is false", () => {
 			const target = { a: 1 };
 			const source = { b: { d: 3 } };
 
@@ -136,8 +136,8 @@ describe("deepMergeInplace", () => {
 		});
 	});
 
-	describe("deepMergePojoInplace", () => {
-		it("should merge plain objects in place", () => {
+	suite("deepMergePojoInplace", () => {
+		test("should merge plain objects in place", () => {
 			const target = { a: 1, b: { c: 2 } };
 			const source = { b: { d: 3 }, e: 4 };
 
@@ -147,8 +147,8 @@ describe("deepMergeInplace", () => {
 		});
 	});
 
-	describe("deepMergeSetInplace", () => {
-		it("should merge sets in place", () => {
+	suite("deepMergeSetInplace", () => {
+		test("should merge sets in place", () => {
 			const target = new Set<number | object>([1, 2, { a: 3 }]);
 			const source = new Set<number | object>([{ b: 4 }, 5]);
 
@@ -160,8 +160,8 @@ describe("deepMergeInplace", () => {
 		});
 	});
 
-	describe("deepMergeMapInplace", () => {
-		it("should merge maps in place", () => {
+	suite("deepMergeMapInplace", () => {
+		test("should merge maps in place", () => {
 			const target = new Map<string, unknown>([
 				["a", 1],
 				["b", { c: 2 }],
@@ -183,8 +183,8 @@ describe("deepMergeInplace", () => {
 		});
 	});
 
-	describe("deepMergeArrayInplace", () => {
-		it("should merge arrays with 'replace' mode", () => {
+	suite("deepMergeArrayInplace", () => {
+		test("should merge arrays with 'replace' mode", () => {
 			const target = [1, 2, 3];
 			const source = [4, 5];
 			deepMergeArrayInplace(target, source, {
@@ -193,7 +193,7 @@ describe("deepMergeInplace", () => {
 			expect(target).toEqual([4, 5]);
 		});
 
-		it("should merge arrays with 'spread' mode", () => {
+		test("should merge arrays with 'spread' mode", () => {
 			const target = [1, 2, 3];
 			const source = [4, 5];
 			deepMergeArrayInplace(target, source, {
@@ -202,7 +202,7 @@ describe("deepMergeInplace", () => {
 			expect(target).toEqual([1, 2, 3, 4, 5]);
 		});
 
-		it("should merge arrays with 'merge' mode", () => {
+		test("should merge arrays with 'merge' mode", () => {
 			const target = [1, 2, 3];
 			const source = [4, 5];
 			deepMergeArrayInplace(target, source, {
@@ -211,7 +211,7 @@ describe("deepMergeInplace", () => {
 			expect(target).toEqual([4, 5, 3]);
 		});
 
-		it("should merge arrays with 'merge' mode and nested objects", () => {
+		test("should merge arrays with 'merge' mode and nested objects", () => {
 			const target0 = { a: 1 };
 			const target1 = { b: 2 };
 			const target2 = { c: 3 };

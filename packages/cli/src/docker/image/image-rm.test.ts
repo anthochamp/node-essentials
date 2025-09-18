@@ -1,5 +1,5 @@
 import { execAsync } from "@ac-essentials/misc-util";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, expect, suite, test, vi } from "vitest";
 import { dockerImageRm } from "./image-rm.js";
 
 vi.mock(import("@ac-essentials/misc-util"), async (importActual) => {
@@ -12,12 +12,12 @@ vi.mock(import("@ac-essentials/misc-util"), async (importActual) => {
 
 const execAsyncMock = vi.mocked(execAsync);
 
-describe("dockerImageRm", () => {
+suite("dockerImageRm", () => {
 	beforeEach(() => {
 		execAsyncMock.mockReset();
 	});
 
-	it("should call docker image rm with image ids", async () => {
+	test("should call docker image rm with image ids", async () => {
 		await dockerImageRm(["image1", "image2"]);
 
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
@@ -26,7 +26,7 @@ describe("dockerImageRm", () => {
 		);
 	});
 
-	it("should call docker image rm with force and noPrune options", async () => {
+	test("should call docker image rm with force and noPrune options", async () => {
 		await dockerImageRm(["image1"], { force: true, noPrune: true });
 
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
@@ -35,7 +35,7 @@ describe("dockerImageRm", () => {
 		);
 	});
 
-	it("should call docker image rm with force option", async () => {
+	test("should call docker image rm with force option", async () => {
 		await dockerImageRm(["image1"], { force: true });
 
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
@@ -44,7 +44,7 @@ describe("dockerImageRm", () => {
 		);
 	});
 
-	it("should call docker image rm with noPrune option", async () => {
+	test("should call docker image rm with noPrune option", async () => {
 		await dockerImageRm(["image1"], { noPrune: true });
 
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
@@ -53,7 +53,7 @@ describe("dockerImageRm", () => {
 		);
 	});
 
-	it("should escape image ids", async () => {
+	test("should escape image ids", async () => {
 		await dockerImageRm(["image'1", 'image"2']);
 
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);

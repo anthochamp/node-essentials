@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { captureStackTrace } from "./capture-stack-trace.js";
 
-describe("captureStackTrace", () => {
-	it("should capture the stack trace of the caller", () => {
+suite("captureStackTrace", () => {
+	test("should capture the stack trace of the caller", () => {
 		function a() {
 			return b();
 		}
@@ -15,7 +15,7 @@ describe("captureStackTrace", () => {
 		expect(stack?.[1]).toMatch(/at a /);
 	});
 
-	it("should use the provided reference to determine where to start the stack trace", () => {
+	test("should use the provided reference to determine where to start the stack trace", () => {
 		function a() {
 			return b();
 		}

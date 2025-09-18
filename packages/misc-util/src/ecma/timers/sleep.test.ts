@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { sleep } from "./sleep.js";
 
-describe("sleep", () => {
-	it("should sleep for the specified duration", async () => {
+suite("sleep", () => {
+	test("should sleep for the specified duration", async () => {
 		const start = Date.now();
 		await sleep(100);
 		const duration = Date.now() - start + 1; // +1 to account for sub-milliseconds rounding errors

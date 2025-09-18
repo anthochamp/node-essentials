@@ -1,10 +1,10 @@
 /** biome-ignore-all lint/style/useArrayLiterals: test */
 /** biome-ignore-all lint/complexity/useArrowFunction: test */
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { isObject } from "./is-object.js";
 
-describe("isObject", () => {
-	it("should return true for object-like values", () => {
+suite("isObject", () => {
+	test("should return true for object-like values", () => {
 		expect(isObject({})).toBe(true);
 		expect(isObject(new Date())).toBe(true);
 		expect(isObject(/a/g)).toBe(true);
@@ -16,7 +16,7 @@ describe("isObject", () => {
 		expect(isObject(new (class A {})())).toBe(true);
 	});
 
-	it("should return false for primitive", () => {
+	test("should return false for primitive", () => {
 		expect(isObject(null)).toBe(false);
 		expect(isObject(undefined)).toBe(false);
 		expect(isObject(42)).toBe(false);
@@ -25,13 +25,13 @@ describe("isObject", () => {
 		expect(isObject(Symbol("sym"))).toBe(false);
 	});
 
-	it("should return false for functions", () => {
+	test("should return false for functions", () => {
 		expect(isObject(() => {})).toBe(false);
 		expect(isObject(function () {})).toBe(false);
 		expect(isObject(async () => {})).toBe(false);
 	});
 
-	it("should return false for arrays", () => {
+	test("should return false for arrays", () => {
 		expect(isObject([])).toBe(false);
 		expect(isObject([1, 2, 3])).toBe(false);
 		expect(isObject(new Array())).toBe(false);

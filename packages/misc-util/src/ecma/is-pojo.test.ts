@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { isPojo } from "./is-pojo.js";
 
-describe("isPojo", () => {
-	it("should return true for plain objects", () => {
+suite("isPojo", () => {
+	test("should return true for plain objects", () => {
 		expect(isPojo({})).toBe(true);
 		expect(isPojo({ a: 1, b: 2 })).toBe(true);
 		expect(isPojo(Object.create(null))).toBe(true);
@@ -10,7 +10,7 @@ describe("isPojo", () => {
 		expect(isPojo(Object.create(Object.prototype))).toBe(true);
 	});
 
-	it("should return false for non-plain objects", () => {
+	test("should return false for non-plain objects", () => {
 		expect(isPojo([])).toBe(false); // arrays
 		expect(isPojo(new Date())).toBe(false); // dates
 		expect(isPojo(/regex/)).toBe(false); // regex

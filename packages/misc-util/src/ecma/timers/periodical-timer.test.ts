@@ -1,10 +1,10 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, suite, test, vi } from "vitest";
 import { PeriodicalTimer } from "./periodical-timer.js";
 import { sleep } from "./sleep.js";
 
 const INTERVAL_MS = 20;
 
-describe("PeriodicalTimer", () => {
+suite("PeriodicalTimer", () => {
 	beforeEach(() => {
 		vi.useFakeTimers();
 	});
@@ -12,7 +12,7 @@ describe("PeriodicalTimer", () => {
 		vi.useRealTimers();
 	});
 
-	it("should start and stop the timer correctly", async () => {
+	test("should start and stop the timer correctly", async () => {
 		const callback = vi.fn();
 		const timer = new PeriodicalTimer(callback, INTERVAL_MS);
 
@@ -34,7 +34,7 @@ describe("PeriodicalTimer", () => {
 		expect(callback).toHaveBeenCalledTimes(finalTickCount);
 	});
 
-	it("should call the callback immediately if tickOnStart is true", async () => {
+	test("should call the callback immediately if tickOnStart is true", async () => {
 		const callback = vi.fn();
 		const timer = new PeriodicalTimer(callback, INTERVAL_MS, {
 			tickOnStart: true,
@@ -50,7 +50,7 @@ describe("PeriodicalTimer", () => {
 		timer.stop();
 	});
 
-	it("should not call the callback if stopped before the first tick", async () => {
+	test("should not call the callback if stopped before the first tick", async () => {
 		const callback = vi.fn();
 		const timer = new PeriodicalTimer(callback, INTERVAL_MS);
 
@@ -62,7 +62,7 @@ describe("PeriodicalTimer", () => {
 		expect(callback).not.toHaveBeenCalled();
 	});
 
-	it("should wait for the callback to complete if waitForCompletion is true", async () => {
+	test("should wait for the callback to complete if waitForCompletion is true", async () => {
 		const callback = vi.fn().mockImplementation(async () => {
 			await sleep(INTERVAL_MS * 2); // must be at least INTERVAL_MS*2
 		});
@@ -79,7 +79,7 @@ describe("PeriodicalTimer", () => {
 		timer.stop();
 	});
 
-	it("should handle callback rejections asynchronously if waitForCompletion is false", async () => {
+	test("should handle callback rejections asynchronously if waitForCompletion is false", async () => {
 		const error = new Error("Test error");
 		const callback = vi.fn().mockRejectedValue(error);
 		const timer = new PeriodicalTimer(callback, INTERVAL_MS);
@@ -105,7 +105,7 @@ describe("PeriodicalTimer", () => {
 		);
 	});
 
-	it("should handle callback exception asynchronously if waitForCompletion is false", async () => {
+	test("should handle callback exception asynchronously if waitForCompletion is false", async () => {
 		const error = new Error("Test error");
 		const callback = vi.fn().mockImplementation(() => {
 			throw error;
@@ -133,7 +133,7 @@ describe("PeriodicalTimer", () => {
 		);
 	});
 
-	it("should handle callback rejections asynchronously if waitForCompletion is true", async () => {
+	test("should handle callback rejections asynchronously if waitForCompletion is true", async () => {
 		const error = new Error("Test error");
 		const callback = vi.fn().mockRejectedValue(error);
 		const timer = new PeriodicalTimer(callback, INTERVAL_MS, {
@@ -161,7 +161,7 @@ describe("PeriodicalTimer", () => {
 		);
 	});
 
-	it("should handle callback exception asynchronously if waitForCompletion is true", async () => {
+	test("should handle callback exception asynchronously if waitForCompletion is true", async () => {
 		const error = new Error("Test error");
 		const callback = vi.fn().mockImplementation(() => {
 			throw error;

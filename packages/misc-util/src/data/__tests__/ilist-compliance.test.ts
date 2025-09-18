@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
 import type { MaybeAsyncIterableIterator } from "../../ecma/iterator/types.js";
 import type { IList } from "../abstract-types/ilist.js";
@@ -6,7 +6,7 @@ import { DoublyLinkedList } from "../doubly-linked-list.js";
 import { LinkedList } from "../linked-list.js";
 import { NativeArray } from "../native-array.js";
 
-describe.each<{
+suite.each<{
 	description: string;
 	factory: Callable<[iterator?: Iterable<number>], IList<number>>;
 }>([
@@ -23,7 +23,7 @@ describe.each<{
 		factory: (iterator) => new NativeArray(iterator),
 	},
 ])("$description IList compliance", ({ factory }) => {
-	it("should get items by index", async () => {
+	test("should get items by index", async () => {
 		const list: IList<number> = factory([1, 2, 3]);
 		expect(await list.get(0)).toBe(1);
 		expect(await list.get(1)).toBe(2);
@@ -35,7 +35,7 @@ describe.each<{
 		expect(await list.get(-4)).toBeUndefined();
 	});
 
-	it("should set items by index", async () => {
+	test("should set items by index", async () => {
 		const list: IList<number> = factory([1, 2, 3]);
 		await list.set(0, 4);
 		await list.set(1, 5);
@@ -48,7 +48,7 @@ describe.each<{
 		await expect(async () => await list.set(-4, 0)).rejects.toThrow(RangeError);
 	});
 
-	it("should append an item to the list if index equals to the list size", async () => {
+	test("should append an item to the list if index equals to the list size", async () => {
 		const list: IList<number> = factory([1, 2, 3]);
 		await list.set(3, 4);
 		expect(await Array.fromAsync(list)).toEqual([1, 2, 3, 4]);
@@ -56,7 +56,7 @@ describe.each<{
 		expect(await Array.fromAsync(list)).toEqual([1, 2, 3, 4, 5]);
 	});
 
-	it("should splice items", async () => {
+	test("should splice items", async () => {
 		const list: IList<number> = factory([1, 2, 3, 4, 5]);
 		let removed: MaybeAsyncIterableIterator<number>;
 
@@ -95,7 +95,7 @@ describe.each<{
 		expect(() => list.splice(-1)).toThrow(RangeError);
 	});
 
-	it("should slice items", async () => {
+	test("should slice items", async () => {
 		const list: IList<number> = factory([1, 2, 3, 4, 5]);
 		let sliced: MaybeAsyncIterableIterator<number>;
 

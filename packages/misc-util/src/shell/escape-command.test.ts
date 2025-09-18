@@ -1,11 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import {
 	escapePosixShCommand,
 	escapeWin32CmdCommand,
 } from "./escape-command.js";
 
-describe("escapeCommand", () => {
-	it("should escape a string for safe use as a POSIX-compliant shell command", () => {
+suite("escapeCommand", () => {
+	test("should escape a string for safe use as a POSIX-compliant shell command", () => {
 		expect(escapePosixShCommand("simple")).toBe("simple");
 		expect(escapePosixShCommand("'")).toBe("\\'");
 		expect(escapePosixShCommand("''")).toBe("''");
@@ -33,7 +33,7 @@ describe("escapeCommand", () => {
 		);
 	});
 
-	it("should escape a string for safe use as a Windows cmd.exe command", () => {
+	test("should escape a string for safe use as a Windows cmd.exe command", () => {
 		expect(escapeWin32CmdCommand("simple")).toBe("simple");
 		expect(escapeWin32CmdCommand("'")).toBe("^'");
 		expect(escapeWin32CmdCommand("''")).toBe("^'^'");

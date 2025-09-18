@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { Mutex } from "./mutex.js";
 
-describe("Mutex", () => {
-	it("should acquire and release lock correctly", async () => {
+suite("Mutex", () => {
+	test("should acquire and release lock correctly", async () => {
 		const mutex = new Mutex();
 		expect(mutex.locked).toBe(false);
 
@@ -20,7 +20,7 @@ describe("Mutex", () => {
 		expect(mutex.locked).toBe(false);
 	});
 
-	it("should handle multiple concurrent acquires", async () => {
+	test("should handle multiple concurrent acquires", async () => {
 		const mutex = new Mutex();
 
 		const acquire1Promise = mutex.acquire();
@@ -37,7 +37,7 @@ describe("Mutex", () => {
 		expect(mutex.locked).toBe(false);
 	});
 
-	it("should throw if release is called more than acquire", async () => {
+	test("should throw if release is called more than acquire", async () => {
 		const mutex = new Mutex();
 
 		const release = await mutex.acquire();

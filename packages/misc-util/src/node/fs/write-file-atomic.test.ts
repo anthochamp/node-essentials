@@ -4,10 +4,10 @@ import { join } from "node:path";
 import {
 	afterEach,
 	beforeEach,
-	describe,
 	expect,
-	it,
 	type MockInstance,
+	suite,
+	test,
 	vi,
 } from "vitest";
 import { writeFileAtomic } from "./write-file-atomic.js";
@@ -20,7 +20,7 @@ vi.mock("node:fs/promises", async (importActual) => {
 	};
 });
 
-describe("writeFileAtomic", () => {
+suite("writeFileAtomic", () => {
 	let originalWriteFile: typeof writeFile;
 	let writeFileMock: MockInstance<typeof writeFile>;
 
@@ -48,7 +48,7 @@ describe("writeFileAtomic", () => {
 		await rmdir(tmpDir, { recursive: false });
 	});
 
-	it("should write to a file if the file does not exist (mode=w)", async () => {
+	test("should write to a file if the file does not exist (mode=w)", async () => {
 		await writeFileAtomic(testFilePath, "data", { flag: "w" });
 
 		const content = await readFile(testFilePath);
@@ -56,7 +56,7 @@ describe("writeFileAtomic", () => {
 		expect(content).toEqual(Buffer.from("data"));
 	});
 
-	it("should write to a file if the file does not exist (mode=a)", async () => {
+	test("should write to a file if the file does not exist (mode=a)", async () => {
 		await writeFileAtomic(testFilePath, "data", { flag: "a" });
 
 		const content = await readFile(testFilePath);
@@ -64,7 +64,7 @@ describe("writeFileAtomic", () => {
 		expect(content).toEqual(Buffer.from("data"));
 	});
 
-	it("should write to a file if the file exists (mode=w)", async () => {
+	test("should write to a file if the file exists (mode=w)", async () => {
 		await writeFile(testFilePath, "data");
 		await writeFileAtomic(testFilePath, "new data", { flag: "w" });
 
@@ -73,7 +73,7 @@ describe("writeFileAtomic", () => {
 		expect(content).toEqual(Buffer.from("new data"));
 	});
 
-	it("should write to a file if the file exists (mode=a)", async () => {
+	test("should write to a file if the file exists (mode=a)", async () => {
 		await writeFile(testFilePath, "data");
 		await writeFileAtomic(testFilePath, " and more data", { flag: "a" });
 
@@ -82,7 +82,7 @@ describe("writeFileAtomic", () => {
 		expect(content).toEqual(Buffer.from("data and more data"));
 	});
 
-	describe("should write atomically", () => {
+	suite("should write atomically", () => {
 		let deferredTmpFileWrite: ReturnType<typeof Promise.withResolvers<void>>;
 		let testTmpFilePathPrefix: string;
 
@@ -107,7 +107,7 @@ describe("writeFileAtomic", () => {
 			writeFileMock.mockReset();
 		});
 
-		it("should write atomically to a file that is created while writing the temporary file (mode=w)", async () => {
+		test("should write atomically to a file that is created while writing the temporary file (mode=w)", async () => {
 			const promise = writeFileAtomic(testFilePath, "data", { flag: "w" });
 
 			await vi.waitFor(() =>
@@ -130,7 +130,7 @@ describe("writeFileAtomic", () => {
 			expect(content).toEqual(Buffer.from("data"));
 		});
 
-		it("should write atomically to a file that is created while writing the temporary file (mode=a)", async () => {
+		test("should write atomically to a file that is created while writing the temporary file (mode=a)", async () => {
 			const promise = writeFileAtomic(testFilePath, "data", { flag: "a" });
 
 			await vi.waitFor(() =>
@@ -153,7 +153,7 @@ describe("writeFileAtomic", () => {
 			expect(content).toEqual(Buffer.from("data"));
 		});
 
-		it("should write atomically to a file that is changed while writing the temporary file (mode=w)", async () => {
+		test("should write atomically to a file that is changed while writing the temporary file (mode=w)", async () => {
 			// Simulate a write to the target file while the atomic write is in progress
 			await originalWriteFile(testFilePath, "some data");
 
@@ -179,7 +179,7 @@ describe("writeFileAtomic", () => {
 			expect(content).toEqual(Buffer.from("data"));
 		});
 
-		it("should write atomically to a file that is changed while writing the temporary file (mode=a)", async () => {
+		test("should write atomically to a file that is changed while writing the temporary file (mode=a)", async () => {
 			// Simulate a write to the target file while the atomic write is in progress
 			await originalWriteFile(testFilePath, "some data");
 

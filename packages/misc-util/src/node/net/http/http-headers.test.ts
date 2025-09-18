@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import {
 	httpFilterHeaders,
 	httpGetHeaderValue,
@@ -12,43 +12,43 @@ const headers = {
 	"Content-Length": 12345,
 };
 
-describe("http-headers", () => {
-	describe("httpGetHeaderValue", () => {
-		it("should get an header value", () => {
+suite("http-headers", () => {
+	suite("httpGetHeaderValue", () => {
+		test("should get an header value", () => {
 			const value = httpGetHeaderValue(headers, "Accept");
 
 			expect(value).toEqual(["value1", "value2"]);
 		});
 
-		it("should return undefined if header does not exist", () => {
+		test("should return undefined if header does not exist", () => {
 			const value = httpGetHeaderValue(headers, "X-Unknown");
 
 			expect(value).toBeUndefined();
 		});
 	});
 
-	describe("httpGetHeaderValues", () => {
-		it("should get an header values", () => {
+	suite("httpGetHeaderValues", () => {
+		test("should get an header values", () => {
 			const values = httpGetHeaderValues(headers, "Accept");
 
 			expect(values).toEqual(["value1", "value2"]);
 		});
 
-		it("should get a single header value as an array", () => {
+		test("should get a single header value as an array", () => {
 			const values = httpGetHeaderValues(headers, "Content-Type");
 
 			expect(values).toEqual(["application/json"]);
 		});
 
-		it("should return an empty array if header does not exist", () => {
+		test("should return an empty array if header does not exist", () => {
 			const values = httpGetHeaderValues(headers, "X-Unknown");
 
 			expect(values).toEqual([]);
 		});
 	});
 
-	describe("httpFilterHeaders", () => {
-		it("should filter headers by a predicate", () => {
+	suite("httpFilterHeaders", () => {
+		test("should filter headers by a predicate", () => {
 			const filtered = httpFilterHeaders(headers, (name, _value) => {
 				return name.toLowerCase() === "accept";
 			});
@@ -59,8 +59,8 @@ describe("http-headers", () => {
 		});
 	});
 
-	describe("httpNormalizeHeaders", () => {
-		it("should normalize headers", () => {
+	suite("httpNormalizeHeaders", () => {
+		test("should normalize headers", () => {
 			const normalized = httpNormalizeHeaders(headers);
 
 			expect(normalized).toEqual({

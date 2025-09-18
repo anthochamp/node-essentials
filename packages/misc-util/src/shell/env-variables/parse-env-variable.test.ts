@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import {
 	parseEnvVariable,
 	parseEnvVariableValue,
@@ -7,9 +7,9 @@ import {
 	parseEnvVariableValueAsString,
 } from "./parse-env-variable.js";
 
-describe("parse-env-variable", () => {
-	describe("parseEnvVariableValueAsBool", () => {
-		it("should parse boolean values correctly", () => {
+suite("parse-env-variable", () => {
+	suite("parseEnvVariableValueAsBool", () => {
+		test("should parse boolean values correctly", () => {
 			expect(parseEnvVariableValueAsBool("1")).toBe(true);
 			expect(parseEnvVariableValueAsBool("true")).toBe(true);
 			expect(parseEnvVariableValueAsBool("TRUE")).toBe(true);
@@ -27,8 +27,8 @@ describe("parse-env-variable", () => {
 		});
 	});
 
-	describe("parseEnvVariableValueAsNumber", () => {
-		it("should parse number and bigint values correctly", () => {
+	suite("parseEnvVariableValueAsNumber", () => {
+		test("should parse number and bigint values correctly", () => {
 			expect(parseEnvVariableValueAsNumber("42")).toBe(42);
 			expect(parseEnvVariableValueAsNumber("-3.14")).toBeCloseTo(-3.14, 2);
 			expect(parseEnvVariableValueAsNumber("9007199254741991")).toBe(
@@ -44,8 +44,8 @@ describe("parse-env-variable", () => {
 		});
 	});
 
-	describe("parseEnvVariableValueAsString", () => {
-		it("should parse string values correctly", () => {
+	suite("parseEnvVariableValueAsString", () => {
+		test("should parse string values correctly", () => {
 			expect(parseEnvVariableValueAsString("simple")).toBe("simple");
 			expect(parseEnvVariableValueAsString("needs quoting")).toBe(
 				"needs quoting",
@@ -65,8 +65,8 @@ describe("parse-env-variable", () => {
 		});
 	});
 
-	describe("parseEnvVariable", () => {
-		it("should parse environment variable definitions correctly", () => {
+	suite("parseEnvVariable", () => {
+		test("should parse environment variable definitions correctly", () => {
 			expect(parseEnvVariable("KEY1=simple")).toEqual({
 				name: "KEY1",
 				value: "simple",
@@ -116,8 +116,8 @@ describe("parse-env-variable", () => {
 		});
 	});
 
-	describe("parseEnvVariableValue", () => {
-		it("should parse environment variable values correctly", () => {
+	suite("parseEnvVariableValue", () => {
+		test("should parse environment variable values correctly", () => {
 			expect(parseEnvVariableValue("simple")).toBe("simple");
 			expect(parseEnvVariableValue("needs quoting")).toBe("needs quoting");
 			expect(parseEnvVariableValue('contains"quote')).toBe('contains"quote');

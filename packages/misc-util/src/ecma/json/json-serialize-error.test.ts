@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { jsonSerializeError } from "./json-serialize-error.js";
 
 const error = new Error("Test error");
@@ -18,8 +18,8 @@ const aggregateError = new AggregateError(
 	"Aggregate error",
 );
 
-describe("jsonSerializeError", () => {
-	it("should serialize a simple error", () => {
+suite("jsonSerializeError", () => {
+	test("should serialize a simple error", () => {
 		const serialized = jsonSerializeError(error);
 		expect(serialized).toEqual({
 			name: "Error",
@@ -28,7 +28,7 @@ describe("jsonSerializeError", () => {
 		});
 	});
 
-	it("should serialize an error with a cause", () => {
+	test("should serialize an error with a cause", () => {
 		const serialized = jsonSerializeError(nestedError);
 		expect(serialized).toEqual({
 			name: "Error",
@@ -41,7 +41,7 @@ describe("jsonSerializeError", () => {
 			},
 		});
 	});
-	it("should serialize an extended error with additional properties", () => {
+	test("should serialize an extended error with additional properties", () => {
 		const serialized = jsonSerializeError(extendedError);
 		expect(serialized).toEqual({
 			name: "Error",
@@ -52,7 +52,7 @@ describe("jsonSerializeError", () => {
 		});
 	});
 
-	it("should serialize a custom error", () => {
+	test("should serialize a custom error", () => {
 		const serialized = jsonSerializeError(customError);
 		expect(serialized).toEqual({
 			name: "CustomError",
@@ -61,7 +61,7 @@ describe("jsonSerializeError", () => {
 		});
 	});
 
-	it("should serialize an AggregateError with multiple errors", () => {
+	test("should serialize an AggregateError with multiple errors", () => {
 		const serialized = jsonSerializeError(aggregateError);
 		expect(serialized).toEqual({
 			name: "AggregateError",

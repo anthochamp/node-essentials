@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
 import type { ICollection } from "../abstract-types/icollection.js";
 import type { IPriorityQueue } from "../abstract-types/ipriority-queue.js";
@@ -10,7 +10,7 @@ import { PriorityQueue } from "../priority-queue.js";
  * These tests ensure that the data structures adhere to the IPriorityQueue interface.
  */
 
-describe.each<{
+suite.each<{
 	description: string;
 	factory: Callable<
 		[iterator?: Iterable<[string, number]>],
@@ -22,8 +22,8 @@ describe.each<{
 		factory: (iterator) => new PriorityQueue(iterator),
 	},
 ])("$description IPriorityQueue compliance", ({ factory }) => {
-	describe("ICollection compliance", () => {
-		it("should iterate over items", async () => {
+	suite("ICollection compliance", () => {
+		test("should iterate over items", async () => {
 			const collection: ICollection<[string, number]> = factory([
 				["a", 1],
 				["b", 2],
@@ -39,7 +39,7 @@ describe.each<{
 			);
 		});
 
-		it("should clear items", async () => {
+		test("should clear items", async () => {
 			const collection: ICollection<[string, number]> = factory([
 				["a", 1],
 				["b", 2],
@@ -50,7 +50,7 @@ describe.each<{
 			expect(await Array.fromAsync(collection)).toEqual([]);
 		});
 
-		it("should count items", async () => {
+		test("should count items", async () => {
 			const collection: ICollection<[string, number]> = factory([
 				["a", 1],
 				["b", 2],
@@ -60,7 +60,7 @@ describe.each<{
 			expect(await collection.count()).toBe(3);
 		});
 
-		it("should concatenate items", async () => {
+		test("should concatenate items", async () => {
 			const collection: ICollection<[string, number]> = factory([
 				["a", 1],
 				["b", 2],
@@ -92,7 +92,7 @@ describe.each<{
 			);
 		});
 
-		it("should remove the first matching item", async () => {
+		test("should remove the first matching item", async () => {
 			const collection: ICollection<[string, number]> = factory([
 				["a", 1],
 				["b", 2],
@@ -124,7 +124,7 @@ describe.each<{
 			]);
 		});
 
-		it("should remove all matching items", async () => {
+		test("should remove all matching items", async () => {
 			const collection: ICollection<[string, number]> = factory([
 				["a", 1],
 				["b", 2],
@@ -154,7 +154,7 @@ describe.each<{
 			);
 		});
 
-		it("should replace the first matching item", async () => {
+		test("should replace the first matching item", async () => {
 			const collection: ICollection<[string, number]> = factory([
 				["a", 1],
 				["b", 2],
@@ -188,7 +188,7 @@ describe.each<{
 			]); // Depending on which even item was replaced
 		});
 
-		it("should replace all matching items", async () => {
+		test("should replace all matching items", async () => {
 			const collection: ICollection<[string, number]> = factory([
 				["a", 1],
 				["b", 2],
@@ -223,7 +223,7 @@ describe.each<{
 		});
 	});
 
-	it("should maintain priority queue behavior", async () => {
+	test("should maintain priority queue behavior", async () => {
 		const pq: IPriorityQueue<string, number> = factory([
 			["task1", 3],
 			["task2", 1],
@@ -241,7 +241,7 @@ describe.each<{
 		expect(await pq.count()).toBe(0);
 	});
 
-	it("should handle insert correctly", async () => {
+	test("should handle insert correctly", async () => {
 		const pq: IPriorityQueue<string, number> = factory([
 			["task1", 3],
 			["task2", 1],
@@ -263,7 +263,7 @@ describe.each<{
 		expect(await pq.extract()).toBeUndefined();
 	});
 
-	it("should handle set priority correctly", async () => {
+	test("should handle set priority correctly", async () => {
 		const pq: IPriorityQueue<string, number> = factory([
 			["task1", 3],
 			["task2", 1],
@@ -282,7 +282,7 @@ describe.each<{
 		expect(await pq.extract()).toBeUndefined();
 	});
 
-	it("should handle edge cases on empty priority queue", async () => {
+	test("should handle edge cases on empty priority queue", async () => {
 		const pq: IPriorityQueue<string, number> = factory();
 
 		expect(await pq.extract()).toBeUndefined();

@@ -3,17 +3,17 @@ import {
 	afterAll,
 	beforeAll,
 	beforeEach,
-	describe,
 	expect,
-	it,
 	type MockInstance,
+	suite,
+	test,
 	vi,
 } from "vitest";
 import { existsAsync } from "./exists-async.js";
 
 vi.mock("node:fs/promises");
 
-describe("fileExists", () => {
+suite("fileExists", () => {
 	let accessMock: MockInstance<typeof access>;
 
 	beforeAll(() => {
@@ -28,7 +28,7 @@ describe("fileExists", () => {
 		accessMock.mockReset();
 	});
 
-	it("should return true if path exists", async () => {
+	test("should return true if path exists", async () => {
 		accessMock.mockResolvedValueOnce();
 
 		const result = await existsAsync("/some/path");
@@ -36,7 +36,7 @@ describe("fileExists", () => {
 		expect(accessMock).toHaveBeenCalledWith("/some/path", constants.F_OK);
 	});
 
-	it("should return false if path does not exist", async () => {
+	test("should return false if path does not exist", async () => {
 		accessMock.mockRejectedValueOnce(new Error("File not found"));
 
 		const result = await existsAsync("/some/missing/path");

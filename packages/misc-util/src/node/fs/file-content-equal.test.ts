@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 
 import { fileContentEqual } from "./file-content-equal.js";
 
-describe("fileContentEqual", () => {
-	it("should return true for identical content", async () => {
+suite("fileContentEqual", () => {
+	test("should return true for identical content", async () => {
 		const path = `${__dirname}/__fixtures__/test-file.txt`;
 		const data = Buffer.from("Hello, World!");
 
@@ -11,7 +11,7 @@ describe("fileContentEqual", () => {
 		expect(result).toBe(true);
 	});
 
-	it("should return false for different content", async () => {
+	test("should return false for different content", async () => {
 		const path = `${__dirname}/__fixtures__/test-file.txt`;
 		const data = Buffer.from("Goodbye, World!");
 
@@ -19,7 +19,7 @@ describe("fileContentEqual", () => {
 		expect(result).toBe(false);
 	});
 
-	it("should return false for different sizes", async () => {
+	test("should return false for different sizes", async () => {
 		const path = `${__dirname}/__fixtures__/test-file.txt`;
 		const data = Buffer.from("Hello");
 
@@ -27,7 +27,7 @@ describe("fileContentEqual", () => {
 		expect(result).toBe(false);
 	});
 
-	it("should return true for empty file and empty buffer", async () => {
+	test("should return true for empty file and empty buffer", async () => {
 		const path = `${__dirname}/__fixtures__/empty-file.txt`;
 		const data = Buffer.from("");
 

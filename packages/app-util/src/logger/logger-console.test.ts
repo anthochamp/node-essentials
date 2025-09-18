@@ -1,18 +1,18 @@
 import { afterEach } from "node:test";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, expect, suite, test, vi } from "vitest";
 import { mock, mockClear } from "vitest-mock-extended";
 import { LoggerConsole } from "./logger-console.js";
 import type { ILoggerPrinter } from "./logger-printer.js";
 
-describe("LoggerConsole", () => {
+suite("LoggerConsole", () => {
 	const printerMock = mock<ILoggerPrinter>();
 
 	beforeEach(() => {
 		mockClear(printerMock);
 	});
 
-	describe("logging", () => {
-		it("should call the printer when using console methods", () => {
+	suite("logging", () => {
+		test("should call the printer when using console methods", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.log("Test log message");
 			expect(printerMock.print).toHaveBeenCalledTimes(1);
@@ -26,7 +26,7 @@ describe("LoggerConsole", () => {
 			});
 		});
 
-		it("should call the printer with the correct log level", () => {
+		test("should call the printer with the correct log level", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.error("Error message");
 			loggerConsole.warn("Warning message");
@@ -60,7 +60,7 @@ describe("LoggerConsole", () => {
 			);
 		});
 
-		it("should handle trace calls", () => {
+		test("should handle trace calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.trace("Trace message");
 			expect(printerMock.print).toHaveBeenCalledTimes(1);
@@ -74,7 +74,7 @@ describe("LoggerConsole", () => {
 			});
 		});
 
-		it("should handle assert calls", () => {
+		test("should handle assert calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.assert(false, "Test failed: %s", "value is false");
 			expect(printerMock.print).toHaveBeenCalledTimes(1);
@@ -88,7 +88,7 @@ describe("LoggerConsole", () => {
 			});
 		});
 
-		it("should handle table calls", () => {
+		test("should handle table calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			const data = [
 				{ name: "Alice", age: 30 },
@@ -106,7 +106,7 @@ describe("LoggerConsole", () => {
 			});
 		});
 
-		it("should handle dir calls", () => {
+		test("should handle dir calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			const obj = { name: "Alice", age: 30 };
 			loggerConsole.dir(obj, { depth: 1 });
@@ -121,7 +121,7 @@ describe("LoggerConsole", () => {
 			});
 		});
 
-		it("should handle dirxml calls", () => {
+		test("should handle dirxml calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			const obj = { name: "Alice", age: 30 };
 			loggerConsole.dirxml(obj, { depth: 1 });
@@ -136,15 +136,15 @@ describe("LoggerConsole", () => {
 			});
 		});
 
-		it("should clear the console", () => {
+		test("should clear the console", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.clear();
 			expect(printerMock.clear).toHaveBeenCalledTimes(1);
 		});
 	});
 
-	describe("counting", () => {
-		it("should handle count and countReset calls", () => {
+	suite("counting", () => {
+		test("should handle count and countReset calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.count("myLabel");
 			loggerConsole.count("myLabel");
@@ -178,8 +178,8 @@ describe("LoggerConsole", () => {
 		});
 	});
 
-	describe("grouping", () => {
-		it("should handle group and groupEnd calls", () => {
+	suite("grouping", () => {
+		test("should handle group and groupEnd calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.group("My Group");
 			loggerConsole.log("Inside group");
@@ -209,7 +209,7 @@ describe("LoggerConsole", () => {
 		});
 	});
 
-	describe("timing", () => {
+	suite("timing", () => {
 		beforeEach(() => {
 			vi.useFakeTimers();
 		});
@@ -218,7 +218,7 @@ describe("LoggerConsole", () => {
 			vi.useRealTimers();
 		});
 
-		it("should handle time and timeEnd calls", () => {
+		test("should handle time and timeEnd calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.time("myTimer");
 			vi.advanceTimersByTime(500);
@@ -234,7 +234,7 @@ describe("LoggerConsole", () => {
 			});
 		});
 
-		it("should handle timeLog calls", () => {
+		test("should handle timeLog calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.time("myTimer");
 			vi.advanceTimersByTime(300);
@@ -261,8 +261,8 @@ describe("LoggerConsole", () => {
 		});
 	});
 
-	describe("formatter", () => {
-		it("should call handle log with format specifiers", () => {
+	suite("formatter", () => {
+		test("should call handle log with format specifiers", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.log("Hello %s, you have %d new messages", "Alice", 5);
 			expect(printerMock.print).toHaveBeenCalledTimes(1);

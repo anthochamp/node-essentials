@@ -1,28 +1,28 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { truncate } from "./truncate.js";
 
-describe("truncate", () => {
-	it("should return the original string if it's shorter than maxLength", () => {
+suite("truncate", () => {
+	test("should return the original string if test's shorter than maxLength", () => {
 		expect(truncate("Hello, World!", 20)).toBe("Hello, World!");
 	});
 
-	it("should truncate and add ellipsis at the end by default", () => {
+	test("should truncate and add ellipsis at the end by default", () => {
 		expect(truncate("Hello, World!", 10)).toBe("Hello, Wo…");
 	});
 
-	it("should truncate and add ellipsis at the start", () => {
+	test("should truncate and add ellipsis at the start", () => {
 		expect(truncate("Hello, World!", 10, { position: "start" })).toBe(
 			"…o, World!",
 		);
 	});
 
-	it("should truncate and add ellipsis in the middle", () => {
+	test("should truncate and add ellipsis in the middle", () => {
 		expect(truncate("Hello, World!", 10, { position: "middle" })).toBe(
 			"Hello…rld!",
 		);
 	});
 
-	it("should respect wordCutting option when false", () => {
+	test("should respect wordCutting option when false", () => {
 		expect(
 			truncate("Hello, beautiful World!", 15, {
 				position: "end",
@@ -45,13 +45,13 @@ describe("truncate", () => {
 		).toBe("Hello,…World!");
 	});
 
-	it("should use custom ellipsis string", () => {
+	test("should use custom ellipsis string", () => {
 		expect(truncate("Hello, World!", 10, { ellipsisString: "[...]" })).toBe(
 			"Hello[...]",
 		);
 	});
 
-	it("should handle maxLength less than or equal to ellipsis string length when strictLength is false", () => {
+	test("should handle maxLength less than or equal to ellipsis string length when strictLength is false", () => {
 		expect(
 			truncate("Hello, World!", 1, {
 				ellipsisString: "...",
@@ -78,7 +78,7 @@ describe("truncate", () => {
 		).toBe("H...");
 	});
 
-	it("should handle maxLength less than or equal to ellipsis string length when strictLength is true", () => {
+	test("should handle maxLength less than or equal to ellipsis string length when strictLength is true", () => {
 		expect(truncate("Hello, World!", 1, { ellipsisString: "..." })).toBe("");
 		expect(truncate("Hello, World!", 2, { ellipsisString: "..." })).toBe("");
 		expect(truncate("Hello, World!", 3, { ellipsisString: "..." })).toBe("...");
@@ -87,15 +87,15 @@ describe("truncate", () => {
 		);
 	});
 
-	it("should handle empty string input", () => {
+	test("should handle empty string input", () => {
 		expect(truncate("", 5)).toBe("");
 	});
 
-	it("should handle an empty ellipsis", () => {
+	test("should handle an empty ellipsis", () => {
 		expect(truncate("Hello, World!", 5, { ellipsisString: "" })).toBe("Hello");
 	});
 
-	it("should handle an empty ellipsis with wordCutting false", () => {
+	test("should handle an empty ellipsis with wordCutting false", () => {
 		expect(
 			truncate("Hello my dear World!", 9, {
 				ellipsisString: "",
@@ -104,7 +104,7 @@ describe("truncate", () => {
 		).toBe("Hello my");
 	});
 
-	it("should handle long word with wordCutting false and no ellipsis", () => {
+	test("should handle long word with wordCutting false and no ellipsis", () => {
 		expect(
 			truncate("Supercalifragilisticexpialidocious", 10, {
 				ellipsisString: "",
@@ -130,7 +130,7 @@ describe("truncate", () => {
 		).toBe("Supercious");
 	});
 
-	it("should handle long word with wordCutting false and an ellipsis", () => {
+	test("should handle long word with wordCutting false and an ellipsis", () => {
 		expect(
 			truncate("Supercalifragilisticexpialidocious", 10, {
 				ellipsisString: "...",

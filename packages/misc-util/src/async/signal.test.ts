@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { Signal } from "./signal.js";
 
-describe("Signalable", () => {
-	it("should initialize with the correct state", () => {
+suite("Signalable", () => {
+	test("should initialize with the correct state", () => {
 		const signalable1 = new Signal();
 		expect(signalable1.signaled).toBe(false);
 
@@ -13,7 +13,7 @@ describe("Signalable", () => {
 		expect(signalable3.signaled).toBe(true);
 	});
 
-	it("should signal and reset the signalable", () => {
+	test("should signal and reset the signalable", () => {
 		const signalable = new Signal();
 		expect(signalable.signaled).toBe(false);
 
@@ -24,7 +24,7 @@ describe("Signalable", () => {
 		expect(signalable.signaled).toBe(false);
 	});
 
-	it("should wait for the signalable", async () => {
+	test("should wait for the signalable", async () => {
 		const signalable = new Signal();
 
 		const waitPromises = Promise.all([signalable.wait(), signalable.wait()]);
@@ -34,20 +34,20 @@ describe("Signalable", () => {
 		await waitPromises;
 	});
 
-	it("should wait for an already signaled signalable", async () => {
+	test("should wait for an already signaled signalable", async () => {
 		const signalable = new Signal(false, true);
 
 		await signalable.wait();
 	});
 
-	it("should timeout when waiting for the signalable", async () => {
+	test("should timeout when waiting for the signalable", async () => {
 		const signalable = new Signal();
 		await expect(() =>
 			signalable.wait(AbortSignal.timeout(10)),
 		).rejects.toThrow();
 	});
 
-	it("should not wait when the signalable is already signaled", async () => {
+	test("should not wait when the signalable is already signaled", async () => {
 		const signalable = new Signal();
 
 		let signaledCount = 0;
@@ -68,7 +68,7 @@ describe("Signalable", () => {
 		expect(signaledCount).toBe(2);
 	});
 
-	it("should auto-reset the signalable", async () => {
+	test("should auto-reset the signalable", async () => {
 		const signalable = new Signal(true);
 
 		let signalCount = 0;

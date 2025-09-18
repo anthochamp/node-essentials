@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { UnsupportedError } from "../error/unsupported-error.js";
 import { clone } from "./clone.js";
 
-describe("clone", () => {
-	it("should clone plain objects", () => {
+suite("clone", () => {
+	test("should clone plain objects", () => {
 		const obj = { a: 1, b: { c: 2 } };
 		const cloned = clone(obj);
 
@@ -12,7 +12,7 @@ describe("clone", () => {
 		expect(cloned.b).toBe(obj.b); // Shallow clone, nested objects are the same reference
 	});
 
-	it("should clone arrays", () => {
+	test("should clone arrays", () => {
 		const arr = [1, 2, { a: 3 }];
 		const cloned = clone(arr);
 
@@ -21,7 +21,7 @@ describe("clone", () => {
 		expect(cloned[2]).toBe(arr[2]); // Shallow clone, nested objects are the same reference
 	});
 
-	it("should return primitives as is", () => {
+	test("should return primitives as is", () => {
 		expect(clone(42)).toBe(42);
 		expect(clone("hello")).toBe("hello");
 		expect(clone(true)).toBe(true);
@@ -30,17 +30,17 @@ describe("clone", () => {
 		expect(clone(10n)).toBe(10n);
 	});
 
-	it("should throw when trying to clone functions", () => {
+	test("should throw when trying to clone functions", () => {
 		const func = () => {};
 		expect(() => clone(func)).toThrow(UnsupportedError);
 	});
 
-	it("should throw when trying to clone symbols", () => {
+	test("should throw when trying to clone symbols", () => {
 		const sym = Symbol("test");
 		expect(() => clone(sym)).toThrow(UnsupportedError);
 	});
 
-	it("should clone Date objects", () => {
+	test("should clone Date objects", () => {
 		const date = new Date();
 		const cloned = clone(date);
 
@@ -48,7 +48,7 @@ describe("clone", () => {
 		expect(cloned).not.toBe(date);
 	});
 
-	it("should clone RegExp objects", () => {
+	test("should clone RegExp objects", () => {
 		const regex = /test/;
 		const cloned = clone(regex);
 
@@ -56,7 +56,7 @@ describe("clone", () => {
 		expect(cloned).not.toBe(regex);
 	});
 
-	it("should clone Map objects", () => {
+	test("should clone Map objects", () => {
 		const map = new Map();
 		map.set("a", 1);
 		const cloned = clone(map);
@@ -65,7 +65,7 @@ describe("clone", () => {
 		expect(cloned).not.toBe(map);
 	});
 
-	it("should clone Set objects", () => {
+	test("should clone Set objects", () => {
 		const set = new Set([1, 2, 3]);
 		const cloned = clone(set);
 

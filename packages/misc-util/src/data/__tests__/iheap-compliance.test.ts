@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
 import type { IHeap } from "../abstract-types/iheap.js";
 import { BinaryHeap } from "../binary-heap.js";
@@ -9,7 +9,7 @@ import { BinaryHeap } from "../binary-heap.js";
  * These tests ensure that the data structures adhere to the IHeap interface.
  */
 
-describe.each<{
+suite.each<{
 	description: string;
 	factory: Callable<[iterator?: Iterable<number>], IHeap<number>>;
 }>([
@@ -18,7 +18,7 @@ describe.each<{
 		factory: (iterator) => new BinaryHeap((a, b) => a < b, iterator),
 	},
 ])("$description IHeap compliance", ({ factory }) => {
-	it("should maintain the heap property on insertions", async () => {
+	test("should maintain the heap property on insertions", async () => {
 		const heap: IHeap<number> = factory();
 		await heap.insert(10);
 		await heap.insert(5);
@@ -32,7 +32,7 @@ describe.each<{
 		expect(await heap.extract()).toBeUndefined();
 	});
 
-	it("should maintain the heap property on extractions", async () => {
+	test("should maintain the heap property on extractions", async () => {
 		const heap: IHeap<number> = factory([10, 5, 20, 1]);
 
 		expect(await heap.extract()).toBe(1);
@@ -42,7 +42,7 @@ describe.each<{
 		expect(await heap.extract()).toBeUndefined();
 	});
 
-	it("should peek at the root element without removing it", async () => {
+	test("should peek at the root element without removing test", async () => {
 		const heap: IHeap<number> = factory([10, 5, 20, 1]);
 
 		expect(await heap.root()).toBe(1);
@@ -53,7 +53,7 @@ describe.each<{
 		expect(await heap.count()).toBe(3);
 	});
 
-	it("should handle insertAndExtract correctly", async () => {
+	test("should handle insertAndExtract correctly", async () => {
 		const heap: IHeap<number> = factory([10, 5, 20]);
 
 		expect(await heap.insertAndExtract(1)).toBe(1); // New root, should be returned
@@ -65,7 +65,7 @@ describe.each<{
 		expect(await heap.root()).toBe(10);
 	});
 
-	it("should replace the root element correctly", async () => {
+	test("should replace the root element correctly", async () => {
 		const heap: IHeap<number> = factory([10, 5, 20]);
 
 		expect(await heap.extractAndInsert(1)).toBe(5); // 5 is the old root
@@ -82,7 +82,7 @@ describe.each<{
 		expect(await emptyHeap.count()).toBe(1);
 	});
 
-	it("should handle edge cases on empty heap", async () => {
+	test("should handle edge cases on empty heap", async () => {
 		const heap: IHeap<number> = factory();
 
 		expect(await heap.extract()).toBeUndefined(); // Extract from empty heap
@@ -98,7 +98,7 @@ describe.each<{
 		expect(await heap.count()).toBe(1);
 	});
 
-	it("should handle edge cases on falsy values", async () => {
+	test("should handle edge cases on falsy values", async () => {
 		const heap: IHeap<number> = factory();
 
 		await heap.insert(0);
@@ -120,7 +120,7 @@ describe.each<{
 		expect(await heap.count()).toBe(1);
 	});
 
-	it("should handle duplicate elements correctly", async () => {
+	test("should handle duplicate elements correctly", async () => {
 		const heap: IHeap<number> = factory();
 		await heap.insert(10);
 		await heap.insert(5);
@@ -136,7 +136,7 @@ describe.each<{
 		expect(await heap.extract()).toBeUndefined();
 	});
 
-	it("mutating the heap using methods from ICollection should work correctly", async () => {
+	test("mutating the heap using methods from ICollection should work correctly", async () => {
 		const heap: IHeap<number> = factory([10, 5, 20, 1, 15]);
 
 		expect(await heap.count()).toBe(5);

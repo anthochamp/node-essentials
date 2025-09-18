@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from "vitest";
+import { expect, suite, test, vi } from "vitest";
 import { traverseError } from "./traverse-error.js";
 
-describe("traverseError", () => {
-	it("should traverse a simple error", () => {
+suite("traverseError", () => {
+	test("should traverse a simple error", () => {
 		const error = new Error("Simple error");
 
 		const callback = vi.fn();
@@ -12,7 +12,7 @@ describe("traverseError", () => {
 		expect(callback).toHaveBeenCalledWith(error, null, null);
 	});
 
-	it("should traverse nested causes", () => {
+	test("should traverse nested causes", () => {
 		const errorC = new Error("Error C");
 		const errorB = new Error("Error B", { cause: errorC });
 		const errorA = new Error("Error A", { cause: errorB });
@@ -26,7 +26,7 @@ describe("traverseError", () => {
 		expect(callback).toHaveBeenNthCalledWith(3, errorC, errorB, "cause");
 	});
 
-	it("should respect traverseCauses option", () => {
+	test("should respect traverseCauses option", () => {
 		const errorC = new Error("Error C");
 		const errorB = new Error("Error B", { cause: errorC });
 		const errorA = new Error("Error A", { cause: errorB });
@@ -38,7 +38,7 @@ describe("traverseError", () => {
 		expect(callback).toHaveBeenCalledWith(errorA, null, null);
 	});
 
-	it("should traverse AggregateErrors", () => {
+	test("should traverse AggregateErrors", () => {
 		const errorC1 = new Error("Error C1");
 		const errorC2 = new Error("Error C2");
 		const aggregateErrorB = new AggregateError(
@@ -72,7 +72,7 @@ describe("traverseError", () => {
 		);
 	});
 
-	it("should respect includeAggregateErrors option", () => {
+	test("should respect includeAggregateErrors option", () => {
 		const errorC1 = new Error("Error C1");
 		const errorC2 = new Error("Error C2");
 		const aggregateErrorB = new AggregateError(
@@ -94,7 +94,7 @@ describe("traverseError", () => {
 		);
 	});
 
-	it("should traverse both causes and AggregateErrors (in order)", () => {
+	test("should traverse both causes and AggregateErrors (in order)", () => {
 		const errorE = new Error("Error E");
 		const errorD1 = new Error("Error D1", { cause: errorE });
 		const errorD2 = new Error("Error D2");
@@ -138,7 +138,7 @@ describe("traverseError", () => {
 		);
 	});
 
-	it("should avoid cycles", () => {
+	test("should avoid cycles", () => {
 		const errorA = new Error("Error A");
 		errorA.cause = errorA; // Create a cycle
 
@@ -149,7 +149,7 @@ describe("traverseError", () => {
 		expect(callback).toHaveBeenCalledWith(errorA, null, null);
 	});
 
-	it("should stop traversal when callback returns false in cause", () => {
+	test("should stop traversal when callback returns false in cause", () => {
 		const errorC = new Error("Error C");
 		const errorB = new Error("Error B", { cause: errorC });
 		const errorA = new Error("Error A", { cause: errorB });
@@ -166,7 +166,7 @@ describe("traverseError", () => {
 		expect(callback).toHaveBeenNthCalledWith(2, errorB, errorA, "cause");
 	});
 
-	it("should stop traversal when callback returns false in aggregate", () => {
+	test("should stop traversal when callback returns false in aggregate", () => {
 		const errorC1 = new Error("Error C1");
 		const errorC2 = new Error("Error C2");
 		const aggregateErrorB = new AggregateError(

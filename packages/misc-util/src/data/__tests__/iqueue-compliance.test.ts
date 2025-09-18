@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
 import { CollectionCapacityExceededError } from "../abstract-types/icollection.js";
 import type { IQueue } from "../abstract-types/iqueue.js";
@@ -10,7 +10,7 @@ import { Queue } from "../queue.js";
  * These tests ensure that the data structures adhere to the IQueue interface.
  */
 
-describe.each<{
+suite.each<{
 	description: string;
 	factory: Callable<
 		[iterator?: Iterable<number>, capacity?: number],
@@ -22,7 +22,7 @@ describe.each<{
 		factory: (iterator, capacity) => new Queue(iterator, capacity),
 	},
 ])("$description IQueue compliance", ({ factory }) => {
-	it("should enqueue and dequeue items in FIFO order", async () => {
+	test("should enqueue and dequeue items in FIFO order", async () => {
 		const queue: IQueue<number> = factory();
 		await queue.enqueue(1);
 		await queue.enqueue(2);
@@ -34,7 +34,7 @@ describe.each<{
 		expect(await queue.dequeue()).toBeUndefined();
 	});
 
-	it("should handle initial items correctly", async () => {
+	test("should handle initial items correctly", async () => {
 		const queue: IQueue<number> = factory([1, 2, 3]);
 
 		expect(await queue.dequeue()).toBe(1);
@@ -43,7 +43,7 @@ describe.each<{
 		expect(await queue.dequeue()).toBeUndefined();
 	});
 
-	it("should peek at the front item without removing it", async () => {
+	test("should peek at the front item without removing test", async () => {
 		const queue: IQueue<number> = factory([1, 2, 3]);
 
 		expect(await queue.front()).toBe(1);
@@ -54,7 +54,7 @@ describe.each<{
 		expect(await queue.count()).toBe(2);
 	});
 
-	it("should handle edge cases on empty queue", async () => {
+	test("should handle edge cases on empty queue", async () => {
 		const queue: IQueue<number> = factory();
 
 		expect(await queue.dequeue()).toBeUndefined();
@@ -62,7 +62,7 @@ describe.each<{
 		expect(await queue.count()).toBe(0);
 	});
 
-	it("should clear the queue", async () => {
+	test("should clear the queue", async () => {
 		const queue: IQueue<number> = factory([1, 2, 3]);
 		expect(await queue.count()).toBe(3);
 
@@ -72,7 +72,7 @@ describe.each<{
 		expect(await queue.front()).toBeUndefined();
 	});
 
-	it("should respect capacity limits", async () => {
+	test("should respect capacity limits", async () => {
 		const capacity = 2;
 		const queue: IQueue<number> = factory(undefined, capacity);
 
@@ -95,7 +95,7 @@ describe.each<{
 		expect(await queue.dequeue()).toBeUndefined();
 	});
 
-	it("should allow unlimited capacity", async () => {
+	test("should allow unlimited capacity", async () => {
 		const queue: IQueue<number> = factory();
 
 		expect(queue.capacity).toBe(Infinity);

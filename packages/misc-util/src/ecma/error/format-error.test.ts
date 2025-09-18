@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, expect, suite, test } from "vitest";
 import { formatError } from "./format-error.js";
 
 const simpleError = new Error("error message");
@@ -22,7 +22,7 @@ const customError = new (class CustomError extends Error {
 	}
 })("Custom error message");
 
-describe("formatError", () => {
+suite("formatError", () => {
 	let originalDefaultOptions: typeof formatError.defaultOptions;
 
 	beforeEach(() => {
@@ -33,7 +33,7 @@ describe("formatError", () => {
 		formatError.defaultOptions = originalDefaultOptions;
 	});
 
-	it.each([
+	test.each([
 		{ error: simpleError, result: "<Error> error message" },
 		{
 			error: nestedError,
@@ -58,13 +58,13 @@ describe("formatError", () => {
 		},
 	);
 
-	describe("options.prefix", () => {
-		it("should add the specified prefix", () => {
+	suite("options.prefix", () => {
+		test("should add the specified prefix", () => {
 			const formatted = formatError(simpleError, { prefix: "PREFIX" });
 			expect(formatted).toBe("PREFIX: <Error> error message");
 		});
 
-		it("should use defaultOptions.prefix when not specified in options", () => {
+		test("should use defaultOptions.prefix when not specified in options", () => {
 			formatError.defaultOptions.prefix = "DEFAULT PREFIX";
 			let formatted = formatError(simpleError);
 			expect(formatted).toBe("DEFAULT PREFIX: <Error> error message");
@@ -75,20 +75,20 @@ describe("formatError", () => {
 		});
 	});
 
-	describe("options.skipCauses", () => {
-		it("should include causes when false", () => {
+	suite("options.skipCauses", () => {
+		test("should include causes when false", () => {
 			const formatted = formatError(nestedError, { skipCauses: false });
 			expect(formatted).toBe(
 				"<Error> top level error message: <Error> cause error message",
 			);
 		});
 
-		it("should exclude causes when true", () => {
+		test("should exclude causes when true", () => {
 			const formatted = formatError(nestedError, { skipCauses: true });
 			expect(formatted).toBe("<Error> top level error message");
 		});
 
-		it("should use defaultOptions.skipCauses when not specified in options", () => {
+		test("should use defaultOptions.skipCauses when not specified in options", () => {
 			formatError.defaultOptions.skipCauses = true;
 			let formatted = formatError(nestedError);
 			expect(formatted).toBe("<Error> top level error message");
@@ -101,8 +101,8 @@ describe("formatError", () => {
 		});
 	});
 
-	describe("options.skipAggregateErrors", () => {
-		it("should include aggregated errors when false", () => {
+	suite("options.skipAggregateErrors", () => {
+		test("should include aggregated errors when false", () => {
 			const formatted = formatError(aggregateError, {
 				skipAggregateErrors: false,
 			});
@@ -111,14 +111,14 @@ describe("formatError", () => {
 			);
 		});
 
-		it("should exclude aggregated errors when true", () => {
+		test("should exclude aggregated errors when true", () => {
 			const formatted = formatError(aggregateError, {
 				skipAggregateErrors: true,
 			});
 			expect(formatted).toBe("<AggregateError> Aggregate error message");
 		});
 
-		it("should use defaultOptions.skipAggregateErrors when not specified in options", () => {
+		test("should use defaultOptions.skipAggregateErrors when not specified in options", () => {
 			formatError.defaultOptions.skipAggregateErrors = true;
 			let formatted = formatError(aggregateError);
 			expect(formatted).toBe("<AggregateError> Aggregate error message");
@@ -131,18 +131,18 @@ describe("formatError", () => {
 		});
 	});
 
-	describe("options.hideErrorName", () => {
-		it("should include the error name when false", () => {
+	suite("options.hideErrorName", () => {
+		test("should include the error name when false", () => {
 			const formatted = formatError(simpleError, { hideErrorName: false });
 			expect(formatted).toBe("<Error> error message");
 		});
 
-		it("should exclude the error name when true", () => {
+		test("should exclude the error name when true", () => {
 			const formatted = formatError(simpleError, { hideErrorName: true });
 			expect(formatted).toBe("error message");
 		});
 
-		it("should use defaultOptions.hideErrorName when not specified in options", () => {
+		test("should use defaultOptions.hideErrorName when not specified in options", () => {
 			formatError.defaultOptions.hideErrorName = true;
 			let formatted = formatError(simpleError);
 			expect(formatted).toBe("error message");
@@ -153,8 +153,8 @@ describe("formatError", () => {
 		});
 	});
 
-	describe("options.stringifier", () => {
-		it("should use custom stringifier function", () => {
+	suite("options.stringifier", () => {
+		test("should use custom stringifier function", () => {
 			const formatted = formatError(new Date("2024-01-01"), {
 				stringifier: (value) =>
 					value instanceof Date
@@ -164,7 +164,7 @@ describe("formatError", () => {
 			expect(formatted).toBe("PASS");
 		});
 
-		it("should use defaultOptions.stringifier when not specified in options", () => {
+		test("should use defaultOptions.stringifier when not specified in options", () => {
 			formatError.defaultOptions.stringifier = (value) =>
 				value instanceof Date
 					? "PASS"
@@ -180,20 +180,20 @@ describe("formatError", () => {
 		});
 	});
 
-	describe("options.stackTrace", () => {
-		it("should include stack trace when true", () => {
+	suite("options.stackTrace", () => {
+		test("should include stack trace when true", () => {
 			const formatted = formatError(simpleError, { stackTrace: true });
 			const lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: error message");
 			expect(lines[1]?.trim().startsWith("at ")).toBe(true);
 		});
 
-		it("should exclude stack trace when false", () => {
+		test("should exclude stack trace when false", () => {
 			const formatted = formatError(simpleError, { stackTrace: false });
 			expect(formatted).toBe("<Error> error message");
 		});
 
-		it("should include stack trace of only the first top-level error when 'top-level-only'", () => {
+		test("should include stack trace of only the first top-level error when 'top-level-only'", () => {
 			const formatted = formatError(nestedError, {
 				stackTrace: "top-level-only",
 			});
@@ -206,7 +206,7 @@ describe("formatError", () => {
 			expect(lines.findIndex((v) => /^ {4}at /.test(v))).toBe(-1);
 		});
 
-		it("should include stack trace of all errors when true", () => {
+		test("should include stack trace of all errors when true", () => {
 			const formatted = formatError(nestedError, {
 				stackTrace: true,
 			});
@@ -217,7 +217,7 @@ describe("formatError", () => {
 			expect(lines.findIndex((v) => /^ {4}at /.test(v))).not.toBe(-1);
 		});
 
-		it("should use defaultOptions.stackTrace when not specified in options", () => {
+		test("should use defaultOptions.stackTrace when not specified in options", () => {
 			formatError.defaultOptions.stackTrace = true;
 			let formatted = formatError(simpleError);
 			const lines = formatted.split("\n");
@@ -231,8 +231,8 @@ describe("formatError", () => {
 		});
 	});
 
-	describe("options.indentation", () => {
-		it("should use custom indentation for stack trace lines", () => {
+	suite("options.indentation", () => {
+		test("should use custom indentation for stack trace lines", () => {
 			const formatted = formatError(simpleError, {
 				stackTrace: true,
 				indentation: "-- ",
@@ -243,7 +243,7 @@ describe("formatError", () => {
 			expect(lines[1].startsWith("-- at ")).toBe(true);
 		});
 
-		it("should use defaultOptions.indentation when not specified in options", () => {
+		test("should use defaultOptions.indentation when not specified in options", () => {
 			formatError.defaultOptions.indentation = "-- ";
 			let formatted = formatError(simpleError, { stackTrace: true });
 			let lines = formatted.split("\n");
@@ -260,8 +260,8 @@ describe("formatError", () => {
 		});
 	});
 
-	describe("multi-line vs single-line output", () => {
-		it("should produce single-line output when stackTrace is false", () => {
+	suite("multi-line vs single-line output", () => {
+		test("should produce single-line output when stackTrace is false", () => {
 			const formatted = formatError(nestedError, { stackTrace: false });
 			expect(formatted).toBe(
 				"<Error> top level error message: <Error> cause error message",
@@ -269,7 +269,7 @@ describe("formatError", () => {
 			expect(formatted.includes("\n")).toBe(false);
 		});
 
-		it("should produce multi-line output when stackTrace is true", () => {
+		test("should produce multi-line output when stackTrace is true", () => {
 			const formatted = formatError(nestedError, { stackTrace: true });
 			expect(formatted.includes("\n")).toBe(true);
 			const lines = formatted.split("\n");
@@ -281,7 +281,7 @@ describe("formatError", () => {
 			);
 		});
 
-		it("should produce single-line output when stackTrace is 'top-level-only'", () => {
+		test("should produce single-line output when stackTrace is 'top-level-only'", () => {
 			const formatted = formatError(nestedError, {
 				stackTrace: "top-level-only",
 			});
@@ -295,8 +295,8 @@ describe("formatError", () => {
 		});
 	});
 
-	describe("options.lineSeparator", () => {
-		it("should use custom line separator for multi-line output", () => {
+	suite("options.lineSeparator", () => {
+		test("should use custom line separator for multi-line output", () => {
 			const formatted = formatError(nestedError, {
 				stackTrace: true,
 				lineSeparator: "---",
@@ -308,7 +308,7 @@ describe("formatError", () => {
 			expect(lines[1].startsWith("  at ")).toBe(true);
 		});
 
-		it("should use defaultOptions.lineSeparator when not specified in options", () => {
+		test("should use defaultOptions.lineSeparator when not specified in options", () => {
 			formatError.defaultOptions.lineSeparator = "---";
 			let formatted = formatError(nestedError, { stackTrace: true });
 			expect(formatted.includes("---")).toBe(true);
@@ -327,7 +327,7 @@ describe("formatError", () => {
 		});
 	});
 
-	it("should handle circular references in causes and aggregate errors", () => {
+	test("should handle circular references in causes and aggregate errors", () => {
 		const errorA = new Error("Error A");
 		const errorB = new Error("Error B", { cause: errorA });
 		errorA.cause = errorB; // Create circular reference
@@ -351,8 +351,8 @@ describe("formatError", () => {
 		);
 	});
 
-	describe("Complex error formatting", () => {
-		it("should format a complex error with nested causes and aggregate errors", () => {
+	suite("Complex error formatting", () => {
+		test("should format a complex error with nested causes and aggregate errors", () => {
 			const formatted = formatError(complexError, { stackTrace: true });
 			const lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: Complex error message");
@@ -364,7 +364,7 @@ describe("formatError", () => {
 			).toBe(true);
 		});
 
-		it("should format a complex error with nested causes and aggregate errors in single-line mode", () => {
+		test("should format a complex error with nested causes and aggregate errors in single-line mode", () => {
 			const formatted = formatError(complexError, { stackTrace: false });
 			expect(formatted).toBe(
 				"<Error> Complex error message: <AggregateError> Aggregate error cause message: (#1: <Error> top level error message: <Error> cause error message, #2: <AggregateError> Aggregate error message: (#1: <Error> Inner error 1 message, #2: <Error> Inner error 2 message))",

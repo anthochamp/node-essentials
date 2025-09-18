@@ -3,18 +3,18 @@ import {
 	afterAll,
 	beforeAll,
 	beforeEach,
-	describe,
 	expect,
-	it,
 	type MockInstance,
+	suite,
+	test,
 	vi,
 } from "vitest";
 import { readJsonFile, writeJsonFile } from "./json-file.js";
 
 vi.mock("node:fs/promises");
 
-describe("json-file", () => {
-	describe("readJsonFile", () => {
+suite("json-file", () => {
+	suite("readJsonFile", () => {
 		let readFileMock: MockInstance<typeof readFile>;
 
 		beforeAll(() => {
@@ -27,7 +27,7 @@ describe("json-file", () => {
 			readFileMock.mockReset();
 		});
 
-		it("should read and parse JSON file with default encoding", async () => {
+		test("should read and parse JSON file with default encoding", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
 				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
@@ -42,7 +42,7 @@ describe("json-file", () => {
 			);
 		});
 
-		it("should read and parse JSON file with specified encoding", async () => {
+		test("should read and parse JSON file with specified encoding", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
 				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
@@ -61,7 +61,7 @@ describe("json-file", () => {
 			);
 		});
 
-		it("should read and parse JSON file with reviver", async () => {
+		test("should read and parse JSON file with reviver", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
 				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
@@ -85,7 +85,7 @@ describe("json-file", () => {
 			expect(reviver).toHaveBeenCalled();
 		});
 
-		it("should throw an error if JSON is invalid", async () => {
+		test("should throw an error if JSON is invalid", async () => {
 			readFileMock.mockResolvedValueOnce(Buffer.from("invalid json"));
 			await expect(
 				readJsonFile("/path/to/file.json", { encoding: "utf-8" }),
@@ -99,7 +99,7 @@ describe("json-file", () => {
 		});
 	});
 
-	describe("writeJsonFile", () => {
+	suite("writeJsonFile", () => {
 		let writeFileMock: MockInstance<typeof writeFile>;
 
 		beforeAll(() => {
@@ -112,7 +112,7 @@ describe("json-file", () => {
 			writeFileMock.mockReset();
 		});
 
-		it("should stringify and write JSON file with default options", async () => {
+		test("should stringify and write JSON file with default options", async () => {
 			const jsonContent = { key: "value" };
 			writeFileMock.mockResolvedValueOnce();
 
@@ -125,7 +125,7 @@ describe("json-file", () => {
 			);
 		});
 
-		it("should stringify and write JSON file with replacer and space", async () => {
+		test("should stringify and write JSON file with replacer and space", async () => {
 			const jsonContent = { key: "value", ignore: "this" };
 			writeFileMock.mockResolvedValueOnce();
 
@@ -147,7 +147,7 @@ describe("json-file", () => {
 			);
 		});
 
-		it("should throw an error if writing fails", async () => {
+		test("should throw an error if writing fails", async () => {
 			const jsonContent = { key: "value" };
 			writeFileMock.mockRejectedValueOnce(new Error("Write error"));
 

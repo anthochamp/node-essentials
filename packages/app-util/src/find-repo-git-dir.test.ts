@@ -1,5 +1,5 @@
 import { findUp } from "find-up";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, expect, suite, test, vi } from "vitest";
 import { findRepoGitDir } from "./find-repo-git-dir.js";
 
 vi.mock(import("find-up"), async (importActual) => {
@@ -13,12 +13,12 @@ vi.mock(import("find-up"), async (importActual) => {
 
 const findUpMock = vi.mocked(findUp);
 
-describe("findRepoGitDir", () => {
+suite("findRepoGitDir", () => {
 	beforeEach(() => {
 		findUpMock.mockReset();
 	});
 
-	it("should return the .git directory path if found", async () => {
+	test("should return the .git directory path if found", async () => {
 		const mockPath = "/path/to/repo/.git";
 		findUpMock.mockResolvedValueOnce(mockPath);
 
@@ -31,7 +31,7 @@ describe("findRepoGitDir", () => {
 		});
 	});
 
-	it("should return null if the .git directory is not found", async () => {
+	test("should return null if the .git directory is not found", async () => {
 		findUpMock.mockResolvedValueOnce(undefined);
 
 		const result = await findRepoGitDir("/path/to/repo");
@@ -43,7 +43,7 @@ describe("findRepoGitDir", () => {
 		});
 	});
 
-	it("should pass options to findUp", async () => {
+	test("should pass options to findUp", async () => {
 		const mockPath = "/path/to/repo/.git";
 		findUpMock.mockResolvedValueOnce(mockPath);
 

@@ -1,7 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, suite, test, vi } from "vitest";
 import { Timer } from "./timer.js";
 
-describe("Timer", () => {
+suite("Timer", () => {
 	beforeEach(() => {
 		vi.useFakeTimers();
 	});
@@ -9,7 +9,7 @@ describe("Timer", () => {
 		vi.useRealTimers();
 	});
 
-	it("should start and fire the timer", async () => {
+	test("should start and fire the timer", async () => {
 		const callback = vi.fn();
 		const timer = new Timer(callback, 10);
 
@@ -25,7 +25,7 @@ describe("Timer", () => {
 		expect(timer.isActive()).toBe(false);
 	});
 
-	it("should not start the timer if already active", async () => {
+	test("should not start the timer if already active", async () => {
 		const callback = vi.fn();
 		const timer = new Timer(callback, 40);
 
@@ -45,7 +45,7 @@ describe("Timer", () => {
 		expect(timer.isActive()).toBe(false);
 	});
 
-	it("should restart the timer", async () => {
+	test("should restart the timer", async () => {
 		const callback = vi.fn();
 		const timer = new Timer(callback, 40);
 
@@ -69,7 +69,7 @@ describe("Timer", () => {
 		expect(timer.isActive()).toBe(false);
 	});
 
-	it("should cancel the timer", async () => {
+	test("should cancel the timer", async () => {
 		const callback = vi.fn();
 		const timer = new Timer(callback, 40);
 
@@ -88,7 +88,7 @@ describe("Timer", () => {
 		expect(timer.isActive()).toBe(false);
 	});
 
-	it("should throw unhandled exception if the callback throws", async () => {
+	test("should throw unhandled exception if the callback throws", async () => {
 		const error = new Error("Test error");
 		const callback = vi.fn().mockImplementation(() => {
 			throw error;
@@ -114,7 +114,7 @@ describe("Timer", () => {
 		);
 	});
 
-	it("should throw unhandled rejection if the callback returns a rejected promise", async () => {
+	test("should throw unhandled rejection if the callback returns a rejected promise", async () => {
 		const error = new Error("Test error");
 		const callback = vi.fn().mockRejectedValue(error);
 		const timer = new Timer(callback, 10);

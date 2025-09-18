@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { Semaphore } from "./semaphore.js";
 
-describe("Semaphore", () => {
-	it("should acquire and release value correctly", async () => {
+suite("Semaphore", () => {
+	test("should acquire and release value correctly", async () => {
 		const semaphore = new Semaphore(2);
 		expect(semaphore.value).toBe(2);
 
@@ -29,13 +29,13 @@ describe("Semaphore", () => {
 		expect(semaphore.value).toBe(1);
 	});
 
-	it("should not allow negative initial value", () => {
+	test("should not allow negative initial value", () => {
 		expect(() => new Semaphore(-1)).toThrow(
 			"Initial value must be non-negative",
 		);
 	});
 
-	it("should handle multiple concurrent acquires", async () => {
+	test("should handle multiple concurrent acquires", async () => {
 		const semaphore = new Semaphore(3);
 		const releases = await Promise.all([
 			semaphore.acquire(),
@@ -64,7 +64,7 @@ describe("Semaphore", () => {
 		expect(semaphore.value).toBe(2);
 	});
 
-	it("should throw if value exceeds maxValue on release", async () => {
+	test("should throw if value exceeds maxValue on release", async () => {
 		const semaphore = new Semaphore(2, 1);
 		expect(semaphore.value).toBe(1);
 

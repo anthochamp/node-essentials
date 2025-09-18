@@ -1,15 +1,15 @@
 import {
 	afterEach,
 	beforeEach,
-	describe,
 	expect,
-	it,
 	type Mock,
+	suite,
+	test,
 	vi,
 } from "vitest";
 import { noThrow, noThrowAsync } from "./no-throw.js";
 
-describe("noThrow", () => {
+suite("noThrow", () => {
 	let uncaughtExceptionHandler: Mock<() => void>;
 	let unhandledRejectionHandler: Mock<() => void>;
 
@@ -25,8 +25,8 @@ describe("noThrow", () => {
 		process.off("unhandledRejection", unhandledRejectionHandler);
 	});
 
-	describe("noThrow", () => {
-		it("should execute the callback without errors", () => {
+	suite("noThrow", () => {
+		test("should execute the callback without errors", () => {
 			const callback = vi.fn();
 
 			const wrapped = noThrow(callback);
@@ -37,7 +37,7 @@ describe("noThrow", () => {
 			expect(unhandledRejectionHandler).not.toHaveBeenCalled();
 		});
 
-		it("should return undefined if the callback throws", async () => {
+		test("should return undefined if the callback throws", async () => {
 			const callback = vi.fn().mockImplementation(() => {
 				throw new Error("Test error");
 			});
@@ -56,7 +56,7 @@ describe("noThrow", () => {
 			expect(unhandledRejectionHandler).not.toHaveBeenCalled();
 		});
 
-		it("should pass thisArg and args to the callback", () => {
+		test("should pass thisArg and args to the callback", () => {
 			const callback = vi.fn(function (
 				this: { value: number },
 				a: number,
@@ -80,8 +80,8 @@ describe("noThrow", () => {
 		});
 	});
 
-	describe("noThrowAsync", () => {
-		it("should execute the async callback without errors", async () => {
+	suite("noThrowAsync", () => {
+		test("should execute the async callback without errors", async () => {
 			const callback = vi.fn().mockResolvedValue(undefined);
 
 			const wrapped = noThrowAsync(callback);
@@ -92,7 +92,7 @@ describe("noThrow", () => {
 			expect(unhandledRejectionHandler).not.toHaveBeenCalled();
 		});
 
-		it("should return undefined if the callback throws", async () => {
+		test("should return undefined if the callback throws", async () => {
 			const callback = vi.fn().mockImplementation(() => {
 				throw new Error("Test error");
 			});
@@ -111,7 +111,7 @@ describe("noThrow", () => {
 			expect(unhandledRejectionHandler).not.toHaveBeenCalled();
 		});
 
-		it("should return undefined if the async callback throws", async () => {
+		test("should return undefined if the async callback throws", async () => {
 			const callback = vi.fn().mockRejectedValue(new Error("Test error"));
 
 			const wrapped = noThrowAsync(callback);
@@ -128,7 +128,7 @@ describe("noThrow", () => {
 			expect(uncaughtExceptionHandler).not.toHaveBeenCalled();
 		});
 
-		it("should pass thisArg and args to the async callback", async () => {
+		test("should pass thisArg and args to the async callback", async () => {
 			const callback = vi.fn(async function (
 				this: { value: number },
 				a: number,

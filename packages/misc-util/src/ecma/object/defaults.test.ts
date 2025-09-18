@@ -1,14 +1,14 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { defaults } from "./defaults.js";
 
-describe("defaults", () => {
-	it("should assign default options", () => {
+suite("defaults", () => {
+	test("should assign default options", () => {
 		const options = defaults({ a: 1 }, { a: 2, b: 2 }, { a: 3, b: 3, c: 3 });
 
 		expect(options).toEqual({ a: 1, b: 2, c: 3 });
 	});
 
-	it("should work with undefined and null values", () => {
+	test("should work with undefined and null values", () => {
 		const options = defaults({ a: undefined, b: null }, { a: 2, b: 2 }, {
 			a: 3,
 			b: 3,
@@ -18,7 +18,7 @@ describe("defaults", () => {
 		expect(options).toEqual({ a: 2, b: null, c: 3 });
 	});
 
-	it("should work with multiple types", () => {
+	test("should work with multiple types", () => {
 		const options = defaults(
 			{ a: 1, b: "test", c: true },
 			{ a: 2, b: "default", c: false, d: [1, 2, 3] },
@@ -34,13 +34,13 @@ describe("defaults", () => {
 		});
 	});
 
-	it("should work with an undefined argument", () => {
+	test("should work with an undefined argument", () => {
 		const options = defaults(undefined, { a: 2, b: 2 }, { a: 3, b: 3, c: 3 });
 
 		expect(options).toEqual({ a: 2, b: 2, c: 3 });
 	});
 
-	it("should work with a single argument", () => {
+	test("should work with a single argument", () => {
 		const options = defaults({ a: 1, b: 2, c: 3 });
 
 		expect(options).toEqual({ a: 1, b: 2, c: 3 });

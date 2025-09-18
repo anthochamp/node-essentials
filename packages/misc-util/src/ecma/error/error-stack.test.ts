@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { formatErrorStack, parseErrorStack } from "./error-stack.js";
 
-describe("ErrorStack", () => {
-	describe("parseErrorStack", () => {
-		it("should return undefined for errors without stack", () => {
+suite("ErrorStack", () => {
+	suite("parseErrorStack", () => {
+		test("should return undefined for errors without stack", () => {
 			expect(
 				parseErrorStack({
 					name: "MyError",
@@ -12,7 +12,7 @@ describe("ErrorStack", () => {
 			).toBeUndefined();
 		});
 
-		it("should parse a simple error stack", () => {
+		test("should parse a simple error stack", () => {
 			const error = {
 				name: "MyError",
 				message: "An error occurred",
@@ -32,8 +32,8 @@ describe("ErrorStack", () => {
 		});
 	});
 
-	describe("formatErrorStack", () => {
-		it("should format an error stack with default options", () => {
+	suite("formatErrorStack", () => {
+		test("should format an error stack with default options", () => {
 			const errorStack = {
 				message: "MyError: An error occurred",
 				stackTrace: [
@@ -51,7 +51,7 @@ describe("ErrorStack", () => {
 			]);
 		});
 
-		it("should format an error stack with custom indentation", () => {
+		test("should format an error stack with custom indentation", () => {
 			const errorStack = {
 				message: "MyError: An error occurred",
 				stackTrace: [
@@ -70,7 +70,7 @@ describe("ErrorStack", () => {
 		});
 	});
 
-	it("should format an error stack without the message line", () => {
+	test("should format an error stack without the message line", () => {
 		const errorStack = {
 			message: "MyError: An error occurred",
 			stackTrace: [

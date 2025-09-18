@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { stringifyEnvVariable } from "./stringify-env-variable.js";
 
-describe("stringifyEnvVariable", () => {
-	it("should stringify values correctly", () => {
+suite("stringifyEnvVariable", () => {
+	test("should stringify values correctly", () => {
 		expect(stringifyEnvVariable("KEY1", "simple")).toBe("KEY1=simple");
 		expect(stringifyEnvVariable("KEY2", "needs quoting")).toBe(
 			'KEY2="needs quoting"',
@@ -12,7 +12,7 @@ describe("stringifyEnvVariable", () => {
 		expect(stringifyEnvVariable("KEY5", null)).toBe("KEY5=");
 	});
 
-	it("should stringify string values correctly", () => {
+	test("should stringify string values correctly", () => {
 		expect(stringifyEnvVariable("KEY1", "simple")).toBe("KEY1=simple");
 		expect(stringifyEnvVariable("KEY2", "needs quoting")).toBe(
 			'KEY2="needs quoting"',
@@ -28,7 +28,7 @@ describe("stringifyEnvVariable", () => {
 		);
 	});
 
-	it("should stringify number and bigint values correctly", () => {
+	test("should stringify number and bigint values correctly", () => {
 		expect(stringifyEnvVariable("KEY1", 42)).toBe("KEY1=42");
 		expect(stringifyEnvVariable("KEY2", -3.14)).toBe("KEY2=-3.14");
 		expect(stringifyEnvVariable("KEY3", 9007199254741991n)).toBe(
@@ -36,12 +36,12 @@ describe("stringifyEnvVariable", () => {
 		);
 	});
 
-	it("should stringify boolean values correctly with default flavor", () => {
+	test("should stringify boolean values correctly with default flavor", () => {
 		expect(stringifyEnvVariable("KEY1", true)).toBe("KEY1=1");
 		expect(stringifyEnvVariable("KEY2", false)).toBe("KEY2=0");
 	});
 
-	it("should stringify boolean values correctly with 'true/false' flavor", () => {
+	test("should stringify boolean values correctly with 'true/false' flavor", () => {
 		expect(
 			stringifyEnvVariable("KEY1", true, { boolFlavor: "true/false" }),
 		).toBe("KEY1=true");
@@ -50,7 +50,7 @@ describe("stringifyEnvVariable", () => {
 		).toBe("KEY2=false");
 	});
 
-	it("should stringify boolean values correctly with 'yes/no' flavor", () => {
+	test("should stringify boolean values correctly with 'yes/no' flavor", () => {
 		expect(stringifyEnvVariable("KEY1", true, { boolFlavor: "yes/no" })).toBe(
 			"KEY1=yes",
 		);
@@ -59,7 +59,7 @@ describe("stringifyEnvVariable", () => {
 		);
 	});
 
-	it("should stringify boolean values correctly with 'on/off' flavor", () => {
+	test("should stringify boolean values correctly with 'on/off' flavor", () => {
 		expect(stringifyEnvVariable("KEY1", true, { boolFlavor: "on/off" })).toBe(
 			"KEY1=on",
 		);
@@ -68,7 +68,7 @@ describe("stringifyEnvVariable", () => {
 		);
 	});
 
-	it("should stringify null values correctly", () => {
+	test("should stringify null values correctly", () => {
 		expect(stringifyEnvVariable("KEY1", null)).toBe("KEY1=");
 	});
 });

@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { replaceDiacritics } from "./replace-diacritics.js";
 
-describe("replaceDiacritics", () => {
-	it("should replace diacritics correctly", () => {
+suite("replaceDiacritics", () => {
+	test("should replace diacritics correctly", () => {
 		expect(replaceDiacritics("àáâäæãåā")).toBe("aaaaaeaaa");
 		expect(replaceDiacritics("çćčĉċ")).toBe("ccccc");
 		expect(replaceDiacritics("ďđð")).toBe("ddd");

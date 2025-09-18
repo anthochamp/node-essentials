@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
 import type { ICollection } from "../abstract-types/icollection.js";
 import { BinaryHeap } from "../binary-heap.js";
@@ -18,7 +18,7 @@ import { Stack } from "../stack.js";
  * update the ICollection compliance tests in the `ipriority-queue-compliance.test.ts` file.
  */
 
-describe.each<{
+suite.each<{
 	description: string;
 	factory: Callable<[iterator?: Iterable<number>], ICollection<number>>;
 }>([
@@ -42,7 +42,7 @@ describe.each<{
 	{ description: "Queue", factory: (iterator) => new Queue(iterator) },
 	{ description: "Stack", factory: (iterator) => new Stack(iterator) },
 ])("$description ICollection compliance", ({ factory }) => {
-	it("should iterate over items", async () => {
+	test("should iterate over items", async () => {
 		const collection: ICollection<number> = factory([1, 2, 3]);
 
 		expect(await Array.fromAsync(collection)).toEqual(
@@ -50,20 +50,20 @@ describe.each<{
 		);
 	});
 
-	it("should clear items", async () => {
+	test("should clear items", async () => {
 		const collection: ICollection<number> = factory([1, 2, 3]);
 
 		await collection.clear();
 		expect(await Array.fromAsync(collection)).toEqual([]);
 	});
 
-	it("should count items", async () => {
+	test("should count items", async () => {
 		const collection: ICollection<number> = factory([1, 2, 3]);
 
 		expect(await collection.count()).toBe(3);
 	});
 
-	it("should concatenate items", async () => {
+	test("should concatenate items", async () => {
 		const collection: ICollection<number> = factory([1, 2, 3]);
 
 		const concatenatedItems = await Array.fromAsync(collection.concat(4, 5, 6));
@@ -76,7 +76,7 @@ describe.each<{
 		expect(originalItems).toEqual(expect.arrayContaining([1, 2, 3]));
 	});
 
-	it("should remove the first matching item", async () => {
+	test("should remove the first matching item", async () => {
 		const collection: ICollection<number> = factory([1, 2, 3, 4, 5]);
 
 		const removedItem = await collection.removeFirst((item) => item % 2 === 0);
@@ -91,7 +91,7 @@ describe.each<{
 		expect(evenItems[0]).toBeOneOf([2, 4]);
 	});
 
-	it("should remove all matching items", async () => {
+	test("should remove all matching items", async () => {
 		const collection: ICollection<number> = factory([1, 2, 3, 4, 5]);
 
 		const removedItems = await Array.fromAsync(
@@ -104,7 +104,7 @@ describe.each<{
 		expect(items).toEqual(expect.arrayContaining([1, 3, 5]));
 	});
 
-	it("should replace the first matching item", async () => {
+	test("should replace the first matching item", async () => {
 		const collection: ICollection<number> = factory([1, 2, 3, 4, 5]);
 		const replaced = await collection.replaceFirst(
 			(item) => item % 2 === 0,
@@ -120,7 +120,7 @@ describe.each<{
 		expect(evenItems[0]).toBeOneOf([2, 4]); // Depending on which even item was replaced
 	});
 
-	it("should replace all matching items", async () => {
+	test("should replace all matching items", async () => {
 		const collection: ICollection<number> = factory([1, 2, 3, 4, 5]);
 		const replacedItems = await Array.fromAsync(
 			await collection.replace(

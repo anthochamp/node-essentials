@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from "vitest";
+import { expect, suite, test, vi } from "vitest";
 import { SubscribableEvent } from "./subscribable-event.js";
 
-describe("SubscribableEvent", () => {
-	it("should register and trigger events", () => {
+suite("SubscribableEvent", () => {
+	test("should register and trigger events", () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const listener = vi.fn();
@@ -19,7 +19,7 @@ describe("SubscribableEvent", () => {
 		expect(listener).toHaveBeenNthCalledWith(2, 100);
 	});
 
-	it("should not register the same listener multiple times", () => {
+	test("should not register the same listener multiple times", () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const listener = vi.fn();
@@ -31,7 +31,7 @@ describe("SubscribableEvent", () => {
 		expect(listener).toHaveBeenCalledOnce(); // Should only be called once
 	});
 
-	it("should unregister listeners", () => {
+	test("should unregister listeners", () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const listener = vi.fn();
@@ -46,7 +46,7 @@ describe("SubscribableEvent", () => {
 		expect(listener).toHaveBeenCalledOnce(); // Should not be called again
 	});
 
-	it("should register one-time listeners", () => {
+	test("should register one-time listeners", () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const listener = vi.fn();
@@ -59,7 +59,7 @@ describe("SubscribableEvent", () => {
 		expect(listener).toHaveBeenCalledOnce(); // Should not be called again
 	});
 
-	it("should not register the same one-time listener multiple times", () => {
+	test("should not register the same one-time listener multiple times", () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const listener = vi.fn();
@@ -72,7 +72,7 @@ describe("SubscribableEvent", () => {
 		expect(listener).toHaveBeenCalledOnce(); // Should only be called once
 	});
 
-	it("should unregister one-time listeners", () => {
+	test("should unregister one-time listeners", () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const listener = vi.fn();
@@ -88,7 +88,7 @@ describe("SubscribableEvent", () => {
 		expect(listener).toHaveBeenCalledOnce(); // Should not be called again
 	});
 
-	it("should check if a listener is registered", () => {
+	test("should check if a listener is registered", () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const listener = (_value: number) => {};
@@ -108,7 +108,7 @@ describe("SubscribableEvent", () => {
 		expect(event.isSubscribed(listener)).toBe(false);
 	});
 
-	it("should wait for the next event emission", async () => {
+	test("should wait for the next event emission", async () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const waitPromise = event.wait();
@@ -120,7 +120,7 @@ describe("SubscribableEvent", () => {
 		expect(result).toEqual([42]);
 	});
 
-	it("should timeout if the event is not emitted in time", async () => {
+	test("should timeout if the event is not emitted in time", async () => {
 		const event = new SubscribableEvent<[number]>();
 
 		const waitPromise = event.wait(AbortSignal.timeout(0));

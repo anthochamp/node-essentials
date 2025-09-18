@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { sleep } from "../timers/sleep.js";
 import { debounceQueue } from "./debounce-queue.js";
 
-describe("debounceQueue", () => {
-	it("should execute the function immediately if not already running", async () => {
+suite("debounceQueue", () => {
+	test("should execute the function immediately if not already running", async () => {
 		let callCount = 0;
 		const func = async () => {
 			callCount++;
@@ -16,7 +16,7 @@ describe("debounceQueue", () => {
 		expect(callCount).toBe(1);
 	});
 
-	it("should queue subsequent calls while the function is running", async () => {
+	test("should queue subsequent calls while the function is running", async () => {
 		let callCount = 0;
 		const func = async () => {
 			callCount++;
@@ -34,7 +34,7 @@ describe("debounceQueue", () => {
 		expect(callCount).toBe(2);
 	});
 
-	it("should handle promise rejection properly", async () => {
+	test("should handle promise rejection properly", async () => {
 		const error = new Error("Test error");
 		let callCount = 0;
 		const func = async () => {
@@ -53,7 +53,7 @@ describe("debounceQueue", () => {
 		expect(callCount).toBe(2);
 	});
 
-	it("should handle synchronous exceptions properly", async () => {
+	test("should handle synchronous exceptions properly", async () => {
 		const error = new Error("Test error");
 		let callCount = 0;
 		const func = async () => {
@@ -72,7 +72,7 @@ describe("debounceQueue", () => {
 		expect(callCount).toBe(2);
 	});
 
-	it("should return the result of the last queued call", async () => {
+	test("should return the result of the last queued call", async () => {
 		let callCount = 0;
 		const func = async () => {
 			callCount++;

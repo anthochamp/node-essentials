@@ -1,14 +1,14 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { jsonStringifySafe } from "./json-stringify-safe.js";
 
-describe("jsonStringifySafe", () => {
-	it("should stringify a simple object", () => {
+suite("jsonStringifySafe", () => {
+	test("should stringify a simple object", () => {
 		const obj = { a: 1, b: "test", c: true };
 		const result = jsonStringifySafe(obj);
 		expect(result).toBe(JSON.stringify(obj));
 	});
 
-	it("should handle circular references", () => {
+	test("should handle circular references", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
 		obj.self = obj;
@@ -16,7 +16,7 @@ describe("jsonStringifySafe", () => {
 		expect(result).toBe('{"a":1,"self":"[Circular]"}');
 	});
 
-	it("should handle nested circular references", () => {
+	test("should handle nested circular references", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: { b: { c: {} } } };
 		obj.a.b.c.self = obj.a;
@@ -24,7 +24,7 @@ describe("jsonStringifySafe", () => {
 		expect(result).toBe('{"a":{"b":{"c":{"self":"[Circular]"}}}}');
 	});
 
-	it("should handle arrays with circular references", () => {
+	test("should handle arrays with circular references", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const arr: any[] = [1, 2, 3];
 		arr.push(arr);
@@ -32,7 +32,7 @@ describe("jsonStringifySafe", () => {
 		expect(result).toBe('[1,2,3,"[Circular]"]');
 	});
 
-	it("should handle complex objects with multiple circular references", () => {
+	test("should handle complex objects with multiple circular references", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { name: "root" };
 		obj.child1 = { name: "child1", parent: obj };
@@ -43,7 +43,7 @@ describe("jsonStringifySafe", () => {
 		);
 	});
 
-	it("should return undefined for functions and symbols", () => {
+	test("should return undefined for functions and symbols", () => {
 		const obj = {
 			func: () => {},
 			sym: Symbol("test"),
@@ -54,7 +54,7 @@ describe("jsonStringifySafe", () => {
 		expect(result).toBe('{"num":42,"str":"hello"}');
 	});
 
-	it("should handle null and undefined values correctly", () => {
+	test("should handle null and undefined values correctly", () => {
 		const obj = {
 			a: null,
 			b: undefined,
@@ -64,14 +64,14 @@ describe("jsonStringifySafe", () => {
 		expect(result).toBe('{"a":null,"c":"test"}');
 	});
 
-	it("should handle Date objects", () => {
+	test("should handle Date objects", () => {
 		const date = new Date("2023-01-01T00:00:00Z");
 		const obj = { date };
 		const result = jsonStringifySafe(obj);
 		expect(result).toBe(`{"date":"${date.toISOString()}"}`);
 	});
 
-	it("should handle objects with toJSON methods", () => {
+	test("should handle objects with toJSON methods", () => {
 		const obj = {
 			a: 1,
 			b: {
@@ -82,7 +82,7 @@ describe("jsonStringifySafe", () => {
 		expect(result).toBe('{"a":1,"b":"custom"}');
 	});
 
-	it("should handle deeply nested objects with circular references", () => {
+	test("should handle deeply nested objects with circular references", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { level1: { level2: { level3: {} } } };
 		obj.level1.level2.level3.self = obj.level1;
@@ -92,7 +92,7 @@ describe("jsonStringifySafe", () => {
 		);
 	});
 
-	it("should handle large objects with multiple circular references", () => {
+	test("should handle large objects with multiple circular references", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1, b: 2 };
 		obj.self = obj;
@@ -103,7 +103,7 @@ describe("jsonStringifySafe", () => {
 		);
 	});
 
-	it.skip("should handle arrays of objects with circular references", () => {
+	test.skip("should handle arrays of objects with circular references", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj1: any = { name: "obj1" };
 		// biome-ignore lint/suspicious/noExplicitAny: test
@@ -116,7 +116,7 @@ describe("jsonStringifySafe", () => {
 		);
 	});
 
-	it("should handle mixed data types with circular references", () => {
+	test("should handle mixed data types with circular references", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = {
 			num: 1,
@@ -132,7 +132,7 @@ describe("jsonStringifySafe", () => {
 		);
 	});
 
-	it("should handle objects with non-enumerable properties", () => {
+	test("should handle objects with non-enumerable properties", () => {
 		const obj = { a: 1 };
 		Object.defineProperty(obj, "b", {
 			value: 2,
@@ -141,7 +141,7 @@ describe("jsonStringifySafe", () => {
 		const result = jsonStringifySafe(obj);
 		expect(result).toBe('{"a":1}');
 	});
-	it("should handle objects with symbol properties", () => {
+	test("should handle objects with symbol properties", () => {
 		const sym = Symbol("test");
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
@@ -149,7 +149,7 @@ describe("jsonStringifySafe", () => {
 		const result = jsonStringifySafe(obj);
 		expect(result).toBe('{"a":1}');
 	});
-	it("should handle objects with large depth", () => {
+	test("should handle objects with large depth", () => {
 		const createDeepObject = (depth: number): unknown => {
 			if (depth === 0) return { value: "end" };
 			return { next: createDeepObject(depth - 1) };
@@ -158,7 +158,7 @@ describe("jsonStringifySafe", () => {
 		const result = jsonStringifySafe(obj);
 		expect(result).toBeDefined();
 	});
-	it("should handle objects with circular references in arrays", () => {
+	test("should handle objects with circular references in arrays", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { name: "root" };
 		const arr = [obj];
