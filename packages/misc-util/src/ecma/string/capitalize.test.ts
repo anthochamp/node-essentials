@@ -1,16 +1,15 @@
-import { describe, expect, it } from "vitest";
+import { expect, suite, test } from "vitest";
 import { capitalize } from "./capitalize.js";
 
-describe("capitalize", () => {
-	it("should capitalize the first letter of a string", () => {
-		expect(capitalize("hello")).toBe("Hello");
-		expect(capitalize("world")).toBe("World");
-	});
-	it("should handle empty strings", () => {
-		expect(capitalize("")).toBe("");
-	});
-	it("should not change the case of other letters", () => {
-		expect(capitalize("hELLO")).toBe("HELLO");
+suite("capitalize", () => {
+	test("capitalizes the first letter and lowercases the rest", () => {
 		expect(capitalize("hello world")).toBe("Hello world");
+		expect(capitalize("Hello World")).toBe("Hello world");
+		expect(capitalize("hELLO wORLD")).toBe("Hello world");
+		expect(capitalize("")).toBe("");
+		expect(capitalize("a")).toBe("A");
+		expect(capitalize("A")).toBe("A");
+		expect(capitalize("a b c")).toBe("A b c");
+		expect(capitalize("A B C")).toBe("A b c");
 	});
 });

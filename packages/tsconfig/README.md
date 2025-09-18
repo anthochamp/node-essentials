@@ -20,11 +20,11 @@ You get a set of base configs (`base.json`, `node-lib.json`, `node-cli.json`) th
 - `resolveJsonModule`: Allows importing JSON files as modules.
 - `allowArbitraryExtensions`: Allows importing files with any extension (with a declaration file).
 - `noEmitOnError`: Prevents emitting files if there are type errors.
-- `allowSyntheticDefaultImports`: Controls default import compatibility for non-ESM modules (set to false by default).
+- `allowSyntheticDefaultImports`: Allows default imports from modules with no default export.
 - `esModuleInterop`: Allows default imports from CommonJS modules.
 - `forceConsistentCasingInFileNames`: Ensures import paths use consistent casing.
 - `strict`: Enables all strict type-checking options.
-- `exactOptionalPropertyTypes`: Controls how optional property types are interpreted.
+- `exactOptionalPropertyTypes`: Do not differentiate between optional properties and properties that can be undefined.
 - `noImplicitOverride`: Requires explicit `override` keyword for overridden class members.
 - `skipDefaultLibCheck`: Skips type checking of default library declaration files.
 - `skipLibCheck`: Skips type checking of all declaration files for faster builds.
@@ -41,6 +41,7 @@ You get a set of base configs (`base.json`, `node-lib.json`, `node-cli.json`) th
 ### node-cli.json
 
 - `module`: Preserves the module system for CLI entrypoints.
+- `resolveJsonModule`: Cancel the value in `base.json` config (use TSC default setting).
 
 ## How do I use it?
 

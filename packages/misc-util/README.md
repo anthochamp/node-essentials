@@ -64,11 +64,21 @@ Here's a quick overview of the main utilities available in this package (see sou
 - [`defaults`](src/ecma/object/defaults.ts): Assign default options to an object (like lodash.defaults).
 - [`is-deep-equal`](src/ecma/object/is-deep-equal.ts): Deep equality check using strict strategy.
 - [`is-equal`](src/ecma/object/is-equal.ts): Various equality comparison strategies for values.
-- [`capitalize`](src/ecma/string/capitalize.ts): Capitalize the first letter of a string.
+- [`camelCase`](src/ecma/string/camel-case.ts): Convert a string to camelCase.
+- [`kebabCase`](src/ecma/string/kebab-case.ts): Convert a string to kebab-case.
+- [`lowerCase`](src/ecma/string/lower-case.ts): Convert a string to lower case with spaces.
+- [`lowerFirst`](src/ecma/string/lower-first.ts): Lowercase the first character of a string.
+- [`snakeCase`](src/ecma/string/snake-case.ts): Convert a string to snake_case.
+- [`startCase`](src/ecma/string/start-case.ts): Convert a string to Start Case.
+- [`upperCase`](src/ecma/string/upper-case.ts): Convert a string to UPPER CASE with spaces.
+- [`upperFirst`](src/ecma/string/upper-first.ts): Uppercase the first character of a string.
+- [`capitalize`](src/ecma/string/capitalize.ts): Capitalize the first letter and lowercase the rest of a string.
 - [`join-non-empty`](src/ecma/string/join-non-empty.ts): Join non-empty strings with a separator.
 - [`prefix-lines`](src/ecma/string/prefix-lines.ts): Prefix each line of a string with a given prefix.
 - [`replace-diacritics`](src/ecma/string/replace-diacritics.ts): Replace diacritics in a string with base characters.
 - [`truncate`](src/ecma/string/truncate.ts): Truncate a string to a given length, with options.
+- [`average`](src/ecma/math/average.ts): Functions for mean, geometricMean, harmonicMean, rootMeanSquare, median, mode, midrange.
+- [`minmax`](src/ecma/math/minmax.ts): Get the minimum and maximum from a list of numbers.
 - [`clamp`](src/ecma/math/clamp.ts): Clamp a number between a minimum and maximum value.
 - [`random`](src/ecma/math/random.ts): Get a random value between min and max.
 - [`round`](src/ecma/math/round.ts): Round a number to a specified number of decimal places or precision.
