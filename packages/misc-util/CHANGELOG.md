@@ -6,14 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `capitalize` now lowercases the rest of the string after the first character for more consistent behavior.
+
 ### Added
 
 - New string case utilities: `camelCase`, `kebabCase`, `lowerCase`, `lowerFirst`, `snakeCase`, `startCase`, `upperCase` and `upperFirst`.
 - New math utilities: `mean`, `geometricMean`, `harmonicMean`, `rootMeanSquare`, `median`, `mode`, `midrange` and `minmax`.
-
-### Changed
-
-- `capitalize` now lowercases the rest of the string after the first character for more consistent behavior.
 
 ## [0.2.1] - 2025-09-13
 

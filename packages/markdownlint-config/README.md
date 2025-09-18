@@ -55,8 +55,9 @@ This package gives you a ready-to-use, shareable markdownlint configuration for 
 
 ### Explicitly Set in This Config
 
-- `MD013/line-length`: Disabled (no line length limit)
 - `default`: Enabled (all other default rules are active unless overridden)
+- `MD013/line-length`: Disabled (no line length limit)
+- `MD024/no-duplicate-heading`: Enabled with `siblings_only: true` (only checks for duplicate headings among sibling headings)
 
 See the actual config file for the full list of enabled/disabled rules and their settings.
 
