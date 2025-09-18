@@ -15,7 +15,7 @@
 		"@ac-essentials/cli": "workspace:*",
 		"@ac-essentials/misc-util": "workspace:*",
 		"cosmiconfig": "^9.0.0",
-		"find-up": "^7.0.0",
+		"find-up": "^8.0.0",
 		"type-fest": "^4.41.0"
 	},
 	"devDependencies": {
