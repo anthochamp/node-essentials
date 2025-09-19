@@ -5,9 +5,9 @@ import {
 	compressFile,
 	debounceQueue,
 	defaults,
+	existsAsync,
 	Mutex,
 } from "@ac-essentials/misc-util";
-import { pathExists } from "find-up";
 import {
 	ROTATE_LOG_FILES_DEFAULT_OPTIONS,
 	type RotateLogFilesOptions,
@@ -204,7 +204,7 @@ export class FilePrinter implements ILoggerPrinter {
 						await rotateLogFiles(this.filePath, this.options);
 					});
 
-					if (useCompression && (await pathExists(`${this.filePath}.1`))) {
+					if (useCompression && (await existsAsync(`${this.filePath}.1`))) {
 						await compressFile(`${this.filePath}.1`);
 					}
 				}
