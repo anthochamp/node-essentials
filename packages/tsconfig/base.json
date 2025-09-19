@@ -1,7 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"compilerOptions": {
-		"target": "ESNext",
 		"resolveJsonModule": true,
 		"allowArbitraryExtensions": true,
 		"noEmitOnError": true,
