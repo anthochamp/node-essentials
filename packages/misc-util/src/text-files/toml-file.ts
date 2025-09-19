@@ -107,7 +107,7 @@ export const WRITE_TOML_FILE_DEFAULT_OPTIONS: Required<WriteTomlFileOptions> = {
  * Writes a TOML file by stringifying the provided data.
  *
  * @param path Path to the TOML file.
- * @param data Data to be stringified and written to the file.
+ * @param rootTable The root table object to stringify.
  * @param options Options for writing the file and stringifying TOML.
  * @returns A promise that resolves when the file has been written.
  */

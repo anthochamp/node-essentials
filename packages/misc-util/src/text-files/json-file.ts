@@ -134,8 +134,7 @@ export async function writeJsonFile(
 /**
  * Resolves the format of a JSON file buffer, including its indentation style.
  *
- * @param source The source of the JSON file, either as a Buffer or a file path.
- * @param options Options for reading the file.
+ * @param data A Buffer containing the JSON file content.
  * @returns A promise that resolves to the JSON file format information.
  */
 export async function resolveJsonFileFormat(

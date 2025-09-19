@@ -1,13 +1,13 @@
 /**
  * Test if an HTTP(S) URL is available by performing a HEAD request.
  *
- * @param url - The URL to test.
- * @param timeoutMs - Optional timeout in milliseconds.
+ * @param url The URL to test.
+ * @param signal An optional AbortSignal to cancel the request.
  * @returns A promise that resolves to `true` if the URL is available, `false` otherwise.
  */
 export async function isHttpAvailable(
 	url: string | URL,
-	timeoutMs?: number,
+	signal?: AbortSignal | null,
 ): Promise<boolean> {
 	try {
 		await fetch(url, {
@@ -16,8 +16,7 @@ export async function isHttpAvailable(
 			keepalive: false,
 			cache: "no-cache",
 			mode: "no-cors",
-			signal:
-				timeoutMs !== undefined ? AbortSignal.timeout(timeoutMs) : undefined,
+			signal,
 		});
 		return true;
 	} catch (_) {

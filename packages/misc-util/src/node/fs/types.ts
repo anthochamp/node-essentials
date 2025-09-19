@@ -1,11 +1,17 @@
 import type { readFile, writeFile } from "node:fs/promises";
 import type { SetNullable } from "../../types.d/set-nullable.js";
 
+/**
+ * Options for fs.readFile (excluding `signal`)
+ */
 export type NodeReadFileOptions = SetNullable<
 	Extract<Parameters<typeof readFile>[1], object>,
 	"signal"
 >;
 
+/**
+ * Options for fs.writeFile (excluding `signal`)
+ */
 export type NodeWriteFileOptions = SetNullable<
 	Extract<Parameters<typeof writeFile>[2], object>,
 	"signal"

@@ -173,8 +173,7 @@ export async function writeIniFile(
 /**
  * Resolves the format of a INI file buffer, including its indentation style.
  *
- * @param source The source of the INI file, either as a Buffer or a file path.
- * @param options Options for reading the file.
+ * @param data A Buffer containing the INI file content.
  * @returns A promise that resolves to the INI file format information.
  */
 export async function resolveIniFileFormat(

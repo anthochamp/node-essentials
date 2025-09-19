@@ -4,56 +4,46 @@ import { formatError } from "../../ecma/error/format-error.js";
 import type { Callable } from "../../ecma/function/types.js";
 import { defaults } from "../../ecma/object/defaults.js";
 
-export class UnhandledRejectionEventError extends Error {
-	readonly promise: Promise<unknown> | undefined;
+/**
+ * The origin of an uncaught exception.
+ * Matches Node.js process 'uncaughtException' event callback.
+ */
+export type UncaughtExceptionOrigin =
+	| "uncaughtException"
+	| "unhandledRejection";
 
-	constructor(event: PromiseRejectionEvent) {
-		super("Unhandled rejection", { cause: event.reason ?? event });
+export class UnhandledRejectionError extends Error {
+	constructor(
+		reason: unknown,
+		readonly promise: Promise<unknown> | null = null,
+	) {
+		super("Unhandled rejection", { cause: reason });
 
-		this.promise = event?.promise;
-		this.name = "UnhandledRejectionEventError";
+		this.name = "UnhandledRejectionError";
 	}
 }
 
-export class UncaughtExceptionEventError extends Error {
-	readonly filename: string;
-	readonly columnNumber: number;
-	readonly lineNumber: number;
-
-	constructor(event: ErrorEvent) {
-		let location: string | undefined;
-		if (event.filename) {
-			location = `${event.filename}:${event.lineno}:${event.colno}`;
-		}
-
-		super(`Uncaught exception${location ? ` at (${location})` : ""}`, {
-			cause: event.error ?? event.message,
+export class UncaughtExceptionError extends Error {
+	constructor(error: Error) {
+		super("Uncaught exception", {
+			cause: error,
 		});
 
-		this.filename = event.filename;
-		this.columnNumber = event.colno;
-		this.lineNumber = event.lineno;
-
-		this.name = "UncaughtExceptionEventError";
+		this.name = "UncaughtExceptionError";
 	}
 }
 
 export type ErrorListenersOptions = {
 	silent?: boolean;
 
-	onUnhandledRejectionEventError?:
-		| ((error: UnhandledRejectionEventError) => void)
-		| null;
-
-	onUncaughtExceptionEventError?:
-		| ((error: UncaughtExceptionEventError) => void)
+	onError?:
+		| ((error: UnhandledRejectionError | UncaughtExceptionError) => void)
 		| null;
 };
 
 const ERROR_LISTENERS_DEFAULT_OPTIONS: Required<ErrorListenersOptions> = {
 	silent: false,
-	onUnhandledRejectionEventError: null,
-	onUncaughtExceptionEventError: null,
+	onError: null,
 };
 
 /**
@@ -118,9 +108,7 @@ export class ErrorListeners {
 		this.detacher = null;
 	}
 
-	private handleError(
-		error: UncaughtExceptionEventError | UnhandledRejectionEventError,
-	) {
+	private handleError(error: UncaughtExceptionError | UnhandledRejectionError) {
 		const message = `[${new Date().toISOString()}] ${formatError(error, { stackTrace: true })}${EOL}`;
 		try {
 			writeFileSync(this.filePath, message, { flag: "a" });
@@ -131,23 +119,31 @@ export class ErrorListeners {
 		}
 	}
 
-	private handleUnhandledRejection(event: PromiseRejectionEvent) {
-		const error = new UnhandledRejectionEventError(event);
-
-		this.handleError(error);
-
+	private handleUnhandledRejection(reason: unknown, promise: Promise<unknown>) {
 		try {
-			this.options.onUnhandledRejectionEventError?.(error);
+			const wrappedError = new UnhandledRejectionError(reason, promise);
+
+			this.handleError(wrappedError);
+
+			this.options.onError?.(wrappedError);
 		} catch {}
 	}
 
-	private handleUncaughtException(event: ErrorEvent) {
-		const error = new UncaughtExceptionEventError(event);
-
-		this.handleError(error);
-
+	private handleUncaughtException(
+		error: Error,
+		origin: UncaughtExceptionOrigin,
+	) {
 		try {
-			this.options.onUncaughtExceptionEventError?.(error);
+			let wrappedError: UnhandledRejectionError | UncaughtExceptionError;
+			if (origin === "unhandledRejection") {
+				wrappedError = new UnhandledRejectionError(error);
+			} else {
+				wrappedError = new UncaughtExceptionError(error);
+			}
+
+			this.handleError(wrappedError);
+
+			this.options.onError?.(wrappedError);
 		} catch {}
 	}
 }

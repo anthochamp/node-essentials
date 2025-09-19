@@ -15,7 +15,7 @@ import {
 } from "../node/fs/types.js";
 
 /**
- * File formatting options.
+ * Describes the format of a text file.
  */
 export type TextFileFormat = {
 	/**
@@ -52,6 +52,9 @@ export type TextFileFormat = {
 	indentation: string | null;
 };
 
+/**
+ * Options for formatting text files when writing.
+ */
 export type TextFileFormatOptions = {
 	/**
 	 * The character set encoding of the file.
@@ -186,8 +189,7 @@ export function writeTextFile(
 /**
  * Resolves the format of a text file buffer by analyzing its content.
  *
- * @param source Path to the file or a Buffer containing the file content.
- * @param options Options for reading the file if a path is provided.
+ * @param data A Buffer containing the text file content.
  * @returns The resolved text file format.
  */
 export async function resolveTextFileFormat(
