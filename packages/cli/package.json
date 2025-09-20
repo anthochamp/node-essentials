@@ -1,6 +1,6 @@
 {
 	"name": "@ac-essentials/cli",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"type": "module",
 	"main": "./src/index.ts",
 	"publishConfig": {
@@ -12,7 +12,7 @@
 	],
 	"sideEffects": false,
 	"dependencies": {
-		"@ac-essentials/misc-util": "workspace:*",
+		"@ac-essentials/misc-util": "workspace:^",
 		"type-fest": "^4.41.0"
 	},
 	"devDependencies": {
