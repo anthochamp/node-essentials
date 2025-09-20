@@ -45,22 +45,26 @@ export async function rotateLogFiles(
 	const dirName = path.dirname(filePath);
 	const fileName = path.basename(filePath);
 
-	// that will help find the log-num index (in the split '.' array)
+	// count of '.' in file name (to handle files with multiple dots correctly)
 	const prefixDotsCnt = fileName.split(".").length - 1;
 
-	// get all files list (as filename split '.' array), from oldest to newest
+	// get old log files names (sorted by index, descending)
 	const oldFilesNames = (await readdir(dirName))
 		.map((v) =>
-			v.match(`${regexpEscape(fileName)}\\.\\d+\\.?`) ? v.split(".") : null,
+			new RegExp(`${regexpEscape(fileName)}\\.\\d+\\.?`).test(v)
+				? v.split(".")
+				: null,
 		)
 		.filter((v) => v !== null)
-		.sort((a, b) => +a[prefixDotsCnt + 1] - +b[prefixDotsCnt + 1])
+		// biome-ignore lint/style/noNonNullAssertion: filename is tested
+		.sort((a, b) => +a[prefixDotsCnt + 1]! - +b[prefixDotsCnt + 1]!)
 		.reverse();
 
 	// rename or delete files based on options
 	for (const oldFileName of oldFilesNames) {
 		const oldFilePath = path.join(dirName, oldFileName.join("."));
-		const fileNum = +oldFileName[prefixDotsCnt + 1];
+		// biome-ignore lint/style/noNonNullAssertion: oldFileName has been tested
+		const fileNum = +oldFileName[prefixDotsCnt + 1]!;
 
 		if (
 			fileNum + 1 > effectiveOptions.maxRetainedFiles &&

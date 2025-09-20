@@ -43,10 +43,9 @@ export function httpFilterHeaders<TValue>(
 ): HttpHeadersLike<TValue> {
 	const result: HttpHeadersLike<TValue> = {};
 
-	for (const name in headers) {
-		const value = headers[name];
-		if (predicate(name, value)) {
-			result[name] = value;
+	for (const [k, v] of Object.entries(headers)) {
+		if (predicate(k, v)) {
+			result[k] = v;
 		}
 	}
 

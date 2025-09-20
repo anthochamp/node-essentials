@@ -5,8 +5,9 @@
  * @returns The capitalized string.
  */
 export function capitalize(value: string): string {
-	if (value.length === 0) {
+	if (value[0] === undefined) {
 		return value;
 	}
+
 	return value[0].toUpperCase() + value.slice(1).toLowerCase();
 }

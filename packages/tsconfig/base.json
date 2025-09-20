@@ -10,7 +10,9 @@
 		"strict": true,
 		"exactOptionalPropertyTypes": false,
 		"noImplicitOverride": true,
+		"noUncheckedIndexedAccess": true,
 		"skipDefaultLibCheck": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"noUncheckedSideEffectImports": true
 	}
 }

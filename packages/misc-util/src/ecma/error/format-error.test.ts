@@ -201,8 +201,7 @@ suite("formatError", () => {
 			expect(lines[0]).toBe(
 				"<Error> top level error message: <Error> cause error message",
 			);
-			expect(lines.length).toBeGreaterThan(1);
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 			expect(lines.findIndex((v) => /^ {4}at /.test(v))).toBe(-1);
 		});
 
@@ -212,8 +211,7 @@ suite("formatError", () => {
 			});
 			const lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: top level error message");
-			expect(lines.length).toBeGreaterThan(1);
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 			expect(lines.findIndex((v) => /^ {4}at /.test(v))).not.toBe(-1);
 		});
 
@@ -222,8 +220,7 @@ suite("formatError", () => {
 			let formatted = formatError(simpleError);
 			const lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: error message");
-			expect(lines.length).toBeGreaterThan(1);
-			expect(lines[1].trim().startsWith("at ")).toBe(true);
+			expect(lines[1]?.trim().startsWith("at ")).toBe(true);
 
 			formatError.defaultOptions.stackTrace = false;
 			formatted = formatError(simpleError);
@@ -239,8 +236,7 @@ suite("formatError", () => {
 			});
 			const lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: error message");
-			expect(lines.length).toBeGreaterThan(1);
-			expect(lines[1].startsWith("-- at ")).toBe(true);
+			expect(lines[1]?.startsWith("-- at ")).toBe(true);
 		});
 
 		test("should use defaultOptions.indentation when not specified in options", () => {
@@ -248,15 +244,13 @@ suite("formatError", () => {
 			let formatted = formatError(simpleError, { stackTrace: true });
 			let lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: error message");
-			expect(lines.length).toBeGreaterThan(1);
-			expect(lines[1].startsWith("-- at ")).toBe(true);
+			expect(lines[1]?.startsWith("-- at ")).toBe(true);
 
 			formatError.defaultOptions.indentation = "  ";
 			formatted = formatError(simpleError, { stackTrace: true });
 			lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: error message");
-			expect(lines.length).toBeGreaterThan(1);
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 		});
 	});
 
@@ -274,7 +268,7 @@ suite("formatError", () => {
 			expect(formatted.includes("\n")).toBe(true);
 			const lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: top level error message");
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 			expect(lines.findIndex((v) => /^ {4}at /.test(v))).not.toBe(-1);
 			expect(lines.includes("  Caused by: Error: cause error message")).toBe(
 				true,
@@ -290,7 +284,7 @@ suite("formatError", () => {
 			expect(lines[0]).toBe(
 				"<Error> top level error message: <Error> cause error message",
 			);
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 			expect(lines.findIndex((v) => /^ {4}at /.test(v))).toBe(-1);
 		});
 	});
@@ -305,7 +299,7 @@ suite("formatError", () => {
 			expect(formatted.includes("\n")).toBe(false);
 			const lines = formatted.split("---");
 			expect(lines[0]).toBe("Error: top level error message");
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 		});
 
 		test("should use defaultOptions.lineSeparator when not specified in options", () => {
@@ -315,7 +309,7 @@ suite("formatError", () => {
 			expect(formatted.includes("\n")).toBe(false);
 			let lines = formatted.split("---");
 			expect(lines[0]).toBe("Error: top level error message");
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 
 			formatError.defaultOptions.lineSeparator = "\n";
 			formatted = formatError(nestedError, { stackTrace: true });
@@ -323,7 +317,7 @@ suite("formatError", () => {
 			expect(formatted.includes("\r\n")).toBe(false);
 			lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: top level error message");
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 		});
 	});
 
@@ -341,8 +335,7 @@ suite("formatError", () => {
 		const formatted = formatError(circularAggregateError, { stackTrace: true });
 		const lines = formatted.split("\n");
 		expect(lines[0]).toBe("AggregateError: Aggregate with circular causes");
-		expect(lines.length).toBeGreaterThan(1);
-		expect(lines[1].startsWith("  at ")).toBe(true);
+		expect(lines[1]?.startsWith("  at ")).toBe(true);
 		expect(lines.includes("      Caused by: Error: Error A [Circular]")).toBe(
 			true,
 		);
@@ -356,7 +349,7 @@ suite("formatError", () => {
 			const formatted = formatError(complexError, { stackTrace: true });
 			const lines = formatted.split("\n");
 			expect(lines[0]).toBe("Error: Complex error message");
-			expect(lines[1].startsWith("  at ")).toBe(true);
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
 			expect(
 				lines.includes(
 					"  Caused by: AggregateError: Aggregate error cause message",

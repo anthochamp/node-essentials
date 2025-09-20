@@ -12,7 +12,7 @@
  * max = `-Infinity` if no values are provided.
  */
 export function minmax(...values: number[]): { min: number; max: number } {
-	if (values.length === 0) {
+	if (values[0] === undefined) {
 		return { min: Infinity, max: -Infinity };
 	}
 

@@ -8,40 +8,19 @@ You get a set of base configs (`base.json`, `node-lib.json`, `node-cli.json`) th
 
 ## Config File Summary
 
-- **base.json**: The strict, modern TypeScript config for Node.js and TypeScript projects. Sets up strict type checking, ESM support, and fast builds. Use this as your starting point for most projects.
-- **node-lib.json**: Extends `base.json` for Node.js library development. Adds declaration file generation, source maps, and ensures ESM compatibility for published packages.
-- **node-cli.json**: Extends `base.json` for Node.js CLI tools. Tweaks the module system for CLI entrypoints and keeps things simple for building command-line apps.
+The following configs are available (see the actual files for details):
 
-## Config File Options
+- [`base.json`](./base.json):
+  - The strict, modern TypeScript config for Node.js and TypeScript projects. Sets up strict type checking, ESM support, and fast builds. Use this as your starting point for most projects.
 
-### base.json
+- [`node-lib.json`](./node-lib.json):
+  - Extends `base.json` for Node.js library development. Adds declaration file generation, source maps, and ensures ESM compatibility for published packages.
 
-- `target`: Sets the JavaScript language version for output (latest ECMAScript).
-- `resolveJsonModule`: Allows importing JSON files as modules.
-- `allowArbitraryExtensions`: Allows importing files with any extension (with a declaration file).
-- `noEmitOnError`: Prevents emitting files if there are type errors.
-- `allowSyntheticDefaultImports`: Allows default imports from modules with no default export.
-- `esModuleInterop`: Allows default imports from CommonJS modules.
-- `forceConsistentCasingInFileNames`: Ensures import paths use consistent casing.
-- `strict`: Enables all strict type-checking options.
-- `exactOptionalPropertyTypes`: Do not differentiate between optional properties and properties that can be undefined.
-- `noImplicitOverride`: Requires explicit `override` keyword for overridden class members.
-- `skipDefaultLibCheck`: Skips type checking of default library declaration files.
-- `skipLibCheck`: Skips type checking of all declaration files for faster builds.
+- [`node-cli.json`](./node-cli.json):
+  - Extends `base.json` for Node.js CLI tools. Tweaks the module system for CLI entrypoints and keeps things simple for building command-line apps.
 
-### node-lib.json
-
-- `isolatedDeclarations`: Ensures all exports are properly typed for declaration generation.
-- `declaration`: Generates type declaration files for publishing libraries.
-- `declarationMap`: Generates source maps for declaration files.
-- `sourceMap`: Generates source maps for JavaScript output.
-- `module`: Ensures ESM compatibility for libraries.
-- `moduleResolution`: Ensures Node.js-style module resolution.
-
-### node-cli.json
-
-- `module`: Preserves the module system for CLI entrypoints.
-- `resolveJsonModule`: Cancel the value in `base.json` config (use TSC default setting).
+- [`dom-lib.json`](./dom-lib.json):
+  - Extends `base.json` for libraries targeting DOM/WebWorker/Node. Adds DOM/WebWorker libs, declaration, source maps, and NodeNext module.
 
 ## How do I use it?
 
@@ -76,9 +55,10 @@ You get a set of base configs (`base.json`, `node-lib.json`, `node-cli.json`) th
 
 3. **Pick your preset:**
 
-   - `base.json`: Good default for most things
-   - `node-lib.json`: For Node.js libraries
+   - `base.json`: Good default for most Node/TS projects
+   - `node-lib.json`: For Node.js libraries (publishing to npm, etc.)
    - `node-cli.json`: For CLI tools
+   - `dom-lib.json`: For libraries targeting DOM/WebWorker/Node
 
 4. **Tweak as needed:**
 
@@ -103,7 +83,7 @@ You get a set of base configs (`base.json`, `node-lib.json`, `node-cli.json`) th
 
 ## More info
 
-- Check out the actual config files in `packages/tsconfig/` for details.
+- Check out the actual config files in `packages/tsconfig/` for details (see summary table above).
 - Read more about extending configs: <https://www.typescriptlang.org/tsconfig#extends>
 - When you want to avoid copy-pasting and manually updating `tsconfig.json` files.
 

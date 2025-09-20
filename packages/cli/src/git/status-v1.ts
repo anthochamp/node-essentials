@@ -73,10 +73,33 @@ export async function gitStatusV1Sync(
 			// either "XY PATH" or "XY ORIG_PATH -> PATH"
 			const words = line.split(" ");
 
+			// biome-ignore lint/style/noNonNullAssertion: "".split(" ").length === 1
+			const [statusCodeFirstChar, statusCodeSecondChar] = words[0]!;
+
+			if (
+				statusCodeFirstChar === undefined ||
+				statusCodeSecondChar === undefined
+			) {
+				throw new Error(`Unexpected git status output line: ${line}`);
+			}
+
+			let path: string;
+			let origPath: string | null;
+
+			const pathSeparatorIndex = words.indexOf("->");
+			if (pathSeparatorIndex !== -1) {
+				// rename or copy
+				origPath = words.slice(1, pathSeparatorIndex).join(" ");
+				path = words.slice(pathSeparatorIndex).join(" ");
+			} else {
+				origPath = null;
+				path = words.slice(1, pathSeparatorIndex).join(" ");
+			}
+
 			return {
-				statusCode: [words[0][0], words[0][1]],
-				path: words.length === 2 ? words[1] : words[3],
-				origPath: words.length === 2 ? null : words[1],
+				statusCode: [statusCodeFirstChar, statusCodeSecondChar],
+				path,
+				origPath,
 			};
 		});
 }

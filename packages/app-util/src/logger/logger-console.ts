@@ -269,6 +269,7 @@ export class LoggerConsole implements Console {
 			: Array.from(allProperties);
 
 		const header = selectedProperties;
+
 		const tableRows = rows.map((row) =>
 			selectedProperties.map((prop) => {
 				const value = row[prop];
@@ -281,7 +282,8 @@ export class LoggerConsole implements Console {
 
 		// Compute column widths
 		const colWidths = header.map((col, i) =>
-			Math.max(col.length, ...tableRows.map((row) => row[i].length)),
+			// biome-ignore lint/style/noNonNullAssertion: tableRows's row has been created from selectedProperties (same length as header)
+			Math.max(col.length, ...tableRows.map((row) => row[i]!.length)),
 		);
 
 		// Create a horizontal separator
@@ -289,10 +291,16 @@ export class LoggerConsole implements Console {
 
 		// Format the table
 		const lines = [
-			header.map((col, i) => col.padEnd(colWidths[i])).join(" | "),
+			header
+				// biome-ignore lint/style/noNonNullAssertion: colWidths has been created from header (same length)
+				.map((col, i) => col.padEnd(colWidths[i]!))
+				.join(" | "),
 			separator,
 			...tableRows.map((row) =>
-				row.map((cell, i) => cell.padEnd(colWidths[i])).join(" | "),
+				row
+					// biome-ignore lint/style/noNonNullAssertion: colWidths has been created from header (same length as tableRows)
+					.map((cell, i) => cell.padEnd(colWidths[i]!))
+					.join(" | "),
 			),
 		];
 

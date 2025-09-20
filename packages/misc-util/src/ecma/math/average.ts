@@ -110,9 +110,13 @@ export function median(...values: number[]): number {
 	const mid = Math.floor(values.length / 2);
 
 	if (values.length % 2 === 0) {
-		return (values[mid - 1] + values[mid]) / 2;
+		// Even number of values, average the two middle values
+		// biome-ignore lint/style/noNonNullAssertion: value.length > 1 so mid > 0
+		return (values[mid - 1]! + values[mid]!) / 2;
 	} else {
-		return values[mid];
+		// Odd number of values, return the middle value
+		// biome-ignore lint/style/noNonNullAssertion: value.length > 0 so mid >= 0
+		return values[mid]!;
 	}
 }
 

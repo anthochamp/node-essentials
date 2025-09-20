@@ -11,8 +11,8 @@ suite("captureStackTrace", () => {
 		}
 		const stack = a();
 		expect(stack).toBeDefined();
-		expect(stack[0].functionName).toBe("b");
-		expect(stack[1].functionName).toBe("a");
+		expect(stack[0]?.functionName).toBe("b");
+		expect(stack[1]?.functionName).toBe("a");
 	});
 
 	test("should use the provided reference to determine where to start the stack trace", () => {
@@ -27,6 +27,6 @@ suite("captureStackTrace", () => {
 		}
 		const stack = a();
 		expect(stack).toBeDefined();
-		expect(stack[0].functionName).toBe("a");
+		expect(stack[0]?.functionName).toBe("a");
 	});
 });

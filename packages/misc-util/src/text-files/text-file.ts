@@ -216,11 +216,7 @@ export async function resolveTextFileFormat(
 		finalNewline = true;
 	}
 
-	let indentation: string | null = null;
-	const indentationMatch = content.match(/^([\t ]+)\S/m);
-	if (indentationMatch) {
-		indentation = indentationMatch[1];
-	}
+	const indentation = content.match(/^([\t ]+)\S/m)?.[1] ?? null;
 
 	let trailingWhitespace = false;
 	if (/[\t ]+$/m.test(content)) {

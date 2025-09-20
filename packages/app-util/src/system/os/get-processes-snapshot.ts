@@ -157,9 +157,13 @@ export async function getProcessesSnapshotPosix<
 
 			const psValue = psEntry[psField];
 
+			if (psValue === undefined) {
+				throw new Error(`Expected field ${psField} to be present in ps result`);
+			}
+
 			switch (psField) {
 				case "vsz":
-					(entry as UnknownRecord)[field] = +psEntry[psField] * BYTES_PER_KIB;
+					(entry as UnknownRecord)[field] = +psValue * BYTES_PER_KIB;
 					break;
 				case "time":
 					(entry as UnknownRecord)[field] = psParseDuration(`${psValue}`);
@@ -199,8 +203,14 @@ export async function getProcessesSnapshotPosix<
 				}
 
 				for (let i = 0; i < args.length; i++) {
-					const arg = args[i];
+					// biome-ignore lint/style/noNonNullAssertion: for loop
+					const arg = args[i]!;
+
 					const entryArg = entry.command[i + 1];
+					if (entryArg === undefined) {
+						return false;
+					}
+
 					if (typeof arg === "string") {
 						if (entryArg !== arg) {
 							return false;

@@ -228,8 +228,12 @@ export async function ps<
 
 		for (let c = 0; c < rowColumns.length; c++) {
 			const field = columns[c];
+			if (!field) {
+				continue;
+			}
 
-			let value: string | number = rowColumns[c];
+			// biome-ignore lint/style/noNonNullAssertion: for loop
+			let value: string | number = rowColumns[c]!;
 
 			const intValue = parseInt(value, 10);
 			if (!Number.isNaN(intValue) && `${intValue}` === value) {
@@ -304,8 +308,10 @@ export function psParseDuration(duration: string): number {
 	let days = 0;
 	let timePart = duration;
 	if (parts.length === 2) {
-		days = +parts[0];
-		timePart = parts[1];
+		// biome-ignore lint/style/noNonNullAssertion: length is checked
+		days = +parts[0]!;
+		// biome-ignore lint/style/noNonNullAssertion: length is checked
+		timePart = parts[1]!;
 	}
 
 	const timeParts = timePart.split(":").reverse();
@@ -314,16 +320,19 @@ export function psParseDuration(duration: string): number {
 		throw new Error(`Invalid duration format: ${duration}`);
 	}
 
-	const seconds = timeParts[0].length === 2 ? +timeParts[0] : NaN;
+	// biome-ignore lint/style/noNonNullAssertion: length is checked
+	const seconds = timeParts[0]!.length === 2 ? +timeParts[0]! : NaN;
 
 	let minutes = 0;
 	if (timeParts.length > 1) {
-		minutes = timeParts[1].length === 2 ? +timeParts[1] : NaN;
+		// biome-ignore lint/style/noNonNullAssertion: length is checked
+		minutes = timeParts[1]!.length === 2 ? +timeParts[1]! : NaN;
 	}
 
 	let hours = 0;
 	if (timeParts.length > 2) {
-		hours = timeParts[2].length === 2 ? +timeParts[2] : NaN;
+		// biome-ignore lint/style/noNonNullAssertion: length is checked
+		hours = timeParts[2]!.length === 2 ? +timeParts[2]! : NaN;
 	}
 
 	const result =

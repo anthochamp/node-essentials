@@ -65,7 +65,8 @@ export class NativeArray<T> implements IList<T> {
 
 	removeFirst(condition: Predicate<[T]>): boolean {
 		for (let i = 0; i < this.data.length; i++) {
-			if (condition(this.data[i])) {
+			// biome-ignore lint/style/noNonNullAssertion: for loop
+			if (condition(this.data[i]!)) {
 				this.data.splice(i, 1);
 				this.semaphore.release(1);
 				return true;
@@ -79,8 +80,11 @@ export class NativeArray<T> implements IList<T> {
 
 		let i = 0;
 		while (i < this.data.length) {
-			if (condition(this.data[i])) {
-				removedItems.push(this.data[i]);
+			// biome-ignore lint/style/noNonNullAssertion: for loop
+			const data = this.data[i]!;
+
+			if (condition(data)) {
+				removedItems.push(data);
 				this.data.splice(i, 1);
 				this.semaphore.release(1);
 			} else {
@@ -93,7 +97,8 @@ export class NativeArray<T> implements IList<T> {
 
 	replaceFirst(condition: Predicate<[T]>, newItem: T): boolean {
 		for (let i = 0; i < this.data.length; i++) {
-			if (condition(this.data[i])) {
+			// biome-ignore lint/style/noNonNullAssertion: for loop
+			if (condition(this.data[i]!)) {
 				this.data[i] = newItem;
 				return true;
 			}
@@ -108,9 +113,12 @@ export class NativeArray<T> implements IList<T> {
 		const replacedItems: T[] = [];
 
 		for (let i = 0; i < this.data.length; i++) {
-			if (condition(this.data[i])) {
-				replacedItems.push(this.data[i]);
-				this.data[i] = newItemFactory(this.data[i]);
+			// biome-ignore lint/style/noNonNullAssertion: for loop
+			const originalData = this.data[i]!;
+
+			if (condition(originalData)) {
+				replacedItems.push(originalData);
+				this.data[i] = newItemFactory(originalData);
 			}
 		}
 

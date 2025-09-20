@@ -151,11 +151,7 @@ export async function resolveJsonFileFormat(
 
 	const content = data.toString(bufferEncoding ?? "binary");
 
-	let indentation: string | null = null;
-	const match = content.match(/^( +|\t+)/m);
-	if (match) {
-		indentation = match[1];
-	}
+	const indentation = content.match(/^( +|\t+)/m)?.[1] ?? null;
 
 	return {
 		...textFileFormat,
