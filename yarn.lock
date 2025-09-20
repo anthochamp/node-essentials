@@ -5,12 +5,12 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@ac-essentials/app-util@workspace:*, @ac-essentials/app-util@workspace:packages/app-util":
+"@ac-essentials/app-util@workspace:^, @ac-essentials/app-util@workspace:packages/app-util":
   version: 0.0.0-use.local
   resolution: "@ac-essentials/app-util@workspace:packages/app-util"
   dependencies:
-    "@ac-essentials/cli": "workspace:*"
-    "@ac-essentials/misc-util": "workspace:*"
+    "@ac-essentials/cli": "workspace:^"
+    "@ac-essentials/misc-util": "workspace:^"
     "@ac-essentials/tsconfig": "workspace:*"
     "@ac-essentials/typedoc-config": "workspace:*"
     "@types/node": "npm:24.5.2"
@@ -30,11 +30,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ac-essentials/cli@workspace:*, @ac-essentials/cli@workspace:packages/cli":
+"@ac-essentials/cli@workspace:^, @ac-essentials/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@ac-essentials/cli@workspace:packages/cli"
   dependencies:
-    "@ac-essentials/misc-util": "workspace:*"
+    "@ac-essentials/misc-util": "workspace:^"
     "@ac-essentials/tsconfig": "workspace:*"
     "@ac-essentials/typedoc-config": "workspace:*"
     "@types/node": "npm:24.5.2"
@@ -59,7 +59,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ac-essentials/misc-util@workspace:*, @ac-essentials/misc-util@workspace:packages/misc-util":
+"@ac-essentials/misc-util@workspace:^, @ac-essentials/misc-util@workspace:packages/misc-util":
   version: 0.0.0-use.local
   resolution: "@ac-essentials/misc-util@workspace:packages/misc-util"
   dependencies:
@@ -2123,7 +2123,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "logger-example@workspace:examples/logger"
   dependencies:
-    "@ac-essentials/app-util": "workspace:*"
+    "@ac-essentials/app-util": "workspace:^"
     tsx: "npm:4.20.5"
   languageName: unknown
   linkType: soft
