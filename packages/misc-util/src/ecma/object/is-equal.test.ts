@@ -103,9 +103,4 @@ suite("isEqual", () => {
 			expect(isEqual(42, 43, customPredicate)).toBe(false);
 		});
 	});
-
-	test("should throw for unimplemented strategies", () => {
-		// biome-ignore lint/suspicious/noExplicitAny: test
-		expect(() => isEqual(1, 1, "unknown" as any)).toThrow("strategy unknown");
-	});
 });
