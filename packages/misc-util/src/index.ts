@@ -137,4 +137,5 @@ export * from "./shell/escape-command.js";
 export * from "./shell/escape-command-arg.js";
 export * from "./shell/escape-posix-sh-sqe.js";
 export * from "./types.d/defined.js";
+export * from "./types.d/math.js";
 export * from "./types.d/set-nullable.js";
