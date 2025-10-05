@@ -58,6 +58,7 @@ export * from "./ecma/json/json-serialize.js";
 export * from "./ecma/json/json-serialize-error.js";
 export * from "./ecma/json/json-stringify-safe.js";
 export * from "./ecma/json/make-json-replacer-function.js";
+export * from "./ecma/map/case-insensitive-map.js";
 export * from "./ecma/math/average.js";
 export * from "./ecma/math/clamp.js";
 export * from "./ecma/math/minmax.js";
