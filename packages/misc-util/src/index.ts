@@ -1,6 +1,7 @@
 export * from "./3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
 export * from "./3rdparty/editorconfig/editorconfig-charset-to-buffer-encoding.js";
 export * from "./3rdparty/fs-ext/flock.js";
+export * from "./async/counter.js";
 export * from "./async/file-lock.js";
 export * from "./async/ilockable.js";
 export * from "./async/isubscribable.js";
