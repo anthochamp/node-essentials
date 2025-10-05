@@ -3,10 +3,10 @@ import { formatWithOptions, type InspectOptions, inspect } from "node:util";
 import {
 	captureStackTrace,
 	defaults,
-	formatDuration,
 	joinNonEmpty,
 	Stack,
 } from "@ac-essentials/misc-util";
+import { Temporal } from "temporal-polyfill";
 import type { ILoggerPrinter } from "./logger-printer.js";
 import {
 	LoggerLogLevel,
@@ -119,8 +119,12 @@ export class LoggerConsole implements Console {
 		process.stderr,
 	);
 	private readonly countMap = new Map<string, number>();
-	private readonly timerTable = new Map<string, number>();
+	private readonly timerTable = new Map<string, Temporal.Instant>();
 	private readonly groupStack = new Stack<string>();
+	// @ts-expect-error: until https://github.com/microsoft/TypeScript/pull/60646 is merged
+	private readonly durationFormatter = new Intl.DurationFormat(undefined, {
+		style: "narrow",
+	});
 
 	/**
 	 * Creates a new `LoggerConsole` instance.
@@ -408,7 +412,7 @@ export class LoggerConsole implements Console {
 			void this.logger("warn", [`Timer '${label}' already exists`]);
 			return;
 		}
-		this.timerTable.set(label, Date.now());
+		this.timerTable.set(label, Temporal.Now.instant());
 	}
 
 	// https://console.spec.whatwg.org/#timelog
@@ -418,7 +422,9 @@ export class LoggerConsole implements Console {
 			void this.logger("warn", [`Timer '${label}' does not exist`]);
 			return;
 		}
-		const duration = formatDuration(Date.now() - startTime);
+		const duration = this.durationFormatter.format(
+			Temporal.Now.instant().since(startTime),
+		);
 		void this.logger("timeLog", [`${label}: ${duration}`, ...data]);
 	}
 
@@ -429,7 +435,9 @@ export class LoggerConsole implements Console {
 			void this.logger("warn", [`Timer '${label}' does not exist`]);
 			return;
 		}
-		const duration = formatDuration(Date.now() - startTime);
+		const duration = this.durationFormatter.format(
+			Temporal.Now.instant().since(startTime),
+		);
 		this.timerTable.delete(label);
 		void this.logger("timeEnd", [`${label}: ${duration}`]);
 	}

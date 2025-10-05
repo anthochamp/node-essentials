@@ -221,12 +221,12 @@ suite("LoggerConsole", () => {
 		test("should handle time and timeEnd calls", () => {
 			const loggerConsole = new LoggerConsole([printerMock]);
 			loggerConsole.time("myTimer");
-			vi.advanceTimersByTime(500);
+			vi.advanceTimersByTime(5100);
 			loggerConsole.timeEnd("myTimer");
 			expect(printerMock.print).toHaveBeenCalledTimes(1);
 			expect(printerMock.print).toHaveBeenNthCalledWith(1, {
 				logLevel: "info",
-				message: expect.stringMatching(/^myTimer: 5\d{2}ms$/),
+				message: expect.stringMatching(/^myTimer: 5s 100ms$/),
 				metadata: {},
 
 				stackTrace: null,
@@ -244,7 +244,7 @@ suite("LoggerConsole", () => {
 			expect(printerMock.print).toHaveBeenCalledTimes(2);
 			expect(printerMock.print).toHaveBeenNthCalledWith(1, {
 				logLevel: "debug",
-				message: expect.stringMatching(/^myTimer: 3\d{2}ms First log$/),
+				message: expect.stringMatching(/^myTimer: 300ms First log$/),
 				metadata: {},
 
 				stackTrace: null,
@@ -252,7 +252,7 @@ suite("LoggerConsole", () => {
 			});
 			expect(printerMock.print).toHaveBeenNthCalledWith(2, {
 				logLevel: "debug",
-				message: expect.stringMatching(/^myTimer: 5\d{2}ms Second log$/),
+				message: expect.stringMatching(/^myTimer: 500ms Second log$/),
 				metadata: {},
 
 				stackTrace: null,

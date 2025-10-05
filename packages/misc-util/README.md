@@ -136,10 +136,6 @@ Here's a quick overview of the main utilities available in this package (see sou
 - [`toml-file`](src/text-files/toml-file.ts): Read and write TOML files.
 - [`yaml-file`](src/text-files/yaml-file.ts): Read and write YAML files.
 
-### Time
-
-- [`format-duration`](src/time/format-duration.ts): Format a duration in milliseconds as a human-readable string.
-
 ### 3rd Party Utilities
 
 - [`chardet-charset-to-buffer-encoding`](src/3rdparty/chardet/chardet-charset-to-buffer-encoding.ts): Charset conversion helpers for chardet.

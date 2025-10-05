@@ -16,6 +16,7 @@
 		"@ac-essentials/misc-util": "workspace:^",
 		"cosmiconfig": "^9.0.0",
 		"find-up": "^8.0.0",
+		"temporal-polyfill": "^0.3.0",
 		"type-fest": "^5.0.1"
 	},
 	"devDependencies": {
