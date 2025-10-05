@@ -46,12 +46,3 @@ export type HttpOutgoingQueryParameters = Record<
 	HttpOutgoingQueryParameterValue
 >;
 export type HttpQueryParameters = HttpIncomingQueryParameters;
-
-export type HttpHeaderName = string;
-export type HttpIncomingHeaderValue = string;
-export type HttpOutgoingHeaderValue = string | number | bigint | boolean;
-
-export type HttpHeadersLike<T> = Record<HttpHeaderName, T | T[]>;
-export type HttpIncomingHeaders = HttpHeadersLike<HttpIncomingHeaderValue>;
-export type HttpOutgoingHeaders = HttpHeadersLike<HttpOutgoingHeaderValue>;
-export type HttpHeaders = HttpIncomingHeaders;
