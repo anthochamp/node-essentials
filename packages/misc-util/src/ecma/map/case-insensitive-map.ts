@@ -1,4 +1,4 @@
-import { stringIsEqualI } from "../string/string-is-equal-i.js";
+import { stringIsEqualCaseInsensitive } from "../string/string-is-equal.js";
 
 /**
  * A case-insensitive `Map`.
@@ -9,7 +9,7 @@ export class CaseInsensitiveMap<T, U> extends Map<T, U> {
 	override set(key: T, value: U): this {
 		if (typeof key === "string") {
 			for (const k of this.keys()) {
-				if (typeof k === "string" && stringIsEqualI(key, k)) {
+				if (typeof k === "string" && stringIsEqualCaseInsensitive(key, k)) {
 					key = k as T;
 					break;
 				}
@@ -22,7 +22,7 @@ export class CaseInsensitiveMap<T, U> extends Map<T, U> {
 	override get(key: T): U | undefined {
 		if (typeof key === "string") {
 			for (const k of this.keys()) {
-				if (typeof k === "string" && stringIsEqualI(key, k)) {
+				if (typeof k === "string" && stringIsEqualCaseInsensitive(key, k)) {
 					key = k as T;
 					break;
 				}
@@ -35,7 +35,7 @@ export class CaseInsensitiveMap<T, U> extends Map<T, U> {
 	override has(key: T): boolean {
 		if (typeof key === "string") {
 			for (const k of this.keys()) {
-				if (typeof k === "string" && stringIsEqualI(key, k)) {
+				if (typeof k === "string" && stringIsEqualCaseInsensitive(key, k)) {
 					return true;
 				}
 			}
@@ -47,7 +47,7 @@ export class CaseInsensitiveMap<T, U> extends Map<T, U> {
 	override delete(key: T): boolean {
 		if (typeof key === "string") {
 			for (const k of this.keys()) {
-				if (typeof k === "string" && stringIsEqualI(key, k)) {
+				if (typeof k === "string" && stringIsEqualCaseInsensitive(key, k)) {
 					key = k as T;
 					break;
 				}
