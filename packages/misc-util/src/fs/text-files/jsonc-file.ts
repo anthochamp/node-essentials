@@ -5,7 +5,7 @@ import jsonc, {
 	type ParseOptions,
 } from "jsonc-parser";
 import type { Except, JsonValue, Simplify } from "type-fest";
-import { defaults } from "../ecma/object/defaults.js";
+import { defaults } from "../../ecma/object/defaults.js";
 import {
 	type JsonFileFormat,
 	type JsonFileFormatOptions,

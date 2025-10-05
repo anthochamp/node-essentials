@@ -4,15 +4,15 @@ import chardet = require("chardet");
 
 import iconvLite from "iconv-lite";
 import type { Except, SetNonNullable } from "type-fest";
-import { chardetCharsetToBufferEncoding } from "../3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
-import { UnsupportedError } from "../ecma/error/unsupported-error.js";
-import { defaults } from "../ecma/object/defaults.js";
+import { chardetCharsetToBufferEncoding } from "../../3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
+import { UnsupportedError } from "../../ecma/error/unsupported-error.js";
+import { defaults } from "../../ecma/object/defaults.js";
 import {
 	NODE_READ_FILE_DEFAULT_OPTIONS,
 	NODE_WRITE_FILE_DEFAULT_OPTIONS,
 	type NodeReadFileOptions,
 	type NodeWriteFileOptions,
-} from "../node/fs/types.js";
+} from "../../node/fs/types.js";
 
 /**
  * Describes the format of a text file.

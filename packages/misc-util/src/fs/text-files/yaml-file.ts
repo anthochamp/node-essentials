@@ -1,7 +1,7 @@
 import { readFile, type writeFile } from "node:fs/promises";
 import type { Except } from "type-fest";
 import * as yaml from "yaml";
-import { defaults } from "../ecma/object/defaults.js";
+import { defaults } from "../../ecma/object/defaults.js";
 import {
 	READ_TEXT_FILE_DEFAULT_OPTIONS,
 	type ReadTextFileOptions,

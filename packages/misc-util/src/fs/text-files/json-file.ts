@@ -1,7 +1,7 @@
 import { readFile, type writeFile } from "node:fs/promises";
 import type { JsonValue, Simplify } from "type-fest";
-import { chardetCharsetToBufferEncoding } from "../3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
-import { defaults } from "../ecma/object/defaults.js";
+import { chardetCharsetToBufferEncoding } from "../../3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
+import { defaults } from "../../ecma/object/defaults.js";
 import {
 	READ_TEXT_FILE_DEFAULT_OPTIONS,
 	type ReadTextFileOptions,

@@ -1,7 +1,7 @@
 import { readFile, type writeFile } from "node:fs/promises";
 import json5 from "json5";
 import type { JsonValue, Simplify } from "type-fest";
-import { defaults } from "../ecma/object/defaults.js";
+import { defaults } from "../../ecma/object/defaults.js";
 import {
 	type JsonFileFormat,
 	type JsonFileFormatOptions,

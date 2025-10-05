@@ -1,7 +1,7 @@
 import type { PathLike } from "node:fs";
 import { open, stat } from "node:fs/promises";
-import { BYTES_PER_KIB } from "../../constants.js";
-import { defaults } from "../../ecma/object/defaults.js";
+import { BYTES_PER_KIB } from "../constants.js";
+import { defaults } from "../ecma/object/defaults.js";
 
 export type FileContentEqualOptions = {
 	/**
