@@ -94,6 +94,7 @@ export * from "./ecma/timers/delay.js";
 export * from "./ecma/timers/periodical-timer.js";
 export * from "./ecma/timers/sleep.js";
 export * from "./ecma/timers/timer.js";
+export * from "./fs/escape-path.js";
 export * from "./fs/file-content-equal.js";
 export * from "./fs/shorten-posix-path.js";
 export * from "./fs/text-files/ini-file.js";
