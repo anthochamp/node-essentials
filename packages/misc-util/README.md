@@ -85,7 +85,6 @@ Here's a quick overview of the main utilities available in this package (see sou
 - [`scale`](src/ecma/math/scale.ts): Scale a number in 0..1 to a new range.
 - [`to-fixed-length`](src/ecma/number/to-fixed-length.ts): Format a number to a fixed-length string.
 - [`abortable-promise`](src/ecma/promise/abortable-promise.ts): Promise subclass with abort support.
-- [`regexp-escape`](src/ecma/regexp/regexp-escape.ts): Escape special characters for use in RegExp patterns.
 - [`delay`](src/ecma/timers/delay.ts): Delay execution of a callback by a given number of milliseconds.
 - [`periodical-timer`](src/ecma/timers/periodical-timer.ts): Timer that calls a callback at regular intervals.
 - [`sleep`](src/ecma/timers/sleep.ts): Sleep for a specified number of milliseconds.

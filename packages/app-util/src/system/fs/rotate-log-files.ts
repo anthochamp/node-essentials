@@ -1,11 +1,6 @@
 import { readdir, rename, stat, unlink } from "node:fs/promises";
 import * as path from "node:path";
-import {
-	defaults,
-	existsAsync,
-	MS_PER_MINUTE,
-	regexpEscape,
-} from "@ac-essentials/misc-util";
+import { defaults, existsAsync, MS_PER_MINUTE } from "@ac-essentials/misc-util";
 
 export type RotateLogFilesOptions = {
 	/**
@@ -51,7 +46,7 @@ export async function rotateLogFiles(
 	// get old log files names (sorted by index, descending)
 	const oldFilesNames = (await readdir(dirName))
 		.map((v) =>
-			new RegExp(`${regexpEscape(fileName)}\\.\\d+\\.?`).test(v)
+			new RegExp(`${RegExp.escape(fileName)}\\.\\d+\\.?`).test(v)
 				? v.split(".")
 				: null,
 		)
