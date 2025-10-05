@@ -86,6 +86,7 @@ export * from "./ecma/string/prefix-lines.js";
 export * from "./ecma/string/replace-diacritics.js";
 export * from "./ecma/string/snake-case.js";
 export * from "./ecma/string/start-case.js";
+export * from "./ecma/string/string-pointer.js";
 export * from "./ecma/string/truncate.js";
 export * from "./ecma/string/upper-case.js";
 export * from "./ecma/string/upper-first.js";
