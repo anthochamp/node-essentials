@@ -77,23 +77,23 @@ suite("formatError", () => {
 
 	suite("options.skipCauses", () => {
 		test("should include causes when false", () => {
-			const formatted = formatError(nestedError, { skipCauses: false });
+			const formatted = formatError(nestedError, { skipCause: false });
 			expect(formatted).toBe(
 				"<Error> top level error message: <Error> cause error message",
 			);
 		});
 
 		test("should exclude causes when true", () => {
-			const formatted = formatError(nestedError, { skipCauses: true });
+			const formatted = formatError(nestedError, { skipCause: true });
 			expect(formatted).toBe("<Error> top level error message");
 		});
 
 		test("should use defaultOptions.skipCauses when not specified in options", () => {
-			formatError.defaultOptions.skipCauses = true;
+			formatError.defaultOptions.skipCause = true;
 			let formatted = formatError(nestedError);
 			expect(formatted).toBe("<Error> top level error message");
 
-			formatError.defaultOptions.skipCauses = false;
+			formatError.defaultOptions.skipCause = false;
 			formatted = formatError(nestedError);
 			expect(formatted).toBe(
 				"<Error> top level error message: <Error> cause error message",
@@ -362,6 +362,101 @@ suite("formatError", () => {
 			expect(formatted).toBe(
 				"<Error> Complex error message: <AggregateError> Aggregate error cause message: (#1: <Error> top level error message: <Error> cause error message, #2: <AggregateError> Aggregate error message: (#1: <Error> Inner error 1 message, #2: <Error> Inner error 2 message))",
 			);
+		});
+	});
+
+	suite("SuppressedError formatting", () => {
+		test("should format a simple SuppressedError (single-line)", () => {
+			const error = new Error("Main error");
+			const suppressed = new Error("Suppressed error");
+			const suppressedError = new SuppressedError(
+				error,
+				suppressed,
+				"SuppressedError message",
+			);
+
+			const formatted = formatError(suppressedError, { stackTrace: false });
+			expect(formatted).toBe(
+				"<SuppressedError> SuppressedError message: <Error> Main error: (Suppressed: <Error> Suppressed error)",
+			);
+		});
+
+		test("should format a simple SuppressedError (multi-line)", () => {
+			const error = new Error("Main error");
+			const suppressed = new Error("Suppressed error");
+			const suppressedError = new SuppressedError(
+				error,
+				suppressed,
+				"SuppressedError message",
+			);
+
+			const formatted = formatError(suppressedError, { stackTrace: true });
+			const lines = formatted.split("\n");
+			expect(lines[0]).toBe("SuppressedError: SuppressedError message");
+			expect(lines[1]?.startsWith("  at ")).toBe(true);
+			expect(
+				lines.some((line) =>
+					line.includes("Suppressed: Error: Suppressed error"),
+				),
+			).toBe(true);
+			expect(lines.some((line) => line.includes("Error: Main error"))).toBe(
+				true,
+			);
+		});
+
+		test("should format nested SuppressedError (single-line)", () => {
+			const errorA = new Error("Error A");
+			const errorB = new Error("Error B");
+			const suppressedErrorInner = new SuppressedError(
+				errorA,
+				errorB,
+				"Inner SuppressedError",
+			);
+			const errorC = new Error("Error C");
+			const suppressedErrorOuter = new SuppressedError(
+				suppressedErrorInner,
+				errorC,
+				"Outer SuppressedError",
+			);
+
+			const formatted = formatError(suppressedErrorOuter, {
+				stackTrace: false,
+			});
+			expect(formatted).toBe(
+				"<SuppressedError> Outer SuppressedError: <SuppressedError> Inner SuppressedError: <Error> Error A: (Suppressed: <Error> Error B): (Suppressed: <Error> Error C)",
+			);
+		});
+
+		test("should format nested SuppressedError (multi-line)", () => {
+			const errorA = new Error("Error A");
+			const errorB = new Error("Error B");
+			const suppressedErrorInner = new SuppressedError(
+				errorA,
+				errorB,
+				"Inner SuppressedError",
+			);
+			const errorC = new Error("Error C");
+			const suppressedErrorOuter = new SuppressedError(
+				suppressedErrorInner,
+				errorC,
+				"Outer SuppressedError",
+			);
+
+			const formatted = formatError(suppressedErrorOuter, { stackTrace: true });
+			const lines = formatted.split("\n");
+			expect(lines[0]).toBe("SuppressedError: Outer SuppressedError");
+			expect(
+				lines.some((line) =>
+					line.includes("SuppressedError: Inner SuppressedError"),
+				),
+			).toBe(true);
+			expect(lines.some((line) => line.includes("Error: Error A"))).toBe(true);
+			expect(
+				lines.some((line) => line.includes("Suppressed: Error: Error B")),
+			).toBe(true);
+			expect(
+				lines.some((line) => line.includes("Suppressed: Error: Error C")),
+			).toBe(true);
 		});
 	});
 });

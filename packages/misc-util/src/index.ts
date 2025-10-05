@@ -43,6 +43,7 @@ export * from "./ecma/error/capture-stack-trace.js";
 export * from "./ecma/error/error.js";
 export * from "./ecma/error/error-stack.js";
 export * from "./ecma/error/format-error.js";
+export * from "./ecma/error/suppressed-error.js";
 export * from "./ecma/error/traverse-error.js";
 export * from "./ecma/error/unimplemented-error.js";
 export * from "./ecma/error/unsupported-error.js";

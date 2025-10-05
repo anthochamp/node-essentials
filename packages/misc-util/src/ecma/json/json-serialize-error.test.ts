@@ -17,6 +17,11 @@ const aggregateError = new AggregateError(
 	[error, nestedError, extendedError, customError],
 	"Aggregate error",
 );
+const suppressedError = new SuppressedError(
+	error,
+	nestedError,
+	"Suppressed error message",
+);
 
 suite("jsonSerializeError", () => {
 	test("should serialize a simple error", () => {
@@ -96,6 +101,58 @@ suite("jsonSerializeError", () => {
 					stack: expect.stringContaining("CustomError: Custom error"),
 				},
 			],
+		});
+	});
+
+	test("should serialize a SuppressedError", () => {
+		const serialized = jsonSerializeError(suppressedError);
+		expect(serialized).toEqual({
+			name: "SuppressedError",
+			message: "Suppressed error message",
+			stack: expect.stringContaining(
+				"SuppressedError: Suppressed error message",
+			),
+			error: {
+				name: "Error",
+				message: "Test error",
+				stack: expect.stringContaining("Error: Test error"),
+			},
+			suppressed: {
+				name: "Error",
+				message: "Test error with cause",
+				stack: expect.stringContaining("Error: Test error with cause"),
+				cause: {
+					name: "Error",
+					message: "Test error",
+					stack: expect.stringContaining("Error: Test error"),
+				},
+			},
+		});
+	});
+
+	test("should serialize a SuppressedError with custom errors", () => {
+		const customSuppressedError = new SuppressedError(
+			customError,
+			extendedError,
+			"Custom suppressed",
+		);
+		const serialized = jsonSerializeError(customSuppressedError);
+		expect(serialized).toEqual({
+			name: "SuppressedError",
+			message: "Custom suppressed",
+			stack: expect.stringContaining("SuppressedError: Custom suppressed"),
+			error: {
+				name: "CustomError",
+				message: "Custom error",
+				stack: expect.stringContaining("CustomError: Custom error"),
+			},
+			suppressed: {
+				name: "Error",
+				message: "Extended error",
+				stack: expect.stringContaining("Error: Extended error"),
+				code: 500,
+				info: { detail: "Additional info" },
+			},
 		});
 	});
 });

@@ -1,31 +1,48 @@
 import { defaults } from "../object/defaults.js";
 import { isAggregateErrorLike } from "./aggregate-error.js";
 import { type IError, isErrorLike } from "./error.js";
+import { isSuppressedErrorLike } from "./suppressed-error.js";
 
 export type TraverseErrorOptions = {
 	// step into error.cause (default: true)
-	traverseCauses?: boolean;
+	traverseCause?: boolean;
 
 	// step into aggregateError.errors array (default: true)
 	traverseAggregateErrors?: boolean;
+
+	// step into suppressedError.error (default: true)
+	traverseSuppressedError?: boolean;
+
+	// step into suppressedError.suppressed (default: true)
+	traverseSuppressedSuppressed?: boolean;
+
+	// whether to ignore null error values when traversing (default: false)
+	skipNullErrors?: boolean;
 };
 
-export type TraverseErrorSource = "cause" | "aggregate";
+export type TraverseErrorSource =
+	| "cause"
+	| "aggregate-errors"
+	| "suppressed-error"
+	| "suppressed-suppressed";
 
 export type TraverseErrorCallback = (
-	currentError: IError, // the error currently being visited
+	currentError: unknown, // the error currently being visited
 	parentError: IError | null, // the parent error, if any
-	source: TraverseErrorSource | null, // how we reached the current error from the parent (cause or aggregate), or null if no parent
+	source: TraverseErrorSource | null, // how we reached the current error from the parent, or null if no parent
 ) => boolean | undefined;
 
 const TRAVERSE_ERROR_DEFAULT_OPTIONS: Required<TraverseErrorOptions> = {
-	traverseCauses: true,
+	traverseCause: true,
 	traverseAggregateErrors: true,
+	traverseSuppressedError: true,
+	traverseSuppressedSuppressed: true,
+	skipNullErrors: false,
 };
 
 /**
- * Traverse an error and its inner errors (causes and/or aggregate errors),
- * calling a callback for each error encountered.
+ * Traverse an error and its inner errors, calling a callback for each error
+ * encountered.
  *
  * The traversal can be stopped at any time by returning false from the callback.
  *
@@ -34,7 +51,7 @@ const TRAVERSE_ERROR_DEFAULT_OPTIONS: Required<TraverseErrorOptions> = {
  * @param options - Options to control the traversal behavior.
  */
 export function traverseError(
-	error: IError,
+	error: unknown,
 	callback: TraverseErrorCallback,
 	options?: TraverseErrorOptions,
 ): void {
@@ -44,43 +61,81 @@ export function traverseError(
 }
 
 function internalTraverseError(
-	error: IError,
+	error: unknown,
 	callback: TraverseErrorCallback,
 	options: Required<TraverseErrorOptions>,
 	visited: Set<IError>,
 	parent?: IError,
 	source?: TraverseErrorSource,
 ): boolean {
-	if (visited.has(error)) {
-		return false;
+	if (error === undefined || (error === null && options.skipNullErrors)) {
+		return true;
 	}
-	visited.add(error);
 
 	let shouldContinue = callback(error, parent ?? null, source ?? null);
 	if (shouldContinue === false) {
 		return false;
 	}
 
+	if (!isErrorLike(error)) {
+		return true;
+	}
+
+	if (visited.has(error)) {
+		return false;
+	}
+	visited.add(error);
+
 	if (options.traverseAggregateErrors && isAggregateErrorLike(error)) {
 		for (const innerError of error.errors) {
-			if (isErrorLike(innerError)) {
-				shouldContinue = internalTraverseError(
-					innerError,
-					callback,
-					options,
-					visited,
-					error,
-					"aggregate",
-				);
+			shouldContinue = internalTraverseError(
+				innerError,
+				callback,
+				options,
+				visited,
+				error,
+				"aggregate-errors",
+			);
 
-				if (!shouldContinue) {
-					return false;
-				}
+			if (!shouldContinue) {
+				return false;
 			}
 		}
 	}
 
-	if (options.traverseCauses && isErrorLike(error.cause)) {
+	if (isSuppressedErrorLike(error)) {
+		if (options.traverseSuppressedError) {
+			shouldContinue = internalTraverseError(
+				error.error,
+				callback,
+				options,
+				visited,
+				error,
+				"suppressed-error",
+			);
+
+			if (!shouldContinue) {
+				return false;
+			}
+		}
+
+		if (options.traverseSuppressedSuppressed) {
+			shouldContinue = internalTraverseError(
+				error.suppressed,
+				callback,
+				options,
+				visited,
+				error,
+				"suppressed-suppressed",
+			);
+
+			if (!shouldContinue) {
+				return false;
+			}
+		}
+	}
+
+	if (options.traverseCause) {
 		shouldContinue = internalTraverseError(
 			error.cause,
 			callback,

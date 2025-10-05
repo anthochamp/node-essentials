@@ -1,6 +1,7 @@
 import type { JsonObject, JsonValue } from "type-fest";
 import { isAggregateErrorLike } from "../error/aggregate-error.js";
 import { type IError, isErrorLike } from "../error/error.js";
+import { isSuppressedErrorLike } from "../error/suppressed-error.js";
 import { jsonSerialize } from "./json-serialize.js";
 import { makeJsonReplacerFunction } from "./make-json-replacer-function.js";
 
@@ -13,6 +14,11 @@ export type JsonError = JsonObject & {
 
 export type JsonAggregateError = JsonError & {
 	errors: (JsonError | JsonValue)[];
+};
+
+export type JsonSuppressedError = JsonError & {
+	error: JsonError | JsonValue;
+	suppressed: JsonError | JsonValue;
 };
 
 /**
@@ -73,6 +79,11 @@ export function jsonSerializeError<T extends IError>(
 			}
 			return acc;
 		}, []);
+	}
+
+	if (isSuppressedErrorLike(error)) {
+		result.error = jsonSerialize(error.error, internalReplacer);
+		result.suppressed = jsonSerialize(error.suppressed, internalReplacer);
 	}
 
 	return result;

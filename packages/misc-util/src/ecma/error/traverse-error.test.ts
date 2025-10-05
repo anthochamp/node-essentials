@@ -32,7 +32,7 @@ suite("traverseError", () => {
 		const errorA = new Error("Error A", { cause: errorB });
 
 		const callback = vi.fn();
-		traverseError(errorA, callback, { traverseCauses: false });
+		traverseError(errorA, callback, { traverseCause: false });
 
 		expect(callback).toHaveBeenCalledOnce();
 		expect(callback).toHaveBeenCalledWith(errorA, null, null);
@@ -62,13 +62,13 @@ suite("traverseError", () => {
 			3,
 			errorC1,
 			aggregateErrorB,
-			"aggregate",
+			"aggregate-errors",
 		);
 		expect(callback).toHaveBeenNthCalledWith(
 			4,
 			errorC2,
 			aggregateErrorB,
-			"aggregate",
+			"aggregate-errors",
 		);
 	});
 
@@ -121,14 +121,14 @@ suite("traverseError", () => {
 			3,
 			errorD1,
 			aggregateErrorB,
-			"aggregate",
+			"aggregate-errors",
 		);
 		expect(callback).toHaveBeenNthCalledWith(4, errorE, errorD1, "cause");
 		expect(callback).toHaveBeenNthCalledWith(
 			5,
 			errorD2,
 			aggregateErrorB,
-			"aggregate",
+			"aggregate-errors",
 		);
 		expect(callback).toHaveBeenNthCalledWith(
 			6,
@@ -145,7 +145,7 @@ suite("traverseError", () => {
 		const callback = vi.fn();
 		traverseError(errorA, callback);
 
-		expect(callback).toHaveBeenCalledOnce();
+		expect(callback).toHaveBeenCalledTimes(2);
 		expect(callback).toHaveBeenCalledWith(errorA, null, null);
 	});
 
@@ -194,7 +194,183 @@ suite("traverseError", () => {
 			3,
 			errorC1,
 			aggregateErrorB,
-			"aggregate",
+			"aggregate-errors",
 		);
+	});
+
+	test("should traverse SuppressedError", () => {
+		const error = new Error("Main error");
+		const suppressed = new Error("Suppressed error");
+		const suppressedError = new SuppressedError(
+			error,
+			suppressed,
+			"SuppressedError message",
+		);
+
+		const callback = vi.fn();
+		traverseError(suppressedError, callback);
+
+		expect(callback).toHaveBeenCalledTimes(3);
+		expect(callback).toHaveBeenNthCalledWith(1, suppressedError, null, null);
+		expect(callback).toHaveBeenNthCalledWith(
+			2,
+			error,
+			suppressedError,
+			"suppressed-error",
+		);
+		expect(callback).toHaveBeenNthCalledWith(
+			3,
+			suppressed,
+			suppressedError,
+			"suppressed-suppressed",
+		);
+	});
+
+	test("should traverse nested SuppressedError", () => {
+		const errorA = new Error("Error A");
+		const errorB = new Error("Error B");
+		const suppressedErrorInner = new SuppressedError(
+			errorA,
+			errorB,
+			"Inner SuppressedError",
+		);
+		const errorC = new Error("Error C");
+		const suppressedErrorOuter = new SuppressedError(
+			suppressedErrorInner,
+			errorC,
+			"Outer SuppressedError",
+		);
+
+		const callback = vi.fn();
+		traverseError(suppressedErrorOuter, callback);
+
+		expect(callback).toHaveBeenCalledTimes(5);
+		expect(callback).toHaveBeenNthCalledWith(
+			1,
+			suppressedErrorOuter,
+			null,
+			null,
+		);
+		expect(callback).toHaveBeenNthCalledWith(
+			2,
+			suppressedErrorInner,
+			suppressedErrorOuter,
+			"suppressed-error",
+		);
+		expect(callback).toHaveBeenNthCalledWith(
+			3,
+			errorA,
+			suppressedErrorInner,
+			"suppressed-error",
+		);
+		expect(callback).toHaveBeenNthCalledWith(
+			4,
+			errorB,
+			suppressedErrorInner,
+			"suppressed-suppressed",
+		);
+		expect(callback).toHaveBeenNthCalledWith(
+			5,
+			errorC,
+			suppressedErrorOuter,
+			"suppressed-suppressed",
+		);
+	});
+
+	test("should respect traverseCause and traverseAggregateErrors options together", () => {
+		const errorC1 = new Error("Error C1");
+		const errorC2 = new Error("Error C2");
+		const aggregateErrorB = new AggregateError(
+			[errorC1, errorC2],
+			"Aggregate B",
+		);
+		const errorA = new Error("Error A", { cause: aggregateErrorB });
+
+		const callback = vi.fn();
+		traverseError(errorA, callback, {
+			traverseCause: false,
+			traverseAggregateErrors: false,
+		});
+
+		expect(callback).toHaveBeenCalledOnce();
+		expect(callback).toHaveBeenCalledWith(errorA, null, null);
+	});
+
+	test("should respect traverseCause option with SuppressedError", () => {
+		const error = new Error("Main error");
+		const suppressed = new Error("Suppressed error");
+		const suppressedError = new SuppressedError(
+			error,
+			suppressed,
+			"SuppressedError message",
+		);
+
+		const callback = vi.fn();
+		traverseError(suppressedError, callback, { traverseCause: false });
+
+		expect(callback).toHaveBeenCalledTimes(3);
+		expect(callback).toHaveBeenNthCalledWith(1, suppressedError, null, null);
+		expect(callback).toHaveBeenNthCalledWith(
+			2,
+			error,
+			suppressedError,
+			"suppressed-error",
+		);
+		expect(callback).toHaveBeenNthCalledWith(
+			3,
+			suppressed,
+			suppressedError,
+			"suppressed-suppressed",
+		);
+	});
+
+	test("should respect traverseAggregateErrors option with AggregateError inside SuppressedError", () => {
+		const errorC1 = new Error("Error C1");
+		const errorC2 = new Error("Error C2");
+		const aggregateError = new AggregateError([errorC1, errorC2], "Aggregate");
+		const suppressedError = new SuppressedError(
+			aggregateError,
+			new Error("Suppressed"),
+			"SuppressedError",
+		);
+
+		const callback = vi.fn();
+		traverseError(suppressedError, callback, {
+			traverseAggregateErrors: false,
+		});
+
+		expect(callback).toHaveBeenCalledTimes(3);
+		expect(callback).toHaveBeenNthCalledWith(1, suppressedError, null, null);
+		expect(callback).toHaveBeenNthCalledWith(
+			2,
+			aggregateError,
+			suppressedError,
+			"suppressed-error",
+		);
+		expect(callback).toHaveBeenNthCalledWith(
+			3,
+			expect.any(Error),
+			suppressedError,
+			"suppressed-suppressed",
+		);
+	});
+
+	test("should not traverse suppressed-error and suppressed-suppressed if traverseSuppressedError and traverseSuppressedSuppressed are false", () => {
+		const error = new Error("Main error");
+		const suppressed = new Error("Suppressed error");
+		const suppressedError = new SuppressedError(
+			error,
+			suppressed,
+			"SuppressedError message",
+		);
+
+		const callback = vi.fn();
+		traverseError(suppressedError, callback, {
+			traverseSuppressedSuppressed: false,
+			traverseSuppressedError: false,
+		});
+
+		expect(callback).toHaveBeenCalledOnce();
+		expect(callback).toHaveBeenCalledWith(suppressedError, null, null);
 	});
 });

@@ -4,6 +4,7 @@ import { prefixLines } from "../string/prefix-lines.js";
 import { isAggregateErrorLike } from "./aggregate-error.js";
 import { type IError, isErrorLike } from "./error.js";
 import { formatErrorStack, parseErrorStack } from "./error-stack.js";
+import { isSuppressedErrorLike } from "./suppressed-error.js";
 
 export type FormatErrorOptions = {
 	// Prefix to add to the formatted error
@@ -23,7 +24,7 @@ export type FormatErrorOptions = {
 	// using the `stringifier` option.
 	//
 	// Defaults to false.
-	skipCauses?: boolean;
+	skipCause?: boolean;
 
 	// Whether to skip recursing into aggregated errors
 	//
@@ -32,6 +33,24 @@ export type FormatErrorOptions = {
 	//
 	// Defaults to false.
 	skipAggregateErrors?: boolean;
+
+	// Whether to skip recursing into suppressed errors
+	//
+	// If false, and if the error is a SuppressedError, the suppressed error
+	// (`error` member) will be included in the output, formatted recursively.
+	//
+	// Defaults to false.
+	skipSuppressedError?: boolean;
+
+	// Whether to skip recursing into suppressed errors of suppressed errors
+	//
+	// If false, and if the error is a SuppressedError, the suppressed error
+	// (`suppressed` member) will be included in the output, formatted recursively.
+	//
+	// Ignored if `skipSuppressedError` is true.
+	//
+	// Defaults to false.
+	skipSuppressedSuppressed?: boolean;
 
 	// Whether to show or hide the error name
 	//
@@ -71,8 +90,10 @@ export type FormatErrorOptions = {
 
 const FORMAT_ERROR_DEFAULT_OPTIONS: Required<FormatErrorOptions> = {
 	prefix: "",
-	skipCauses: false,
+	skipCause: false,
 	skipAggregateErrors: false,
+	skipSuppressedError: false,
+	skipSuppressedSuppressed: false,
 	hideErrorName: false,
 	stringifier: (value) =>
 		typeof value === "string" ? value : (JSON.stringify(value) ?? ""),
@@ -103,7 +124,7 @@ export function formatError(
 
 	const isMultiline =
 		effectiveOptions.stackTrace === true &&
-		(!effectiveOptions.skipCauses || !effectiveOptions.skipAggregateErrors);
+		(!effectiveOptions.skipCause || !effectiveOptions.skipAggregateErrors);
 
 	return internalFormatError(
 		error,
@@ -190,7 +211,50 @@ function internalFormatError(
 				}
 			}
 
-			if (!options.skipCauses) {
+			if (isSuppressedErrorLike(currentError)) {
+				if (!options.skipSuppressedError && currentError.error) {
+					const suppressedErrorResult = internalFormatError(
+						currentError.error,
+						{
+							...options,
+							stackTrace: options.stackTrace === true,
+						},
+						isMultiline,
+						currentVisitedErrors,
+					);
+
+					if (isMultiline) {
+						otherLines.push(
+							...prefixLines(suppressedErrorResult, options.indentation),
+						);
+					} else {
+						firstLine.push(`${suppressedErrorResult[0]}`);
+					}
+				}
+
+				if (!options.skipSuppressedSuppressed && currentError.suppressed) {
+					const suppressedErrorResult = internalFormatError(
+						currentError.suppressed,
+						{
+							...options,
+							prefix: "Suppressed",
+							stackTrace: options.stackTrace === true,
+						},
+						isMultiline,
+						currentVisitedErrors,
+					);
+
+					if (isMultiline) {
+						otherLines.push(
+							...prefixLines(suppressedErrorResult, options.indentation),
+						);
+					} else {
+						firstLine.push(`(${suppressedErrorResult[0]})`);
+					}
+				}
+			}
+
+			if (!options.skipCause) {
 				if (isMultiline && currentError.cause) {
 					const causeResult = internalFormatError(
 						currentError.cause,
