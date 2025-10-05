@@ -35,6 +35,7 @@ export * from "./data/priority-queue.js";
 export * from "./data/queue.js";
 export * from "./data/queue.js";
 export * from "./data/stack.js";
+export * from "./ecma/array/uniq.js";
 export * from "./ecma/error/aggregate-error.js";
 export * from "./ecma/error/capture-stack-trace.js";
 export * from "./ecma/error/error.js";
