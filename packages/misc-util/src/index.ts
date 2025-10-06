@@ -116,6 +116,7 @@ export * from "./net/http/fields/http-field-value-util.js";
 export * from "./net/http/fields/http-fields.js";
 export * from "./net/http/http-headers.js";
 export * from "./net/http/is-http-available.js";
+export * from "./net/http/is-redirect-status.js";
 export * from "./net/http/types.js";
 export * from "./node/child_process/exec-async.js";
 export * from "./node/child_process/node-exec-error.js";
