@@ -1,3 +1,5 @@
+import { EOL } from "node:os";
+import { type InspectOptionsStylized, inspect } from "node:util";
 import type { Predicate } from "../../../ecma/function/types.js";
 import { CaseInsensitiveMap } from "../../../ecma/map/case-insensitive-map.js";
 import { stringIsEqualCaseInsensitive } from "../../../ecma/string/string-is-equal.js";
@@ -38,6 +40,16 @@ export type HttpFieldsOptions = {
 	 * Spacing to use when folding fields (default: single space).
 	 */
 	foldSpacing?: string;
+
+	/**
+	 * If true, the `toString` method will redact sensitive fields (default: true).
+	 */
+	toStringRedacted?: boolean;
+
+	/**
+	 * If true, the custom Node.js inspect method will redact sensitive fields (default: true).
+	 */
+	nodeInspectRedacted?: boolean;
 };
 
 export class HttpFields
@@ -88,9 +100,13 @@ export class HttpFields
 		return this.map.keys();
 	}
 
-	foldedEntries(): IterableIterator<[HttpFieldName, HttpFieldValue]> {
+	foldedEntries(
+		redacted: boolean = false,
+	): IterableIterator<[HttpFieldName, HttpFieldValue]> {
 		return this.map.entries().flatMap(([name, values]) => {
-			if (this.isUnfoldable(name)) {
+			if (redacted && this.isSensitive(name)) {
+				return [[name, "[REDACTED]"]];
+			} else if (this.isUnfoldable(name)) {
 				return values.map((v) => [name, v]);
 			} else {
 				return [[name, httpFieldFoldValues(values)]];
@@ -138,21 +154,9 @@ export class HttpFields
 	}
 
 	toString(): string {
-		let result = "";
-		for (const [name, values] of this.map) {
-			const isSensitive = this.isSensitive(name);
-
-			for (const value of values) {
-				result += `${name}: `;
-				if (isSensitive) {
-					result += "[REDACTED]";
-				} else {
-					result += `${value}`;
-				}
-				result += `\r\n`;
-			}
-		}
-		return result;
+		return Array.from(this.foldedEntries(this.options.toStringRedacted))
+			.map(([name, value]) => `${name}: ${value}${EOL}`)
+			.join("");
 	}
 
 	isUnfoldable(name: HttpFieldName): boolean {
@@ -176,6 +180,53 @@ export class HttpFields
 	}
 }
 
+Object.defineProperty(
+	HttpFields.prototype,
+	Symbol.for("nodejs.util.inspect.custom"),
+	{
+		value: function (depth: number, options: InspectOptionsStylized) {
+			const className = this[Symbol.toStringTag] ?? this.constructor.name;
+			const stylizedClassName = options.stylize(className, "special");
+
+			if (depth < 0) {
+				return stylizedClassName;
+			}
+
+			const subOptions = {
+				...options,
+				depth:
+					options.depth === null || options.depth === undefined
+						? null
+						: options.depth - 2,
+			};
+
+			if (subOptions.compact === false) {
+				const inner = [];
+				for (const [name, values] of this.foldedEntries(
+					this.options.nodeInspectRedacted,
+				)) {
+					inner.push(`  ${name}: ${inspect(values, subOptions)}`);
+				}
+				return `${stylizedClassName}${EOL}${inner.join(EOL)}`;
+			} else {
+				const inner = [];
+
+				for (const [name, values] of this.foldedEntries(
+					this.options.nodeInspectRedacted,
+				)) {
+					inner.push(
+						`${name}: ${inspect(values, { ...subOptions, compact: true })}`,
+					);
+				}
+
+				return `${stylizedClassName}<${inner.join(", ")}>`;
+			}
+		},
+		writable: true,
+		configurable: true,
+	},
+);
+
 export declare namespace HttpFields {
 	export var defaultOptions: Required<HttpFieldsOptions>;
 }
@@ -195,4 +246,7 @@ HttpFields.defaultOptions = {
 	unfoldableFields: ["set-cookie"],
 
 	foldSpacing: " ",
+
+	toStringRedacted: true,
+	nodeInspectRedacted: true,
 };

@@ -1,4 +1,6 @@
 /** biome-ignore-all lint/style/noNonNullAssertion: tests */
+
+import { inspect } from "node:util";
 import { expect, suite, test } from "vitest";
 import { HttpHeaders } from "./http-headers.js";
 
@@ -110,5 +112,29 @@ suite("HttpHeaders", () => {
 		const lastModified = headers.lastModified;
 		expect(lastModified).toBeInstanceOf(Date);
 		expect(lastModified?.toUTCString()).toBe("Sun, 06 Nov 1994 08:49:37 GMT");
+	});
+
+	test("inspect should be overloaded (compact=false)", () => {
+		const fields = new HttpHeaders({
+			"Content-Type": "application/json",
+			"X-Custom-Header": ["value1", "value2"],
+			Authorization: "Bearer token",
+		});
+
+		expect(inspect(fields, { depth: Infinity, compact: false })).toBe(
+			"HttpHeaders\n  Content-Type: 'application/json'\n  X-Custom-Header: 'value1, value2'\n  Authorization: '[REDACTED]'",
+		);
+	});
+
+	test("inspect should be overloaded (compact=true)", () => {
+		const fields = new HttpHeaders({
+			"Content-Type": "application/json",
+			"X-Custom-Header": ["value1", "value2"],
+			Authorization: "Bearer token",
+		});
+
+		expect(inspect(fields, { depth: Infinity, compact: true })).toBe(
+			"HttpHeaders<Content-Type: 'application/json', X-Custom-Header: 'value1, value2', Authorization: '[REDACTED]'>",
+		);
 	});
 });

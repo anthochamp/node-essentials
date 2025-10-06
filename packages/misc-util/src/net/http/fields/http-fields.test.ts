@@ -1,3 +1,4 @@
+import { inspect } from "node:util";
 import { expect, suite, test } from "vitest";
 import { HttpFields } from "./http-fields.js";
 
@@ -13,7 +14,7 @@ suite("HttpHeaders", () => {
 			"X-Custom-Header": ["value1", "value2"],
 		});
 		expect(fields.toString()).toBe(
-			"Content-Type: application/json\r\nX-Custom-Header: value1\r\nX-Custom-Header: value2\r\n",
+			"Content-Type: application/json\nX-Custom-Header: value1, value2\n",
 		);
 	});
 
@@ -79,7 +80,7 @@ suite("HttpHeaders", () => {
 			(name, values) => name === "Content-Type" || name === "Authorization",
 		);
 		expect(filtered.toString()).toBe(
-			"Content-Type: application/json\r\nAuthorization: [REDACTED]\r\n",
+			"Content-Type: application/json\nAuthorization: [REDACTED]\n",
 		);
 	});
 
@@ -95,7 +96,43 @@ suite("HttpHeaders", () => {
 			},
 		);
 		expect(fields.toString()).toBe(
-			"Content-Type: application/json\r\nAuthorization: [REDACTED]\r\nX-Custom-Header: [REDACTED]\r\n",
+			"Content-Type: application/json\nAuthorization: [REDACTED]\nX-Custom-Header: [REDACTED]\n",
+		);
+	});
+
+	test("toString should be overloaded", () => {
+		const fields = new HttpFields({
+			"Content-Type": "application/json",
+			"X-Custom-Header": ["value1", "value2"],
+			Authorization: "Bearer token",
+		});
+
+		expect(`${fields}`).toBe(
+			"Content-Type: application/json\nX-Custom-Header: value1, value2\nAuthorization: [REDACTED]\n",
+		);
+	});
+
+	test("inspect should be overloaded (compact=false)", () => {
+		const fields = new HttpFields({
+			"Content-Type": "application/json",
+			"X-Custom-Header": ["value1", "value2"],
+			Authorization: "Bearer token",
+		});
+
+		expect(inspect(fields, { depth: Infinity, compact: false })).toBe(
+			"HttpFields\n  Content-Type: 'application/json'\n  X-Custom-Header: 'value1, value2'\n  Authorization: '[REDACTED]'",
+		);
+	});
+
+	test("inspect should be overloaded (compact=true)", () => {
+		const fields = new HttpFields({
+			"Content-Type": "application/json",
+			"X-Custom-Header": ["value1", "value2"],
+			Authorization: "Bearer token",
+		});
+
+		expect(inspect(fields, { depth: Infinity, compact: true })).toBe(
+			"HttpFields<Content-Type: 'application/json', X-Custom-Header: 'value1, value2', Authorization: '[REDACTED]'>",
 		);
 	});
 });
