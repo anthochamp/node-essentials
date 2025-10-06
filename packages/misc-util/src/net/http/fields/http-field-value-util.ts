@@ -159,7 +159,7 @@ export function httpFieldParseQuotedString(value: string): string | null {
  */
 export function httpFieldUnfoldValues(value?: string): string[] {
 	if (!value) return [];
-	const pattern = `(?:(?:${httpDatePattern}${httpOWsPattern})|(?:${composeHttpQuotedStringPattern()}${httpOWsPattern})|(?:${composeHttpCommentPattern()}${httpOWsPattern}))+,?|,`;
+	const pattern = `(?:(?:${httpDatePattern}${httpOWsPattern})|(?:${composeHttpQuotedStringPattern()}${httpOWsPattern})|(?:${composeHttpCommentPattern()}${httpOWsPattern}))+.*?(?:,|$)|,`;
 	const regex = new RegExp(pattern, "g");
 	const separators = Array.from(value.matchAll(regex));
 	const values: string[] = [];

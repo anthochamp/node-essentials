@@ -119,6 +119,14 @@ suite("httpFieldUnfoldValues", () => {
 				'199 example.com "Old warning text" (warned by proxy)',
 			]);
 		});
+
+		test("Set-Cookie header with expires date", () => {
+			const value =
+				"__Host-example=34d8g; SameSite=None; Expires=Wed, 09 Jun 2021 10:18:14 GMT; Secure; Path=/; Partitioned;";
+			expect(httpFieldUnfoldValues(value)).toEqual([
+				"__Host-example=34d8g; SameSite=None; Expires=Wed, 09 Jun 2021 10:18:14 GMT; Secure; Path=/; Partitioned;",
+			]);
+		});
 	});
 });
 
