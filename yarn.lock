@@ -67,11 +67,11 @@ __metadata:
     "@ac-essentials/tsconfig": "workspace:*"
     "@ac-essentials/typedoc-config": "workspace:*"
     "@ltd/j-toml": "npm:^1.38.0"
-    "@types/content-disposition": "npm:^0.5.9"
-    "@types/content-type": "npm:^1.1.9"
+    "@types/content-disposition": "npm:0.5.9"
+    "@types/content-type": "npm:1.1.9"
     "@types/fs-ext": "npm:^2.0.3"
     "@types/ini": "npm:^4.1.1"
-    "@types/mime-db": "npm:^1.43.6"
+    "@types/mime-db": "npm:1.43.6"
     "@types/node": "npm:^24.5.2"
     "@types/shallow-clone": "npm:3.0.2"
     chardet: "npm:^2.1.0"
@@ -789,14 +789,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/content-disposition@npm:^0.5.9":
+"@types/content-disposition@npm:0.5.9":
   version: 0.5.9
   resolution: "@types/content-disposition@npm:0.5.9"
   checksum: 10c0/9fd520dae1a9c7b85909e59f548f905a670a6e2f83642f9734d1b05126f64ac8c8e2c282a663edf27d58bc34fbbacf46a4d4a95d3802b42106174a19a68175c8
   languageName: node
   linkType: hard
 
-"@types/content-type@npm:^1.1.9":
+"@types/content-type@npm:1.1.9":
   version: 1.1.9
   resolution: "@types/content-type@npm:1.1.9"
   checksum: 10c0/d8b198257862991880d38985ad9871241db18b21ec728bddc78e4c61e0f987cc037dae6c5f9bd2bcc08f41de74ad371180af2fcdefeafe25d0ccae0c3fceb7fd
@@ -858,7 +858,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mime-db@npm:^1.43.6":
+"@types/mime-db@npm:1.43.6":
   version: 1.43.6
   resolution: "@types/mime-db@npm:1.43.6"
   checksum: 10c0/709e93c31d92177ef6bb90d17917c82b1c6c30f1735c345d85e53238f4efacc00b26c5bfa479f4d2139596a8a054df15fb1a011a6e6cc1c14a32710c3c680733

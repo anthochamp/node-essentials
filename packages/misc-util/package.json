@@ -14,9 +14,9 @@
 	"devDependencies": {
 		"@ac-essentials/tsconfig": "workspace:*",
 		"@ac-essentials/typedoc-config": "workspace:*",
-		"@types/content-disposition": "^0.5.9",
-		"@types/content-type": "^1.1.9",
-		"@types/mime-db": "^1.43.6",
+		"@types/content-disposition": "0.5.9",
+		"@types/content-type": "1.1.9",
+		"@types/mime-db": "1.43.6",
 		"@types/shallow-clone": "3.0.2",
 		"rimraf": "6.0.1",
 		"typedoc": "0.28.13",
