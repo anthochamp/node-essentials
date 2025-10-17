@@ -77,7 +77,7 @@ suite("HttpHeaders", () => {
 			Authorization: "Bearer token",
 		});
 		const filtered = fields.filter(
-			(name, values) => name === "Content-Type" || name === "Authorization",
+			(name) => name === "Content-Type" || name === "Authorization",
 		);
 		expect(filtered.toString()).toBe(
 			"Content-Type: application/json\nAuthorization: [REDACTED]\n",

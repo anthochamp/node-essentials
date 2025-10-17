@@ -41,6 +41,7 @@ export function isEqual<A, B>(
 	b: B,
 	strategy: IsEqualWellKnownStrategy | Predicate<[A, B]> = "strict",
 ): boolean {
+	// biome-ignore lint/nursery/noUnnecessaryConditions: false positive
 	switch (strategy) {
 		case "loose":
 			// @ts-expect-error -- intended
