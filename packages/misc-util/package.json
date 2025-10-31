@@ -33,7 +33,7 @@
 		"editorconfig": "^3.0.1",
 		"fs-ext": "^2.1.1",
 		"iconv-lite": "^0.7.0",
-		"ini": "^5.0.0",
+		"ini": "^6.0.0",
 		"json5": "^2.2.3",
 		"jsonc-parser": "^3.3.1",
 		"mime-db": "^1.54.0",
