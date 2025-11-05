@@ -28,7 +28,7 @@
 	"devDependencies": {
 		"@ac-essentials/biome-config": "workspace:*",
 		"@ac-essentials/markdownlint-cli2-config": "workspace:*",
-		"@biomejs/biome": "2.3.3",
+		"@biomejs/biome": "2.3.4",
 		"@vitest/coverage-v8": "4.0.6",
 		"is-ci": "4.1.0",
 		"lefthook": "2.0.2",
