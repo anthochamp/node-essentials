@@ -1,3 +1,4 @@
+import { Console, type ConsoleConstructor } from "node:console";
 import { EOL } from "node:os";
 import { formatWithOptions, type InspectOptions, inspect } from "node:util";
 import {
@@ -114,10 +115,7 @@ const LOGGER_CONSOLE_DEFAULT_OPTIONS: Required<LoggerConsoleOptions> = {
  */
 export class LoggerConsole implements Console {
 	private readonly options: Required<LoggerConsoleOptions>;
-	private readonly nodeConsole = new console.Console(
-		process.stdout,
-		process.stderr,
-	);
+	private readonly nodeConsole = new Console(process.stdout, process.stderr);
 	private readonly countMap = new Map<string, number>();
 	private readonly timerTable = new Map<string, Temporal.Instant>();
 	private readonly groupStack = new Stack<string>();
@@ -447,7 +445,7 @@ export class LoggerConsole implements Console {
 	// https://nodejs.org/api/console.html#console_console
 	//
 
-	Console: console.ConsoleConstructor = console.Console;
+	Console: ConsoleConstructor = Console;
 
 	// https://nodejs.org/api/console.html#console_time_stamp_label
 	timeStamp(label?: string): void {
