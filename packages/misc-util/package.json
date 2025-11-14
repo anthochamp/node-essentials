@@ -23,7 +23,6 @@
 		"typescript": "5.9.3"
 	},
 	"dependencies": {
-		"@ltd/j-toml": "^1.38.0",
 		"@types/fs-ext": "^2.0.3",
 		"@types/ini": "^4.1.1",
 		"@types/node": "^24.5.2",
@@ -38,6 +37,7 @@
 		"jsonc-parser": "^3.3.1",
 		"mime-db": "^1.54.0",
 		"shallow-clone": "^3.0.1",
+		"smol-toml": "^1.5.2",
 		"type-fest": "^5.0.1",
 		"yaml": "^2.8.1"
 	},

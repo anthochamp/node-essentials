@@ -66,7 +66,6 @@ __metadata:
   dependencies:
     "@ac-essentials/tsconfig": "workspace:*"
     "@ac-essentials/typedoc-config": "workspace:*"
-    "@ltd/j-toml": "npm:^1.38.0"
     "@types/content-disposition": "npm:0.5.9"
     "@types/content-type": "npm:1.1.9"
     "@types/fs-ext": "npm:^2.0.3"
@@ -86,6 +85,7 @@ __metadata:
     mime-db: "npm:^1.54.0"
     rimraf: "npm:6.1.0"
     shallow-clone: "npm:^3.0.1"
+    smol-toml: "npm:^1.5.2"
     type-fest: "npm:^5.0.1"
     typedoc: "npm:0.28.14"
     typescript: "npm:5.9.3"
@@ -504,13 +504,6 @@ __metadata:
     "@jridgewell/resolve-uri": "npm:^3.1.0"
     "@jridgewell/sourcemap-codec": "npm:^1.4.14"
   checksum: 10c0/4b30ec8cd56c5fd9a661f088230af01e0c1a3888d11ffb6b47639700f71225be21d1f7e168048d6d4f9449207b978a235c07c8f15c07705685d16dc06280e9d9
-  languageName: node
-  linkType: hard
-
-"@ltd/j-toml@npm:^1.38.0":
-  version: 1.38.0
-  resolution: "@ltd/j-toml@npm:1.38.0"
-  checksum: 10c0/6db2b203e21c6bc2e781ad76f3e798ae9c4b9d83205070f482602a30f3d1c37dde8c8c72575bdc505c1b8c228c5e81171a4557f0d76b814da0fb91cdd21f6194
   languageName: node
   linkType: hard
 
@@ -3092,6 +3085,13 @@ __metadata:
   version: 4.2.0
   resolution: "smart-buffer@npm:4.2.0"
   checksum: 10c0/a16775323e1404dd43fabafe7460be13a471e021637bc7889468eb45ce6a6b207261f454e4e530a19500cc962c4cc5348583520843b363f4193cee5c00e1e539
+  languageName: node
+  linkType: hard
+
+"smol-toml@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "smol-toml@npm:1.5.2"
+  checksum: 10c0/ccfe5dda80c1d0c45869140b1e695a13a81ba7c57c1ca083146fe2f475d6f57031c12410f95d53a5acb3a1504e8e8e12cab36871909e8c8ce0c7011ccd22a2ac
   languageName: node
   linkType: hard
 

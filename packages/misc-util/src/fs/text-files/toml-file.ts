@@ -1,6 +1,5 @@
 import { readFile, type writeFile } from "node:fs/promises";
-import toml from "@ltd/j-toml";
-import type { Except } from "type-fest";
+import toml, { type TomlTable, type TomlTableWithoutBigInt } from "smol-toml";
 import { defaults } from "../../ecma/object/defaults.js";
 import {
 	READ_TEXT_FILE_DEFAULT_OPTIONS,
@@ -15,37 +14,24 @@ import {
 export type TomlFileFormat = TextFileFormat;
 
 export type TomlFileFormatOptions = TextFileFormatOptions &
-	Except<NonNullable<Parameters<typeof toml.stringify>[1]>, "newline">;
+	NonNullable<Parameters<typeof toml.stringify>[1]>;
 
 export type ReadTomlFileOptions = ReadTextFileOptions & {
 	/**
 	 *
 	 */
-	specificationVersion?: 1.0 | 0.5 | 0.4 | 0.3 | 0.2 | 0.1;
-
-	/**
-	 *
-	 */
-	multilineStringJoiner?: string;
-
-	/**
-	 *
-	 */
-	useBigInt?: boolean | number;
-
-	/**
-	 *
-	 */
-	xOptions?: NonNullable<Parameters<typeof toml.parse>[1]>["x"];
+	useBigInt?: boolean | "asNeeded";
 };
 
 export const READ_TOML_FILE_DEFAULT_OPTIONS: Required<ReadTomlFileOptions> = {
 	...READ_TEXT_FILE_DEFAULT_OPTIONS,
-	specificationVersion: 1.0,
-	multilineStringJoiner: "",
 	useBigInt: false,
-	xOptions: {},
 };
+
+type ReadTomlFileResult_<TOptions extends ReadTomlFileOptions> =
+	TOptions["useBigInt"] extends false | undefined
+		? TomlTableWithoutBigInt
+		: TomlTable;
 
 /**
  * Reads a TOML file and parses its content.
@@ -54,33 +40,26 @@ export const READ_TOML_FILE_DEFAULT_OPTIONS: Required<ReadTomlFileOptions> = {
  * @param options Options for reading the file and parsing TOML.
  * @returns	Parsed TOML content.
  */
-export async function readTomlFile(
+export async function readTomlFile<TOptions extends ReadTomlFileOptions>(
 	path: Parameters<typeof readFile>[0],
-	options?: ReadTomlFileOptions,
-): Promise<ReturnType<typeof toml.parse>> {
-	const {
-		specificationVersion,
-		multilineStringJoiner,
-		useBigInt,
-		xOptions,
-		...restOptions
-	} = defaults(options, READ_TOML_FILE_DEFAULT_OPTIONS);
+	options?: TOptions,
+): Promise<ReadTomlFileResult_<TOptions>> {
+	const { useBigInt, ...restOptions } = defaults(
+		options,
+		READ_TOML_FILE_DEFAULT_OPTIONS,
+	);
 
 	const fileContent = await readFile(path, {
 		...restOptions,
 		signal: restOptions.signal ?? undefined,
 	});
 
-	let result: ReturnType<typeof toml.parse>;
+	let result: ReadTomlFileResult_<TOptions>;
 
 	try {
-		result = toml.parse(
-			fileContent,
-			specificationVersion,
-			multilineStringJoiner,
-			useBigInt,
-			xOptions,
-		);
+		result = toml.parse(fileContent, {
+			integersAsBigInt: useBigInt,
+		});
 	} catch (error) {
 		throw new Error(`parse TOML`, { cause: error });
 	}
@@ -93,14 +72,8 @@ export type WriteTomlFileOptions = WriteTextFileOptions &
 
 export const WRITE_TOML_FILE_DEFAULT_OPTIONS: Required<WriteTomlFileOptions> = {
 	...WRITE_TEXT_FILE_DEFAULT_OPTIONS,
-	forceInlineArraySpacing: 0,
-	indent: "",
-	integer: 0,
-	newlineAround: "document",
-	T: "T",
-	xBeforeNewlineInMultilineTable: "",
-	xNull: false,
-	Z: "Z",
+	maxDepth: Infinity,
+	numbersAsFloat: false,
 };
 
 /**
@@ -116,31 +89,16 @@ export async function writeTomlFile(
 	rootTable: Parameters<typeof toml.stringify>[0],
 	options?: WriteTomlFileOptions,
 ): Promise<void> {
-	const {
-		forceInlineArraySpacing,
-		indent,
-		integer,
-		newlineAround,
-		T,
-		xBeforeNewlineInMultilineTable,
-		xNull,
-		Z,
-		endOfLine,
-		...restOptions
-	} = defaults(options, WRITE_TOML_FILE_DEFAULT_OPTIONS);
+	const { maxDepth, numbersAsFloat, ...restOptions } = defaults(
+		options,
+		WRITE_TOML_FILE_DEFAULT_OPTIONS,
+	);
 
 	let fileContent: string;
 	try {
 		fileContent = toml.stringify(rootTable, {
-			forceInlineArraySpacing,
-			indent,
-			integer,
-			newline: endOfLine ?? undefined,
-			newlineAround,
-			T,
-			xBeforeNewlineInMultilineTable,
-			xNull,
-			Z,
+			maxDepth,
+			numbersAsFloat,
 		});
 	} catch (error) {
 		throw new Error(`stringify TOML`, { cause: error });
