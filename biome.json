@@ -3,6 +3,6 @@
 	"extends": ["@ac-essentials/biome-config"],
 	"root": true,
 	"files": {
-		"includes": ["**", "!packages/tsconfig/*.json"]
+		"includes": ["**", "!.yarn/plugins", "!packages/tsconfig/*.json"]
 	}
 }
