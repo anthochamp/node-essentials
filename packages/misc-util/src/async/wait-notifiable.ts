@@ -10,10 +10,8 @@ export async function waitNotifiable<T extends unknown[]>(
 
 	const deferred = AbortablePromise.withResolvers<T>({
 		signal,
-		onAbort: (error: unknown) => {
+		onAbort: () => {
 			unsubscribe?.();
-
-			deferred.reject(error);
 		},
 	});
 

@@ -3,7 +3,7 @@ import { importModule } from "./import-module.js";
 
 suite("importModule", () => {
 	test("should load a module without resolve paths", async () => {
-		await expect(importModule("vitest")).resolves.not.toThrow();
+		await importModule("vitest");
 	});
 
 	test("should throw if the module cannot be found because of an invalid path", async () => {

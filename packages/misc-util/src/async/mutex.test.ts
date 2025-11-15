@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+import { LockNotAcquiredError } from "./ilockable.js";
 import { Mutex } from "./mutex.js";
 
 suite("Mutex", () => {
@@ -46,6 +47,20 @@ suite("Mutex", () => {
 		release();
 		expect(mutex.locked).toBe(false);
 
-		expect(() => release()).toThrow("Lock already released");
+		expect(() => release()).toThrow(LockNotAcquiredError);
+	});
+
+	test("should support aborting acquire with AbortSignal", async () => {
+		const mutex = new Mutex();
+		const controller = new AbortController();
+		await mutex.acquire(); // take the only permit
+		const acquirePromise = mutex.acquire(controller.signal);
+		controller.abort("abort-mutex");
+		await expect(acquirePromise).rejects.toBe("abort-mutex");
+	});
+
+	test("should throw LockNotAcquiredError if release called without acquire", () => {
+		const mutex = new Mutex();
+		expect(() => mutex.release()).toThrow(LockNotAcquiredError);
 	});
 });

@@ -17,8 +17,8 @@ export type AbortableProps = {
  * Wraps a function to make it abortable. The wrapped function will listen to the
  * provided abort signal and call the onAbort callback if the signal is aborted.
  *
- * If the signal is already aborted, the wrapped function will throw before
- * calling the original function.
+ * If the signal is already aborted, the onAbort callback will be called
+ * BEFORE calling the original function.
  *
  * Note: This function should not be used to wrap functions that return promises.
  * Use `abortableAsync` instead.
@@ -45,8 +45,11 @@ export function abortable<A extends unknown[], R, T>(
 
 	return function (this, ...args) {
 		try {
-			signal?.addEventListener("abort", handleAbort, { once: true });
-			signal?.throwIfAborted?.();
+			if (signal?.aborted) {
+				handleAbort();
+			} else {
+				signal?.addEventListener("abort", handleAbort, { once: true });
+			}
 
 			return func.apply(this, args);
 		} finally {
@@ -59,8 +62,8 @@ export function abortable<A extends unknown[], R, T>(
  * Wraps a function to make it abortable. The wrapped function will listen to the
  * provided abort signal and call the onAbort callback if the signal is aborted.
  *
- * If the signal is already aborted, the wrapped function will throw an AbortError
- * before calling the original function.
+ * If the signal is already aborted, the onAbort callback will be called
+ * BEFORE calling the original function.
  *
  * @param func The function to wrap.
  * @param options The abortable options.
@@ -84,8 +87,11 @@ export function abortableAsync<A extends unknown[], R, T>(
 
 	return async function (this, ...args) {
 		try {
-			signal?.addEventListener("abort", handleAbort, { once: true });
-			signal?.throwIfAborted?.();
+			if (signal?.aborted) {
+				handleAbort();
+			} else {
+				signal?.addEventListener("abort", handleAbort, { once: true });
+			}
 
 			return await func.apply(this, args);
 		} finally {

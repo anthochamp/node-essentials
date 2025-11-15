@@ -1,5 +1,5 @@
 import type { Callable } from "../ecma/function/types.js";
-import type { ILockable } from "./ilockable.js";
+import { type ILockable, LockNotAcquiredError } from "./ilockable.js";
 import { LockableBase } from "./lockable-base.js";
 import { Semaphore } from "./semaphore.js";
 
@@ -34,7 +34,7 @@ export class Mutex extends LockableBase implements ILockable {
 			semaphoreReleaseFunc();
 		} catch (error) {
 			if (error instanceof RangeError) {
-				throw new Error("Lock already released");
+				throw new LockNotAcquiredError();
 			} else {
 				throw error;
 			}

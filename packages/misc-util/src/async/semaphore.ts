@@ -97,13 +97,11 @@ export class Semaphore {
 
 		const deferred = AbortablePromise.withResolvers<void>({
 			signal,
-			onAbort: (error: unknown) => {
+			onAbort: () => {
 				this.pendingAcquisitions.splice(
 					this.pendingAcquisitions.indexOf(pendingAcquisition),
 					1,
 				);
-
-				deferred.reject(error);
 			},
 		});
 

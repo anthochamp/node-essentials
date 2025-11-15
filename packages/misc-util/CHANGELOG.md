@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed `abortable` and `abortableAsync` functions when AbortSignal is aborted
+before calling the wrapped function (impact `AbortablePromise` as well).
+- Fixed an edge case in the `Counter::wait` method when the counter is incremented
+rapidly (was missing the value).
+- Fixed `FileLock` implementation.
+
+### Changed
+
+- The `AbortablePromise` now rejects itself the promise when the signal is aborted.
+- All classes implementing `ILockable` now throw an `LockNotAcquiredError` when
+`release` is called without a matching `acquire`.
+
 ## [0.5.1] - 2025-10-06
 
 ### Fixed

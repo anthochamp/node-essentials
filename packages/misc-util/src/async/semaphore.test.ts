@@ -87,4 +87,34 @@ suite("Semaphore", () => {
 			"Semaphore released too many times",
 		);
 	});
+
+	test("should support tryAcquire and fail when insufficient permits", () => {
+		const semaphore = new Semaphore(2);
+		expect(semaphore.tryAcquire()).toBe(true);
+		expect(semaphore.value).toBe(1);
+		expect(semaphore.tryAcquire(2)).toBe(false);
+		expect(semaphore.value).toBe(1);
+		semaphore.release(1);
+		expect(semaphore.value).toBe(2);
+	});
+
+	test("should throw on invalid acquire/release counts", async () => {
+		const semaphore = new Semaphore(2);
+		expect(() => semaphore.tryAcquire(0)).toThrow("Count must be positive");
+		expect(() => semaphore.release(-1)).toThrow("Count must be positive");
+	});
+
+	test("should support maxValue getter", () => {
+		const semaphore = new Semaphore(5);
+		expect(semaphore.getMaxValue()).toBe(5);
+	});
+
+	test("should support aborting acquire with AbortSignal", async () => {
+		const semaphore = new Semaphore(1);
+		const controller = new AbortController();
+		await semaphore.acquire(); // take the only permit
+		const acquirePromise = semaphore.acquire(1, controller.signal);
+		controller.abort("abort-acquire");
+		await expect(acquirePromise).rejects.toBe("abort-acquire");
+	});
 });

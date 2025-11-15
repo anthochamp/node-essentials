@@ -5,6 +5,16 @@ import type {
 } from "../ecma/function/types.js";
 
 /**
+ * Error thrown when attempting to release a lock that is not currently held.
+ */
+export class LockNotAcquiredError extends Error {
+	constructor() {
+		super(`Lock is not acquired`);
+		this.name = "LockNotAcquiredError";
+	}
+}
+
+/**
  * Interface representing a lockable resource.
  *
  * A lockable resource can be acquired and released to ensure exclusive access.

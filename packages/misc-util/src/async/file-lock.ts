@@ -1,9 +1,9 @@
 import * as fs from "node:fs/promises";
-import type { Callable } from "../ecma/function/types.js";
+import type { AsyncCallable } from "../ecma/function/types.js";
 import { waitFor } from "../ecma/function/wait-for.js";
 import { defaults } from "../ecma/object/defaults.js";
 import { isNodeErrorWithCode } from "../node/error/node-error.js";
-import type { ILockable } from "./ilockable.js";
+import { type ILockable, LockNotAcquiredError } from "./ilockable.js";
 import { LockableBase } from "./lockable-base.js";
 
 export type LockFileOptions = {
@@ -37,7 +37,7 @@ const LOCK_FILE_DEFAULT_OPTIONS: Required<LockFileOptions> = {
  * }
  * ```
  */
-export class LockFile extends LockableBase implements ILockable {
+export class FileLock extends LockableBase implements ILockable {
 	private readonly options: Required<LockFileOptions>;
 	private lockHandle: fs.FileHandle | null = null;
 
@@ -54,11 +54,11 @@ export class LockFile extends LockableBase implements ILockable {
 		return this.lockHandle !== null;
 	}
 
-	async acquire(signal?: AbortSignal | null): Promise<Callable> {
+	async acquire(signal?: AbortSignal | null): Promise<AsyncCallable> {
 		await waitFor(
 			async () => {
 				try {
-					// if we manage to create the file, lockHandle should be null.
+					// Try to create the lock file exclusively
 					this.lockHandle = await fs.open(`${this.filePath}.lock`, "wx");
 				} catch (error) {
 					if (isNodeErrorWithCode(error, "EEXIST")) {
@@ -77,10 +77,13 @@ export class LockFile extends LockableBase implements ILockable {
 
 	async release(): Promise<void> {
 		if (!this.lockHandle) {
-			throw new Error("Lock file is not acquired");
+			throw new LockNotAcquiredError();
 		}
 
-		await this.lockHandle.close();
+		const handle = this.lockHandle;
 		this.lockHandle = null;
+
+		await handle.close();
+		await fs.unlink(`${this.filePath}.lock`);
 	}
 }

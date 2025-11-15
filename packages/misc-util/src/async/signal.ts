@@ -79,10 +79,8 @@ export class Signal
 	async wait(signal?: AbortSignal | null): Promise<void> {
 		const deferred = AbortablePromise.withResolvers<void>({
 			signal,
-			onAbort: (error: unknown) => {
+			onAbort: () => {
 				this.pendingWaiters.removeFirst((item) => item === deferred.resolve);
-
-				deferred.reject(error);
 			},
 		});
 

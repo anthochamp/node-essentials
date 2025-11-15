@@ -1,9 +1,9 @@
-import type { Callable } from "../ecma/function/types.js";
+import type { AsyncCallable } from "../ecma/function/types.js";
 import { waitFor } from "../ecma/function/wait-for.js";
 import { defaults } from "../ecma/object/defaults.js";
 import { isNodeErrorWithCode } from "../node/error/node-error.js";
 import { UdpSocket } from "../node/net/udp-socket.js";
-import type { ILockable } from "./ilockable.js";
+import { type ILockable, LockNotAcquiredError } from "./ilockable.js";
 import { LockableBase } from "./lockable-base.js";
 
 export type UdpBindLockConfig = {
@@ -55,16 +55,16 @@ const UDP_BIND_LOCK_DEFAULT_OPTIONS: Required<UdpBindLockOptions> = {
  * from running simultaneously.
  *
  * Note: The lock is automatically released when the process exits, but it is
- * recommended to call `releaseLock` explicitly when the lock is no longer needed.
+ * recommended to call `release` explicitly when the lock is no longer needed.
  *
  * Example usage:
  * ```ts
- * const lock = new ProcessLock({
+ * const lock = new UdpBindLock({
  *   udpSocketType: "udp4",
  *   udpBindPort: 12345,
  * });
  *
- * const acquired = await lock.tryAcquireLock();
+ * const acquired = await lock.tryAcquire();
  * if (!acquired) {
  *   console.error("Another instance is already running.");
  *   process.exit(1);
@@ -72,7 +72,7 @@ const UDP_BIND_LOCK_DEFAULT_OPTIONS: Required<UdpBindLockOptions> = {
  *
  * // ... application logic ...
  *
- * await lock.releaseLock();
+ * await lock.release();
  * ```
  */
 export class UdpBindLock extends LockableBase implements ILockable {
@@ -92,7 +92,7 @@ export class UdpBindLock extends LockableBase implements ILockable {
 		return this.udpSocket !== null;
 	}
 
-	async acquire(signal?: AbortSignal | null): Promise<Callable> {
+	async acquire(signal?: AbortSignal | null): Promise<AsyncCallable> {
 		await waitFor(
 			async () => {
 				const udpSocket = UdpSocket.from({
@@ -100,7 +100,7 @@ export class UdpBindLock extends LockableBase implements ILockable {
 					signal: signal ?? undefined,
 				});
 
-				// Prevent the socket from keeping the Node.js alive
+				// Prevent the socket from keeping the Node.js process alive
 				udpSocket.socket.unref();
 
 				try {
@@ -133,7 +133,7 @@ export class UdpBindLock extends LockableBase implements ILockable {
 
 	async release(): Promise<void> {
 		if (!this.udpSocket) {
-			throw new Error("Process lock is not acquired.");
+			throw new LockNotAcquiredError();
 		}
 
 		await this.udpSocket.close();
