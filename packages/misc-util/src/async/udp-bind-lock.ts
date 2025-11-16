@@ -2,7 +2,7 @@ import type { AsyncCallable } from "../ecma/function/types.js";
 import { waitFor } from "../ecma/function/wait-for.js";
 import { defaults } from "../ecma/object/defaults.js";
 import { isNodeErrorWithCode } from "../node/error/node-error.js";
-import { UdpSocket } from "../node/net/udp-socket.js";
+import { DgramSocket } from "../node/net/dgram-socket.js";
 import { type ILockable, LockNotAcquiredError } from "./ilockable.js";
 import { LockableBase } from "./lockable-base.js";
 
@@ -77,7 +77,7 @@ const UDP_BIND_LOCK_DEFAULT_OPTIONS: Required<UdpBindLockOptions> = {
  */
 export class UdpBindLock extends LockableBase implements ILockable {
 	private readonly options: Required<UdpBindLockOptions>;
-	private udpSocket: UdpSocket | null = null;
+	private udpSocket: DgramSocket | null = null;
 
 	constructor(
 		private readonly config: UdpBindLockConfig,
@@ -95,13 +95,13 @@ export class UdpBindLock extends LockableBase implements ILockable {
 	async acquire(signal?: AbortSignal | null): Promise<AsyncCallable> {
 		await waitFor(
 			async () => {
-				const udpSocket = UdpSocket.from({
+				const udpSocket = DgramSocket.from({
 					type: this.config.udpSocketType,
 					signal: signal ?? undefined,
 				});
 
 				// Prevent the socket from keeping the Node.js process alive
-				udpSocket.socket.unref();
+				udpSocket.unref();
 
 				try {
 					await udpSocket.bind(

@@ -19,6 +19,12 @@ rapidly (was missing the value).
 - The `AbortablePromise` now rejects itself the promise when the signal is aborted.
 - All classes implementing `ILockable` now throw an `LockNotAcquiredError` when
 `release` is called without a matching `acquire`.
+- `TcpClient` and `DgramSocket` (previously `UdpSocket`) classes reimplemented.
+
+## Added
+
+- Added `InetAddress` and `InetEndpoint` classes.
+- Added `TcpServer` class.
 
 ## [0.5.1] - 2025-10-06
 

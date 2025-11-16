@@ -1,14 +1,71 @@
+import { EventEmitter } from "node:events";
 import * as net from "node:net";
+import type { Duplex } from "node:stream";
 import type { Except } from "type-fest";
 import type { IError } from "../../ecma/error/error.js";
+import {
+	composeInetAddress,
+	type InetAddress,
+	type InetEndpoint,
+} from "./inet.js";
 
 /**
- * A wrapper around `net.Socket` that provides Promise-based methods for connecting,
- * ending, and writing data.
- *
- * This class simplifies the use of TCP sockets by converting the callback-based
- * methods of `net.Socket` into Promise-based methods, making it easier to use
- * with async/await syntax.
+ * Event map for TcpClient socket-specific events.
+ */
+export interface TcpClientEvents {
+	/**
+	 * Emitted when an error occurs on the socket.
+	 */
+	error: [error: IError];
+
+	/**
+	 * Emitted once the socket is fully closed.
+	 */
+	close: [hadError: boolean];
+
+	/**
+	 * Emitted when a socket connection is successfully established.
+	 */
+	connect: [];
+
+	/**
+	 * Emitted when a new connection attempt is started.
+	 * May be emitted multiple times if family autoselection is enabled.
+	 */
+	connectionAttempt: [endpoint: InetEndpoint];
+
+	/**
+	 * Emitted when a connection attempt failed.
+	 * May be emitted multiple times if family autoselection is enabled.
+	 */
+	connectionAttemptFailed: [endpoint: InetEndpoint, error: Error];
+
+	/**
+	 * Emitted when a connection attempt timed out.
+	 * May be emitted multiple times if family autoselection is enabled.
+	 */
+	connectionAttemptTimeout: [endpoint: InetEndpoint];
+
+	/**
+	 * Emitted after resolving the host name but before connecting.
+	 */
+	lookup: [err: Error | null, address: InetAddress, host: string];
+
+	/**
+	 * Emitted when a socket is ready to be used.
+	 * Triggered immediately after 'connect'.
+	 */
+	ready: [];
+
+	/**
+	 * Emitted if the socket times out from inactivity.
+	 * The connection is not automatically severed.
+	 */
+	timeout: [];
+}
+
+/**
+ * TCP client for establishing connections to TCP servers.
  *
  * Example usage:
  * ```ts
@@ -18,7 +75,7 @@ import type { IError } from "../../ecma/error/error.js";
  * await tcpClient.end({ waitForClose: true });
  * ```
  */
-export class TcpClient {
+export class TcpClient extends EventEmitter<TcpClientEvents> {
 	/**
 	 * Creates a new `TcpClient` instance with the specified options.
 	 *
@@ -29,10 +86,142 @@ export class TcpClient {
 		return new TcpClient(new net.Socket(options));
 	}
 
-	constructor(private readonly sock: net.Socket) {}
+	private readonly handledErrorEvents: Set<IError> = new Set();
 
-	get socket(): Omit<net.Socket, "connect" | "end" | "destroy"> {
+	constructor(private readonly sock: net.Socket) {
+		super();
+		this.setupEventForwarding();
+	}
+
+	/**
+	 * Returns the underlying socket stream for reading/writing data.
+	 * This provides access to the socket as a Duplex stream.
+	 */
+	get stream(): Duplex {
 		return this.sock;
+	}
+
+	/**
+	 * Returns whether the socket is closed.
+	 */
+	get closed(): boolean {
+		return this.sock.closed;
+	}
+
+	/**
+	 * Returns the remote endpoint information of the socket.
+	 * @throws {UnsupportedError} If the socket family is not IPv4 or IPv6.
+	 */
+	get remoteEndpoint(): InetEndpoint | null {
+		const address = this.sock.remoteAddress;
+		const port = this.sock.remotePort;
+		const familyStr = this.sock.remoteFamily;
+
+		if (
+			address === undefined ||
+			port === undefined ||
+			familyStr === undefined
+		) {
+			return null;
+		}
+
+		return {
+			...composeInetAddress(familyStr, address),
+			port,
+		};
+	}
+
+	/**
+	 * Returns the local endpoint information of the socket.
+	 * @throws {UnsupportedError} If the socket family is not IPv4 or IPv6.
+	 */
+	get localEndpoint(): InetEndpoint | null {
+		const address = this.sock.localAddress;
+		const port = this.sock.localPort;
+		const familyStr = this.sock.localFamily;
+
+		if (
+			address === undefined ||
+			port === undefined ||
+			familyStr === undefined
+		) {
+			return null;
+		}
+
+		return {
+			...composeInetAddress(familyStr, address),
+			port,
+		};
+	}
+
+	/**
+	 * Returns the number of bytes read from the socket.
+	 */
+	get bytesRead(): number {
+		return this.sock.bytesRead;
+	}
+
+	/**
+	 * Returns the number of bytes written to the socket.
+	 */
+	get bytesWritten(): number {
+		return this.sock.bytesWritten;
+	}
+
+	/**
+	 * Returns whether the socket is connecting.
+	 */
+	get connecting(): boolean {
+		return this.sock.connecting;
+	}
+
+	/**
+	 * Gets or sets the timeout value for the socket.
+	 */
+	get timeout(): number | null {
+		return this.sock.timeout ?? null;
+	}
+
+	/**
+	 * Sets the timeout value for the socket.
+	 *
+	 * @param timeout The timeout value in milliseconds. If 0, the timeout is disabled.
+	 */
+	set timeout(timeout: number) {
+		this.sock.setTimeout(timeout);
+	}
+
+	/**
+	 * Sets the keep-alive option for the socket.
+	 *
+	 * @param enable Whether to enable keep-alive.
+	 * @param initialDelay The initial delay in milliseconds before the first keep-alive probe.
+	 */
+	setKeepAlive(enable: boolean, initialDelay?: number): void {
+		this.sock.setKeepAlive(enable, initialDelay);
+	}
+
+	/**
+	 * Disables the Nagle algorithm for the socket.
+	 *
+	 * @param noDelay Whether to disable the Nagle algorithm.
+	 */
+	setNoDelay(noDelay: boolean): void {
+		this.sock.setNoDelay(noDelay);
+	}
+
+	/**
+	 * References the socket, preventing the process from exiting while the socket is active.
+	 */
+	ref(): void {
+		this.sock.ref();
+	}
+
+	/**
+	 * Unreferences the socket, allowing the process to exit even if the socket is active.
+	 */
+	unref(): void {
+		this.sock.unref();
 	}
 
 	/**
@@ -50,9 +239,10 @@ export class TcpClient {
 	): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const handleError = (error: IError) => {
+				this.handledErrorEvents.add(error);
 				reject(error);
 			};
-			this.sock.once("error", handleError);
+			this.sock.prependOnceListener("error", handleError);
 
 			this.sock.connect(
 				{
@@ -81,6 +271,7 @@ export class TcpClient {
 	end(options?: { waitForClose?: boolean }): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const handleError = (error: IError) => {
+				this.handledErrorEvents.add(error);
 				reject(error);
 			};
 			const handleEnd = () => {
@@ -88,10 +279,10 @@ export class TcpClient {
 				resolve();
 			};
 
-			this.sock.once("error", handleError);
+			this.sock.prependOnceListener("error", handleError);
 
 			if (options?.waitForClose && !this.sock.closed) {
-				this.sock.once("close", () => {
+				this.sock.prependOnceListener("close", () => {
 					this.sock.removeListener("error", handleError);
 					resolve();
 				});
@@ -128,6 +319,64 @@ export class TcpClient {
 			}
 
 			this.sock.write(data, callback);
+		});
+	}
+
+	/**
+	 * Sets up event forwarding from the underlying socket to this EventEmitter.
+	 */
+	private setupEventForwarding(): void {
+		this.sock.on("error", (err) => {
+			if (this.handledErrorEvents.has(err)) {
+				this.handledErrorEvents.delete(err);
+				return;
+			}
+			this.emit("error", err);
+		});
+
+		this.sock.on("close", (hadError) => {
+			this.emit("close", hadError);
+		});
+
+		this.sock.on("connect", () => {
+			this.emit("connect");
+		});
+
+		this.sock.on("connectionAttempt", (ip, port, family) => {
+			this.emit("connectionAttempt", {
+				...composeInetAddress(family, ip),
+				port,
+			});
+		});
+
+		this.sock.on("connectionAttemptFailed", (ip, port, family, error) => {
+			this.emit(
+				"connectionAttemptFailed",
+				{
+					...composeInetAddress(family, ip),
+					port,
+				},
+				error,
+			);
+		});
+
+		this.sock.on("connectionAttemptTimeout", (ip, port, family) => {
+			this.emit("connectionAttemptTimeout", {
+				...composeInetAddress(family, ip),
+				port,
+			});
+		});
+
+		this.sock.on("lookup", (err, address, family, host) => {
+			this.emit("lookup", err, composeInetAddress(family, address), host);
+		});
+
+		this.sock.on("ready", () => {
+			this.emit("ready");
+		});
+
+		this.sock.on("timeout", () => {
+			this.emit("timeout");
 		});
 	}
 }

@@ -9,7 +9,7 @@ import {
 	exec as execSync,
 } from "node:child_process";
 import { promisify } from "node:util";
-import { isNodeExecErrorLike } from "./node-exec-error.js";
+import { isNodeExecErrorLike } from "../error/node-exec-error.js";
 import { ProcessExitWithOutputError } from "./process-exit-error.js";
 
 export const exec: typeof execSync.__promisify__ = promisify(execSync);

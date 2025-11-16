@@ -4,5 +4,8 @@ export default defineConfig({
 	test: {
 		projects: ["packages/*"],
 		silent: process.env.CI ? "passed-only" : false,
+		coverage: {
+			reportsDirectory: ".temp/coverage",
+		},
 	},
 });

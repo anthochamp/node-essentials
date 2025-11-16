@@ -1,5 +1,5 @@
 import { joinNonEmpty } from "../../ecma/string/join-non-empty.js";
-import type { INodeExecError } from "./node-exec-error.js";
+import type { INodeExecError } from "../error/node-exec-error.js";
 
 /**
  * Error thrown when a shell command exits with a non-zero code or is

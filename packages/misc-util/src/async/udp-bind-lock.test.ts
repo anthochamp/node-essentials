@@ -41,4 +41,16 @@ describe("UdpBindLock", () => {
 	it("should throw if release called without acquire", async () => {
 		await expect(lock.release()).rejects.toThrow("Lock is not acquired");
 	});
+
+	it("should allow re-acquire after release", async () => {
+		const release1 = await lock.acquire();
+		expect(lock.locked).toBe(true);
+		await release1();
+		expect(lock.locked).toBe(false);
+
+		const release2 = await lock.acquire();
+		expect(lock.locked).toBe(true);
+		await release2();
+		expect(lock.locked).toBe(false);
+	});
 });
