@@ -50,13 +50,13 @@ suite("formatError", () => {
 		{ error: { foo: "bar" }, result: '{"foo":"bar"}' },
 		{ error: null, result: "null" },
 		{ error: undefined, result: "" },
-	])(
-		"should format correctly '$error' with default options",
-		({ error, result }) => {
-			const formatted = formatError(error);
-			expect(formatted).toBe(result);
-		},
-	);
+	])("should format correctly '$error' with default options", ({
+		error,
+		result,
+	}) => {
+		const formatted = formatError(error);
+		expect(formatted).toBe(result);
+	});
 
 	suite("options.prefix", () => {
 		test("should add the specified prefix", () => {

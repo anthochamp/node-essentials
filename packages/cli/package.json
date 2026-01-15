@@ -18,9 +18,9 @@
 	"devDependencies": {
 		"@ac-essentials/tsconfig": "workspace:*",
 		"@ac-essentials/typedoc-config": "workspace:*",
-		"@types/node": "24.10.1",
-		"rimraf": "6.1.0",
-		"typedoc": "0.28.14",
+		"@types/node": "24.10.7",
+		"rimraf": "6.1.2",
+		"typedoc": "0.28.16",
 		"typescript": "5.9.3"
 	},
 	"scripts": {
