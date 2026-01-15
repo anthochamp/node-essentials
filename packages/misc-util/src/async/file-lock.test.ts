@@ -31,7 +31,7 @@ describe("FileLock", () => {
 		await lock1.release();
 	});
 
-	it.only("should allow reacquire after release", async () => {
+	it("should allow reacquire after release", async () => {
 		const lock = new FileLock(TEST_FILE);
 		await lock.acquire();
 		await lock.release();
