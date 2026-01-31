@@ -27,7 +27,7 @@
 		"@types/ini": "^4.1.1",
 		"@types/node": "^24.5.2",
 		"chardet": "^2.1.0",
-		"content-disposition": "^0.5.4",
+		"content-disposition": "^1.0.0",
 		"content-type": "^1.0.5",
 		"editorconfig": "^3.0.1",
 		"fs-ext": "^2.1.1",
