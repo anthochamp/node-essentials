@@ -13,13 +13,13 @@ __metadata:
     "@ac-essentials/misc-util": "workspace:^"
     "@ac-essentials/tsconfig": "workspace:*"
     "@ac-essentials/typedoc-config": "workspace:*"
-    "@types/node": "npm:24.10.9"
+    "@types/node": "npm:24.10.13"
     cosmiconfig: "npm:^9.0.0"
     find-up: "npm:^8.0.0"
-    rimraf: "npm:6.1.2"
+    rimraf: "npm:6.1.3"
     temporal-polyfill: "npm:^0.3.0"
     type-fest: "npm:^5.0.1"
-    typedoc: "npm:0.28.16"
+    typedoc: "npm:0.28.17"
     typescript: "npm:5.9.3"
     vitest-mock-extended: "npm:3.1.0"
   languageName: unknown
@@ -38,10 +38,10 @@ __metadata:
     "@ac-essentials/misc-util": "workspace:^"
     "@ac-essentials/tsconfig": "workspace:*"
     "@ac-essentials/typedoc-config": "workspace:*"
-    "@types/node": "npm:24.10.9"
-    rimraf: "npm:6.1.2"
+    "@types/node": "npm:24.10.13"
+    rimraf: "npm:6.1.3"
     type-fest: "npm:^5.0.1"
-    typedoc: "npm:0.28.16"
+    typedoc: "npm:0.28.17"
     typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
@@ -83,11 +83,11 @@ __metadata:
     json5: "npm:^2.2.3"
     jsonc-parser: "npm:^3.3.1"
     mime-db: "npm:^1.54.0"
-    rimraf: "npm:6.1.2"
+    rimraf: "npm:6.1.3"
     shallow-clone: "npm:^3.0.1"
     smol-toml: "npm:^1.5.2"
     type-fest: "npm:^5.0.1"
-    typedoc: "npm:0.28.16"
+    typedoc: "npm:0.28.17"
     typescript: "npm:5.9.3"
     yaml: "npm:^2.8.1"
   languageName: unknown
@@ -158,18 +158,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/biome@npm:2.3.13"
+"@biomejs/biome@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/biome@npm:2.4.3"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:2.3.13"
-    "@biomejs/cli-darwin-x64": "npm:2.3.13"
-    "@biomejs/cli-linux-arm64": "npm:2.3.13"
-    "@biomejs/cli-linux-arm64-musl": "npm:2.3.13"
-    "@biomejs/cli-linux-x64": "npm:2.3.13"
-    "@biomejs/cli-linux-x64-musl": "npm:2.3.13"
-    "@biomejs/cli-win32-arm64": "npm:2.3.13"
-    "@biomejs/cli-win32-x64": "npm:2.3.13"
+    "@biomejs/cli-darwin-arm64": "npm:2.4.3"
+    "@biomejs/cli-darwin-x64": "npm:2.4.3"
+    "@biomejs/cli-linux-arm64": "npm:2.4.3"
+    "@biomejs/cli-linux-arm64-musl": "npm:2.4.3"
+    "@biomejs/cli-linux-x64": "npm:2.4.3"
+    "@biomejs/cli-linux-x64-musl": "npm:2.4.3"
+    "@biomejs/cli-win32-arm64": "npm:2.4.3"
+    "@biomejs/cli-win32-x64": "npm:2.4.3"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -189,62 +189,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10c0/920c44c755ab8efa2114b441baf74b8f5fae8e6ad98a301ce02228f546d20ef6ab7c33b990b0a4acd1ffc8f5985ae839cf1fec59a6f169732a0f86c14308728b
+  checksum: 10c0/acbc413ba93d278b437856c5bb1748b64a248645d3845b2c1e098e0dc639d8e6ac43e6fb122cfbf7c4d76ce47de58cba8cd9e83233b11078cd4fae7c0017aed1
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/cli-darwin-arm64@npm:2.3.13"
+"@biomejs/cli-darwin-arm64@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/cli-darwin-arm64@npm:2.4.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/cli-darwin-x64@npm:2.3.13"
+"@biomejs/cli-darwin-x64@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/cli-darwin-x64@npm:2.4.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.3.13"
+"@biomejs/cli-linux-arm64-musl@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.4.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/cli-linux-arm64@npm:2.3.13"
+"@biomejs/cli-linux-arm64@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/cli-linux-arm64@npm:2.4.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/cli-linux-x64-musl@npm:2.3.13"
+"@biomejs/cli-linux-x64-musl@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/cli-linux-x64-musl@npm:2.4.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/cli-linux-x64@npm:2.3.13"
+"@biomejs/cli-linux-x64@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/cli-linux-x64@npm:2.4.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/cli-win32-arm64@npm:2.3.13"
+"@biomejs/cli-win32-arm64@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/cli-win32-arm64@npm:2.4.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:2.3.13":
-  version: 2.3.13
-  resolution: "@biomejs/cli-win32-x64@npm:2.3.13"
+"@biomejs/cli-win32-x64@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@biomejs/cli-win32-x64@npm:2.4.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -878,12 +878,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:24.10.9":
-  version: 24.10.9
-  resolution: "@types/node@npm:24.10.9"
+"@types/node@npm:24.10.13":
+  version: 24.10.13
+  resolution: "@types/node@npm:24.10.13"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/e9e436fcd2136bddb1bbe3271a89f4653910bcf6ee8047c4117f544c7905a106c039e2720ee48f28505ef2560e22fb9ead719f28bf5e075fdde0c1120e38e3b2
+  checksum: 10c0/4ff0b9b060b5477c0fec5b11a176f294be588104ab546295db65b17a92ba0a6077b52ad92dd3c0d2154198c7f9d0021e6c1d42b00c9ac7ebfd85632afbcc48a4
   languageName: node
   linkType: hard
 
@@ -1088,12 +1088,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"balanced-match@npm:^4.0.2":
+  version: 4.0.4
+  resolution: "balanced-match@npm:4.0.4"
+  checksum: 10c0/07e86102a3eb2ee2a6a1a89164f29d0dbaebd28f2ca3f5ca786f36b8b23d9e417eb3be45a4acf754f837be5ac0a2317de90d3fcb7f4f4dc95720a1f36b26a17b
+  languageName: node
+  linkType: hard
+
 "brace-expansion@npm:^2.0.1":
   version: 2.0.2
   resolution: "brace-expansion@npm:2.0.2"
   dependencies:
     balanced-match: "npm:^1.0.0"
   checksum: 10c0/6d117a4c793488af86b83172deb6af143e94c17bc53b0b3cec259733923b4ca84679d506ac261f4ba3c7ed37c46018e2ff442f9ce453af8643ecd64f4a54e6cf
+  languageName: node
+  linkType: hard
+
+"brace-expansion@npm:^5.0.2":
+  version: 5.0.3
+  resolution: "brace-expansion@npm:5.0.3"
+  dependencies:
+    balanced-match: "npm:^4.0.2"
+  checksum: 10c0/e474d300e581ec56851b3863ff1cf18573170c6d06deb199ccbd03b2119c36975f6ce2abc7b770f5bebddc1ab022661a9fea9b4d56f33315d7bef54d8793869e
   languageName: node
   linkType: hard
 
@@ -1625,28 +1641,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^13.0.0":
-  version: 13.0.0
-  resolution: "glob@npm:13.0.0"
+"glob@npm:^13.0.3":
+  version: 13.0.6
+  resolution: "glob@npm:13.0.6"
   dependencies:
-    minimatch: "npm:^10.1.1"
-    minipass: "npm:^7.1.2"
-    path-scurry: "npm:^2.0.0"
-  checksum: 10c0/8e2f5821f3f7c312dd102e23a15b80c79e0837a9872784293ba2e15ec73b3f3749a49a42a31bfcb4e52c84820a474e92331c2eebf18819d20308f5c33876630a
+    minimatch: "npm:^10.2.2"
+    minipass: "npm:^7.1.3"
+    path-scurry: "npm:^2.0.2"
+  checksum: 10c0/269c236f11a9b50357fe7a8c6aadac667e01deb5242b19c84975628f05f4438d8ee1354bb62c5d6c10f37fd59911b54d7799730633a2786660d8c69f1d18120a
   languageName: node
   linkType: hard
 
-"globby@npm:15.0.0":
-  version: 15.0.0
-  resolution: "globby@npm:15.0.0"
+"globby@npm:16.1.0":
+  version: 16.1.0
+  resolution: "globby@npm:16.1.0"
   dependencies:
     "@sindresorhus/merge-streams": "npm:^4.0.0"
     fast-glob: "npm:^3.3.3"
     ignore: "npm:^7.0.5"
-    path-type: "npm:^6.0.0"
+    is-path-inside: "npm:^4.0.0"
     slash: "npm:^5.1.0"
-    unicorn-magic: "npm:^0.3.0"
-  checksum: 10c0/e4107be0579bcdd9642b8dff86aeafeaf62b2b9dd116669ab6e02e0e0c07ada0d972c2db182dee7588b460fe8c8919ddcc6b1cc4db405ca3a2adc9d35fa6eb21
+    unicorn-magic: "npm:^0.4.0"
+  checksum: 10c0/45dd4dd8311401b37ed426ad7ea7a6e8fdda2518bb0d62fbf0a46c2e6b81bcbd2c8d4fbcbcf4c0600bba15c5a8f4621785d0177acbb1b545f02f6b49f2cdbe24
   languageName: node
   linkType: hard
 
@@ -1833,6 +1849,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-path-inside@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "is-path-inside@npm:4.0.0"
+  checksum: 10c0/51188d7e2b1d907a9a5f7c18d99a90b60870b951ed87cf97595d9aaa429d4c010652c3350bcbf31182e7f4b0eab9a1860b43e16729b13cb1a44baaa6cdb64c46
+  languageName: node
+  linkType: hard
+
 "isexe@npm:^2.0.0":
   version: 2.0.0
   resolution: "isexe@npm:2.0.0"
@@ -1950,90 +1973,90 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lefthook-darwin-arm64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-darwin-arm64@npm:2.0.16"
+"lefthook-darwin-arm64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-darwin-arm64@npm:2.1.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-darwin-x64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-darwin-x64@npm:2.0.16"
+"lefthook-darwin-x64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-darwin-x64@npm:2.1.1"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook-freebsd-arm64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-freebsd-arm64@npm:2.0.16"
+"lefthook-freebsd-arm64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-freebsd-arm64@npm:2.1.1"
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-freebsd-x64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-freebsd-x64@npm:2.0.16"
+"lefthook-freebsd-x64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-freebsd-x64@npm:2.1.1"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook-linux-arm64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-linux-arm64@npm:2.0.16"
+"lefthook-linux-arm64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-linux-arm64@npm:2.1.1"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-linux-x64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-linux-x64@npm:2.0.16"
+"lefthook-linux-x64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-linux-x64@npm:2.1.1"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook-openbsd-arm64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-openbsd-arm64@npm:2.0.16"
+"lefthook-openbsd-arm64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-openbsd-arm64@npm:2.1.1"
   conditions: os=openbsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-openbsd-x64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-openbsd-x64@npm:2.0.16"
+"lefthook-openbsd-x64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-openbsd-x64@npm:2.1.1"
   conditions: os=openbsd & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook-windows-arm64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-windows-arm64@npm:2.0.16"
+"lefthook-windows-arm64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-windows-arm64@npm:2.1.1"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-windows-x64@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook-windows-x64@npm:2.0.16"
+"lefthook-windows-x64@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook-windows-x64@npm:2.1.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook@npm:2.0.16":
-  version: 2.0.16
-  resolution: "lefthook@npm:2.0.16"
+"lefthook@npm:2.1.1":
+  version: 2.1.1
+  resolution: "lefthook@npm:2.1.1"
   dependencies:
-    lefthook-darwin-arm64: "npm:2.0.16"
-    lefthook-darwin-x64: "npm:2.0.16"
-    lefthook-freebsd-arm64: "npm:2.0.16"
-    lefthook-freebsd-x64: "npm:2.0.16"
-    lefthook-linux-arm64: "npm:2.0.16"
-    lefthook-linux-x64: "npm:2.0.16"
-    lefthook-openbsd-arm64: "npm:2.0.16"
-    lefthook-openbsd-x64: "npm:2.0.16"
-    lefthook-windows-arm64: "npm:2.0.16"
-    lefthook-windows-x64: "npm:2.0.16"
+    lefthook-darwin-arm64: "npm:2.1.1"
+    lefthook-darwin-x64: "npm:2.1.1"
+    lefthook-freebsd-arm64: "npm:2.1.1"
+    lefthook-freebsd-x64: "npm:2.1.1"
+    lefthook-linux-arm64: "npm:2.1.1"
+    lefthook-linux-x64: "npm:2.1.1"
+    lefthook-openbsd-arm64: "npm:2.1.1"
+    lefthook-openbsd-x64: "npm:2.1.1"
+    lefthook-windows-arm64: "npm:2.1.1"
+    lefthook-windows-x64: "npm:2.1.1"
   dependenciesMeta:
     lefthook-darwin-arm64:
       optional: true
@@ -2057,7 +2080,7 @@ __metadata:
       optional: true
   bin:
     lefthook: bin/index.js
-  checksum: 10c0/b4f83b4037237e946c40121843783a5600250dbddcde3b3918fe13a03d0b077dfccbcbacbc02add36b07a9e4ff47b55c6a0444ad1d1c11dd3477e6b1353cbe62
+  checksum: 10c0/91d009e3c3c81f001e34cd266b34abafea55a974404daa282cb925bd419d8df44064a05f4cb9e82487fcc75d78ce670301d2d3d87ed8d4dd57336f5f66f61c7b
   languageName: node
   linkType: hard
 
@@ -2157,7 +2180,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdown-it@npm:14.1.0, markdown-it@npm:^14.1.0":
+"markdown-it@npm:14.1.1":
+  version: 14.1.1
+  resolution: "markdown-it@npm:14.1.1"
+  dependencies:
+    argparse: "npm:^2.0.1"
+    entities: "npm:^4.4.0"
+    linkify-it: "npm:^5.0.0"
+    mdurl: "npm:^2.0.0"
+    punycode.js: "npm:^2.3.1"
+    uc.micro: "npm:^2.1.0"
+  bin:
+    markdown-it: bin/markdown-it.mjs
+  checksum: 10c0/c67f2a4c8069a307c78d8c15104bbcb15a2c6b17f4c904364ca218ec2eccf76a397eba1ea05f5ac5de72c4b67fcf115d422d22df0bfb86a09b663f55b9478d4f
+  languageName: node
+  linkType: hard
+
+"markdown-it@npm:^14.1.0":
   version: 14.1.0
   resolution: "markdown-it@npm:14.1.0"
   dependencies:
@@ -2182,20 +2221,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdownlint-cli2@npm:0.20.0":
-  version: 0.20.0
-  resolution: "markdownlint-cli2@npm:0.20.0"
+"markdownlint-cli2@npm:0.21.0":
+  version: 0.21.0
+  resolution: "markdownlint-cli2@npm:0.21.0"
   dependencies:
-    globby: "npm:15.0.0"
+    globby: "npm:16.1.0"
     js-yaml: "npm:4.1.1"
     jsonc-parser: "npm:3.3.1"
-    markdown-it: "npm:14.1.0"
+    markdown-it: "npm:14.1.1"
     markdownlint: "npm:0.40.0"
     markdownlint-cli2-formatter-default: "npm:0.0.6"
     micromatch: "npm:4.0.8"
   bin:
     markdownlint-cli2: markdownlint-cli2-bin.mjs
-  checksum: 10c0/6c5dfc16b93db4adb39a890a745e71eda91e43e0abbd3e70f9f96057bf2c07de9df982c0be2868be170dbfa59e162c9b8632849096a177cf164f9dbd9c5f67b4
+  checksum: 10c0/6e3ff1c529b54ae6917704cd4b0c88b8cfe1ab261d56b9c35e67ca2b31e923a6e93ec301f30f514affa736ba14323f56db32c8ffee4b3771842f4beb760c4107
   languageName: node
   linkType: hard
 
@@ -2551,12 +2590,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.0.3, minimatch@npm:^10.1.1":
+"minimatch@npm:^10.0.3":
   version: 10.1.1
   resolution: "minimatch@npm:10.1.1"
   dependencies:
     "@isaacs/brace-expansion": "npm:^5.0.0"
   checksum: 10c0/c85d44821c71973d636091fddbfbffe62370f5ee3caf0241c5b60c18cd289e916200acb2361b7e987558cd06896d153e25d505db9fc1e43e6b4b6752e2702902
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^10.2.2":
+  version: 10.2.2
+  resolution: "minimatch@npm:10.2.2"
+  dependencies:
+    brace-expansion: "npm:^5.0.2"
+  checksum: 10c0/098831f2f542cb802e1f249c809008a016e1fef6b3a9eda9cf9ecb2b3d7979083951bd47c0c82fcf34330bd3b36638a493d4fa8e24cce58caf5b481de0f4e238
   languageName: node
   linkType: hard
 
@@ -2633,6 +2681,13 @@ __metadata:
   version: 7.1.2
   resolution: "minipass@npm:7.1.2"
   checksum: 10c0/b0fd20bb9fb56e5fa9a8bfac539e8915ae07430a619e4b86ff71f5fc757ef3924b23b2c4230393af1eda647ed3d75739e4e0acb250a6b1eb277cf7f8fe449557
+  languageName: node
+  linkType: hard
+
+"minipass@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "minipass@npm:7.1.3"
+  checksum: 10c0/539da88daca16533211ea5a9ee98dc62ff5742f531f54640dd34429e621955e91cc280a91a776026264b7f9f6735947629f920944e9c1558369e8bf22eb33fbb
   languageName: node
   linkType: hard
 
@@ -2800,10 +2855,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-type@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "path-type@npm:6.0.0"
-  checksum: 10c0/55baa8b1187d6dc683d5a9cfcc866168d6adff58e5db91126795376d818eee46391e00b2a4d53e44d844c7524a7d96aa68cc68f4f3e500d3d069a39e6535481c
+"path-scurry@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "path-scurry@npm:2.0.2"
+  dependencies:
+    lru-cache: "npm:^11.0.0"
+    minipass: "npm:^7.1.2"
+  checksum: 10c0/b35ad37cf6557a87fd057121ce2be7695380c9138d93e87ae928609da259ea0a170fac6f3ef1eb3ece8a068e8b7f2f3adf5bb2374cf4d4a57fe484954fcc9482
   languageName: node
   linkType: hard
 
@@ -2905,15 +2963,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:6.1.2":
-  version: 6.1.2
-  resolution: "rimraf@npm:6.1.2"
+"rimraf@npm:6.1.3":
+  version: 6.1.3
+  resolution: "rimraf@npm:6.1.3"
   dependencies:
-    glob: "npm:^13.0.0"
+    glob: "npm:^13.0.3"
     package-json-from-dist: "npm:^1.0.1"
   bin:
     rimraf: dist/esm/bin.mjs
-  checksum: 10c0/c11a6a6fad937ada03c12fe688860690df8296d7cd08dbe59e3cc087f44e43573ae26ecbe48e54cb7a6db745b8c81fe5a15b9359233cc21d52d9b5b3330fcc74
+  checksum: 10c0/4a56537850102e20ba5d5eb49f366b4b7b2435389734b4b8480cf0e0eb0f6f5d0c44120a171aeb0d8f9ab40312a10d2262f3f50acbad803e32caef61b6cf86fc
   languageName: node
   linkType: hard
 
@@ -3004,11 +3062,11 @@ __metadata:
   dependencies:
     "@ac-essentials/biome-config": "workspace:*"
     "@ac-essentials/markdownlint-cli2-config": "workspace:*"
-    "@biomejs/biome": "npm:2.3.13"
+    "@biomejs/biome": "npm:2.4.3"
     "@vitest/coverage-v8": "npm:4.0.18"
     is-ci: "npm:4.1.0"
-    lefthook: "npm:2.0.16"
-    markdownlint-cli2: "npm:0.20.0"
+    lefthook: "npm:2.1.1"
+    markdownlint-cli2: "npm:0.21.0"
     vitest: "npm:4.0.18"
   languageName: unknown
   linkType: soft
@@ -3330,9 +3388,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:0.28.16":
-  version: 0.28.16
-  resolution: "typedoc@npm:0.28.16"
+"typedoc@npm:0.28.17":
+  version: 0.28.17
+  resolution: "typedoc@npm:0.28.17"
   dependencies:
     "@gerrit0/mini-shiki": "npm:^3.17.0"
     lunr: "npm:^2.3.9"
@@ -3343,7 +3401,7 @@ __metadata:
     typescript: 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x || 5.9.x
   bin:
     typedoc: bin/typedoc
-  checksum: 10c0/ae444913068088e88be6319a017a3a18f69cbd91dbb5b959fbdd0cf87d1a2a07f3a0d4ab29c957a83dd72808ff35bdd6ceec3ad1803fa412ddceffb78fa60ebb
+  checksum: 10c0/25c3f6c08748debd2549e8af2c96dcdea255297924e8e0ecc78c86aea35d69c149eb5ad0a0d333a3a69d4e41a887ce55fef0aa97236789f0e658f3ad051429e8
   languageName: node
   linkType: hard
 
@@ -3385,6 +3443,13 @@ __metadata:
   version: 0.3.0
   resolution: "unicorn-magic@npm:0.3.0"
   checksum: 10c0/0a32a997d6c15f1c2a077a15b1c4ca6f268d574cf5b8975e778bb98e6f8db4ef4e86dfcae4e158cd4c7e38fb4dd383b93b13eefddc7f178dea13d3ac8a603271
+  languageName: node
+  linkType: hard
+
+"unicorn-magic@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "unicorn-magic@npm:0.4.0"
+  checksum: 10c0/cd6eff90967a5528dfa2016bdb5b38b0cd64c8558f9ba04fb5c2c23f3a232a67dfe2bfa4c45af3685d5f1a40dbac6a36d48e053f80f97ae4da1e0f6a55431685
   languageName: node
   linkType: hard
 
