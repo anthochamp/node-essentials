@@ -19,7 +19,7 @@ rapidly (was missing the value).
 - Renamed `ILockable` interface to `ILock`.
 - All classes implementing `ILock` now throw an `LockNotAcquiredError` when
 `release` is called without a matching `acquire`.
-- `TcpClient` and `DgramSocket` (previously `UdpSocket`) classes reimplemented.
+- `TcpSocket` and `DgramSocket` (previously `TcpClient` and `UdpSocket`, respectively) classes reimplemented.
 - `SubscribableEvent` function is now called `Event`.
 - `Subscribable` is replaced with `IEventDispatcher` interface.
 - `jsonStringifySafe` function is now called `jsonStringify` and accepts options for handling circular references.
@@ -37,7 +37,7 @@ rapidly (was missing the value).
 ### Added
 
 - Added `InetAddress` and `InetEndpoint` classes.
-- Added `TcpServer` class.
+- Added `TcpServer`, `StreamSocket`, `IpcSocket` and `TlsSocket` classes.
 - Added `removeSafe` utility for arrays.
 - Added `compact` utility for arrays.
 - Added `MaybeAsyncDisposable` type.

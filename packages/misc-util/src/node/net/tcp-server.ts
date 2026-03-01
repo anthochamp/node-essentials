@@ -1,15 +1,16 @@
-import { EventEmitter } from "node:events";
 import * as net from "node:net";
 import type { Except } from "type-fest";
+import { EventDispatcherMapBase } from "../../async/events/_event-dispatcher-map-base.js";
+import type { IEventDispatcherMap } from "../../async/events/ievent-dispatcher-map.js";
 import type { IError } from "../../ecma/error/error.js";
 import { UnsupportedError } from "../../ecma/error/unsupported-error.js";
 import { composeInetAddress, type InetEndpoint } from "./inet.js";
-import { TcpClient } from "./tcp-client.js";
+import { TcpSocket } from "./tcp-socket.js";
 
 /**
  * Event map for TcpServer server-specific events.
  */
-export interface TcpServerEvents {
+export type TcpServerEvents = {
 	/**
 	 * Emitted when the server closes.
 	 */
@@ -19,7 +20,7 @@ export interface TcpServerEvents {
 	 * Emitted when a new connection is made.
 	 * The connection is wrapped in a TcpClient instance.
 	 */
-	connection: [client: TcpClient];
+	connection: [client: TcpSocket];
 
 	/**
 	 * Emitted when a new connection is dropped.
@@ -39,7 +40,7 @@ export interface TcpServerEvents {
 	 * Emitted when the server has been bound after calling server.listen().
 	 */
 	listening: [];
-}
+};
 
 /**
  * TCP server to accept incoming connections.
@@ -58,7 +59,10 @@ export interface TcpServerEvents {
  * await server.close();
  * ```
  */
-export class TcpServer extends EventEmitter<TcpServerEvents> {
+export class TcpServer
+	extends EventDispatcherMapBase<TcpServerEvents>
+	implements IEventDispatcherMap<TcpServerEvents>
+{
 	/**
 	 * Creates a new `TcpServer` instance with the specified options.
 	 *
@@ -206,17 +210,14 @@ export class TcpServer extends EventEmitter<TcpServerEvents> {
 		};
 	}
 
-	/**
-	 * Sets up event forwarding from the underlying server to this EventEmitter.
-	 */
 	private setupEventForwarding(): void {
 		this.srv.on("connection", (socket) => {
-			const client = new TcpClient(socket);
-			this.emit("connection", client);
+			const client = new TcpSocket(socket);
+			this.dispatch("connection", client);
 		});
 
 		this.srv.on("close", () => {
-			this.emit("close");
+			this.dispatch("close");
 		});
 
 		this.srv.on("error", (err) => {
@@ -224,11 +225,11 @@ export class TcpServer extends EventEmitter<TcpServerEvents> {
 				this.handledErrorEvents.delete(err);
 				return;
 			}
-			this.emit("error", err);
+			this.dispatch("error", err);
 		});
 
 		this.srv.on("listening", () => {
-			this.emit("listening");
+			this.dispatch("listening");
 		});
 
 		this.srv.on("drop", (data?) => {
@@ -260,7 +261,7 @@ export class TcpServer extends EventEmitter<TcpServerEvents> {
 				remoteEndpoint = null;
 			}
 
-			this.emit("drop", localEndpoint, remoteEndpoint);
+			this.dispatch("drop", localEndpoint, remoteEndpoint);
 		});
 	}
 }
