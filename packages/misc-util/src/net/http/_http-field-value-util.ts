@@ -1,5 +1,6 @@
-import { patternTrim } from "../../../ecma/regexp/pattern-trim.js";
-import { patternInOutCapture } from "../../../ecma/regexp/pattern-util.js";
+import { patternTrim } from "../../ecma/regexp/pattern-trim.js";
+import { patternInOutCapture } from "../../ecma/regexp/pattern-util.js";
+import type { Pattern } from "../../ecma/regexp/types.js";
 
 // https://httpwg.org/specs/rfc9110.html#rfc.section.2.1
 const httpVcharPattern = "[\\x21-\\x7E]";
@@ -72,7 +73,7 @@ const httpDayNameLPattern =
 	"(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)";
 const httpRfc850DatePattern = `(?:${httpDayNameLPattern}, ${httpDate2Pattern} ${httpTimeOfDayPattern} GMT)`;
 const httpDate3Pattern = `(?:${httpMonthPattern} (?:\\d{2}| \\d))`;
-const httpAsctimeDatePattern = `(?:${httpDayNamePattern} ${httpDate3Pattern} ${httpTimeOfDayPattern} ${httpYearPattern})`;
+export const httpAsctimeDatePattern: Pattern = `(?:${httpDayNamePattern} ${httpDate3Pattern} ${httpTimeOfDayPattern} ${httpYearPattern})`;
 const httpObsDatePattern = `(?:${httpRfc850DatePattern}|${httpAsctimeDatePattern})`;
 const httpDatePattern = `(?:${httpImfFixdatePattern}|${httpObsDatePattern})`;
 

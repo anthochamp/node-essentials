@@ -103,9 +103,7 @@ suite("HttpHeaders", () => {
 		expect(lastModified?.toUTCString()).toBe("Sun, 06 Nov 1994 08:49:37 GMT");
 	});
 
-	// TODO: Enable this test when asctime format is supported (and required...)
-	// TODO: for now it takes the local timezone into account which is not correct (?)
-	test.skip("should parse Last-Modified header with asctime format", () => {
+	test("should parse Last-Modified header with asctime format", () => {
 		const headers = new HttpHeaders({
 			"last-modified": ["Sun Nov  6 08:49:37 1994"],
 		});

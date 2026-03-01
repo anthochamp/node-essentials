@@ -51,6 +51,7 @@ rapidly (was missing the value).
 - Added `intersection` utility for arrays.
 - Added `getObjectKeys` utility.
 - Added `traverse` utility for objects.
+- Added `HttpTrailers` class.
 
 ## [0.5.1] - 2025-10-06
 

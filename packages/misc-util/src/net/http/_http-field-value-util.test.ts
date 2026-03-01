@@ -5,7 +5,7 @@ import {
 	httpFieldParseQuotedString,
 	httpFieldSplitValueByWs,
 	httpFieldUnfoldValues,
-} from "./http-field-value-util.js";
+} from "./_http-field-value-util.js";
 
 suite("httpFieldSplitValueByWs", () => {
 	test("should split by whitespace", () => {

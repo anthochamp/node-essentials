@@ -1,12 +1,12 @@
 import { EOL } from "node:os";
 import { type InspectOptionsStylized, inspect } from "node:util";
-import type { Predicate } from "../../../ecma/function/types.js";
-import { CaseInsensitiveMap } from "../../../ecma/map/case-insensitive-map.js";
-import { stringIsEqualCaseInsensitive } from "../../../ecma/string/string-is-equal.js";
+import type { Predicate } from "../../ecma/function/types.js";
+import { CaseInsensitiveMap } from "../../ecma/map/case-insensitive-map.js";
+import { stringIsEqualCaseInsensitive } from "../../ecma/string/string-is-equal.js";
 import {
 	httpFieldFoldValues,
 	httpFieldUnfoldValues,
-} from "./http-field-value-util.js";
+} from "./_http-field-value-util.js";
 
 export type HttpFieldName = string;
 export type HttpFieldValue = string;
