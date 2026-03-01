@@ -6,26 +6,26 @@ suite("Semaphore", () => {
 		const semaphore = new Semaphore(2);
 		expect(semaphore.value).toBe(2);
 
-		const release1 = await semaphore.acquire();
+		await semaphore.acquire();
 		expect(semaphore.value).toBe(1);
 
-		const release2 = await semaphore.acquire();
+		await semaphore.acquire();
 		expect(semaphore.value).toBe(0);
 
 		const acquirePromise = semaphore.acquire();
 		expect(semaphore.value).toBe(0); // Still 0, as the third acquire is waiting
 
-		release1();
+		semaphore.release();
 		await acquirePromise; // Now the third acquire should complete
 		expect(semaphore.value).toBe(0); // Still 0, as two are acquired
 
-		release2();
+		semaphore.release();
 		expect(semaphore.value).toBe(1);
 
-		const release3 = await semaphore.acquire();
+		await semaphore.acquire();
 		expect(semaphore.value).toBe(0);
 
-		release3();
+		semaphore.release();
 		expect(semaphore.value).toBe(1);
 	});
 
@@ -37,7 +37,7 @@ suite("Semaphore", () => {
 
 	test("should handle multiple concurrent acquires", async () => {
 		const semaphore = new Semaphore(3);
-		const releases = await Promise.all([
+		await Promise.all([
 			semaphore.acquire(),
 			semaphore.acquire(),
 			semaphore.acquire(),
@@ -47,20 +47,20 @@ suite("Semaphore", () => {
 		const acquirePromise = semaphore.acquire();
 		expect(semaphore.value).toBe(0); // Still 0, as the fourth acquire is waiting
 
-		releases[0]();
+		semaphore.release();
 		await acquirePromise; // Now the fourth acquire should complete
 		expect(semaphore.value).toBe(0); // Still 0, as three are acquired
 
-		releases[1]();
+		semaphore.release();
 		expect(semaphore.value).toBe(1);
 
-		releases[2]();
+		semaphore.release();
 		expect(semaphore.value).toBe(2);
 
-		const release4 = await semaphore.acquire();
+		await semaphore.acquire();
 		expect(semaphore.value).toBe(1);
 
-		release4();
+		semaphore.release();
 		expect(semaphore.value).toBe(2);
 	});
 
@@ -68,19 +68,19 @@ suite("Semaphore", () => {
 		const semaphore = new Semaphore(2, 1);
 		expect(semaphore.value).toBe(1);
 
-		const release1 = await semaphore.acquire();
+		await semaphore.acquire();
 		expect(semaphore.value).toBe(0);
 
-		release1();
+		semaphore.release();
 		expect(semaphore.value).toBe(1);
 
-		const release2 = await semaphore.acquire();
+		await semaphore.acquire();
 		expect(semaphore.value).toBe(0);
 
-		release2();
+		semaphore.release();
 		expect(semaphore.value).toBe(1);
 
-		semaphore.release(1);
+		semaphore.release();
 		expect(semaphore.value).toBe(2);
 
 		expect(() => semaphore.release(1)).toThrow(
@@ -88,7 +88,7 @@ suite("Semaphore", () => {
 		);
 	});
 
-	test("should support tryAcquire and fail when insufficient permits", () => {
+	test("should support tryAcquire and fail when insufficient permits", async () => {
 		const semaphore = new Semaphore(2);
 		expect(semaphore.tryAcquire()).toBe(true);
 		expect(semaphore.value).toBe(1);

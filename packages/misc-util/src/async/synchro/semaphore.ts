@@ -1,15 +1,14 @@
-import { debounceQueue } from "../ecma/function/debounce-queue.js";
-import type { Callable } from "../ecma/function/types.js";
-import { AbortablePromise } from "../ecma/promise/abortable-promise.js";
-import type { PromiseResolve } from "../ecma/promise/types.js";
+import { removeSafe } from "../../ecma/array/remove-safe.js";
+import { serializeQueueNext } from "../../ecma/function/serialize-queue-next.js";
+import type { PromiseResolve } from "../../ecma/promise/types.js";
 
-type SemaphorePendingAcquisition = {
+type PendingAcquisition_ = {
 	count: number;
 	resolve: PromiseResolve<void>;
 };
 
 /**
- * A counting semaphore implementation.
+ * A general/counting strong semaphore implementation.
  *
  * A semaphore maintains a set of permits. Each `acquire` call blocks if necessary
  * until a permit is available, and then takes it. Each `release` call adds a permit,
@@ -17,18 +16,15 @@ type SemaphorePendingAcquisition = {
  *
  * The semaphore is initialized with a given number of permits. The number of
  * permits can be increased up to a maximum value.
+ *
+ * The order of permit acquisition is guaranteed to be FIFO.
  */
 export class Semaphore {
 	private value_: number;
-
-	// FIFO queue using array, do not use Queue class because of circular dependency
-	private pendingAcquisitions: SemaphorePendingAcquisition[] = [];
-
-	// Also, we cannot use a Mutex lock here because of circular dependency, so we
-	// use a debounced function, but be careful to not call processPendingAcquisitions
-	// directly, and to always use the debounced version.
-	private processPendingAcquisitionsDebounced = debounceQueue(async () =>
-		this.processPendingAcquisitions(),
+	// we do not use a Queue data structure here because it requires the Semaphore
+	private readonly pendingAcquisitions: PendingAcquisition_[] = [];
+	private readonly handlePendingAcquisitionsSqn = serializeQueueNext(() =>
+		this.handlePendingAcquisitions(),
 	);
 
 	/**
@@ -55,6 +51,8 @@ export class Semaphore {
 
 	/**
 	 * The current number of available permits.
+	 *
+	 * @returns The current number of available permits.
 	 */
 	get value(): number {
 		return this.value_;
@@ -62,6 +60,8 @@ export class Semaphore {
 
 	/**
 	 * The maximum number of permits.
+	 *
+	 * @returns The maximum number of permits.
 	 */
 	getMaxValue(): number {
 		return this.maxValue;
@@ -77,52 +77,70 @@ export class Semaphore {
 		if (!Number.isFinite(count) || count <= 0) {
 			throw new RangeError("Count must be positive");
 		}
+
 		if (this.value_ >= count) {
 			this.value_ -= count;
+
+			// mitigate concurrency issues
+			if (this.value_ < 0) {
+				this.value_ += count;
+				return false;
+			}
+
 			return true;
 		}
+
 		return false;
 	}
 
 	/**
-	 * Acquires a permit from the semaphore, waiting if necessary until one is available.
+	 * Acquires a permit from the semaphore, waiting if necessary until one is
+	 * available.
 	 *
 	 * @param signal An optional AbortSignal to cancel the acquire operation.
-	 * @returns A promise that resolves to a function that releases the acquired permit.
+	 * @returns A promise that resolves to a lease when the permits are acquired.
 	 */
-	async acquire(count = 1, signal?: AbortSignal | null): Promise<Callable> {
-		if (this.tryAcquire(count)) {
-			return () => this.release(count);
+	async acquire(count = 1, signal?: AbortSignal | null): Promise<void> {
+		if (!Number.isFinite(count) || count <= 0) {
+			throw new RangeError("Count must be positive");
 		}
 
-		const deferred = AbortablePromise.withResolvers<void>({
-			signal,
-			onAbort: () => {
-				this.pendingAcquisitions.splice(
-					this.pendingAcquisitions.indexOf(pendingAcquisition),
-					1,
-				);
-			},
-		});
+		const deferred = Promise.withResolvers<void>();
 
-		const pendingAcquisition: SemaphorePendingAcquisition = {
+		const pendingAcquisition: PendingAcquisition_ = {
 			count,
 			resolve: deferred.resolve,
 		};
+
 		this.pendingAcquisitions.push(pendingAcquisition);
 
-		// Process the queue in case there are immediately available permits
-		await this.processPendingAcquisitionsDebounced();
+		const handleAbort = () => {
+			deferred.reject(signal?.reason);
+		};
 
-		await deferred.promise;
+		try {
+			signal?.throwIfAborted();
+			signal?.addEventListener("abort", handleAbort, {
+				once: true,
+			});
 
-		return () => this.release(count);
+			await this.handlePendingAcquisitionsSqn();
+
+			await deferred.promise;
+		} finally {
+			signal?.removeEventListener("abort", handleAbort);
+			removeSafe(this.pendingAcquisitions, pendingAcquisition);
+		}
 	}
 
 	/**
-	 * Releases a permit, returning it to the semaphore.
+	 * Releases permits back to the semaphore.
+	 *
+	 * Any pending acquisitions will be processed asynchronously after this call.
+	 *
+	 * @param count The number of permits to release.
 	 */
-	release(count: number): void {
+	release(count = 1): void {
 		if (!Number.isFinite(count) || count < 0) {
 			throw new RangeError("Count must be positive");
 		}
@@ -131,11 +149,12 @@ export class Semaphore {
 		}
 
 		this.value_ += count;
-		this.processPendingAcquisitionsDebounced();
+
+		void this.handlePendingAcquisitionsSqn();
 	}
 
-	private processPendingAcquisitions() {
-		let next: SemaphorePendingAcquisition | undefined;
+	private handlePendingAcquisitions() {
+		let next: PendingAcquisition_ | undefined;
 		while ((next = this.pendingAcquisitions.shift()) !== undefined) {
 			if (this.value_ < next.count) {
 				this.pendingAcquisitions.unshift(next);

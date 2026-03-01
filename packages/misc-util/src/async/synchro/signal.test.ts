@@ -3,7 +3,7 @@ import { Signal } from "./signal.js";
 
 suite("Signalable", () => {
 	test("should initialize with the correct state", () => {
-		const signalable1 = new Signal();
+		const signalable1 = new Signal(false);
 		expect(signalable1.signaled).toBe(false);
 
 		const signalable2 = new Signal(false, false);
@@ -13,8 +13,8 @@ suite("Signalable", () => {
 		expect(signalable3.signaled).toBe(true);
 	});
 
-	test("should signal and reset the signalable", () => {
-		const signalable = new Signal();
+	test("should signal and reset the signalable", async () => {
+		const signalable = new Signal(false);
 		expect(signalable.signaled).toBe(false);
 
 		signalable.signal();
@@ -25,7 +25,7 @@ suite("Signalable", () => {
 	});
 
 	test("should wait for the signalable", async () => {
-		const signalable = new Signal();
+		const signalable = new Signal(false);
 
 		const waitPromises = Promise.all([signalable.wait(), signalable.wait()]);
 
@@ -41,14 +41,14 @@ suite("Signalable", () => {
 	});
 
 	test("should timeout when waiting for the signalable", async () => {
-		const signalable = new Signal();
+		const signalable = new Signal(false);
 		await expect(() =>
 			signalable.wait(AbortSignal.timeout(10)),
 		).rejects.toThrow();
 	});
 
 	test("should not wait when the signalable is already signaled", async () => {
-		const signalable = new Signal();
+		const signalable = new Signal(false);
 
 		let signaledCount = 0;
 		const waitPromise1 = (async () => {
