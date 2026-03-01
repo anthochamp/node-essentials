@@ -132,7 +132,7 @@ describe("DgramSocket", () => {
 				msg: Buffer;
 				size: number;
 			}>((resolve) => {
-				receiver.once("message", (msg, size) => {
+				receiver.subscribe("message", (msg, size) => {
 					resolve({ msg, size });
 				});
 			});
@@ -163,7 +163,7 @@ describe("DgramSocket", () => {
 			if (!receiverAddress) return;
 
 			const messagePromise = new Promise<Buffer>((resolve) => {
-				receiver.once("message", (msg) => {
+				receiver.subscribe("message", (msg) => {
 					resolve(msg);
 				});
 			});
@@ -194,7 +194,7 @@ describe("DgramSocket", () => {
 			if (!receiverAddress) return;
 
 			const messagePromise = new Promise<Buffer>((resolve) => {
-				receiver.once("message", (msg) => {
+				receiver.subscribe("message", (msg) => {
 					resolve(msg);
 				});
 			});
@@ -221,7 +221,7 @@ describe("DgramSocket", () => {
 			if (!receiverAddress) return;
 
 			const messagePromise = new Promise<Buffer>((resolve) => {
-				receiver.once("message", (msg) => {
+				receiver.subscribe("message", (msg) => {
 					resolve(msg);
 				});
 			});
@@ -274,20 +274,114 @@ describe("DgramSocket", () => {
 			socket.address();
 			expect(addressSpy).toHaveBeenCalledOnce();
 		});
+
+		it("should configure broadcast and buffers", async () => {
+			const mockSocket = dgram.createSocket({ type: "udp4" });
+			socket = new DgramSocket(mockSocket);
+			await socket.bind(0, "127.0.0.1");
+
+			const setBroadcastSpy = vi.spyOn(mockSocket, "setBroadcast");
+			const setRecvBufferSizeSpy = vi.spyOn(mockSocket, "setRecvBufferSize");
+			const setSendBufferSizeSpy = vi.spyOn(mockSocket, "setSendBufferSize");
+			const getRecvBufferSizeSpy = vi.spyOn(mockSocket, "getRecvBufferSize");
+			const getSendBufferSizeSpy = vi.spyOn(mockSocket, "getSendBufferSize");
+
+			socket.setBroadcast(true);
+			socket.setRecvBufferSize(1024);
+			socket.setSendBufferSize(2048);
+			void socket.getRecvBufferSize();
+			void socket.getSendBufferSize();
+
+			expect(setBroadcastSpy).toHaveBeenCalledWith(true);
+			expect(setRecvBufferSizeSpy).toHaveBeenCalledWith(1024);
+			expect(setSendBufferSizeSpy).toHaveBeenCalledWith(2048);
+			expect(getRecvBufferSizeSpy).toHaveBeenCalledOnce();
+			expect(getSendBufferSizeSpy).toHaveBeenCalledOnce();
+		});
+
+		it("should configure multicast and source membership", async () => {
+			const mockSocket = dgram.createSocket({ type: "udp4" });
+			socket = new DgramSocket(mockSocket);
+			await socket.bind(0, "127.0.0.1");
+
+			const addMembershipSpy = vi.spyOn(mockSocket, "addMembership");
+			const dropMembershipSpy = vi.spyOn(mockSocket, "dropMembership");
+			const addSourceSpecificMembershipSpy = vi.spyOn(
+				mockSocket,
+				"addSourceSpecificMembership",
+			);
+			const dropSourceSpecificMembershipSpy = vi.spyOn(
+				mockSocket,
+				"dropSourceSpecificMembership",
+			);
+			const setMulticastInterfaceSpy = vi.spyOn(
+				mockSocket,
+				"setMulticastInterface",
+			);
+			const setMulticastLoopbackSpy = vi.spyOn(
+				mockSocket,
+				"setMulticastLoopback",
+			);
+			const setMulticastTTLSpy = vi.spyOn(mockSocket, "setMulticastTTL");
+			const setTTLSpy = vi.spyOn(mockSocket, "setTTL");
+
+			socket.addMembership("239.0.0.1", "0.0.0.0");
+			socket.dropMembership("239.0.0.1", "0.0.0.0");
+			socket.addSourceMembership("192.0.2.1", "239.0.0.1", "0.0.0.0");
+			socket.dropSourceMembership("192.0.2.1", "239.0.0.1", "0.0.0.0");
+			socket.setMulticastInterface("0.0.0.0");
+			socket.setMulticastLoop(true);
+			socket.setMulticastTtl(2);
+			socket.setTtl(64);
+
+			expect(addMembershipSpy).toHaveBeenCalledWith("239.0.0.1", "0.0.0.0");
+			expect(dropMembershipSpy).toHaveBeenCalledWith("239.0.0.1", "0.0.0.0");
+			expect(addSourceSpecificMembershipSpy).toHaveBeenCalledWith(
+				"192.0.2.1",
+				"239.0.0.1",
+				"0.0.0.0",
+			);
+			expect(dropSourceSpecificMembershipSpy).toHaveBeenCalledWith(
+				"192.0.2.1",
+				"239.0.0.1",
+				"0.0.0.0",
+			);
+			expect(setMulticastInterfaceSpy).toHaveBeenCalledWith("0.0.0.0");
+			expect(setMulticastLoopbackSpy).toHaveBeenCalledWith(true);
+			expect(setMulticastTTLSpy).toHaveBeenCalledWith(2);
+			expect(setTTLSpy).toHaveBeenCalledWith(64);
+		});
+
+		it("should expose send queue statistics", () => {
+			const mockSocket = dgram.createSocket({ type: "udp4" });
+			socket = new DgramSocket(mockSocket);
+
+			const getSendQueueCountSpy = vi
+				.spyOn(mockSocket, "getSendQueueCount")
+				.mockReturnValue(3);
+			const getSendQueueSizeSpy = vi
+				.spyOn(mockSocket, "getSendQueueSize")
+				.mockReturnValue(512);
+
+			const stat = socket.getStat();
+
+			expect(getSendQueueCountSpy).toHaveBeenCalledOnce();
+			expect(getSendQueueSizeSpy).toHaveBeenCalledOnce();
+			expect(stat.sendQueueCount).toBe(3);
+			expect(stat.sendQueueSize).toBe(512);
+		});
 	});
 
 	describe("events", () => {
-		describe("on()", () => {
+		describe("subscribe()/unsubscribe()", () => {
 			it("should register listening event listener", async () => {
 				socket = DgramSocket.from();
-
 				const listeningPromise = new Promise<void>((resolve) => {
 					expect(socket).toBeDefined();
-					socket?.on("listening", () => {
+					socket?.subscribe("listening", () => {
 						resolve();
 					});
 				});
-
 				await socket.bind(0);
 				await listeningPromise;
 			});
@@ -295,34 +389,29 @@ describe("DgramSocket", () => {
 			it("should register message event listener", async () => {
 				socket = DgramSocket.from();
 				await socket.bind(0, "127.0.0.1");
-
 				const messagePromise = new Promise<void>((resolve) => {
 					expect(socket).toBeDefined();
-					socket?.on("message", () => {
+					socket?.subscribe("message", () => {
 						resolve();
 					});
 				});
-
 				const address = socket.address();
 				expect(address).not.toBeNull();
 				if (!address) return;
 				const sender = DgramSocket.from();
 				await sender.send(address.port, address.address, "test");
-
 				await messagePromise;
 				await sender.close();
 			});
 
 			it("should register close event listener", async () => {
 				socket = DgramSocket.from();
-
 				const closePromise = new Promise<void>((resolve) => {
 					expect(socket).toBeDefined();
-					socket?.on("close", () => {
+					socket?.subscribe("close", () => {
 						resolve();
 					});
 				});
-
 				await socket.close();
 				await closePromise;
 			});
@@ -330,80 +419,49 @@ describe("DgramSocket", () => {
 			it("should register error event listener", async () => {
 				socket = DgramSocket.from();
 				await socket.bind(0);
-
 				const testError = new Error("Socket error");
-
 				const errorPromise = new Promise<Error>((resolve) => {
 					expect(socket).toBeDefined();
-					socket?.on("error", (err) => {
+					socket?.subscribe("error", (err) => {
 						resolve(err);
 					});
 				});
-
 				// Emit an error directly on the underlying socket to test error forwarding
 				// (Note: bind errors are handled specially by bind() and won't be re-emitted)
 				// biome-ignore lint/suspicious/noExplicitAny: accessing private property for testing
 				(socket as any).sock.emit("error", testError);
-
 				const error = await errorPromise;
 				expect(error).toBe(testError);
 			});
-			it("should return this for chaining", () => {
-				socket = DgramSocket.from();
-				const result = socket.on("listening", () => {});
-				expect(result).toBe(socket);
-			});
-		});
 
-		describe("once()", () => {
 			it("should register one-time listening event listener", async () => {
 				let testSocket = DgramSocket.from();
-
 				let callCount = 0;
-				testSocket.once("listening", () => {
-					callCount++;
-				});
-
+				testSocket.subscribe(
+					"listening",
+					() => {
+						callCount++;
+					},
+					{ once: true },
+				);
 				await testSocket.bind(0);
 				await testSocket.close();
-
 				testSocket = DgramSocket.from();
 				await testSocket.bind(0);
-
 				expect(callCount).toBe(1);
-
 				await testSocket.close();
 			});
 
-			it("should return this for chaining", () => {
-				socket = DgramSocket.from();
-				const result = socket.once("listening", () => {});
-				expect(result).toBe(socket);
-			});
-		});
-
-		describe("off()", () => {
 			it("should remove listening event listener", async () => {
 				socket = DgramSocket.from();
-
 				let callCount = 0;
 				const listener = () => {
 					callCount++;
 				};
-
-				socket.on("listening", listener);
-				socket.off("listening", listener);
-
+				socket.subscribe("listening", listener);
+				socket.unsubscribe("listening", listener);
 				await socket.bind(0);
-
 				expect(callCount).toBe(0);
-			});
-
-			it("should return this for chaining", () => {
-				socket = DgramSocket.from();
-				const listener = () => {};
-				const result = socket.off("listening", listener);
-				expect(result).toBe(socket);
 			});
 		});
 	});
@@ -412,15 +470,16 @@ describe("DgramSocket", () => {
 		it("should forward listening event", async () => {
 			const mockSocket = dgram.createSocket({ type: "udp4" });
 			const testSocket = new DgramSocket(mockSocket);
-
 			const listeningPromise = new Promise<void>((resolve) => {
-				testSocket.once("listening", () => {
-					resolve();
-				});
+				testSocket.subscribe(
+					"listening",
+					() => {
+						resolve();
+					},
+					{ once: true },
+				);
 			});
-
 			mockSocket.emit("listening");
-
 			await listeningPromise;
 			mockSocket.close();
 		});
@@ -428,30 +487,32 @@ describe("DgramSocket", () => {
 		it("should forward close event", async () => {
 			const mockSocket = dgram.createSocket({ type: "udp4" });
 			const testSocket = new DgramSocket(mockSocket);
-
 			const closePromise = new Promise<void>((resolve) => {
-				testSocket.once("close", () => {
-					resolve();
-				});
+				testSocket.subscribe(
+					"close",
+					() => {
+						resolve();
+					},
+					{ once: true },
+				);
 			});
-
 			mockSocket.emit("close");
-
 			await closePromise;
 		});
 
 		it("should forward connect event", async () => {
 			const mockSocket = dgram.createSocket({ type: "udp4" });
 			const testSocket = new DgramSocket(mockSocket);
-
 			const connectPromise = new Promise<void>((resolve) => {
-				testSocket.once("connect", () => {
-					resolve();
-				});
+				testSocket.subscribe(
+					"connect",
+					() => {
+						resolve();
+					},
+					{ once: true },
+				);
 			});
-
 			mockSocket.emit("connect");
-
 			await connectPromise;
 			mockSocket.close();
 		});
@@ -459,17 +520,17 @@ describe("DgramSocket", () => {
 		it("should forward error event", async () => {
 			const mockSocket = dgram.createSocket({ type: "udp4" });
 			const testSocket = new DgramSocket(mockSocket);
-
 			const testError = new Error("Test error");
-
 			const errorPromise = new Promise<Error>((resolve) => {
-				testSocket.once("error", (error) => {
-					resolve(error);
-				});
+				testSocket.subscribe(
+					"error",
+					(error) => {
+						resolve(error);
+					},
+					{ once: true },
+				);
 			});
-
 			mockSocket.emit("error", testError);
-
 			const receivedError = await errorPromise;
 			expect(receivedError).toBe(testError);
 			mockSocket.close();
@@ -478,7 +539,6 @@ describe("DgramSocket", () => {
 		it("should forward message event with transformed data", async () => {
 			const mockSocket = dgram.createSocket({ type: "udp4" });
 			const testSocket = new DgramSocket(mockSocket);
-
 			const messagePromise = new Promise<{
 				msg: Buffer;
 				size: number;
@@ -486,17 +546,20 @@ describe("DgramSocket", () => {
 				port: number;
 				family: number | null;
 			}>((resolve) => {
-				testSocket.once("message", (msg, size, from) => {
-					resolve({
-						msg,
-						size,
-						address: from.address,
-						port: from.port,
-						family: from.family,
-					});
-				});
+				testSocket.subscribe(
+					"message",
+					(msg, size, from) => {
+						resolve({
+							msg,
+							size,
+							address: from.address,
+							port: from.port,
+							family: from.family,
+						});
+					},
+					{ once: true },
+				);
 			});
-
 			const testMsg = Buffer.from("Hello");
 			const rinfo = {
 				address: "192.168.1.100",
@@ -504,9 +567,7 @@ describe("DgramSocket", () => {
 				port: 54321,
 				size: testMsg.length,
 			};
-
 			mockSocket.emit("message", testMsg, rinfo);
-
 			const result = await messagePromise;
 			expect(result.msg).toBe(testMsg);
 			expect(result.size).toBe(testMsg.length);
@@ -521,38 +582,39 @@ describe("DgramSocket", () => {
 		it("should handle bidirectional communication", async () => {
 			const socket1 = DgramSocket.from();
 			const socket2 = DgramSocket.from();
-
 			await socket1.bind(0, "127.0.0.1");
 			await socket2.bind(0, "127.0.0.1");
-
 			const addr1 = socket1.address();
 			const addr2 = socket2.address();
 			expect(addr1).not.toBeNull();
 			expect(addr2).not.toBeNull();
 			if (!addr1 || !addr2) return;
-
 			// Socket1 sends to Socket2
 			const message1Promise = new Promise<string>((resolve) => {
-				socket2.once("message", (msg) => {
-					resolve(msg.toString());
-				});
+				socket2.subscribe(
+					"message",
+					(msg) => {
+						resolve(msg.toString());
+					},
+					{ once: true },
+				);
 			});
-
 			await socket1.send(addr2.port, addr2.address, "Hello from socket1");
 			const msg1 = await message1Promise;
 			expect(msg1).toBe("Hello from socket1");
-
 			// Socket2 sends to Socket1
 			const message2Promise = new Promise<string>((resolve) => {
-				socket1.once("message", (msg) => {
-					resolve(msg.toString());
-				});
+				socket1.subscribe(
+					"message",
+					(msg) => {
+						resolve(msg.toString());
+					},
+					{ once: true },
+				);
 			});
-
 			await socket2.send(addr1.port, addr1.address, "Hello from socket2");
 			const msg2 = await message2Promise;
 			expect(msg2).toBe("Hello from socket2");
-
 			await socket1.close();
 			await socket2.close();
 		});
@@ -560,47 +622,41 @@ describe("DgramSocket", () => {
 		it("should handle multiple messages", async () => {
 			const receiver = DgramSocket.from();
 			await receiver.bind(0, "127.0.0.1");
-
 			const receiverAddress = receiver.address();
 			expect(receiverAddress).not.toBeNull();
 			if (!receiverAddress) return;
-
 			const messages: string[] = [];
-			receiver.on("message", (msg) => {
+			receiver.subscribe("message", (msg) => {
 				messages.push(msg.toString());
 			});
-
 			socket = DgramSocket.from();
-
 			await socket.send(receiverAddress.port, receiverAddress.address, "msg1");
 			await socket.send(receiverAddress.port, receiverAddress.address, "msg2");
 			await socket.send(receiverAddress.port, receiverAddress.address, "msg3");
-
 			// Wait a bit for messages to arrive
 			await new Promise((resolve) => setTimeout(resolve, 100));
-
 			expect(messages).toHaveLength(3);
 			expect(messages).toContain("msg1");
 			expect(messages).toContain("msg2");
 			expect(messages).toContain("msg3");
-
 			await receiver.close();
 		});
 
 		it("should handle binary data", async () => {
 			const receiver = DgramSocket.from();
 			await receiver.bind(0, "127.0.0.1");
-
 			const receiverAddress = receiver.address();
 			expect(receiverAddress).not.toBeNull();
 			if (!receiverAddress) return;
-
 			const messagePromise = new Promise<Buffer>((resolve) => {
-				receiver.once("message", (msg) => {
-					resolve(msg);
-				});
+				receiver.subscribe(
+					"message",
+					(msg) => {
+						resolve(msg);
+					},
+					{ once: true },
+				);
 			});
-
 			socket = DgramSocket.from();
 			const binaryData = Buffer.from([0x01, 0x02, 0x03, 0x04, 0xff]);
 			await socket.send(
@@ -608,27 +664,26 @@ describe("DgramSocket", () => {
 				receiverAddress.address,
 				binaryData,
 			);
-
 			const msg = await messagePromise;
 			expect(msg).toEqual(binaryData);
-
 			await receiver.close();
 		});
 
 		it("should send DataView messages", async () => {
 			const receiver = DgramSocket.from();
 			await receiver.bind(0, "127.0.0.1");
-
 			const receiverAddress = receiver.address();
 			expect(receiverAddress).not.toBeNull();
 			if (!receiverAddress) return;
-
 			const messagePromise = new Promise<Buffer>((resolve) => {
-				receiver.once("message", (msg) => {
-					resolve(msg);
-				});
+				receiver.subscribe(
+					"message",
+					(msg) => {
+						resolve(msg);
+					},
+					{ once: true },
+				);
 			});
-
 			socket = DgramSocket.from();
 			const buffer = new ArrayBuffer(5);
 			const view = new DataView(buffer);
@@ -637,12 +692,9 @@ describe("DgramSocket", () => {
 			view.setUint8(2, 108); // 'l'
 			view.setUint8(3, 108); // 'l'
 			view.setUint8(4, 111); // 'o'
-
 			await socket.send(receiverAddress.port, receiverAddress.address, view);
-
 			const msg = await messagePromise;
 			expect(msg.toString()).toBe("Hello");
-
 			await receiver.close();
 		});
 
