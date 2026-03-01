@@ -1,5 +1,5 @@
 import { noThrowAsync } from "../function/no-throw.js";
-import type { Callback } from "../function/types.js";
+import type { Callable } from "../function/types.js";
 
 /**
  * A simple timer that calls a callback after a specified delay.
@@ -14,7 +14,7 @@ export class Timer {
 	 * @param delayMs The delay in milliseconds before the timer fires.
 	 */
 	constructor(
-		private readonly callback: Callback,
+		private readonly callback: Callable,
 		private readonly delayMs: number,
 	) {}
 

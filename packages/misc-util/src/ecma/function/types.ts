@@ -29,22 +29,6 @@ export type AsyncCallableNoArgs<R = void, T = unknown> = CallableNoArgs<
 	T
 >;
 
-export type Callback<A extends unknown[] = never[], T = unknown> = Callable<
-	A,
-	void,
-	T
->;
-
-export type MaybeAsyncCallback<
-	A extends unknown[] = never[],
-	T = unknown,
-> = MaybeAsyncCallable<A, void, T>;
-
-export type AsyncCallback<
-	A extends unknown[] = never[],
-	T = unknown,
-> = AsyncCallable<A, void, T>;
-
 export type Predicate<A extends unknown[] = never[], T = unknown> = Callable<
 	A,
 	boolean,
