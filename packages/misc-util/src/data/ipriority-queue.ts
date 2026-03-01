@@ -1,5 +1,5 @@
 import type { Promisable } from "type-fest";
-import type { Predicate } from "../../ecma/function/types.js";
+import type { Predicate } from "../ecma/function/types.js";
 import type { ICollection } from "./icollection.js";
 
 export type PriorityQueueIsHigherPriorityPredicate<P> = Predicate<[P, P]>;

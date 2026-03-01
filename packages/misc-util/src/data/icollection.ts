@@ -1,6 +1,6 @@
 import type { Promisable } from "type-fest";
-import type { Callable, Predicate } from "../../ecma/function/types.js";
-import type { MaybeAsyncIterableIterator } from "../../ecma/iterator/types.js";
+import type { Callable, Predicate } from "../ecma/function/types.js";
+import type { MaybeAsyncIterableIterator } from "../ecma/iterator/types.js";
 
 /**
  * Error thrown when a list exceeds its capacity.

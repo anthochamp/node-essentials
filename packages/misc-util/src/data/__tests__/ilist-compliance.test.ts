@@ -1,8 +1,8 @@
 import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
 import type { MaybeAsyncIterableIterator } from "../../ecma/iterator/types.js";
-import type { IList } from "../abstract-types/ilist.js";
 import { DoublyLinkedList } from "../doubly-linked-list.js";
+import type { IList } from "../ilist.js";
 import { LinkedList } from "../linked-list.js";
 import { NativeArray } from "../native-array.js";
 

@@ -1,5 +1,5 @@
 import type { Promisable } from "type-fest";
-import type { MaybeAsyncIterableIterator } from "../../ecma/iterator/types.js";
+import type { MaybeAsyncIterableIterator } from "../ecma/iterator/types.js";
 import type { ICollection } from "./icollection.js";
 
 /**

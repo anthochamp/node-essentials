@@ -1,6 +1,6 @@
-import type { Callable, Predicate } from "../../ecma/function/types.js";
-import type { ICollection } from "../abstract-types/icollection.js";
-import { BinaryHeap } from "../binary-heap.js";
+import type { Callable, Predicate } from "../ecma/function/types.js";
+import { BinaryHeap } from "./binary-heap.js";
+import type { ICollection } from "./icollection.js";
 
 export class BinaryHeapCollection<T> implements ICollection<T> {
 	protected readonly data: BinaryHeap<T>;

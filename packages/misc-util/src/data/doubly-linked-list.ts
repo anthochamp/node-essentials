@@ -1,11 +1,8 @@
-import { Semaphore } from "../async/semaphore.js";
+import { Semaphore } from "../async/synchro/semaphore.js";
 import type { Callable, Predicate } from "../ecma/function/types.js";
-import { clamp } from "../ecma/math/clamp.js";
-import { CollectionCapacityExceededError } from "./abstract-types/icollection.js";
-import {
-	type IList,
-	ListIndexOutOfBoundsError,
-} from "./abstract-types/ilist.js";
+import { clamp } from "../math/clamp.js";
+import { CollectionCapacityExceededError } from "./icollection.js";
+import { type IList, ListIndexOutOfBoundsError } from "./ilist.js";
 
 type DoublyLinkedListNode<T> = {
 	value: T;

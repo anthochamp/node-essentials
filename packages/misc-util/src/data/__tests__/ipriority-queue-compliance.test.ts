@@ -1,7 +1,7 @@
 import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
-import type { ICollection } from "../abstract-types/icollection.js";
-import type { IPriorityQueue } from "../abstract-types/ipriority-queue.js";
+import type { ICollection } from "../icollection.js";
+import type { IPriorityQueue } from "../ipriority-queue.js";
 import { PriorityQueue } from "../priority-queue.js";
 
 /**

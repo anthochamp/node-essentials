@@ -1,11 +1,8 @@
-import { Semaphore } from "../async/semaphore.js";
+import { Semaphore } from "../async/synchro/semaphore.js";
 import type { Callable, Predicate } from "../ecma/function/types.js";
-import { clamp } from "../ecma/math/clamp.js";
-import { CollectionCapacityExceededError } from "./abstract-types/icollection.js";
-import {
-	type IList,
-	ListIndexOutOfBoundsError,
-} from "./abstract-types/ilist.js";
+import { clamp } from "../math/clamp.js";
+import { CollectionCapacityExceededError } from "./icollection.js";
+import { type IList, ListIndexOutOfBoundsError } from "./ilist.js";
 
 /**
  * A list implementation using the JS built-in array as the underlying data
@@ -65,7 +62,7 @@ export class NativeArray<T> implements IList<T> {
 
 	removeFirst(condition: Predicate<[T]>): boolean {
 		for (let i = 0; i < this.data.length; i++) {
-			// biome-ignore lint/style/noNonNullAssertion: for loop
+			// biome-ignore lint/style/noNonNullAssertion: not concurrent-safe
 			if (condition(this.data[i]!)) {
 				this.data.splice(i, 1);
 				this.semaphore.release(1);
@@ -80,7 +77,7 @@ export class NativeArray<T> implements IList<T> {
 
 		let i = 0;
 		while (i < this.data.length) {
-			// biome-ignore lint/style/noNonNullAssertion: for loop
+			// biome-ignore lint/style/noNonNullAssertion: not concurrent-safe
 			const data = this.data[i]!;
 
 			if (condition(data)) {
@@ -97,7 +94,7 @@ export class NativeArray<T> implements IList<T> {
 
 	replaceFirst(condition: Predicate<[T]>, newItem: T): boolean {
 		for (let i = 0; i < this.data.length; i++) {
-			// biome-ignore lint/style/noNonNullAssertion: for loop
+			// biome-ignore lint/style/noNonNullAssertion: not concurrent-safe
 			if (condition(this.data[i]!)) {
 				this.data[i] = newItem;
 				return true;
@@ -113,7 +110,7 @@ export class NativeArray<T> implements IList<T> {
 		const replacedItems: T[] = [];
 
 		for (let i = 0; i < this.data.length; i++) {
-			// biome-ignore lint/style/noNonNullAssertion: for loop
+			// biome-ignore lint/style/noNonNullAssertion: not concurrent-safe
 			const originalData = this.data[i]!;
 
 			if (condition(originalData)) {

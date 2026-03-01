@@ -1,15 +1,15 @@
-import type { Callable, Predicate } from "../../ecma/function/types.js";
-import type { ICollection } from "../abstract-types/icollection.js";
-import { NativeArray } from "../native-array.js";
+import type { Callable, Predicate } from "../ecma/function/types.js";
+import type { ICollection } from "./icollection.js";
+import { LinkedList } from "./linked-list.js";
 
-export class NativeListCollection<T> implements ICollection<T> {
-	protected readonly data: NativeArray<T>;
+export class LinkedListCollection<T> implements ICollection<T> {
+	protected readonly data: LinkedList<T>;
 
 	constructor(
 		iterable?: Iterable<T>,
 		readonly capacity: number = Infinity,
 	) {
-		this.data = new NativeArray(iterable, capacity);
+		this.data = new LinkedList(iterable, capacity);
 	}
 
 	[Symbol.iterator](): Iterator<T> {
