@@ -1,5 +1,5 @@
 import { expect, suite, test } from "vitest";
-import { LockNotAcquiredError } from "./ilockable.js";
+import { LockNotAcquiredError } from "./ilock.js";
 import { Mutex } from "./mutex.js";
 
 suite("Mutex", () => {
@@ -7,60 +7,60 @@ suite("Mutex", () => {
 		const mutex = new Mutex();
 		expect(mutex.locked).toBe(false);
 
-		const release1 = await mutex.acquire();
+		await mutex.lock();
 		expect(mutex.locked).toBe(true);
 
-		const acquirePromise = mutex.acquire();
+		const acquirePromise = mutex.lock();
 		expect(mutex.locked).toBe(true); // Still locked, as the second acquire is waiting
 
-		release1();
-		const release2 = await acquirePromise; // Now the second acquire should complete
+		mutex.unlock();
+		await acquirePromise; // Now the second acquire should complete
 		expect(mutex.locked).toBe(true); // Still locked, as one is acquired
 
-		release2();
+		mutex.unlock();
 		expect(mutex.locked).toBe(false);
 	});
 
 	test("should handle multiple concurrent acquires", async () => {
 		const mutex = new Mutex();
 
-		const acquire1Promise = mutex.acquire();
-		const acquire2Promise = mutex.acquire();
+		const acquire1Promise = mutex.lock();
+		const acquire2Promise = mutex.lock();
 
-		const release1 = await acquire1Promise;
+		await acquire1Promise;
 		expect(mutex.locked).toBe(true);
 
-		release1();
-		const release2 = await acquire2Promise;
+		mutex.unlock();
+		await acquire2Promise;
 		expect(mutex.locked).toBe(true); // Still locked, as 2 is acquired
 
-		release2();
+		mutex.unlock();
 		expect(mutex.locked).toBe(false);
 	});
 
 	test("should throw if release is called more than acquire", async () => {
 		const mutex = new Mutex();
 
-		const release = await mutex.acquire();
+		await mutex.lock();
 		expect(mutex.locked).toBe(true);
 
-		release();
+		mutex.unlock();
 		expect(mutex.locked).toBe(false);
 
-		expect(() => release()).toThrow(LockNotAcquiredError);
+		expect(() => mutex.unlock()).toThrow(LockNotAcquiredError);
 	});
 
 	test("should support aborting acquire with AbortSignal", async () => {
 		const mutex = new Mutex();
 		const controller = new AbortController();
-		await mutex.acquire(); // take the only permit
-		const acquirePromise = mutex.acquire(controller.signal);
+		await mutex.lock(); // take the only permit
+		const acquirePromise = mutex.lock(controller.signal);
 		controller.abort("abort-mutex");
 		await expect(acquirePromise).rejects.toBe("abort-mutex");
 	});
 
 	test("should throw LockNotAcquiredError if release called without acquire", () => {
 		const mutex = new Mutex();
-		expect(() => mutex.release()).toThrow(LockNotAcquiredError);
+		expect(() => mutex.unlock()).toThrow(LockNotAcquiredError);
 	});
 });

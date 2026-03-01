@@ -16,9 +16,9 @@ describe("UdpBindLock", () => {
 	});
 
 	it("should acquire and release lock", async () => {
-		const release = await lock.acquire();
+		await lock.lock();
 		expect(lock.locked).toBe(true);
-		await release();
+		await lock.unlock();
 		expect(lock.locked).toBe(false);
 	});
 
@@ -33,24 +33,24 @@ describe("UdpBindLock", () => {
 			udpBindPort: TEST_PORT,
 			udpBindAddress: TEST_ADDR,
 		});
-		await lock1.acquire();
-		await expect(lock2.acquire(AbortSignal.timeout(100))).rejects.toThrow();
-		await lock1.release();
+		await lock1.lock();
+		await expect(lock2.lock(AbortSignal.timeout(100))).rejects.toThrow();
+		await lock1.unlock();
 	});
 
 	it("should throw if release called without acquire", async () => {
-		await expect(lock.release()).rejects.toThrow("Lock is not acquired");
+		await expect(lock.unlock()).rejects.toThrow("Lock is not acquired");
 	});
 
 	it("should allow re-acquire after release", async () => {
-		const release1 = await lock.acquire();
+		await lock.lock();
 		expect(lock.locked).toBe(true);
-		await release1();
+		await lock.unlock();
 		expect(lock.locked).toBe(false);
 
-		const release2 = await lock.acquire();
+		await lock.lock();
 		expect(lock.locked).toBe(true);
-		await release2();
+		await lock.unlock();
 		expect(lock.locked).toBe(false);
 	});
 });

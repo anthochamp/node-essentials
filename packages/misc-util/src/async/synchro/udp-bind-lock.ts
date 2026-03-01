@@ -1,10 +1,8 @@
-import type { AsyncCallable } from "../ecma/function/types.js";
-import { waitFor } from "../ecma/function/wait-for.js";
-import { defaults } from "../ecma/object/defaults.js";
-import { isNodeErrorWithCode } from "../node/error/node-error.js";
-import { DgramSocket } from "../node/net/dgram-socket.js";
-import { type ILockable, LockNotAcquiredError } from "./ilockable.js";
-import { LockableBase } from "./lockable-base.js";
+import { waitFor } from "../../ecma/function/wait-for.js";
+import { defaults } from "../../ecma/object/defaults.js";
+import { isNodeErrorWithCode } from "../../node/error/node-error.js";
+import { DgramSocket } from "../../node/net/dgram-socket.js";
+import { type ILock, LockNotAcquiredError } from "./ilock.js";
 
 export type UdpBindLockConfig = {
 	/**
@@ -75,7 +73,7 @@ const UDP_BIND_LOCK_DEFAULT_OPTIONS: Required<UdpBindLockOptions> = {
  * await lock.release();
  * ```
  */
-export class UdpBindLock extends LockableBase implements ILockable {
+export class UdpBindLock implements ILock {
 	private readonly options: Required<UdpBindLockOptions>;
 	private udpSocket: DgramSocket | null = null;
 
@@ -83,8 +81,6 @@ export class UdpBindLock extends LockableBase implements ILockable {
 		private readonly config: UdpBindLockConfig,
 		options?: UdpBindLockOptions,
 	) {
-		super();
-
 		this.options = defaults(options, UDP_BIND_LOCK_DEFAULT_OPTIONS);
 	}
 
@@ -92,51 +88,54 @@ export class UdpBindLock extends LockableBase implements ILockable {
 		return this.udpSocket !== null;
 	}
 
-	async acquire(signal?: AbortSignal | null): Promise<AsyncCallable> {
-		await waitFor(
-			async () => {
-				const udpSocket = DgramSocket.from({
-					type: this.config.udpSocketType,
-					signal: signal ?? undefined,
-				});
-
-				// Prevent the socket from keeping the Node.js process alive
-				udpSocket.unref();
-
-				try {
-					await udpSocket.bind(
-						this.config.udpBindPort,
-						this.config.udpBindAddress ?? undefined,
-						{
-							exclusive: true,
-						},
-					);
-				} catch (error) {
-					if (isNodeErrorWithCode(error, "EADDRINUSE")) {
-						return false;
-					}
-
-					throw error;
-				}
-
-				this.udpSocket = udpSocket;
-				return true;
-			},
-			{
-				intervalMs: this.options.pollIntervalMs,
-				signal,
-			},
-		);
-
-		return () => this.release();
+	async tryLock(): Promise<boolean> {
+		return this.tryCreateAndBindSocket();
 	}
 
-	async release(): Promise<void> {
+	async lock(signal?: AbortSignal | null): Promise<void> {
+		await waitFor(async () => this.tryCreateAndBindSocket(signal), {
+			intervalMs: this.options.pollIntervalMs,
+			signal,
+		});
+	}
+
+	async unlock(): Promise<void> {
 		if (!this.udpSocket) {
 			throw new LockNotAcquiredError();
 		}
 
 		await this.udpSocket.close();
 		this.udpSocket = null;
+	}
+
+	private async tryCreateAndBindSocket(
+		signal?: AbortSignal | null,
+	): Promise<boolean> {
+		const udpSocket = DgramSocket.from({
+			type: this.config.udpSocketType,
+			signal: signal ?? undefined,
+		});
+
+		// Prevent the socket from keeping the Node.js process alive
+		udpSocket.unref();
+
+		try {
+			await udpSocket.bind(
+				this.config.udpBindPort,
+				this.config.udpBindAddress ?? undefined,
+				{
+					exclusive: true,
+				},
+			);
+		} catch (error) {
+			if (isNodeErrorWithCode(error, "EADDRINUSE")) {
+				return false;
+			}
+
+			throw error;
+		}
+
+		this.udpSocket = udpSocket;
+		return true;
 	}
 }
