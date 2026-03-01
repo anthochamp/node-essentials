@@ -34,7 +34,6 @@
 		"clean": "rimraf dist",
 		"build": "yarn clean && yarn compile",
 		"test": "yarn run -T vitest run  --project $npm_package_name",
-		"prepack": "yarn build",
-		"prepublish": "yarn test"
+		"prepack": "yarn build"
 	}
 }
