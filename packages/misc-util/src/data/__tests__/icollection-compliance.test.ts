@@ -1,9 +1,9 @@
 import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
-import type { ICollection } from "../abstract-types/icollection.js";
 import { BinaryHeap } from "../binary-heap.js";
 import { Deque } from "../deque.js";
 import { DoublyLinkedList } from "../doubly-linked-list.js";
+import type { ICollection } from "../icollection.js";
 import { LinkedList } from "../linked-list.js";
 import { NativeArray } from "../native-array.js";
 import { Queue } from "../queue.js";

@@ -1,6 +1,6 @@
 import type { Callable, Predicate } from "../ecma/function/types.js";
-import type { IHeap } from "./abstract-types/iheap.js";
-import { NativeListCollection } from "./collection-base/native-array-collection.js";
+import { NativeListCollection } from "./_native-array-collection.js";
+import type { IHeap } from "./iheap.js";
 
 /**
  * A binary heap implementation.

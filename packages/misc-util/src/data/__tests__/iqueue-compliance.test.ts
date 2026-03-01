@@ -1,7 +1,7 @@
 import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
-import { CollectionCapacityExceededError } from "../abstract-types/icollection.js";
-import type { IQueue } from "../abstract-types/iqueue.js";
+import { CollectionCapacityExceededError } from "../icollection.js";
+import type { IQueue } from "../iqueue.js";
 import { Queue } from "../queue.js";
 
 /**

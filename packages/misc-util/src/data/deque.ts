@@ -1,6 +1,6 @@
-import type { IDeque } from "./abstract-types/ideque.js";
-import { ListIndexOutOfBoundsError } from "./abstract-types/ilist.js";
-import { LinkedListCollection } from "./collection-base/linked-list-collection.js";
+import { LinkedListCollection } from "./_linked-list-collection.js";
+import type { IDeque } from "./ideque.js";
+import { ListIndexOutOfBoundsError } from "./ilist.js";
 
 /**
  * A double-ended queue (deque) implementation.

@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
 	"root": false,
 	"files": {
 		"ignoreUnknown": true
@@ -12,23 +12,25 @@
 	"linter": {
 		"rules": {
 			"suspicious": {
-				"noAssignInExpressions": "off"
+				"noAssignInExpressions": "off",
+				"noImportCycles": {
+					"level": "error",
+					"options": {
+						"ignoreTypes": false
+					}
+				}
+			},
+			"complexity": {
+				"noUselessUndefined": "error"
 			},
 			"correctness": {
 				"noUnusedFunctionParameters": "info"
 			},
 			"nursery": {
 				"noFloatingPromises": "error",
-				"noImportCycles": {
-					"level": "error",
-					"options": {
-						"ignoreTypes": false
-					}
-				},
 				"noMisusedPromises": "error",
 				"noShadow": "info",
 				"noUnnecessaryConditions": "warn",
-				"noUselessUndefined": "error",
 				"useExhaustiveSwitchCases": "error"
 			}
 		}

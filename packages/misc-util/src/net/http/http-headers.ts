@@ -1,16 +1,22 @@
 import contentDispositionLib from "content-disposition";
 import contentTypeLib from "content-type";
-import { HttpFields } from "./fields/http-fields.js";
+import { httpAsctimeDatePattern } from "./_http-field-value-util.js";
+import { HttpFields } from "./_http-fields.js";
 
 export type HttpContentType = contentTypeLib.ParsedMediaType;
 export type HttpContentDisposition = contentDispositionLib.ContentDisposition;
 
 export class HttpHeaders extends HttpFields {
 	get lastModified(): Date | null {
-		const lastModifiedHeader = this.get("last-modified")?.[0];
+		let lastModifiedHeader = this.get("last-modified")?.[0];
 		if (!lastModifiedHeader) {
 			return null;
 		}
+
+		if (lastModifiedHeader.match(httpAsctimeDatePattern)) {
+			lastModifiedHeader += " GMT";
+		}
+
 		const date = new Date(lastModifiedHeader);
 		if (Number.isNaN(date.getTime())) {
 			throw new Error("Invalid Last-Modified header");

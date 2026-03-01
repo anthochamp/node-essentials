@@ -8,23 +8,50 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
-- Fixed `abortable` and `abortableAsync` functions when AbortSignal is aborted
-before calling the wrapped function (impact `AbortablePromise` as well).
 - Fixed an edge case in the `Counter::wait` method when the counter is incremented
 rapidly (was missing the value).
+- Fixed `jsonSerialize` and `jsonStringify` functions to handle circular references correctly.
 - Fixed `FileLock` implementation.
 
 ### Changed
 
-- The `AbortablePromise` now rejects itself the promise when the signal is aborted.
-- All classes implementing `ILockable` now throw an `LockNotAcquiredError` when
+- `debounceQueue` function is now called `serializeQueueNext`
+- Renamed `ILockable` interface to `ILock`.
+- All classes implementing `ILock` now throw an `LockNotAcquiredError` when
 `release` is called without a matching `acquire`.
-- `TcpClient` and `DgramSocket` (previously `UdpSocket`) classes reimplemented.
+- `TcpSocket` and `DgramSocket` (previously `TcpClient` and `UdpSocket`, respectively) classes reimplemented.
+- `SubscribableEvent` function is now called `Event`.
+- `Subscribable` is replaced with `IEventDispatcher` interface.
+- `jsonStringifySafe` function is now called `jsonStringify` and accepts options for handling circular references.
+- `jsonSerialize` function is now safe (handles circular references, BigInt and Error's serialization).
 
-## Added
+### Removed
+
+- Removed `MaybeAsyncCallback`, `AsyncCallback` and `Callback` types (use MaybeAsyncCallable, AsyncCallable, and Callable respectively instead).
+- Removed `abortable` and `abortableAsync` functions (no replacement).
+- Removed `AbortablePromise` class (no replacement).
+- Removed `ILock::withLock` utility method (use `LockHold` class instead).
+- Removed `IWaitable` interface and `waitNotifiable` function (no replacement).
+- Removed `jsonSerializeError` (use `jsonSerialize` instead).
+
+### Added
 
 - Added `InetAddress` and `InetEndpoint` classes.
-- Added `TcpServer` class.
+- Added `TcpServer`, `StreamSocket`, `IpcSocket` and `TlsSocket` classes.
+- Added `removeSafe` utility for arrays.
+- Added `compact` utility for arrays.
+- Added `MaybeAsyncDisposable` type.
+- Added `Barrier` and `Latch` synchronization primitives.
+- Added `LockHold` class.
+- Added `Condition` synchronization primitive.
+- Added `RwLock` synchronization class.
+- Added `Channel` and `Broadcast` classes.
+- Added `IEventDispatcher` and `IEventDispatcherMap` interfaces.
+- Added `eventDispatcherToAsyncIterator` utility.
+- Added `intersection` utility for arrays.
+- Added `getObjectKeys` utility.
+- Added `traverse` utility for objects.
+- Added `HttpTrailers` class.
 
 ## [0.5.1] - 2025-10-06
 

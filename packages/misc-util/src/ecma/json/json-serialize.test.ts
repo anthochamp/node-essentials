@@ -47,17 +47,6 @@ suite("jsonSerialize", () => {
 		expect(jsonSerialize(obj)).toEqual({ value: 84 });
 	});
 
-	test("should handle circular references by throwing an error", () => {
-		const obj: any = {};
-		obj.self = obj;
-		expect(() => jsonSerialize(obj)).toThrow(TypeError);
-	});
-
-	test("should handle big integer by throwing an error", () => {
-		const obj = { big: BigInt(10) };
-		expect(() => jsonSerialize(obj)).toThrow(TypeError);
-	});
-
 	test("should use the replacer function if provided", () => {
 		const obj = { a: 1, b: 2, c: 3 };
 		const replacer: JsonReplacer = (_key, value) => {

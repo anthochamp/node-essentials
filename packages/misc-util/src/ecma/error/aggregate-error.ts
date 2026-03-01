@@ -1,4 +1,4 @@
-import type { RequiredKeysOf } from "type-fest";
+import type { RequiredKeysOf, SetFieldType } from "type-fest";
 import { isErrorLike } from "./error.js";
 
 /**
@@ -9,7 +9,7 @@ import { isErrorLike } from "./error.js";
  * referring to an object that looks like an AggregateError but is not an instance
  * of the AggregateError class.
  */
-export type IAggregateError = AggregateError;
+export type IAggregateError = SetFieldType<AggregateError, "errors", unknown[]>;
 
 /**
  * Test if value is AggregateError-like (has name, message and errors properties)

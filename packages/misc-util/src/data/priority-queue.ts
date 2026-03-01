@@ -1,8 +1,8 @@
+import { BinaryHeapCollection } from "./_binary-heap-collection.js";
 import type {
 	IPriorityQueue,
 	PriorityQueueIsHigherPriorityPredicate,
-} from "./abstract-types/ipriority-queue.js";
-import { BinaryHeapCollection } from "./collection-base/binary-heap-collection.js";
+} from "./ipriority-queue.js";
 
 /**
  * A priority queue implementation.

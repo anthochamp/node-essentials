@@ -1,6 +1,6 @@
-import { ListIndexOutOfBoundsError } from "./abstract-types/ilist.js";
-import type { IQueue } from "./abstract-types/iqueue.js";
-import { LinkedListCollection } from "./collection-base/linked-list-collection.js";
+import { LinkedListCollection } from "./_linked-list-collection.js";
+import { ListIndexOutOfBoundsError } from "./ilist.js";
+import type { IQueue } from "./iqueue.js";
 
 /**
  * A FIFO queue implementation.

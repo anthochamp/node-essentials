@@ -1,8 +1,8 @@
 import * as net from "node:net";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { InetEndpoint } from "./inet.js";
-import { TcpClient } from "./tcp-client.js";
 import { TcpServer } from "./tcp-server.js";
+import { TcpSocket } from "./tcp-socket.js";
 
 describe("TcpServer", () => {
 	let server: TcpServer;
@@ -137,7 +137,7 @@ describe("TcpServer", () => {
 
 			// Try to bind another server to the same port
 			const server2 = TcpServer.from();
-			server2.on("error", () => {
+			server2.subscribe("error", () => {
 				// Prevent unhandled error
 			});
 
@@ -151,15 +151,6 @@ describe("TcpServer", () => {
 			});
 
 			expect(server.listening).toBe(true);
-		});
-
-		it("should remove error listener after successful listen", async () => {
-			server = TcpServer.from();
-			await server.listen(0, serverHost);
-
-			// Check that error listeners have been cleaned up
-			const errorListenerCount = server.listenerCount("error");
-			expect(errorListenerCount).toBe(0);
 		});
 	});
 
@@ -186,7 +177,7 @@ describe("TcpServer", () => {
 			serverPort = address.port;
 
 			// Connect a client
-			const client = TcpClient.from();
+			const client = TcpSocket.from();
 			await client.connect(serverPort, serverHost);
 
 			// Close the client
@@ -233,7 +224,7 @@ describe("TcpServer", () => {
 			serverPort = address.port;
 
 			// Connect a client
-			const client1 = TcpClient.from();
+			const client1 = TcpSocket.from();
 			await client1.connect(serverPort, serverHost);
 
 			// Wait for connection to be established
@@ -243,7 +234,7 @@ describe("TcpServer", () => {
 			expect(count1).toBe(1);
 
 			// Connect another client
-			const client2 = TcpClient.from();
+			const client2 = TcpSocket.from();
 			await client2.connect(serverPort, serverHost);
 
 			await new Promise((resolve) => setTimeout(resolve, 50));
@@ -263,7 +254,7 @@ describe("TcpServer", () => {
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
 
-			const client = TcpClient.from();
+			const client = TcpSocket.from();
 			await client.connect(serverPort, serverHost);
 
 			await new Promise((resolve) => setTimeout(resolve, 50));
@@ -358,160 +349,105 @@ describe("TcpServer", () => {
 	});
 
 	describe("event listeners", () => {
-		describe("on", () => {
+		describe("subscribe()/unsubscribe()", () => {
 			it("should register connection event listener", async () => {
 				server = TcpServer.from();
-				const connections: TcpClient[] = [];
-
-				server.on("connection", (connectedClient) => {
+				const connections: TcpSocket[] = [];
+				server.subscribe("connection", (connectedClient) => {
 					connections.push(connectedClient);
 				});
-
 				await server.listen(0, serverHost);
-
 				const address = server.address() as InetEndpoint;
 				serverPort = address.port;
-
-				const client = TcpClient.from();
+				const client = TcpSocket.from();
 				await client.connect(serverPort, serverHost);
-
 				await new Promise((resolve) => setTimeout(resolve, 50));
-
 				expect(connections.length).toBe(1);
-				expect(connections[0]).toBeInstanceOf(TcpClient);
-
+				expect(connections[0]).toBeInstanceOf(TcpSocket);
 				await client.end({ waitForClose: true });
 			});
 
 			it("should register listening event listener", async () => {
 				server = TcpServer.from();
 				let listeningCalled = false;
-
-				server.on("listening", () => {
+				server.subscribe("listening", () => {
 					listeningCalled = true;
 				});
-
 				await server.listen(0, serverHost);
-
 				expect(listeningCalled).toBe(true);
 			});
 
 			it("should register close event listener", async () => {
 				server = TcpServer.from();
 				let closeCalled = false;
-
-				server.on("close", () => {
+				server.subscribe("close", () => {
 					closeCalled = true;
 				});
-
 				await server.listen(0, serverHost);
 				await server.close();
-
 				expect(closeCalled).toBe(true);
 			});
 
 			it("should register error event listener", async () => {
 				server = TcpServer.from();
 				let errorReceived = false;
-
-				server.on("error", () => {
+				server.subscribe("error", () => {
 					errorReceived = true;
 				});
-
 				await server.listen(0, serverHost);
-
 				// Error event test - simply verify the listener can be registered
 				expect(errorReceived).toBe(false);
 			});
-			it("should return this for chaining", () => {
-				server = TcpServer.from();
-				const result = server.on("connection", () => {});
-				expect(result).toBe(server);
-			});
-		});
 
-		describe("once", () => {
 			it("should register one-time connection event listener", async () => {
 				server = TcpServer.from();
 				let connectionCount = 0;
-
-				server.once("connection", () => {
-					connectionCount++;
-				});
-
+				server.subscribe(
+					"connection",
+					() => {
+						connectionCount++;
+					},
+					{ once: true },
+				);
 				await server.listen(0, serverHost);
-
 				const address = server.address() as InetEndpoint;
 				serverPort = address.port;
-
-				const client1 = TcpClient.from();
+				const client1 = TcpSocket.from();
 				await client1.connect(serverPort, serverHost);
-
 				await new Promise((resolve) => setTimeout(resolve, 50));
-
 				expect(connectionCount).toBe(1);
-
-				const client2 = TcpClient.from();
+				const client2 = TcpSocket.from();
 				await client2.connect(serverPort, serverHost);
-
 				await new Promise((resolve) => setTimeout(resolve, 50));
-
 				// Should still be 1 because it's a one-time listener
 				expect(connectionCount).toBe(1);
-
 				await client1.end({ waitForClose: true });
 				await client2.end({ waitForClose: true });
 			});
 
-			it("should return this for chaining", () => {
-				server = TcpServer.from();
-				const result = server.once("connection", () => {});
-				expect(result).toBe(server);
-			});
-		});
-
-		describe("off", () => {
 			it("should remove connection event listener", async () => {
 				server = TcpServer.from();
 				let connectionCount = 0;
-
 				const listener = () => {
 					connectionCount++;
 				};
-
-				server.on("connection", listener);
+				server.subscribe("connection", listener);
 				await server.listen(0, serverHost);
-
 				const address = server.address() as InetEndpoint;
 				serverPort = address.port;
-
-				const client1 = TcpClient.from();
+				const client1 = TcpSocket.from();
 				await client1.connect(serverPort, serverHost);
-
 				await new Promise((resolve) => setTimeout(resolve, 50));
-
 				expect(connectionCount).toBe(1);
-
 				// Remove the listener
-				server.off("connection", listener);
-
-				const client2 = TcpClient.from();
+				server.unsubscribe("connection", listener);
+				const client2 = TcpSocket.from();
 				await client2.connect(serverPort, serverHost);
-
 				await new Promise((resolve) => setTimeout(resolve, 50));
-
 				// Should still be 1 because listener was removed
 				expect(connectionCount).toBe(1);
-
 				await client1.end({ waitForClose: true });
 				await client2.end({ waitForClose: true });
-			});
-
-			it("should return this for chaining", () => {
-				server = TcpServer.from();
-				const listener = () => {};
-				const result = server.off("connection", listener);
-				expect(result).toBe(server);
 			});
 		});
 	});
@@ -519,72 +455,54 @@ describe("TcpServer", () => {
 	describe("integration scenarios", () => {
 		it("should handle echo server pattern", async () => {
 			server = TcpServer.from();
-
-			server.on("connection", (connectedClient) => {
+			server.subscribe("connection", (connectedClient: TcpSocket) => {
 				connectedClient.stream.on("data", async (data: Buffer) => {
 					await connectedClient.write(data);
 				});
 			});
-
 			await server.listen(0, serverHost);
-
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
-
-			const client = TcpClient.from();
+			const client = TcpSocket.from();
 			await client.connect(serverPort, serverHost);
-
 			const testData = "Hello, World!";
-			await client.write(testData);
-
+			await client.write(Buffer.from(testData));
 			const response = await new Promise<string>((resolve) => {
 				client.stream.once("data", (data: Buffer) => {
 					resolve(data.toString());
 				});
 			});
-
 			expect(response).toBe(testData);
-
 			await client.end({ waitForClose: true });
 		});
 
 		it("should handle multiple concurrent connections", async () => {
 			server = TcpServer.from();
 			const receivedData: string[] = [];
-
-			server.on("connection", (connectedClient) => {
+			server.subscribe("connection", (connectedClient: TcpSocket) => {
 				connectedClient.stream.on("data", (data: Buffer) => {
 					receivedData.push(data.toString());
 				});
 			});
-
 			await server.listen(0, serverHost);
-
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
-
 			// Connect multiple clients
-			const client1 = TcpClient.from();
+			const client1 = TcpSocket.from();
 			await client1.connect(serverPort, serverHost);
-
-			const client2 = TcpClient.from();
+			const client2 = TcpSocket.from();
 			await client2.connect(serverPort, serverHost);
-
-			const client3 = TcpClient.from();
+			const client3 = TcpSocket.from();
 			await client3.connect(serverPort, serverHost);
-
 			// Send data from each client
-			await client1.write("Client 1");
-			await client2.write("Client 2");
-			await client3.write("Client 3");
-
+			await client1.write(Buffer.from("Client 1"));
+			await client2.write(Buffer.from("Client 2"));
+			await client3.write(Buffer.from("Client 3"));
 			await new Promise((resolve) => setTimeout(resolve, 100));
-
 			expect(receivedData.length).toBe(3);
 			expect(receivedData).toContain("Client 1");
 			expect(receivedData).toContain("Client 2");
 			expect(receivedData).toContain("Client 3");
-
 			// Clean up
 			await client1.end({ waitForClose: true });
 			await client2.end({ waitForClose: true });
@@ -594,91 +512,68 @@ describe("TcpServer", () => {
 		it("should handle client disconnect gracefully", async () => {
 			server = TcpServer.from();
 			let disconnectCount = 0;
-
 			const disconnectPromise = new Promise<void>((resolve) => {
-				server.on("connection", (connectedClient) => {
+				server.subscribe("connection", (connectedClient: TcpSocket) => {
 					connectedClient.stream.on("end", () => {
 						disconnectCount++;
 						resolve();
 					});
 				});
 			});
-
 			await server.listen(0, serverHost);
-
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
-
-			const client = TcpClient.from();
+			const client = TcpSocket.from();
 			await client.connect(serverPort, serverHost);
-
 			await client.end({ waitForClose: true });
-
 			// Wait for the disconnect event
 			await disconnectPromise;
-
 			expect(disconnectCount).toBe(1);
 		});
 
 		it("should handle binary data", async () => {
 			server = TcpServer.from();
 			const receivedBuffers: Buffer[] = [];
-
-			server.on("connection", (connectedClient) => {
+			server.subscribe("connection", (connectedClient: TcpSocket) => {
 				connectedClient.stream.on("data", (data: Buffer) => {
 					receivedBuffers.push(data);
 				});
 			});
-
 			await server.listen(0, serverHost);
-
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
-
-			const client = TcpClient.from();
+			const client = TcpSocket.from();
 			await client.connect(serverPort, serverHost);
-
 			const testData = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f]); // "Hello"
 			await client.write(testData);
-
 			await new Promise((resolve) => setTimeout(resolve, 50));
-
 			expect(receivedBuffers.length).toBeGreaterThan(0);
 			expect(receivedBuffers[0]?.toString()).toBe("Hello");
-
 			await client.end({ waitForClose: true });
 		});
 
 		it("should handle request-response pattern", async () => {
 			server = TcpServer.from();
-
-			server.on("connection", (connectedClient) => {
+			server.subscribe("connection", (connectedClient: TcpSocket) => {
 				connectedClient.stream.on("data", async (data: Buffer) => {
 					const request = data.toString();
 					if (request === "PING") {
-						await connectedClient.write("PONG");
+						await connectedClient.write(Buffer.from("PONG"));
 					}
 				});
 			});
-
 			await server.listen(0, serverHost);
-
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
-
-			const client = TcpClient.from();
+			const client = TcpSocket.from();
 			await client.connect(serverPort, serverHost);
-
-			await client.write("PING");
-
+			await client.write(Buffer.from("PING"));
 			const response = await new Promise<string>((resolve) => {
 				client.stream.once("data", (data: Buffer) => {
 					resolve(data.toString());
 				});
 			});
-
 			expect(response).toBe("PONG");
-
 			await client.end({ waitForClose: true });
 		});
 	});
@@ -686,10 +581,14 @@ describe("TcpServer", () => {
 	describe("events", () => {
 		it("should emit connection event with TcpClient instance", async () => {
 			server = TcpServer.from();
-			const connectionPromise = new Promise<TcpClient>((resolve) => {
-				server.once("connection", (arg) => {
-					resolve(arg);
-				});
+			const connectionPromise = new Promise<TcpSocket>((resolve) => {
+				server.subscribe(
+					"connection",
+					(arg) => {
+						resolve(arg);
+					},
+					{ once: true },
+				);
 			});
 
 			await server.listen(0, serverHost);
@@ -697,11 +596,11 @@ describe("TcpServer", () => {
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
 
-			const client = TcpClient.from();
+			const client = TcpSocket.from();
 			await client.connect(serverPort, serverHost);
 
 			const connectedClient = await connectionPromise;
-			expect(connectedClient).toBeInstanceOf(TcpClient);
+			expect(connectedClient).toBeInstanceOf(TcpSocket);
 
 			await client.end({ waitForClose: true });
 		});
@@ -709,7 +608,7 @@ describe("TcpServer", () => {
 		it("should emit listening event", async () => {
 			server = TcpServer.from();
 			const listeningPromise = new Promise<void>((resolve) => {
-				server.once("listening", resolve);
+				server.subscribe("listening", resolve, { once: true });
 			});
 
 			await server.listen(0, serverHost);
@@ -721,7 +620,7 @@ describe("TcpServer", () => {
 			await server.listen(0, serverHost);
 
 			const closePromise = new Promise<void>((resolve) => {
-				server.once("close", resolve);
+				server.subscribe("close", resolve, { once: true });
 			});
 
 			await server.close();
@@ -735,9 +634,13 @@ describe("TcpServer", () => {
 			const testError = new Error("Connection error");
 
 			const errorPromise = new Promise<Error>((resolve) => {
-				server.once("error", (err) => {
-					resolve(err);
-				});
+				server.subscribe(
+					"error",
+					(err) => {
+						resolve(err);
+					},
+					{ once: true },
+				);
 			});
 
 			// Emit an error directly on the underlying server to test error forwarding
@@ -758,9 +661,13 @@ describe("TcpServer", () => {
 				local: InetEndpoint | null;
 				remote: InetEndpoint | null;
 			}>((resolve) => {
-				server.once("drop", (localEndpoint, remoteEndpoint) => {
-					resolve({ local: localEndpoint, remote: remoteEndpoint });
-				});
+				server.subscribe(
+					"drop",
+					(localEndpoint, remoteEndpoint) => {
+						resolve({ local: localEndpoint, remote: remoteEndpoint });
+					},
+					{ once: true },
+				);
 			});
 
 			await server.listen(0, serverHost);
@@ -769,7 +676,7 @@ describe("TcpServer", () => {
 			serverPort = address.port;
 
 			// Try to connect (should be dropped due to maxConnections = 0)
-			const client = TcpClient.from();
+			const client = TcpSocket.from();
 			client.connect(serverPort, serverHost).catch(() => {
 				// Expected to be dropped or fail
 			});
@@ -802,17 +709,21 @@ describe("TcpServer", () => {
 				const mockServer = net.createServer();
 				const testServer = new TcpServer(mockServer);
 
-				const connectionPromise = new Promise<TcpClient>((resolve) => {
-					testServer.once("connection", (client) => {
-						resolve(client);
-					});
+				const connectionPromise = new Promise<TcpSocket>((resolve) => {
+					testServer.subscribe(
+						"connection",
+						(client) => {
+							resolve(client);
+						},
+						{ once: true },
+					);
 				});
 
 				const mockSocket = new net.Socket();
 				mockServer.emit("connection", mockSocket);
 
 				const client = await connectionPromise;
-				expect(client).toBeInstanceOf(TcpClient);
+				expect(client).toBeInstanceOf(TcpSocket);
 			});
 
 			it("should forward listening event", async () => {
@@ -820,9 +731,13 @@ describe("TcpServer", () => {
 				const testServer = new TcpServer(mockServer);
 
 				const listeningPromise = new Promise<void>((resolve) => {
-					testServer.once("listening", () => {
-						resolve();
-					});
+					testServer.subscribe(
+						"listening",
+						() => {
+							resolve();
+						},
+						{ once: true },
+					);
 				});
 
 				mockServer.emit("listening");
@@ -835,9 +750,13 @@ describe("TcpServer", () => {
 				const testServer = new TcpServer(mockServer);
 
 				const closePromise = new Promise<void>((resolve) => {
-					testServer.once("close", () => {
-						resolve();
-					});
+					testServer.subscribe(
+						"close",
+						() => {
+							resolve();
+						},
+						{ once: true },
+					);
 				});
 
 				mockServer.emit("close");
@@ -852,9 +771,13 @@ describe("TcpServer", () => {
 				const testError = new Error("Server error");
 
 				const errorPromise = new Promise<Error>((resolve) => {
-					testServer.once("error", (error) => {
-						resolve(error);
-					});
+					testServer.subscribe(
+						"error",
+						(error) => {
+							resolve(error);
+						},
+						{ once: true },
+					);
 				});
 
 				mockServer.emit("error", testError);
@@ -871,9 +794,13 @@ describe("TcpServer", () => {
 					local: InetEndpoint | null;
 					remote: InetEndpoint | null;
 				}>((resolve) => {
-					testServer.once("drop", (local, remote) => {
-						resolve({ local, remote });
-					});
+					testServer.subscribe(
+						"drop",
+						(local, remote) => {
+							resolve({ local, remote });
+						},
+						{ once: true },
+					);
 				});
 
 				const mockData = {

@@ -1,4 +1,4 @@
-import type { RequiredKeysOf } from "type-fest";
+import type { RequiredKeysOf, SetFieldType } from "type-fest";
 import { isErrorLike } from "./error.js";
 
 /**
@@ -9,7 +9,11 @@ import { isErrorLike } from "./error.js";
  * referring to an object that looks like an SuppressedError but is not an instance
  * of the SuppressedError class.
  */
-export type ISuppressedError = SuppressedError;
+export type ISuppressedError = SetFieldType<
+	SuppressedError,
+	"error" | "suppressed",
+	unknown
+>;
 
 /**
  * Test if value is SuppressedError-like (has name, message, error and suppressed properties)

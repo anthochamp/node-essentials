@@ -3,10 +3,11 @@ import { stat } from "node:fs/promises";
 import {
 	BYTES_PER_MIB,
 	compressFile,
-	debounceQueue,
 	defaults,
 	existsAsync,
+	LockHold,
 	Mutex,
+	serializeQueueNext,
 } from "@ac-essentials/misc-util";
 import {
 	ROTATE_LOG_FILES_DEFAULT_OPTIONS,
@@ -63,7 +64,7 @@ export class FilePrinter implements ILoggerPrinter {
 	private textStreamPrinter: TextStreamPrinter | null = null;
 	private readonly streamPrinterLock = new Mutex();
 	private readonly handleRotationLock = new Mutex();
-	private readonly handleRotationDebounced = debounceQueue(() =>
+	private readonly handleRotationSqn = serializeQueueNext(() =>
 		this.handleRotation(),
 	);
 
@@ -85,11 +86,14 @@ export class FilePrinter implements ILoggerPrinter {
 	 * and the file stream is properly closed.
 	 */
 	async close(): Promise<void> {
-		await this.streamPrinterLock.withLock(async () => {
+		{
+			await using _textStreamPrinterLock = await LockHold.from([
+				this.streamPrinterLock,
+			]);
 			await this._unprotected_close();
-		});
+		}
 
-		await this.handleRotationDebounced();
+		await this.handleRotationSqn();
 	}
 
 	/**
@@ -98,7 +102,7 @@ export class FilePrinter implements ILoggerPrinter {
 	async flush(): Promise<void> {
 		await this.textStreamPrinter?.flush();
 
-		await this.handleRotationDebounced();
+		await this.handleRotationSqn();
 	}
 
 	/**
@@ -107,7 +111,7 @@ export class FilePrinter implements ILoggerPrinter {
 	async clear(): Promise<void> {
 		await this.textStreamPrinter?.clear();
 
-		await this.handleRotationDebounced();
+		await this.handleRotationSqn();
 	}
 
 	/**
@@ -116,13 +120,17 @@ export class FilePrinter implements ILoggerPrinter {
 	 * @param record The log record to print.
 	 */
 	async print(record: LoggerRecord): Promise<void> {
-		await this.streamPrinterLock.withLock(async () => {
+		{
+			await using _textStreamPrinterLock = await LockHold.from([
+				this.streamPrinterLock,
+			]);
+
 			const textStreamPrinter = await this._unprotected_open();
 
 			await textStreamPrinter.print(record);
-		});
+		}
 
-		await this.handleRotationDebounced();
+		await this.handleRotationSqn();
 	}
 
 	private async _unprotected_open() {
@@ -183,32 +191,35 @@ export class FilePrinter implements ILoggerPrinter {
 	}
 
 	private async handleRotation() {
-		return this.handleRotationLock.withLock(async () => {
-			const { cutOffFileSize, maxFileAgeMs, useCompression } = this.options;
+		await using _handleRotationLock = await LockHold.from([
+			this.handleRotationLock,
+		]);
 
-			if (cutOffFileSize || maxFileAgeMs) {
-				let stats: Stats | undefined;
-				try {
-					stats = await stat(this.filePath);
-				} catch {}
+		const { cutOffFileSize, maxFileAgeMs, useCompression } = this.options;
 
-				if (
-					stats &&
-					((cutOffFileSize && stats.size >= cutOffFileSize) ||
-						(maxFileAgeMs &&
-							Date.now() - stats.mtime.getTime() >= maxFileAgeMs))
-				) {
-					await this.streamPrinterLock.withLock(async () => {
-						await this._unprotected_close();
+		if (cutOffFileSize || maxFileAgeMs) {
+			let stats: Stats | undefined;
+			try {
+				stats = await stat(this.filePath);
+			} catch {}
 
-						await rotateLogFiles(this.filePath, this.options);
-					});
+			if (
+				stats &&
+				((cutOffFileSize && stats.size >= cutOffFileSize) ||
+					(maxFileAgeMs && Date.now() - stats.mtime.getTime() >= maxFileAgeMs))
+			) {
+				{
+					await using _streamPrinterLock = await LockHold.from([
+						this.streamPrinterLock,
+					]);
 
-					if (useCompression && (await existsAsync(`${this.filePath}.1`))) {
-						await compressFile(`${this.filePath}.1`);
-					}
+					await rotateLogFiles(this.filePath, this.options);
+				}
+
+				if (useCompression && (await existsAsync(`${this.filePath}.1`))) {
+					await compressFile(`${this.filePath}.1`);
 				}
 			}
-		});
+		}
 	}
 }

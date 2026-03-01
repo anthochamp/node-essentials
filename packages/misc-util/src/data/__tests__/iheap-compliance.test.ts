@@ -1,7 +1,7 @@
 import { expect, suite, test } from "vitest";
 import type { Callable } from "../../ecma/function/types.js";
-import type { IHeap } from "../abstract-types/iheap.js";
 import { BinaryHeap } from "../binary-heap.js";
+import type { IHeap } from "../iheap.js";
 
 /**
  * IHeap compliance tests for various data structures.

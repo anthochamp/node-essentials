@@ -1,7 +1,8 @@
 import * as dgram from "node:dgram";
-import { EventEmitter } from "node:events";
 import type * as net from "node:net";
 import type { Except, TypedArray } from "type-fest";
+import { EventDispatcherMapBase } from "../../async/events/_event-dispatcher-map-base.js";
+import type { IEventDispatcherMap } from "../../async/events/ievent-dispatcher-map.js";
 import type { IError } from "../../ecma/error/error.js";
 import { isNodeErrorWithCode } from "../error/node-error.js";
 import { composeInetAddress, type InetEndpoint } from "./inet.js";
@@ -9,7 +10,7 @@ import { composeInetAddress, type InetEndpoint } from "./inet.js";
 /**
  * Event map for DgramSocket socket-specific events.
  */
-export interface DgramSocketEvents {
+export type DgramSocketEvents = {
 	/**
 	 * Emitted when the socket is closed.
 	 */
@@ -37,10 +38,34 @@ export interface DgramSocketEvents {
 	 * @param from - The sender's endpoint information (address, port, and family)
 	 */
 	message: [msg: Buffer, msgSize: number, from: InetEndpoint];
+};
+
+export interface DgramSocketStat {
+	/**
+	 * The number of datagrams currently queued for sending.
+	 */
+	sendQueueCount: number;
+
+	/**
+	 * The total number of bytes currently queued for sending.
+	 */
+	sendQueueSize: number;
 }
 
 /**
- * Datagram (UDP) socket wrapper.
+ * High-level wrapper around Node.js {@link dgram.Socket | UDP datagram sockets}.
+ *
+ * This class delegates almost all behavior to an underlying {@link dgram.Socket}
+ * instance while:
+ *
+ * - Providing strongly-typed events via {@link DgramSocketEvents}.
+ * - Using {@link InetEndpoint} instead of Node's `RemoteInfo`.
+ * - Exposing promise-based {@link DgramSocket.bind | bind} and
+ *   {@link DgramSocket.close | close} helpers.
+ * - Aggregating send-queue statistics through {@link DgramSocket.getStat}.
+ *
+ * Unless explicitly documented otherwise, methods have the same semantics as
+ * their counterparts on {@link dgram.Socket}.
  *
  * Example usage:
  * ```ts
@@ -53,7 +78,10 @@ export interface DgramSocketEvents {
  * await dgramSocket.close();
  * ```
  */
-export class DgramSocket extends EventEmitter<DgramSocketEvents> {
+export class DgramSocket
+	extends EventDispatcherMapBase<DgramSocketEvents>
+	implements IEventDispatcherMap<DgramSocketEvents>
+{
 	/**
 	 * Creates a new `DgramSocket` instance with the specified options.
 	 */
@@ -83,6 +111,157 @@ export class DgramSocket extends EventEmitter<DgramSocketEvents> {
 	 */
 	unref(): void {
 		this.sock.unref();
+	}
+
+	/**
+	 * Enables or disables sending of broadcast datagrams.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.setBroadcast}, which
+	 * toggles the `SO_BROADCAST` socket option. When enabled, UDP packets may be
+	 * sent to broadcast addresses.
+	 *
+	 * @param flag Whether broadcast should be enabled.
+	 */
+	setBroadcast(flag: boolean): void {
+		this.sock.setBroadcast(flag);
+	}
+
+	/**
+	 * Adds this socket to the given multicast group.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.addMembership}, which
+	 * configures `IP_ADD_MEMBERSHIP` for the given multicast group.
+	 */
+	addMembership(multicastAddress: string, multicastInterface?: string): void {
+		this.sock.addMembership(multicastAddress, multicastInterface);
+	}
+
+	/**
+	 * Sets the size in bytes of the underlying receive buffer.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.setRecvBufferSize}, which
+	 * sets the `SO_RCVBUF` socket option.
+	 */
+	setRecvBufferSize(size: number): void {
+		this.sock.setRecvBufferSize(size);
+	}
+
+	/**
+	 * Returns the size in bytes of the underlying receive buffer.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.getRecvBufferSize}, which
+	 * reads the `SO_RCVBUF` socket option.
+	 */
+	getRecvBufferSize(): number {
+		return this.sock.getRecvBufferSize();
+	}
+
+	/**
+	 * Sets the size in bytes of the underlying send buffer.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.setSendBufferSize}, which
+	 * sets the `SO_SNDBUF` socket option.
+	 */
+	setSendBufferSize(size: number): void {
+		this.sock.setSendBufferSize(size);
+	}
+
+	/**
+	 * Returns the size in bytes of the underlying send buffer.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.getSendBufferSize}, which
+	 * reads the `SO_SNDBUF` socket option.
+	 */
+	getSendBufferSize(): number {
+		return this.sock.getSendBufferSize();
+	}
+
+	/**
+	 * Removes this socket from the given multicast group.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.dropMembership}, which
+	 * configures `IP_DROP_MEMBERSHIP` for the given multicast group.
+	 */
+	dropMembership(multicastAddress: string, multicastInterface?: string): void {
+		this.sock.dropMembership(multicastAddress, multicastInterface);
+	}
+
+	/**
+	 * Adds this socket to a source-specific multicast group.
+	 *
+	 * This is a thin wrapper around
+	 * {@link dgram.Socket.addSourceSpecificMembership}, configuring
+	 * source-specific multicast membership for the given source and group.
+	 */
+	addSourceMembership(
+		sourceAddress: string,
+		groupAddress: string,
+		multicastInterface?: string,
+	): void {
+		this.sock.addSourceSpecificMembership(
+			sourceAddress,
+			groupAddress,
+			multicastInterface,
+		);
+	}
+
+	/**
+	 * Removes this socket from a source-specific multicast group.
+	 *
+	 * This is a thin wrapper around
+	 * {@link dgram.Socket.dropSourceSpecificMembership}, removing
+	 * source-specific multicast membership for the given source and group.
+	 */
+	dropSourceMembership(
+		sourceAddress: string,
+		groupAddress: string,
+		multicastInterface?: string,
+	): void {
+		this.sock.dropSourceSpecificMembership(
+			sourceAddress,
+			groupAddress,
+			multicastInterface,
+		);
+	}
+
+	/**
+	 * Sets the outbound multicast interface.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.setMulticastInterface},
+	 * which controls the default outgoing interface for multicast traffic.
+	 */
+	setMulticastInterface(multicastInterface: string): void {
+		this.sock.setMulticastInterface(multicastInterface);
+	}
+
+	/**
+	 * Enables or disables loopback for multicast packets sent from this socket.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.setMulticastLoopback},
+	 * which toggles the `IP_MULTICAST_LOOP` socket option.
+	 */
+	setMulticastLoop(flag: boolean): void {
+		this.sock.setMulticastLoopback(flag);
+	}
+
+	/**
+	 * Sets the time-to-live (TTL) value for multicast packets.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.setMulticastTTL}, which
+	 * configures the `IP_MULTICAST_TTL` socket option.
+	 */
+	setMulticastTtl(ttl: number): void {
+		this.sock.setMulticastTTL(ttl);
+	}
+
+	/**
+	 * Sets the unicast time-to-live (TTL) value for outgoing packets.
+	 *
+	 * This is a thin wrapper around {@link dgram.Socket.setTTL}, which
+	 * configures the `IP_TTL` socket option.
+	 */
+	setTtl(ttl: number): void {
+		this.sock.setTTL(ttl);
 	}
 
 	/**
@@ -173,6 +352,19 @@ export class DgramSocket extends EventEmitter<DgramSocketEvents> {
 	}
 
 	/**
+	 * Returns statistics about the underlying send queue.
+	 *
+	 * This wraps {@link dgram.Socket.getSendQueueCount} and
+	 * {@link dgram.Socket.getSendQueueSize} into a single object.
+	 */
+	getStat(): DgramSocketStat {
+		return {
+			sendQueueCount: this.sock.getSendQueueCount(),
+			sendQueueSize: this.sock.getSendQueueSize(),
+		};
+	}
+
+	/**
 	 * Sends a message to the specified address and port.
 	 *
 	 * The msg argument contains the message to be sent. Depending on its type,
@@ -219,16 +411,13 @@ export class DgramSocket extends EventEmitter<DgramSocketEvents> {
 		});
 	}
 
-	/**
-	 * Sets up event forwarding from the underlying socket to this EventEmitter.
-	 */
 	private setupEventForwarding(): void {
 		this.sock.on("close", () => {
-			this.emit("close");
+			this.dispatch("close");
 		});
 
 		this.sock.on("connect", () => {
-			this.emit("connect");
+			this.dispatch("connect");
 		});
 
 		this.sock.on("error", (err) => {
@@ -236,11 +425,11 @@ export class DgramSocket extends EventEmitter<DgramSocketEvents> {
 				this.handledErrorEvents.delete(err);
 				return;
 			}
-			this.emit("error", err);
+			this.dispatch("error", err);
 		});
 
 		this.sock.on("listening", () => {
-			this.emit("listening");
+			this.dispatch("listening");
 		});
 
 		this.sock.on("message", (msg, rinfo) => {
@@ -248,7 +437,7 @@ export class DgramSocket extends EventEmitter<DgramSocketEvents> {
 				...composeInetAddress(rinfo.family, rinfo.address),
 				port: rinfo.port,
 			};
-			this.emit("message", msg, rinfo.size, from);
+			this.dispatch("message", msg, rinfo.size, from);
 		});
 	}
 }

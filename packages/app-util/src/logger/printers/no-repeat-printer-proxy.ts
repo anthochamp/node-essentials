@@ -1,10 +1,11 @@
 import {
-	debounceQueue,
 	defaults,
+	LockHold,
 	MS_PER_SECOND,
 	Mutex,
 	PeriodicalTimer,
 	Queue,
+	serializeQueueNext,
 } from "@ac-essentials/misc-util";
 import type { ILoggerPrinter } from "../logger-printer.js";
 import type { LoggerRecord } from "../logger-record.js";
@@ -37,7 +38,7 @@ export class NoRepeatPrinterProxy implements ILoggerPrinter {
 	private spool = new Queue<LoggerRecord>();
 	private readonly spoolLock = new Mutex();
 	private readonly flushLock = new Mutex();
-	private readonly flushDebounced = debounceQueue(() => this.flush());
+	private readonly flushSqn = serializeQueueNext(() => this.flush());
 	private readonly handleRepeatCountLock = new Mutex();
 
 	/**
@@ -76,41 +77,48 @@ export class NoRepeatPrinterProxy implements ILoggerPrinter {
 	}
 
 	async flush(): Promise<void> {
-		return this.flushLock.withLock(async () => {
-			const spool = await this.spoolLock.withLock(() => {
-				const originalSpool = this.spool;
-				this.spool = new Queue<LoggerRecord>();
-				return originalSpool;
-			});
+		await using _flushLock = await LockHold.from([this.flushLock]);
 
-			let record: LoggerRecord | undefined;
-			while ((record = spool.dequeue()) !== undefined) {
-				try {
-					await this.handleRecordPrint(record);
-				} catch (error) {
-					// add back the item to the spool if output fails
-					await this.spoolLock.withLock(() => {
-						this.spool = new Queue(spool.concat(...this.spool));
-					});
+		let spool: Queue<LoggerRecord>;
+		{
+			await using _spoolLock = await LockHold.from([this.spoolLock]);
+			spool = this.spool;
+			this.spool = new Queue<LoggerRecord>();
+		}
 
-					throw error;
-				}
+		let record: LoggerRecord | undefined;
+		while ((record = spool.dequeue()) !== undefined) {
+			try {
+				await this.handleRecordPrint(record);
+			} catch (error) {
+				await using _spoolLock = await LockHold.from([this.spoolLock]);
+
+				// add back the item to the spool if output fails
+				this.spool = new Queue(spool.concat(...this.spool));
+
+				throw error;
 			}
+		}
 
-			return this.printer.flush();
-		});
+		return this.printer.flush();
 	}
 
 	async print(record: LoggerRecord): Promise<void> {
-		await this.spoolLock.withLock(() => {
+		{
+			await using _spoolLock = await LockHold.from([this.spoolLock]);
 			this.spool.enqueue(record);
-		});
+		}
 
-		await this.flushDebounced();
+		await this.flushSqn();
 	}
 
 	private async handleRecordPrint(record: LoggerRecord) {
-		const skipPrint = await this.handleRepeatCountLock.withLock(async () => {
+		let shouldSkipPrint: boolean;
+		{
+			await using _handleRepeatCountLock = await LockHold.from([
+				this.handleRepeatCountLock,
+			]);
+
 			let recordEqual: boolean = false;
 			if (this.lastRecord) {
 				recordEqual = loggerPrinterRecordEqual(record, this.lastRecord, false);
@@ -122,24 +130,24 @@ export class NoRepeatPrinterProxy implements ILoggerPrinter {
 
 			this.lastRecord = record;
 
-			const shouldSkipPrint = recordEqual && !counterResetted;
+			shouldSkipPrint = recordEqual && !counterResetted;
 
 			if (shouldSkipPrint) {
 				this.lastRecordSkipCount++;
 			}
+		}
 
-			return shouldSkipPrint;
-		});
-
-		if (!skipPrint) {
+		if (!shouldSkipPrint) {
 			await this.printer.print(record);
 		}
 	}
 
 	private async handleTimerTick() {
-		await this.handleRepeatCountLock.withLock(async () => {
-			await this._unprotected_handleRepeatCount();
-		});
+		await using _handleRepeatCountLock = await LockHold.from([
+			this.handleRepeatCountLock,
+		]);
+
+		await this._unprotected_handleRepeatCount();
 	}
 
 	private async _unprotected_handleRepeatCount(forceReset = false) {

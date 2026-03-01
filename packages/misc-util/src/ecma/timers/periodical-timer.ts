@@ -1,5 +1,5 @@
 import { noThrowAsync } from "../function/no-throw.js";
-import type { MaybeAsyncCallback } from "../function/types.js";
+import type { MaybeAsyncCallable } from "../function/types.js";
 import { defaults } from "../object/defaults.js";
 import { Timer } from "./timer.js";
 
@@ -32,7 +32,7 @@ export class PeriodicalTimer {
 	 * @param options Optional settings for the timer.
 	 */
 	constructor(
-		private readonly callback: MaybeAsyncCallback,
+		private readonly callback: MaybeAsyncCallable,
 		readonly intervalMs: number,
 		options?: PeriodicalTimerOptions,
 	) {

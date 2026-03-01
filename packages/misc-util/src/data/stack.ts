@@ -1,6 +1,6 @@
-import { ListIndexOutOfBoundsError } from "./abstract-types/ilist.js";
-import type { IStack } from "./abstract-types/istack.js";
-import { NativeListCollection } from "./collection-base/native-array-collection.js";
+import { NativeListCollection } from "./_native-array-collection.js";
+import { ListIndexOutOfBoundsError } from "./ilist.js";
+import type { IStack } from "./istack.js";
 
 /**
  * The LIFO stack implementation.
