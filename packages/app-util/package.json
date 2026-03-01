@@ -1,6 +1,6 @@
 {
 	"name": "@ac-essentials/app-util",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"type": "module",
 	"main": "./src/index.ts",
 	"publishConfig": {
