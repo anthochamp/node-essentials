@@ -1,26 +1,25 @@
-import type { AsyncCallable, CallableNoArgs } from "./types.js";
+import type { AsyncCallable, MaybeAsyncCallableNoArgs } from "./types.js";
 
 /**
- * Wraps an asynchronous function to ensure that only one instance of it runs
- * at a time.
+ * Wraps an asynchronous function to ensure that only one instance runs
+ * at a time, and if called again while running, only one additional call
+ * is queued to run immediately after the current one completes.
  *
- * If the wrapped function is called while a previous call is still in progress,
- * the new call is queued to run immediately after the current one completes.
+ * This pattern serializes async operations and queues at most one next call.
+ * If multiple calls are made while an operation is in progress, they all
+ * share the same promise for the next execution.
  *
- * This is useful for debouncing async operations that should not overlap, such as
- * network requests or file operations.
+ * Useful for preventing overlapping async operations (such as network or file
+ * requests) while ensuring that the latest requested operation is not lost.
  *
- * When called, the function returns a promise that resolves or rejects with the
- * result of the next queued call.
- *
- * This is a specialized form a debounce function, with a zero wait time, and no
- * arguments.
+ * This is a specialized form of serialization with a single-call queue,
+ * zero wait time, and no arguments.
  *
  * @param func The asynchronous function to wrap.
  * @returns The wrapped function.
  */
-export function debounceQueue<T>(
-	func: CallableNoArgs<Promise<T>>,
+export function serializeQueueNext<T>(
+	func: MaybeAsyncCallableNoArgs<T>,
 ): AsyncCallable<[signal?: AbortSignal | null], T> {
 	let currentDeferred: PromiseWithResolvers<T> | undefined;
 	let nextDeferred: PromiseWithResolvers<T> | undefined;
@@ -28,7 +27,7 @@ export function debounceQueue<T>(
 	const execute = (deferred: PromiseWithResolvers<T>): void => {
 		currentDeferred = deferred;
 
-		func()
+		Promise.try(func)
 			.then(deferred.resolve, deferred.reject)
 			.finally(() => {
 				currentDeferred = undefined;

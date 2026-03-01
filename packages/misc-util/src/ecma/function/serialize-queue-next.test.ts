@@ -1,17 +1,17 @@
 import { expect, suite, test } from "vitest";
 import { sleep } from "../timers/sleep.js";
-import { debounceQueue } from "./debounce-queue.js";
+import { serializeQueueNext } from "./serialize-queue-next.js";
 
-suite("debounceQueue", () => {
+suite("serializeQueueNext", () => {
 	test("should execute the function immediately if not already running", async () => {
 		let callCount = 0;
 		const func = async () => {
 			callCount++;
 			return callCount;
 		};
-		const debouncedFunc = debounceQueue(func);
+		const funcSqn = serializeQueueNext(func);
 
-		const result = await debouncedFunc();
+		const result = await funcSqn();
 		expect(result).toBe(1);
 		expect(callCount).toBe(1);
 	});
@@ -23,11 +23,11 @@ suite("debounceQueue", () => {
 			await sleep(10);
 			return callCount;
 		};
-		const debouncedFunc = debounceQueue(func);
+		const funcSqn = serializeQueueNext(func);
 
-		const promise1 = debouncedFunc();
-		const promise2 = debouncedFunc();
-		const promise3 = debouncedFunc();
+		const promise1 = funcSqn();
+		const promise2 = funcSqn();
+		const promise3 = funcSqn();
 
 		const results = await Promise.all([promise1, promise2, promise3]);
 		expect(results).toEqual([1, 2, 2]);
@@ -44,11 +44,11 @@ suite("debounceQueue", () => {
 			}
 			return callCount;
 		};
-		const debouncedFunc = debounceQueue(func);
+		const funcSqn = serializeQueueNext(func);
 
-		await expect(() => debouncedFunc()).rejects.toThrow(error);
+		await expect(() => funcSqn()).rejects.toThrow(error);
 
-		const result = await debouncedFunc();
+		const result = await funcSqn();
 		expect(result).toBe(2);
 		expect(callCount).toBe(2);
 	});
@@ -63,11 +63,11 @@ suite("debounceQueue", () => {
 			}
 			return callCount;
 		};
-		const debouncedFunc = debounceQueue(func);
+		const funcSqn = serializeQueueNext(func);
 
-		await expect(() => debouncedFunc()).rejects.toThrow(error);
+		await expect(() => funcSqn()).rejects.toThrow(error);
 
-		const result = await debouncedFunc();
+		const result = await funcSqn();
 		expect(result).toBe(2);
 		expect(callCount).toBe(2);
 	});
@@ -79,11 +79,11 @@ suite("debounceQueue", () => {
 			await sleep(10);
 			return callCount;
 		};
-		const debouncedFunc = debounceQueue(func);
+		const funcSqn = serializeQueueNext(func);
 
-		const promise1 = debouncedFunc();
-		const promise2 = debouncedFunc();
-		const promise3 = debouncedFunc();
+		const promise1 = funcSqn();
+		const promise2 = funcSqn();
+		const promise3 = funcSqn();
 
 		const results = await Promise.all([promise1, promise2, promise3]);
 		expect(results).toEqual([1, 2, 2]);
