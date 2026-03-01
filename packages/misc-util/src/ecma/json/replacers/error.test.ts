@@ -1,5 +1,6 @@
-import { expect, suite, test } from "vitest";
-import { jsonSerializeError } from "./json-serialize-error.js";
+/** biome-ignore-all lint/style/noNonNullAssertion: tests */
+import { describe, expect, it } from "vitest";
+import { jsonMakeErrorReplacerFunction } from "./error.js";
 
 const error = new Error("Test error");
 const nestedError = new Error("Test error with cause", { cause: error });
@@ -23,19 +24,21 @@ const suppressedError = new SuppressedError(
 	"Suppressed error message",
 );
 
-suite("jsonSerializeError", () => {
-	test("should serialize a simple error", () => {
-		const serialized = jsonSerializeError(error);
-		expect(serialized).toEqual({
+describe("jsonMakeErrorReplacerFunction", () => {
+	const replacer = jsonMakeErrorReplacerFunction();
+
+	it("should serialize a simple error", () => {
+		const result = JSON.parse(JSON.stringify(error, replacer)!);
+		expect(result).toEqual({
 			name: "Error",
 			message: "Test error",
 			stack: expect.stringContaining("Error: Test error"),
 		});
 	});
 
-	test("should serialize an error with a cause", () => {
-		const serialized = jsonSerializeError(nestedError);
-		expect(serialized).toEqual({
+	it("should serialize an error with a cause", () => {
+		const result = JSON.parse(JSON.stringify(nestedError, replacer)!);
+		expect(result).toEqual({
 			name: "Error",
 			message: "Test error with cause",
 			stack: expect.stringContaining("Error: Test error with cause"),
@@ -46,9 +49,10 @@ suite("jsonSerializeError", () => {
 			},
 		});
 	});
-	test("should serialize an extended error with additional properties", () => {
-		const serialized = jsonSerializeError(extendedError);
-		expect(serialized).toEqual({
+
+	it("should serialize an extended error with additional properties", () => {
+		const result = JSON.parse(JSON.stringify(extendedError, replacer)!);
+		expect(result).toEqual({
 			name: "Error",
 			message: "Extended error",
 			stack: expect.stringContaining("Error: Extended error"),
@@ -57,18 +61,18 @@ suite("jsonSerializeError", () => {
 		});
 	});
 
-	test("should serialize a custom error", () => {
-		const serialized = jsonSerializeError(customError);
-		expect(serialized).toEqual({
+	it("should serialize a custom error", () => {
+		const result = JSON.parse(JSON.stringify(customError, replacer)!);
+		expect(result).toEqual({
 			name: "CustomError",
 			message: "Custom error",
 			stack: expect.stringContaining("CustomError: Custom error"),
 		});
 	});
 
-	test("should serialize an AggregateError with multiple errors", () => {
-		const serialized = jsonSerializeError(aggregateError);
-		expect(serialized).toEqual({
+	it("should serialize an AggregateError with multiple errors", () => {
+		const result = JSON.parse(JSON.stringify(aggregateError, replacer)!);
+		expect(result).toEqual({
 			name: "AggregateError",
 			message: "Aggregate error",
 			stack: expect.stringContaining("AggregateError: Aggregate error"),
@@ -104,9 +108,9 @@ suite("jsonSerializeError", () => {
 		});
 	});
 
-	test("should serialize a SuppressedError", () => {
-		const serialized = jsonSerializeError(suppressedError);
-		expect(serialized).toEqual({
+	it("should serialize a SuppressedError", () => {
+		const result = JSON.parse(JSON.stringify(suppressedError, replacer)!);
+		expect(result).toEqual({
 			name: "SuppressedError",
 			message: "Suppressed error message",
 			stack: expect.stringContaining(
@@ -130,14 +134,14 @@ suite("jsonSerializeError", () => {
 		});
 	});
 
-	test("should serialize a SuppressedError with custom errors", () => {
+	it("should serialize a SuppressedError with custom errors", () => {
 		const customSuppressedError = new SuppressedError(
 			customError,
 			extendedError,
 			"Custom suppressed",
 		);
-		const serialized = jsonSerializeError(customSuppressedError);
-		expect(serialized).toEqual({
+		const result = JSON.parse(JSON.stringify(customSuppressedError, replacer)!);
+		expect(result).toEqual({
 			name: "SuppressedError",
 			message: "Custom suppressed",
 			stack: expect.stringContaining("SuppressedError: Custom suppressed"),

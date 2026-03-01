@@ -1,10 +1,10 @@
 import { expect, suite, test } from "vitest";
-import { jsonStringifySafe } from "./json-stringify-safe.js";
+import { jsonStringify } from "./json-stringify.js";
 
 suite("jsonStringifySafe", () => {
 	test("should stringify a simple object", () => {
 		const obj = { a: 1, b: "test", c: true };
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe(JSON.stringify(obj));
 	});
 
@@ -12,7 +12,7 @@ suite("jsonStringifySafe", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
 		obj.self = obj;
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe('{"a":1,"self":"[Circular]"}');
 	});
 
@@ -20,7 +20,7 @@ suite("jsonStringifySafe", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: { b: { c: {} } } };
 		obj.a.b.c.self = obj.a;
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe('{"a":{"b":{"c":{"self":"[Circular]"}}}}');
 	});
 
@@ -28,7 +28,7 @@ suite("jsonStringifySafe", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const arr: any[] = [1, 2, 3];
 		arr.push(arr);
-		const result = jsonStringifySafe(arr);
+		const result = jsonStringify(arr);
 		expect(result).toBe('[1,2,3,"[Circular]"]');
 	});
 
@@ -37,7 +37,7 @@ suite("jsonStringifySafe", () => {
 		const obj: any = { name: "root" };
 		obj.child1 = { name: "child1", parent: obj };
 		obj.child2 = { name: "child2", parent: obj };
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe(
 			'{"name":"root","child1":{"name":"child1","parent":"[Circular]"},"child2":{"name":"child2","parent":"[Circular]"}}',
 		);
@@ -50,7 +50,7 @@ suite("jsonStringifySafe", () => {
 			num: 42,
 			str: "hello",
 		};
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe('{"num":42,"str":"hello"}');
 	});
 
@@ -60,14 +60,14 @@ suite("jsonStringifySafe", () => {
 			b: undefined,
 			c: "test",
 		};
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe('{"a":null,"c":"test"}');
 	});
 
 	test("should handle Date objects", () => {
 		const date = new Date("2023-01-01T00:00:00Z");
 		const obj = { date };
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe(`{"date":"${date.toISOString()}"}`);
 	});
 
@@ -78,7 +78,7 @@ suite("jsonStringifySafe", () => {
 				toJSON: () => "custom",
 			},
 		};
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe('{"a":1,"b":"custom"}');
 	});
 
@@ -86,7 +86,7 @@ suite("jsonStringifySafe", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { level1: { level2: { level3: {} } } };
 		obj.level1.level2.level3.self = obj.level1;
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe(
 			'{"level1":{"level2":{"level3":{"self":"[Circular]"}}}}',
 		);
@@ -97,7 +97,7 @@ suite("jsonStringifySafe", () => {
 		const obj: any = { a: 1, b: 2 };
 		obj.self = obj;
 		obj.nested = { parent: obj };
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe(
 			'{"a":1,"b":2,"self":"[Circular]","nested":{"parent":"[Circular]"}}',
 		);
@@ -110,7 +110,7 @@ suite("jsonStringifySafe", () => {
 		const obj2: any = { name: "obj2", ref: obj1 };
 		obj1.ref = obj2;
 		const arr = [obj1, obj2];
-		const result = jsonStringifySafe(arr);
+		const result = jsonStringify(arr);
 		expect(result).toBe(
 			'[{"name":"obj1","ref":{"name":"obj2","ref":"[Circular]"}},{"name":"obj2","ref":{"name":"obj1","ref":"[Circular]"}}]',
 		);
@@ -126,7 +126,7 @@ suite("jsonStringifySafe", () => {
 			nested: { a: "b" },
 		};
 		obj.self = obj;
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe(
 			'{"num":1,"str":"test","bool":true,"arr":[1,2,3],"nested":{"a":"b"},"self":"[Circular]"}',
 		);
@@ -138,7 +138,7 @@ suite("jsonStringifySafe", () => {
 			value: 2,
 			enumerable: false,
 		});
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe('{"a":1}');
 	});
 	test("should handle objects with symbol properties", () => {
@@ -146,7 +146,7 @@ suite("jsonStringifySafe", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
 		obj[sym] = 2;
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe('{"a":1}');
 	});
 	test("should handle objects with large depth", () => {
@@ -155,7 +155,7 @@ suite("jsonStringifySafe", () => {
 			return { next: createDeepObject(depth - 1) };
 		};
 		const obj = createDeepObject(1000);
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBeDefined();
 	});
 	test("should handle objects with circular references in arrays", () => {
@@ -163,7 +163,7 @@ suite("jsonStringifySafe", () => {
 		const obj: any = { name: "root" };
 		const arr = [obj];
 		obj.arr = arr;
-		const result = jsonStringifySafe(obj);
+		const result = jsonStringify(obj);
 		expect(result).toBe('{"name":"root","arr":["[Circular]"]}');
 	});
 });

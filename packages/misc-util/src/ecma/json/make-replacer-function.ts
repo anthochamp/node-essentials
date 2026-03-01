@@ -9,7 +9,7 @@
  * @param userReplacer An optional user-defined replacer (function or property list).
  * @returns A combined JSON replacer function.
  */
-export function makeJsonReplacerFunction(
+export function jsonMakeReplacerFunction(
 	baseReplacerFunction: JsonReplacerFunction,
 	userReplacer?: JsonReplacer,
 ): JsonReplacerFunction {
