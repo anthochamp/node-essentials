@@ -1,4 +1,4 @@
-import { defaults } from "../object/defaults.js";
+import { defaults } from "../ecma/object/defaults.js";
 
 /**
  * Supported rounding methods.

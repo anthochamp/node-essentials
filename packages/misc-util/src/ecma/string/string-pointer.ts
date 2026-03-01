@@ -1,4 +1,4 @@
-import { clamp } from "../math/clamp.js";
+import { clamp } from "../../math/clamp.js";
 
 /**
  * A C-like string pointer.

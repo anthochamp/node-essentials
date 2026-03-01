@@ -1,5 +1,5 @@
-import { clamp } from "../math/clamp.js";
-import { type RoundingMethod, round } from "../math/round.js";
+import { clamp } from "../../math/clamp.js";
+import { type RoundingMethod, round } from "../../math/round.js";
 import { defaults } from "../object/defaults.js";
 
 export type ToFixedLengthOptions = {
