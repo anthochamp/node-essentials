@@ -2,10 +2,11 @@ import type * as fs from "node:fs";
 import type * as tty from "node:tty";
 import { stripVTControlCharacters } from "node:util";
 import {
-	debounceQueue,
 	defaults,
+	LockHold,
 	Mutex,
 	Queue,
+	serializeQueueNext,
 } from "@ac-essentials/misc-util";
 import type { ILoggerPrinter } from "../logger-printer.js";
 import type { LoggerRecord } from "../logger-record.js";
@@ -36,7 +37,7 @@ export class TextStreamPrinter implements ILoggerPrinter {
 	private spool = new Queue<TextStreamPrinterSpoolItem>();
 	private readonly spoolLock = new Mutex();
 	private readonly flushLock = new Mutex();
-	private readonly flushDebounced = debounceQueue(() => this.flush());
+	private readonly flushSqn = serializeQueueNext(() => this.flush());
 
 	constructor(
 		private readonly defaultStream: tty.WriteStream | fs.WriteStream,
@@ -50,13 +51,15 @@ export class TextStreamPrinter implements ILoggerPrinter {
 	}
 
 	async clear(): Promise<void> {
-		await this.spoolLock.withLock(() => {
+		{
+			await using _flushLock = await LockHold.from([this.flushLock]);
+
 			this.spool.clear();
 
 			this.spool.enqueue({ isError: false, data: "\x1Bc" });
-		});
+		}
 
-		await this.flushDebounced();
+		await this.flushSqn();
 	}
 
 	async close(): Promise<void> {
@@ -64,27 +67,28 @@ export class TextStreamPrinter implements ILoggerPrinter {
 	}
 
 	async flush(): Promise<void> {
-		return this.flushLock.withLock(async () => {
-			const spool = await this.spoolLock.withLock(() => {
-				const originalSpool = this.spool;
-				this.spool = new Queue<TextStreamPrinterSpoolItem>();
-				return originalSpool;
-			});
+		await using _flushLock = await LockHold.from([this.flushLock]);
 
-			let item: TextStreamPrinterSpoolItem | undefined;
-			while ((item = spool.dequeue()) !== undefined) {
-				try {
-					await this.outputSpoolItem(item);
-				} catch (error) {
-					// add back the items to the spool if output fails
-					await this.spoolLock.withLock(() => {
-						this.spool = new Queue(spool.concat(...this.spool));
-					});
+		let spool: Queue<TextStreamPrinterSpoolItem>;
+		{
+			await using _spoolLock = await LockHold.from([this.spoolLock]);
+			spool = this.spool;
+			this.spool = new Queue<TextStreamPrinterSpoolItem>();
+		}
 
-					throw error;
-				}
+		let item: TextStreamPrinterSpoolItem | undefined;
+		while ((item = spool.dequeue()) !== undefined) {
+			try {
+				await this.outputSpoolItem(item);
+			} catch (error) {
+				await using _spoolLock = await LockHold.from([this.spoolLock]);
+
+				// add back the items to the spool if output fails
+				this.spool = new Queue(spool.concat(...this.spool));
+
+				throw error;
 			}
-		});
+		}
 	}
 
 	async print(record: LoggerRecord): Promise<void> {
@@ -98,11 +102,12 @@ export class TextStreamPrinter implements ILoggerPrinter {
 	protected async enqueueSpoolItem(
 		item: TextStreamPrinterSpoolItem,
 	): Promise<void> {
-		await this.spoolLock.withLock(() => {
+		{
+			await using _spoolLock = await LockHold.from([this.spoolLock]);
 			this.spool.enqueue(item);
-		});
+		}
 
-		await this.flushDebounced();
+		await this.flushSqn();
 	}
 
 	protected async outputSpoolItem(
