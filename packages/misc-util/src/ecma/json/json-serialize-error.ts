@@ -82,8 +82,17 @@ export function jsonSerializeError<T extends IError>(
 	}
 
 	if (isSuppressedErrorLike(error)) {
-		result.error = jsonSerialize(error.error, internalReplacer);
-		result.suppressed = jsonSerialize(error.suppressed, internalReplacer);
+		const serializedError = jsonSerialize(error.error, internalReplacer);
+		const serializedSuppressed = jsonSerialize(
+			error.suppressed,
+			internalReplacer,
+		);
+		if (serializedError !== undefined) {
+			result.error = serializedError;
+		}
+		if (serializedSuppressed !== undefined) {
+			result.suppressed = serializedSuppressed;
+		}
 	}
 
 	return result;
