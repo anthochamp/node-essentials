@@ -9,8 +9,10 @@ let TEST_DIR: string;
 let TEST_FILE: string;
 
 describe("FileLock", () => {
-	beforeEach(() => {
-		TEST_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "filelock-test-"));
+	beforeEach(async () => {
+		TEST_DIR = await fs.promises.mkdtemp(
+			path.join(os.tmpdir(), "filelock-test-"),
+		);
 		TEST_FILE = path.join(TEST_DIR, "lockfile");
 		if (fs.existsSync(TEST_FILE)) fs.unlinkSync(TEST_FILE);
 	});
