@@ -119,7 +119,6 @@ export class LoggerConsole implements Console {
 	private readonly countMap = new Map<string, number>();
 	private readonly timerTable = new Map<string, Temporal.Instant>();
 	private readonly groupStack = new Stack<string>();
-	// @ts-expect-error: until https://github.com/microsoft/TypeScript/pull/60646 is merged
 	private readonly durationFormatter = new Intl.DurationFormat(undefined, {
 		style: "narrow",
 	});

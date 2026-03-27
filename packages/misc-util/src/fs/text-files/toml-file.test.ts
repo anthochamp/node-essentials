@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: fixture */
 
-import { mkdtempSync, rmdirSync, unlinkSync } from "node:fs";
+import { rmdirSync, unlinkSync } from "node:fs";
+import { mkdtemp } from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, expect, suite, test } from "vitest";
 import { readTomlFile, writeTomlFile } from "./toml-file.js";
@@ -29,8 +30,8 @@ suite("writeTomlFile", () => {
 	let tempDir: string;
 	let tempPath: string;
 
-	beforeEach(() => {
-		tempDir = mkdtempSync("toml-test-");
+	beforeEach(async () => {
+		tempDir = await mkdtemp("toml-test-");
 		tempPath = path.join(tempDir, "temp.toml");
 	});
 
