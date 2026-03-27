@@ -11,6 +11,7 @@ import type { EncodingName } from "chardet";
 export function chardetCharsetToBufferEncoding(
 	chardetCharset: EncodingName,
 ): BufferEncoding | null {
+	// biome-ignore lint/nursery/noUnnecessaryConditions: false positive
 	switch (chardetCharset) {
 		case "UTF-8":
 			return "utf8";
