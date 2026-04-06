@@ -22,7 +22,7 @@ env:
 
 jobs:
   validate:
-    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@680b0a2faa5afc0983322d394a4502111407e9f9
+    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@721ccc9b2abd329f4e09a33670ffd6c83937ecc7
     with:
       node-package-manager: 'yarn'
 
