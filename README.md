@@ -5,7 +5,7 @@ Reusable configuration and utility packages for Node.js and TypeScript projects.
 ## Packages
 
 | Package | Description | Docs |
-|---------|-------------|------|
+| --------- | ------------- | ------ |
 | [**app-util**](./packages/app-util/README.md) | Utilities for Node.js apps: logging, config, process/system helpers | [API Docs](https://anthochamp.github.io/node-essentials/app-util/) |
 | [**cli**](./packages/cli/README.md) | CLI helpers for Docker, ps, git, etc. | [API Docs](https://anthochamp.github.io/node-essentials/cli/) |
 | [**misc-util**](./packages/misc-util/README.md) | Foundational JS/TS utilities: string, object, async, types | [API Docs](https://anthochamp.github.io/node-essentials/misc-util/) |
