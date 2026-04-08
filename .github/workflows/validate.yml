@@ -2,12 +2,12 @@ name: Validate
 
 on:
   push:
-    branches: [ '!main', 'v[0-9]+', 'v[0-9]+.[0-9]+' ]
-    tags-ignore: [ 'v[0-9]+.[0-9]+.[0-9]+' ]
+    branches: ["!main", "v[0-9]+", "v[0-9]+.[0-9]+"]
+    tags-ignore: ["v[0-9]+.[0-9]+.[0-9]+"]
   pull_request:
 
 jobs:
   validate:
-    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@680b0a2faa5afc0983322d394a4502111407e9f9
+    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@main
     with:
-      node-package-manager: 'yarn'
+      node-package-manager: "yarn"

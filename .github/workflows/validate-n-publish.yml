@@ -1,60 +1,31 @@
-name: Publish Packages and Docs
+name: Publish Package and Docs
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '**/package.json'
   workflow_dispatch:
     inputs:
-      dry_run:
-        description: 'Run publish in dry-run mode (no actual publishing)'
-        required: true
-        default: 'true'
+      dry-run:
+        description: "Publish in dry-run mode (no actual publishing or GitHub Release)"
+        required: false
+        default: "false"
         type: choice
         options:
-          - 'false'
-          - 'true'
-
-env:
-  PACKAGE_SCOPE: "@ac-essentials/"
+          - "false"
+          - "true"
 
 jobs:
   validate:
-    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@680b0a2faa5afc0983322d394a4502111407e9f9
+    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@main
     with:
-      node-package-manager: 'yarn'
+      node-package-manager: "yarn"
 
   publish:
-    permissions:
-      contents: write
-      packages: write
-    runs-on: ubuntu-latest
-    needs: [validate]
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          fetch-depth: 0
-      - name: Install and enable corepack
-        run: |
-          npm install -g corepack
-          corepack enable
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
-        with:
-          node-version-file: .nvmrc
-      - name: Install dependencies
-        run: yarn install
-      - name: Publish Packages
-        id: publish
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.dry_run }}" == "true" ]]; then
-            yarn publish --dry-run
-          else
-            yarn publish
-          fi
-        env:
-          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    needs: validate
+    uses: anthochamp/dev-toolbox/.github/workflows/node-lib-publish.yml@main
+    with:
+      node-package-manager: yarn
+      dry-run: ${{ inputs.dry-run == 'true' }}
+    secrets:
+      npm-token: ${{ secrets.NPM_TOKEN }}
 
   generate_and_publish_doc:
     permissions:
@@ -62,7 +33,7 @@ jobs:
       pages: write
     needs: publish
     runs-on: ubuntu-latest
-    if: github.event.inputs.dry_run != 'true'
+    if: inputs.dry-run != 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -102,70 +73,18 @@ jobs:
       contents: write
     needs: publish
     runs-on: ubuntu-latest
-    if: github.event.inputs.dry_run != 'true'
+    if: ${{ inputs.dry-run != 'true' && needs.publish.outputs.published-tags != '' }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
-      - name: Fetch all tags
-        run: git fetch --tags
-      - name: Create and push tags for all package versions
-        run: |
-          set -e
-          > new-tags.txt
-          find . -name package.json -not -path '*/node_modules/*' | while read file; do
-            if [ "$(jq -r .private $file 2>/dev/null)" = "true" ]; then
-              echo "$file is private, skipping."
-              continue
-            fi
-            name=$(jq -r .name "$file")
-            version=$(jq -r .version "$file")
-            name_stripped=${name#$PACKAGE_SCOPE}
-            tag="${name_stripped}_v${version}"
-            if git rev-parse "$tag" >/dev/null 2>&1; then
-              echo "Tag $tag already exists, skipping."
-            else
-              echo "Creating tag: $tag"
-              git tag "$tag"
-              echo "$tag" >> new-tags.txt
-            fi
-          done
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git push --tags
-      - name: Generate release notes for new tags and check if should publish
-        id: notes
-        run: |
-          echo "# Release Notes" > release-notes.md
-          has_release_notes=false
-          if [ -s new-tags.txt ]; then
-            for tag in $(cat new-tags.txt); do
-              # Extract the package id (everything before _v)
-              pkg_id="${tag%_v*}"
-              # Find the previous tag for this package, excluding the current tag
-              prev_tag=$(git tag --list "${pkg_id}_*" --sort=-v:refname | grep -v "^${tag}$" | head -n 1)
-              echo -e "\n## $tag" >> release-notes.md
-              if [ -n "$prev_tag" ]; then
-                git log --pretty=format:'- %s (%h)' "$prev_tag".."$tag" >> release-notes.md
-              else
-                git log --pretty=format:'- %s (%h)' "$tag" >> release-notes.md
-              fi
-              has_release_notes=true
-            done
-          fi
-          if ! $has_release_notes; then
-            echo "No new tags created in this run." >> release-notes.md
-          fi
-          echo "has_release_notes=$has_release_notes" >> $GITHUB_OUTPUT
-          cat release-notes.md
-      - name: Create GitHub Releases for new tags
-        if: steps.notes.outputs.has_release_notes == 'true'
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2
-        with:
-          tag_name: multi-package-release-${{ github.sha }}
-          name: Multi-package release ${{ github.sha }}
-          body_path: release-notes.md
-          draft: true
+      - name: Create GitHub Release for each published package
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISHED_TAGS: ${{ needs.publish.outputs.published-tags }}
+        run: |
+          while IFS= read -r TAG; do
+            [ -z "$TAG" ] && continue
+            gh release create "$TAG" --title "$TAG" --generate-notes
+          done <<< "$PUBLISHED_TAGS"
