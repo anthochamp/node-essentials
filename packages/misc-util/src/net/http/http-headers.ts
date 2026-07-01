@@ -3,7 +3,7 @@ import contentTypeLib from "content-type";
 import { httpAsctimeDatePattern } from "./_http-field-value-util.js";
 import { HttpFields } from "./_http-fields.js";
 
-export type HttpContentType = contentTypeLib.ParsedMediaType;
+export type HttpContentType = contentTypeLib.ContentType;
 export type HttpContentDisposition = contentDispositionLib.ContentDisposition;
 
 export class HttpHeaders extends HttpFields {
