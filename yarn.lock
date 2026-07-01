@@ -74,7 +74,7 @@ __metadata:
     "@types/node": "npm:^24.5.2"
     "@types/shallow-clone": "npm:3.0.2"
     chardet: "npm:^2.1.0"
-    content-disposition: "npm:^1.0.0"
+    content-disposition: "npm:^2.0.0"
     content-type: "npm:^1.0.5"
     editorconfig: "npm:^3.0.1"
     fs-ext: "npm:^2.1.1"
@@ -1244,10 +1244,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"content-disposition@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "content-disposition@npm:1.0.1"
-  checksum: 10c0/bd7ff1fe8d2542d3a2b9a29428cc3591f6ac27bb5595bba2c69664408a68f9538b14cbd92479796ea835b317a09a527c8c7209c4200381dedb0c34d3b658849e
+"content-disposition@npm:^2.0.0":
+  version: 2.0.1
+  resolution: "content-disposition@npm:2.0.1"
+  checksum: 10c0/8ba0e1f95102343a69a9a4b6f17728209d4ff0402b830b7cda91dcdfbb12eed0201dcd02aaa1e56f9bcf1c5b8ccef4a70e83b58292cf26588d8d5f7d05a0c006
   languageName: node
   linkType: hard
 
