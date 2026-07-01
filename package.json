@@ -24,15 +24,15 @@
 		"build": "yarn workspaces foreach -Apt run build",
 		"publish": "yarn workspaces foreach -A --no-private npm publish --tolerate-republish"
 	},
-	"packageManager": "yarn@4.13.0",
+	"packageManager": "yarn@4.17.0",
 	"devDependencies": {
 		"@ac-essentials/biome-config": "workspace:*",
 		"@ac-essentials/markdownlint-cli2-config": "workspace:*",
-		"@biomejs/biome": "2.4.10",
-		"@vitest/coverage-v8": "4.1.3",
+		"@biomejs/biome": "2.5.1",
+		"@vitest/coverage-v8": "4.1.9",
 		"is-ci": "4.1.0",
-		"lefthook": "2.1.5",
-		"markdownlint-cli2": "0.22.0",
-		"vitest": "4.1.3"
+		"lefthook": "2.1.9",
+		"markdownlint-cli2": "0.22.1",
+		"vitest": "4.1.9"
 	}
 }
