@@ -79,7 +79,7 @@ __metadata:
     editorconfig: "npm:^3.0.1"
     fs-ext: "npm:^2.1.1"
     iconv-lite: "npm:^0.7.0"
-    ini: "npm:^6.0.0"
+    ini: "npm:^7.0.0"
     json5: "npm:^2.2.3"
     jsonc-parser: "npm:^3.3.1"
     mime-db: "npm:^1.54.0"
@@ -1787,10 +1787,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ini@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "ini@npm:6.0.0"
-  checksum: 10c0/9a7f55f306e2b25b41ae67c8b526e8f4673f057b70852b9025816ef4f15f07bf1ba35ed68ea4471ff7b31718f7ef1bc50d709f8d03cb012e10a3135eb99c7206
+"ini@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "ini@npm:7.0.0"
+  checksum: 10c0/7520cae38bd5587e1cbca4637bb5fc0e157f38e0816522756456010ef703772d0018f9f4987cb9977bf3b10c1feccaad7800744dd1f5d85fb435e58a1baa9754
   languageName: node
   linkType: hard
 
