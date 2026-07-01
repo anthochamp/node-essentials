@@ -42,70 +42,67 @@ const loggerConsole = new LoggerConsole([idleMarkPrinter, filePrinter], {
 
 // 7. Attach error listeners to log uncaught exceptions and unhandled rejections
 new ErrorListeners(path.join(import.meta.dirname, "error.log"), {
-	onUncaughtExceptionEventError: (err) => {
-		logger.alert(err);
-	},
-	onUnhandledRejectionEventError: (err) => {
-		logger.alert(err);
+	onError: (err) => {
+		void logger.alert(err);
 	},
 }).attach();
 
 // 8. Log various messages at different levels
 const error = new Error("This is a test error");
-logger.debug(packageJson, "Package info");
-logger.emerg(error, "This is a fatal message");
-logger.alert(error, "This is an alert message");
-logger.critical(error, "This is a critical message");
-logger.error(error, "This is an error message");
-logger.warning(error, "This is a warning message");
-logger.notice("This is a notice message");
-logger.info("This is an info message");
-logger.debug({}, "This is a debug message");
-logger.info("This is an info message with some metadata", {
+void logger.debug(packageJson, "Package info");
+void logger.emerg(error, "This is a fatal message");
+void logger.alert(error, "This is an alert message");
+void logger.critical(error, "This is a critical message");
+void logger.error(error, "This is an error message");
+void logger.warning(error, "This is a warning message");
+void logger.notice("This is a notice message");
+void logger.info("This is an info message");
+void logger.debug({}, "This is a debug message");
+void logger.info("This is an info message with some metadata", {
 	foo: "bar",
 	baz: 42,
 });
-logger.debug(
+void logger.debug(
 	{ foo: "bar", baz: 42, error: new Error("This is a test error") },
 	"This is a debug message with some data",
 );
 
 // 9. Demonstrate repeat suppression and idle mark
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
 await new Promise((resolve) => setTimeout(resolve, 2000));
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
 await new Promise((resolve) => setTimeout(resolve, 2000));
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.info("This is a repeatable info message");
-logger.error("This is an error message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.info("This is a repeatable info message");
+void logger.error("This is an error message");
 for (let i = 0; i < 500; i++) {
-	logger.info("This is a repeatable info message");
+	void logger.info("This is a repeatable info message");
 }
 await new Promise((resolve) => setTimeout(resolve, 2000));
 for (let i = 0; i < 30000; i++) {
-	logger.info("This is a repeatable info message");
+	void logger.info("This is a repeatable info message");
 }
-logger.info(
+void logger.info(
 	"This is a debug message after a lot of repeatable info messages 1",
 );
 await new Promise((resolve) => setTimeout(resolve, 2000));
 for (let i = 0; i < 30000; i++) {
-	logger.info("This is a repeatable info message");
+	void logger.info("This is a repeatable info message");
 }
-logger.info(
+void logger.info(
 	"This is a debug message after a lot of repeatable info messages 2",
 );
 
@@ -143,8 +140,7 @@ console.log("This is a message inside a group");
 console.groupEnd();
 
 // 12. Demonstrate error handling for unhandled rejections and uncaught exceptions
-// biome-ignore lint/nursery/noFloatingPromises: test
-Promise.reject(new Error("This is a test unhandled rejection"));
+void Promise.reject(new Error("This is a test unhandled rejection"));
 setImmediate(() => {
 	throw new Error("This is a test error");
 });
