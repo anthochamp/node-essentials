@@ -14,7 +14,7 @@
 	"dependencies": {
 		"@ac-essentials/cli": "workspace:^",
 		"@ac-essentials/misc-util": "workspace:^",
-		"cosmiconfig": "^9.0.0",
+		"cosmiconfig": "^10.0.0",
 		"find-up": "^8.0.0",
 		"temporal-polyfill": "^1.0.0",
 		"type-fest": "^5.0.1"
