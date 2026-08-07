@@ -1,4 +1,4 @@
-import { patternTrim } from "../../ecma/regexp/pattern-trim.js";
+import { buildPatternTrim } from "../../ecma/regexp/pattern-trim.js";
 import { patternInOutCapture } from "../../ecma/regexp/pattern-util.js";
 import type { Pattern } from "../../ecma/regexp/types.js";
 
@@ -118,8 +118,23 @@ function composeHttpCommentPattern({
  * @param value The HTTP field value to split.
  * @returns An array of non-whitespace substrings.
  */
+// Pre-compiled static regexes — all patterns are derived from module-level constants.
+const owsSplitRe = new RegExp(httpOWsPattern);
+const owsValidRe = new RegExp(`^${httpOWsPattern}$`);
+const httpCommentRe = new RegExp(
+	composeHttpCommentPattern({ inName: "comment" }),
+);
+const httpQuotedStringRe = new RegExp(
+	composeHttpQuotedStringPattern({ inName: "quotedString" }),
+);
+const httpUnfoldRe = new RegExp(
+	`(?:(?:${httpDatePattern}${httpOWsPattern})|(?:${composeHttpQuotedStringPattern()}${httpOWsPattern})|(?:${composeHttpCommentPattern()}${httpOWsPattern}))+.*?(?:,|$)|,`,
+	"g",
+);
+const trimHttpOws = buildPatternTrim(httpOWsPattern);
+
 export function httpFieldSplitValueByWs(value: string): string[] {
-	return value.split(new RegExp(httpOWsPattern)).filter(Boolean);
+	return value.split(owsSplitRe).filter(Boolean);
 }
 
 /**
@@ -130,10 +145,7 @@ export function httpFieldSplitValueByWs(value: string): string[] {
  * @returns The parsed comment, or null if not found.
  */
 export function httpFieldParseHttpComment(value: string): string | null {
-	const pattern = composeHttpCommentPattern({
-		inName: "comment",
-	});
-	const match = new RegExp(pattern).exec(value);
+	const match = httpCommentRe.exec(value);
 	return match?.groups?.comment ?? null;
 }
 
@@ -145,8 +157,7 @@ export function httpFieldParseHttpComment(value: string): string | null {
  * @returns The parsed quoted string, or null if not found.
  */
 export function httpFieldParseQuotedString(value: string): string | null {
-	const pattern = composeHttpQuotedStringPattern({ inName: "quotedString" });
-	const match = new RegExp(pattern).exec(value);
+	const match = httpQuotedStringRe.exec(value);
 	return match?.groups?.quotedString ?? null;
 }
 
@@ -160,9 +171,7 @@ export function httpFieldParseQuotedString(value: string): string | null {
  */
 export function httpFieldUnfoldValues(value?: string): string[] {
 	if (!value) return [];
-	const pattern = `(?:(?:${httpDatePattern}${httpOWsPattern})|(?:${composeHttpQuotedStringPattern()}${httpOWsPattern})|(?:${composeHttpCommentPattern()}${httpOWsPattern}))+.*?(?:,|$)|,`;
-	const regex = new RegExp(pattern, "g");
-	const separators = Array.from(value.matchAll(regex));
+	const separators = Array.from(value.matchAll(httpUnfoldRe));
 	const values: string[] = [];
 	let lastEnd = 0;
 	for (let index = 0; index < separators.length; index++) {
@@ -176,9 +185,7 @@ export function httpFieldUnfoldValues(value?: string): string[] {
 	}
 	values.push(value.substring(lastEnd));
 
-	return values
-		.map((e) => patternTrim(e, httpOWsPattern))
-		.filter((e) => e.length > 0);
+	return values.map((e) => trimHttpOws(e)).filter((e) => e.length > 0);
 }
 
 /**
@@ -191,7 +198,7 @@ export function httpFieldUnfoldValues(value?: string): string[] {
  * @returns The folded HTTP field value string.
  */
 export function httpFieldFoldValues(values: string[], spacing = " "): string {
-	if (!new RegExp(`^${httpOWsPattern}$`).test(spacing)) {
+	if (!owsValidRe.test(spacing)) {
 		throw new Error("Invalid spacing");
 	}
 	return values.join(`,${spacing}`);

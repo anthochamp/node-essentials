@@ -1,5 +1,5 @@
 import { expect, suite, test } from "vitest";
-import { kebabCase } from "./kebab-case.js";
+import { buildKebabCase, kebabCase } from "./kebab-case.js";
 
 suite("kebabCase", () => {
 	test("converts strings to kebab case", () => {
@@ -20,5 +20,14 @@ suite("kebabCase", () => {
 		expect(kebabCase("A")).toBe("a");
 		expect(kebabCase("a b c")).toBe("a-b-c");
 		expect(kebabCase("A B C")).toBe("a-b-c");
+		expect(kebabCase("foo / bar")).toBe("foo-/-bar");
+	});
+});
+
+suite("buildKebabCase", () => {
+	test("accepts custom separators", () => {
+		const toCase = buildKebabCase({ separators: "[/]" });
+		expect(toCase("src/util/helpers")).toBe("src-util-helpers");
+		expect(toCase("hello world")).toBe("hello world");
 	});
 });

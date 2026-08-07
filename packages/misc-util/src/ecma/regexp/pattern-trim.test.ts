@@ -1,5 +1,8 @@
 import { expect, suite, test } from "vitest";
 import {
+	buildPatternTrim,
+	buildPatternTrimEnd,
+	buildPatternTrimStart,
 	patternTrim,
 	patternTrimEnd,
 	patternTrimStart,
@@ -36,5 +39,36 @@ suite("patternTrim", () => {
 		expect(patternTrim("aaaaaa", pattern)).toBe("");
 		expect(patternTrimStart("aaaaaa", pattern)).toBe("");
 		expect(patternTrimEnd("aaaaaa", pattern)).toBe("");
+	});
+});
+
+suite("buildPatternTrim", () => {
+	test("trims whitespace by default", () => {
+		const trim = buildPatternTrim();
+		const trimStart = buildPatternTrimStart();
+		const trimEnd = buildPatternTrimEnd();
+		expect(trim("  hello  ")).toBe("hello");
+		expect(trimStart("  hello  ")).toBe("hello  ");
+		expect(trimEnd("  hello  ")).toBe("  hello");
+	});
+
+	test("compiles regex once and reuses across calls", () => {
+		const trim = buildPatternTrim("[abc]");
+		const trimStart = buildPatternTrimStart("[abc]");
+		const trimEnd = buildPatternTrimEnd("[abc]");
+		expect(trim("abchelloabc")).toBe("hello");
+		expect(trim("abchelloabc")).toBe("hello");
+		expect(trimStart("abchelloabc")).toBe("helloabc");
+		expect(trimEnd("abchelloabc")).toBe("abchello");
+	});
+
+	test("handles empty string", () => {
+		const trim = buildPatternTrim("[abc]");
+		expect(trim("")).toBe("");
+	});
+
+	test("handles string with no matches", () => {
+		const trim = buildPatternTrim("[abc]");
+		expect(trim("hello")).toBe("hello");
 	});
 });

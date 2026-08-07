@@ -1,5 +1,5 @@
 import { expect, suite, test } from "vitest";
-import { upperCase } from "./upper-case.js";
+import { buildUpperCase, upperCase } from "./upper-case.js";
 
 suite("upperCase", () => {
 	test("converts strings to upper case", () => {
@@ -20,5 +20,14 @@ suite("upperCase", () => {
 		expect(upperCase("A")).toBe("A");
 		expect(upperCase("a b c")).toBe("A B C");
 		expect(upperCase("A B C")).toBe("A B C");
+		expect(upperCase("foo / bar")).toBe("FOO / BAR");
+	});
+});
+
+suite("buildUpperCase", () => {
+	test("accepts custom separators", () => {
+		const toCase = buildUpperCase({ separators: "[/]" });
+		expect(toCase("src/util/helpers")).toBe("SRC UTIL HELPERS");
+		expect(toCase("hello world")).toBe("HELLO WORLD");
 	});
 });

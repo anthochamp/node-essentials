@@ -3,7 +3,7 @@ import { defaults } from "../ecma/object/defaults.js";
 /**
  * Supported rounding methods.
  */
-export type RoundingMethod = "round" | "floor" | "ceil";
+export type RoundingMethod = "round" | "floor" | "ceil" | "trunc";
 
 export type RoundOptions = {
 	/**

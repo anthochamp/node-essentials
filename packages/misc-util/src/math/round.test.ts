@@ -45,6 +45,17 @@ suite("round", () => {
 		).toBeCloseTo(-1.23, 2);
 	});
 
+	test("should trunc numbers correctly", () => {
+		expect(round(1.9, { roundingMethod: "trunc" })).toBe(1);
+		expect(
+			round(1.2355, { roundingMethod: "trunc", fractionDigits: 2 }),
+		).toBeCloseTo(1.23, 2);
+		expect(round(-1.9, { roundingMethod: "trunc" })).toBe(-1);
+		expect(
+			round(-1.2355, { roundingMethod: "trunc", fractionDigits: 2 }),
+		).toBeCloseTo(-1.23, 2);
+	});
+
 	test("should use default options when none are provided", () => {
 		expect(round(1.5678)).toBe(2);
 		expect(round(1.5678, {})).toBe(2);

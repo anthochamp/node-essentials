@@ -1,5 +1,5 @@
 import { expect, suite, test } from "vitest";
-import { snakeCase } from "./snake-case.js";
+import { buildSnakeCase, snakeCase } from "./snake-case.js";
 
 suite("snakeCase", () => {
 	test("converts strings to snake case", () => {
@@ -20,5 +20,14 @@ suite("snakeCase", () => {
 		expect(snakeCase("A")).toBe("a");
 		expect(snakeCase("a b c")).toBe("a_b_c");
 		expect(snakeCase("A B C")).toBe("a_b_c");
+		expect(snakeCase("foo / bar")).toBe("foo_/_bar");
+	});
+});
+
+suite("buildSnakeCase", () => {
+	test("accepts custom separators", () => {
+		const toCase = buildSnakeCase({ separators: "[/]" });
+		expect(toCase("src/util/helpers")).toBe("src_util_helpers");
+		expect(toCase("hello world")).toBe("hello world");
 	});
 });

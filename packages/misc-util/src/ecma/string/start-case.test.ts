@@ -1,5 +1,5 @@
 import { expect, suite, test } from "vitest";
-import { startCase } from "./start-case.js";
+import { buildStartCase, startCase } from "./start-case.js";
 
 suite("startCase", () => {
 	test("converts strings to start case", () => {
@@ -20,5 +20,14 @@ suite("startCase", () => {
 		expect(startCase("A")).toBe("A");
 		expect(startCase("a b c")).toBe("A B C");
 		expect(startCase("A B C")).toBe("A B C");
+		expect(startCase("foo / bar")).toBe("Foo / Bar");
+	});
+});
+
+suite("buildStartCase", () => {
+	test("accepts custom separators", () => {
+		const toCase = buildStartCase({ separators: "[/]" });
+		expect(toCase("src/util/helpers")).toBe("Src Util Helpers");
+		expect(toCase("hello world")).toBe("Hello world");
 	});
 });

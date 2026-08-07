@@ -85,6 +85,7 @@ export * from "./ecma/regexp/pattern-util.js";
 export * from "./ecma/regexp/types.js";
 export * from "./ecma/string/camel-case.js";
 export * from "./ecma/string/capitalize.js";
+export * from "./ecma/string/case-options.js";
 export * from "./ecma/string/join-non-empty.js";
 export * from "./ecma/string/kebab-case.js";
 export * from "./ecma/string/lower-case.js";

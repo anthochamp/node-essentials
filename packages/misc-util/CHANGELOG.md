@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `RoundingMethod` type now includes `"trunc"` (truncation towards zero).
+- `StringCaseOptions` type (`separators`, `keep`) and `STRING_CASE_DEFAULT_OPTIONS` constant for customising case function behaviour.
+- `buildCamelCase`, `buildKebabCase`, `buildLowerCase`, `buildSnakeCase`, `buildStartCase`, `buildUpperCase` factory functions that compile regexes once for repeated use.
+- `buildPatternTrim`, `buildPatternTrimStart`, `buildPatternTrimEnd` factory functions that compile regexes once for repeated use.
+
+### Changed
+
+- `scale1Int` parameter `roundingMethod` now uses the `RoundingMethod` type instead of an inline union.
+- `camelCase`, `kebabCase`, `lowerCase`, `snakeCase`, `startCase`, and `upperCase` are now pre-compiled factory results (`const`) instead of functions — API is unchanged.
+- `patternTrim`, `patternTrimStart`, and `patternTrimEnd` now delegate to their respective `build*` factories.
+- `httpFieldSplitValueByWs`, `httpFieldParseHttpComment`, `httpFieldParseQuotedString`, `httpFieldUnfoldValues`, and `httpFieldFoldValues` now use pre-compiled module-level regexes instead of constructing them on every call.
+
+### Fixed
+
+- `camelCase`, `kebabCase`, `lowerCase`, `snakeCase`, `startCase`, and `upperCase` now preserve non-word characters (e.g., `/`) instead of dropping them when they follow a separator.
+
 ## [0.6.1] - 2026-03-01
 
 ### Fixed

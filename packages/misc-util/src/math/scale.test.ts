@@ -34,5 +34,10 @@ suite("scale", () => {
 			expect(scale1Int(1, 10.5, 20.5)).toBe(21);
 			expect(scale1Int(2, 10.5, 20.5)).toBe(31);
 		});
+
+		test("should scale correctly with trunc rounding", () => {
+			expect(scale1Int(0.55, 10, 20, "trunc")).toBe(15);
+			expect(scale1Int(-0.05, 10, 20, "trunc")).toBe(9);
+		});
 	});
 });

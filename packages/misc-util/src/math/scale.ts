@@ -1,3 +1,5 @@
+import type { RoundingMethod } from "./round.js";
+
 /**
  * Scale a number in range 0..1 to a new range
  *
@@ -23,7 +25,7 @@ export function scale1Int(
 	value: number,
 	min: number,
 	max: number,
-	roundingMethod: "round" | "floor" | "ceil" = "round",
+	roundingMethod: RoundingMethod = "round",
 ): number {
 	return Math[roundingMethod](value * (max - min) + min);
 }
