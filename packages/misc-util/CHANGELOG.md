@@ -22,6 +22,12 @@ and this project adheres to
 
 ### Changed
 
+- **Breaking:** `chardetCharsetToBufferEncoding`,
+  `editorconfigCharsetToBufferEncoding`, `flockAsync` / `FlockFlags`, and
+  `getFirstMimeTypeFileExtension` are no longer exported from the main entry
+  point. Import them from their dedicated subpath exports instead:
+  `@ac-essentials/misc-util/chardet`, `@ac-essentials/misc-util/editorconfig`,
+  `@ac-essentials/misc-util/flock`, and `@ac-essentials/misc-util/mime-db`.
 - `scale1Int` parameter `roundingMethod` now uses the `RoundingMethod` type
   instead of an inline union.
 - `camelCase`, `kebabCase`, `lowerCase`, `snakeCase`, `startCase`, and

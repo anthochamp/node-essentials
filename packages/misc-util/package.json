@@ -7,8 +7,22 @@
 	"type": "module",
 	"sideEffects": false,
 	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts",
+		"./chardet": "./src/3rdparty/chardet/chardet-charset-to-buffer-encoding.ts",
+		"./editorconfig": "./src/3rdparty/editorconfig/editorconfig-charset-to-buffer-encoding.ts",
+		"./flock": "./src/3rdparty/fs-ext/flock.ts",
+		"./mime-db": "./src/3rdparty/mime-db/get-first-mime-type-file-extension.ts"
+	},
 	"publishConfig": {
 		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js",
+			"./chardet": "./dist/3rdparty/chardet/chardet-charset-to-buffer-encoding.js",
+			"./editorconfig": "./dist/3rdparty/editorconfig/editorconfig-charset-to-buffer-encoding.js",
+			"./flock": "./dist/3rdparty/fs-ext/flock.js",
+			"./mime-db": "./dist/3rdparty/mime-db/get-first-mime-type-file-extension.js"
+		},
 		"access": "public"
 	},
 	"scripts": {
