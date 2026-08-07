@@ -1,18 +1,21 @@
 import * as path from "node:path";
+
 import {
 	deepClone,
 	deepMergeInplace,
 	defaults,
 } from "@ac-essentials/misc-util";
 import type { UnknownRecord } from "type-fest";
+
 import { resolveExtendsValue } from "./resolve-extends-value.js";
 
 /**
- * A configuration object that can extend other configurations via the "extends" property.
+ * A configuration object that can extend other configurations via the "extends"
+ * property.
  *
- * The "extends" property can be a string or an array of strings, each representing
- * a module to extend from. The modules will be resolved and merged into the current
- * configuration.
+ * The "extends" property can be a string or an array of strings, each
+ * representing a module to extend from. The modules will be resolved and merged
+ * into the current configuration.
  *
  * Additional properties can be defined as needed.
  */
@@ -20,10 +23,9 @@ export type ExtendableConfig = UnknownRecord & {
 	/**
 	 * A module or an array of modules to extend from.
 	 *
-	 * Each module can be:
-	 * - A package name (e.g. "my-config-package").
-	 * - A scoped package name (e.g. "@my-scope/my-config-package").
-	 * - A relative or absolute path to a configuration file.
+	 * Each module can be: - A package name (e.g. "my-config-package"). - A scoped
+	 * package name (e.g. "@my-scope/my-config-package"). - A relative or absolute
+	 * path to a configuration file.
 	 *
 	 * The modules will be resolved and merged in the order they are listed.
 	 */
@@ -31,34 +33,31 @@ export type ExtendableConfig = UnknownRecord & {
 };
 
 /**
- * A parser function to validate and transform an extendable configuration object.
+ * A parser function to validate and transform an extendable configuration
+ * object.
  *
- * This function should take the raw configuration data (e.g. from a JSON file or module)
- * and return a valid `ExtendableConfig` object. It can also throw an error if the data
- * is invalid.
+ * This function should take the raw configuration data (e.g. from a JSON file
+ * or module) and return a valid `ExtendableConfig` object. It can also throw an
+ * error if the data is invalid.
  *
  * @param data The raw configuration data to parse.
  * @returns The parsed and validated `ExtendableConfig` object.
  */
 export type ExtendableConfigParser = (data: unknown) => ExtendableConfig;
 
-/**
- * Options for resolving an extendable configuration.
- */
+/** Options for resolving an extendable configuration. */
 export type ResolveExtendableConfigOptions = {
 	/**
 	 * Arguments to pass to configuration modules that export a function.
 	 *
-	 * If a configuration module exports a function, it will be called with these arguments
-	 * to obtain the configuration object.
+	 * If a configuration module exports a function, it will be called with these
+	 * arguments to obtain the configuration object.
 	 *
 	 * Default is an empty array (no arguments).
 	 */
 	moduleFunctionCallArgs?: unknown[];
 
-	/**
-	 * A callback function that is called when a circular dependency is detected.
-	 */
+	/** A callback function that is called when a circular dependency is detected. */
 	onCircularDependency?:
 		| ((moduleId: string, modulePath: string, configPath: string) => void)
 		| null;
@@ -74,7 +73,8 @@ const RESOLVE_EXTENDABLE_CONFIG_DEFAULT_OPTIONS: Required<ResolveExtendableConfi
  * Resolve an extendable configuration (with "extends"-property).
  *
  * @param configData The configuration data to resolve.
- * @param configPath The path of the configuration file (used for resolving relative paths).
+ * @param configPath The path of the configuration file (used for resolving
+ *   relative paths).
  * @param configParser The parser function to parse configuration modules.
  * @param configId The configuration ID (e.g. "eslint", "babel", etc.).
  * @param options The options for resolving the configuration.
@@ -104,18 +104,20 @@ export async function resolveExtendableConfig<T extends ExtendableConfig>(
 }
 
 /**
- * @internal
- *
- * Internal function to recursively resolve an extendable configuration.
- *
  * @param configData The configuration data to resolve.
- * @param configPath The path of the configuration file (used for resolving relative paths).
+ * @param configPath The path of the configuration file (used for resolving
+ *   relative paths).
  * @param configParser The parser function to parse configuration modules.
  * @param configId The configuration ID (e.g. "eslint", "babel", etc.).
  * @param options The options for resolving the configuration.
- * @param globalList A set of already resolved module paths (to avoid duplicates).
- * @param branchList A set of module paths in the current resolution branch (to detect circular dependencies).
+ * @param globalList A set of already resolved module paths (to avoid
+ *   duplicates).
+ * @param branchList A set of module paths in the current resolution branch (to
+ *   detect circular dependencies).
  * @returns The resolved configuration data, without the "extends"-property.
+ * @internal
+ *
+ * Internal function to recursively resolve an extendable configuration.
  */
 async function internalResolveExtendableConfig<T extends ExtendableConfig>(
 	configData: T,
@@ -147,7 +149,9 @@ async function internalResolveExtendableConfig<T extends ExtendableConfig>(
 		} catch (error) {
 			throw new Error(
 				`resolve module "${extendsValue}" (referenced from "${configPath}")`,
-				{ cause: error },
+				{
+					cause: error,
+				},
 			);
 		}
 

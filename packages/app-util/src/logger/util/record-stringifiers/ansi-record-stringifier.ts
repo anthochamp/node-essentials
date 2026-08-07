@@ -1,5 +1,6 @@
 import { EOL } from "node:os";
 import { type InspectOptions, inspect, styleText } from "node:util";
+
 import {
 	type Callable,
 	defaults,
@@ -7,35 +8,29 @@ import {
 	prefixLines,
 } from "@ac-essentials/misc-util";
 import type { Except, SetNonNullable } from "type-fest";
+
 import { LoggerLogLevel, type LoggerRecord } from "../../logger-record.js";
 import { loggerIsDebugLogLevel } from "../is-debug-log-level.js";
 import type { LoggerRecordStringifier } from "./record-stringifier.js";
 
 export type AnsiLoggerRecordStringifierOptions = {
-	/**
-	 * The indentation to use when required.
-	 * Defaults to two spaces.
-	 */
+	/** The indentation to use when required. Defaults to two spaces. */
 	indentation?: string;
 
-	/**
-	 * Whether to print metadata when available.
-	 * Defaults to false.
-	 */
+	/** Whether to print metadata when available. Defaults to false. */
 	printMetadata?: boolean;
 
 	/**
-	 * Options to use when inspecting metadata
-	 * Defaults to { compact: true, breakLength: Infinity }
+	 * Options to use when inspecting metadata Defaults to { compact: true,
+	 * breakLength: Infinity }
 	 *
-	 * Note: The `colors` option will be overridden by the `colors` option of
-	 * this object.
+	 * Note: The `colors` option will be overridden by the `colors` option of this
+	 * object.
 	 */
 	metadataInspectOptions?: Except<InspectOptions, "colors">;
 
 	/**
-	 * Whether to use colors in the output.
-	 * Defaults is 'true'
+	 * Whether to use colors in the output. Defaults is 'true'
 	 *
 	 * This also set the `colors` option in `metadataInspectOptions`.
 	 *
@@ -44,14 +39,12 @@ export type AnsiLoggerRecordStringifierOptions = {
 	 */
 	colors?: boolean;
 
-	/**
-	 * The theme to use for coloring the output.
-	 */
+	/** The theme to use for coloring the output. */
 	theme?: AnsiLoggerRecordStringifierTheme;
 
 	/**
-	 * Options to use when formatting timestamps.
-	 * Defaults to:
+	 * Options to use when formatting timestamps. Defaults to:
+	 *
 	 * ```ts
 	 * {
 	 *   year: "numeric",

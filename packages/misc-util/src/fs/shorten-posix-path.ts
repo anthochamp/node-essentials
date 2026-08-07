@@ -1,8 +1,9 @@
 import { relative as relativePath } from "node:path";
 
 /**
- * Returns the path relative to the current working directory or to the home directory,
- * whichever is shorter. If the path is the current working directory, returns ".".
+ * Returns the path relative to the current working directory or to the home
+ * directory, whichever is shorter. If the path is the current working
+ * directory, returns ".".
  *
  * @param path The path to make relative.
  * @returns The relative path.

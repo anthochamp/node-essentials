@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, expect, suite, test, vi } from "vitest";
+
 import { PeriodicalTimer } from "./periodical-timer.js";
 import { sleep } from "./sleep.js";
 

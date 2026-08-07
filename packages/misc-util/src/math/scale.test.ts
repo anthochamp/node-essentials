@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { scale1, scale1Int } from "./scale.js";
 
 suite("scale", () => {

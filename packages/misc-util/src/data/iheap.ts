@@ -1,4 +1,5 @@
 import type { Promisable } from "type-fest";
+
 import type { ICollection } from "./icollection.js";
 
 /**
@@ -11,15 +12,16 @@ export interface IHeap<T = unknown> extends ICollection<T> {
 	 * Inserts one or more items into the heap.
 	 *
 	 * @param items The items to insert.
-	 * @throws {CollectionCapacityExceededError} If the operation would exceed the heap capacity.
+	 * @throws {CollectionCapacityExceededError} If the operation would exceed the
+	 *   heap capacity.
 	 */
 	insert(...items: T[]): Promisable<void>;
 
 	/**
 	 * Same as `insert`, but waits for capacity if the operation would exceed it.
 	 *
-	 * @see IHeap.insert
 	 * @param signal Optional abort signal to cancel the operation.
+	 * @see IHeap.insert
 	 */
 	waitInsert(
 		items: Iterable<T>,
@@ -34,7 +36,8 @@ export interface IHeap<T = unknown> extends ICollection<T> {
 	extract(): Promisable<T | undefined>;
 
 	/**
-	 * Extracts the root item from the heap and inserts a new item in one operation.
+	 * Extracts the root item from the heap and inserts a new item in one
+	 * operation.
 	 *
 	 * @param item The item to replace.
 	 */

@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { isSuppressedErrorLike } from "./suppressed-error.js";
 
 suite("isSuppressedErrorLike", () => {

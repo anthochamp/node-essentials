@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { buildUpperCase, upperCase } from "./upper-case.js";
 
 suite("upperCase", () => {

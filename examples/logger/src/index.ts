@@ -1,4 +1,5 @@
 import * as path from "node:path";
+
 import {
 	AnsiLoggerRecordStringifier,
 	FilePrinter,
@@ -10,6 +11,7 @@ import {
 	TextStreamPrinter,
 } from "@ac-essentials/app-util";
 import { ErrorListeners } from "@ac-essentials/misc-util";
+
 import * as packageJson from "../package.json" with { type: "json" };
 
 // 1. Create a TextStreamPrinter for stdout/stderr
@@ -42,10 +44,7 @@ const loggerConsole = new LoggerConsole([idleMarkPrinter, filePrinter], {
 
 // 7. Attach error listeners to log uncaught exceptions and unhandled rejections
 new ErrorListeners(path.join(import.meta.dirname, "error.log"), {
-	onUncaughtExceptionEventError: (err) => {
-		logger.alert(err);
-	},
-	onUnhandledRejectionEventError: (err) => {
+	onError: (err) => {
 		logger.alert(err);
 	},
 }).attach();
@@ -143,8 +142,7 @@ console.log("This is a message inside a group");
 console.groupEnd();
 
 // 12. Demonstrate error handling for unhandled rejections and uncaught exceptions
-// biome-ignore lint/nursery/noFloatingPromises: test
-Promise.reject(new Error("This is a test unhandled rejection"));
+void Promise.reject(new Error("This is a test unhandled rejection"));
 setImmediate(() => {
 	throw new Error("This is a test error");
 });

@@ -1,4 +1,5 @@
 import type { Jsonify } from "type-fest";
+
 import {
 	type JsonMakeAllReplacersFunctionOptions,
 	jsonMakeAllReplacersFunction,
@@ -14,8 +15,10 @@ export type JsonSerializeOptions = JsonMakeAllReplacersFunctionOptions;
  *
  * @param value The value to serialize.
  * @param replacer A function that transforms the result
- * @param options Options to customize the behavior of the serialization, such as handling circular references.
- * @returns A JSON representation of the value, or `undefined` if a "pure" value has been passed in argument.
+ * @param options Options to customize the behavior of the serialization, such
+ *   as handling circular references.
+ * @returns A JSON representation of the value, or `undefined` if a "pure" value
+ *   has been passed in argument.
  */
 export function jsonSerialize<T>(
 	value: T,

@@ -1,4 +1,5 @@
 import * as fsPromises from "node:fs/promises";
+
 import { waitFor } from "../../ecma/function/wait-for.js";
 import { defaults } from "../../ecma/object/defaults.js";
 import { isNodeErrorWithCode } from "../../node/error/node-error.js";
@@ -19,19 +20,19 @@ const FILE_LOCK_DEFAULT_OPTIONS: Required<FileLockOptions> = {
 /**
  * A simple file-based lock mechanism.
  *
- * Creates a `.lock` file to indicate that a resource is locked.
- * The lock is acquired by creating the lock file and released by deleting it.
- * If the lock file already exists, it means the resource is locked by another
- * process.
+ * Creates a `.lock` file to indicate that a resource is locked. The lock is
+ * acquired by creating the lock file and released by deleting it. If the lock
+ * file already exists, it means the resource is locked by another process.
  *
  * Example usage:
+ *
  * ```ts
  * const lock = new LockFile("/path/to/resource");
  * const release = await lock.acquire();
  * try {
- *   // Do something with the locked resource
+ * 	// Do something with the locked resource
  * } finally {
- *   await release();
+ * 	await release();
  * }
  * ```
  */

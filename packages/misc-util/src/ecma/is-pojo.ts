@@ -1,6 +1,6 @@
 /**
- * Check if a value is a Plain Old Javascript Object (POJO).
- * i.e. an object created by the `{}` literal, `new Object()`, or `Object.create(null)`.
+ * Check if a value is a Plain Old Javascript Object (POJO). i.e. an object
+ * created by the `{}` literal, `new Object()`, or `Object.create(null)`.
  *
  * @param value The value to check
  * @returns True if the value is a POJO

@@ -1,6 +1,7 @@
 import { mkdtemp, readFile, rmdir, unlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+
 import {
 	afterEach,
 	beforeEach,
@@ -10,6 +11,7 @@ import {
 	test,
 	vi,
 } from "vitest";
+
 import { writeFileAtomic } from "./write-file-atomic.js";
 
 vi.mock("node:fs/promises", async (importActual) => {

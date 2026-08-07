@@ -18,13 +18,15 @@ export const WAIT_FOR_DEFAULT_OPTIONS: Required<WaitForOptions> = {
 /**
  * Waits until the provided condition function returns true.
  *
- * The condition function can be synchronous or asynchronous (returning a Promise).
- * The function checks the condition at regular intervals specified by `intervalMs`.
+ * The condition function can be synchronous or asynchronous (returning a
+ * Promise). The function checks the condition at regular intervals specified by
+ * `intervalMs`.
  *
  * Note: This function shouldn't be used inplace of the `vi.waitFor` function
  * from Vitest. This function is meant to be used in non-test code.
  *
- * @param predicate A function that returns a boolean or a Promise that resolves to a boolean.
+ * @param predicate A function that returns a boolean or a Promise that resolves
+ *   to a boolean.
  * @param options Options for configuring the wait behavior.
  */
 export async function waitFor(

@@ -1,5 +1,5 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: tests */
 import { expect, suite, test, vi } from "vitest";
+
 import { jsonSerialize } from "./json-serialize.js";
 
 suite("jsonSerialize", () => {

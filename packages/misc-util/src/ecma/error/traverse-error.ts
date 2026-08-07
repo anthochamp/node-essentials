@@ -44,10 +44,12 @@ const TRAVERSE_ERROR_DEFAULT_OPTIONS: Required<TraverseErrorOptions> = {
  * Traverse an error and its inner errors, calling a callback for each error
  * encountered.
  *
- * The traversal can be stopped at any time by returning false from the callback.
+ * The traversal can be stopped at any time by returning false from the
+ * callback.
  *
  * @param error - The root error to traverse.
- * @param callback - A function called for each error encountered. If it returns false, the traversal stops.
+ * @param callback - A function called for each error encountered. If it returns
+ *   false, the traversal stops.
  * @param options - Options to control the traversal behavior.
  */
 export function traverseError(

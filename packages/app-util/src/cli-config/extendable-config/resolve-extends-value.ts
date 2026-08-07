@@ -1,6 +1,11 @@
 import { resolveModule } from "@ac-essentials/misc-util";
 
 /**
+ * @param value The "extends"-property value to resolve.
+ * @param configId The configuration ID (e.g. "eslint", "babel", etc.).
+ * @param searchPaths The paths to use for module resolution.
+ * @returns The resolve entry name and the resolved module name, or null if not
+ *   found.
  * @internal
  *
  * Resolve the value of an "extends" property in a configuration file.
@@ -14,11 +19,6 @@ import { resolveModule } from "@ac-essentials/misc-util";
  * - If that fails, try to resolve <configId>-config-<value> (old style).
  * - If that fails, try to resolve <value> as is.
  * - If all attempts fail, return null.
- *
- * @param value The "extends"-property value to resolve.
- * @param configId The configuration ID (e.g. "eslint", "babel", etc.).
- * @param searchPaths The paths to use for module resolution.
- * @returns The resolve entry name and the resolved module name, or null if not found.
  */
 export function resolveExtendsValue(
 	value: string,

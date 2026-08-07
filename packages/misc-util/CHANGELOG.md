@@ -2,27 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
 ### Added
 
 - `RoundingMethod` type now includes `"trunc"` (truncation towards zero).
-- `StringCaseOptions` type (`separators`, `keep`) and `STRING_CASE_DEFAULT_OPTIONS` constant for customising case function behaviour.
-- `buildCamelCase`, `buildKebabCase`, `buildLowerCase`, `buildSnakeCase`, `buildStartCase`, `buildUpperCase` factory functions that compile regexes once for repeated use.
-- `buildPatternTrim`, `buildPatternTrimStart`, `buildPatternTrimEnd` factory functions that compile regexes once for repeated use.
+- `StringCaseOptions` type (`separators`, `keep`) and
+  `STRING_CASE_DEFAULT_OPTIONS` constant for customising case function
+  behaviour.
+- `buildCamelCase`, `buildKebabCase`, `buildLowerCase`, `buildSnakeCase`,
+  `buildStartCase`, `buildUpperCase` factory functions that compile regexes once
+  for repeated use.
+- `buildPatternTrim`, `buildPatternTrimStart`, `buildPatternTrimEnd` factory
+  functions that compile regexes once for repeated use.
 
 ### Changed
 
-- `scale1Int` parameter `roundingMethod` now uses the `RoundingMethod` type instead of an inline union.
-- `camelCase`, `kebabCase`, `lowerCase`, `snakeCase`, `startCase`, and `upperCase` are now pre-compiled factory results (`const`) instead of functions — API is unchanged.
-- `patternTrim`, `patternTrimStart`, and `patternTrimEnd` now delegate to their respective `build*` factories.
-- `httpFieldSplitValueByWs`, `httpFieldParseHttpComment`, `httpFieldParseQuotedString`, `httpFieldUnfoldValues`, and `httpFieldFoldValues` now use pre-compiled module-level regexes instead of constructing them on every call.
+- `scale1Int` parameter `roundingMethod` now uses the `RoundingMethod` type
+  instead of an inline union.
+- `camelCase`, `kebabCase`, `lowerCase`, `snakeCase`, `startCase`, and
+  `upperCase` are now pre-compiled factory results (`const`) instead of
+  functions — API is unchanged.
+- `patternTrim`, `patternTrimStart`, and `patternTrimEnd` now delegate to their
+  respective `build*` factories.
+- `httpFieldSplitValueByWs`, `httpFieldParseHttpComment`,
+  `httpFieldParseQuotedString`, `httpFieldUnfoldValues`, and
+  `httpFieldFoldValues` now use pre-compiled module-level regexes instead of
+  constructing them on every call.
 
 ### Fixed
 
-- `camelCase`, `kebabCase`, `lowerCase`, `snakeCase`, `startCase`, and `upperCase` now preserve non-word characters (e.g., `/`) instead of dropping them when they follow a separator.
+- `camelCase`, `kebabCase`, `lowerCase`, `snakeCase`, `startCase`, and
+  `upperCase` now preserve non-word characters (e.g., `/`) instead of dropping
+  them when they follow a separator.
 
 ## [0.6.1] - 2026-03-01
 
@@ -34,9 +50,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
-- Fixed an edge case in the `Counter::wait` method when the counter is incremented
-rapidly (was missing the value).
-- Fixed `jsonSerialize` and `jsonStringify` functions to handle circular references correctly.
+- Fixed an edge case in the `Counter::wait` method when the counter is
+  incremented rapidly (was missing the value).
+- Fixed `jsonSerialize` and `jsonStringify` functions to handle circular
+  references correctly.
 - Fixed `FileLock` implementation.
 
 ### Changed
@@ -44,16 +61,20 @@ rapidly (was missing the value).
 - `debounceQueue` function is now called `serializeQueueNext`
 - Renamed `ILockable` interface to `ILock`.
 - All classes implementing `ILock` now throw an `LockNotAcquiredError` when
-`release` is called without a matching `acquire`.
-- `TcpSocket` and `DgramSocket` (previously `TcpClient` and `UdpSocket`, respectively) classes reimplemented.
+  `release` is called without a matching `acquire`.
+- `TcpSocket` and `DgramSocket` (previously `TcpClient` and `UdpSocket`,
+  respectively) classes reimplemented.
 - `SubscribableEvent` function is now called `Event`.
 - `Subscribable` is replaced with `IEventDispatcher` interface.
-- `jsonStringifySafe` function is now called `jsonStringify` and accepts options for handling circular references.
-- `jsonSerialize` function is now safe (handles circular references, BigInt and Error's serialization).
+- `jsonStringifySafe` function is now called `jsonStringify` and accepts options
+  for handling circular references.
+- `jsonSerialize` function is now safe (handles circular references, BigInt and
+  Error's serialization).
 
 ### Removed
 
-- Removed `MaybeAsyncCallback`, `AsyncCallback` and `Callback` types (use MaybeAsyncCallable, AsyncCallable, and Callable respectively instead).
+- Removed `MaybeAsyncCallback`, `AsyncCallback` and `Callback` types (use
+  MaybeAsyncCallable, AsyncCallable, and Callable respectively instead).
 - Removed `abortable` and `abortableAsync` functions (no replacement).
 - Removed `AbortablePromise` class (no replacement).
 - Removed `ILock::withLock` utility method (use `LockHold` class instead).
@@ -98,7 +119,8 @@ rapidly (was missing the value).
 
 ### Changed
 
-- Replaced HTTP headers management functions with `HttpFields` and `HttpHeaders` classes.
+- Replaced HTTP headers management functions with `HttpFields` and `HttpHeaders`
+  classes.
 
 ### Added
 
@@ -131,7 +153,8 @@ rapidly (was missing the value).
 ### Changed
 
 - Updated dependencies to their latest versions.
-- Changed the signature of `isHttpAvailable` to accept a signal instead of a timeout.
+- Changed the signature of `isHttpAvailable` to accept a signal instead of a
+  timeout.
 
 ### Fixed
 
@@ -142,12 +165,15 @@ rapidly (was missing the value).
 
 ### Changed
 
-- `capitalize` now lowercases the rest of the string after the first character for more consistent behavior.
+- `capitalize` now lowercases the rest of the string after the first character
+  for more consistent behavior.
 
 ### Added
 
-- New string case utilities: `camelCase`, `kebabCase`, `lowerCase`, `lowerFirst`, `snakeCase`, `startCase`, `upperCase` and `upperFirst`.
-- New math utilities: `mean`, `geometricMean`, `harmonicMean`, `rootMeanSquare`, `median`, `mode`, `midrange` and `minmax`.
+- New string case utilities: `camelCase`, `kebabCase`, `lowerCase`,
+  `lowerFirst`, `snakeCase`, `startCase`, `upperCase` and `upperFirst`.
+- New math utilities: `mean`, `geometricMean`, `harmonicMean`, `rootMeanSquare`,
+  `median`, `mode`, `midrange` and `minmax`.
 
 ## [0.2.1] - 2025-09-13
 

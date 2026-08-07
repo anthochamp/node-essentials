@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { escapePosixPath, escapeWin32Path } from "./escape-path.js";
 
 suite("escapePosixPath", () => {

@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { resolveModule } from "./resolve-module.js";
 
 suite("isModuleResolvable", () => {

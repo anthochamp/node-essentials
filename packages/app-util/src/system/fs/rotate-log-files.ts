@@ -1,5 +1,6 @@
 import { readdir, rename, stat, unlink } from "node:fs/promises";
 import * as path from "node:path";
+
 import { defaults, existsAsync, MS_PER_MINUTE } from "@ac-essentials/misc-util";
 
 export type RotateLogFilesOptions = {
@@ -51,14 +52,12 @@ export async function rotateLogFiles(
 				: null,
 		)
 		.filter((v) => v !== null)
-		// biome-ignore lint/style/noNonNullAssertion: filename is tested
 		.sort((a, b) => +a[prefixDotsCnt + 1]! - +b[prefixDotsCnt + 1]!)
 		.reverse();
 
 	// rename or delete files based on options
 	for (const oldFileName of oldFilesNames) {
 		const oldFilePath = path.join(dirName, oldFileName.join("."));
-		// biome-ignore lint/style/noNonNullAssertion: oldFileName has been tested
 		const fileNum = +oldFileName[prefixDotsCnt + 1]!;
 
 		if (

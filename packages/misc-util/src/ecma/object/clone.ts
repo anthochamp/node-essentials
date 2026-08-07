@@ -1,4 +1,5 @@
 import shallowClone from "shallow-clone";
+
 import { UnsupportedError } from "../error/unsupported-error.js";
 import { isPrimitive } from "../is-primitive.js";
 

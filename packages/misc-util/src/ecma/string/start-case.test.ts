@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { buildStartCase, startCase } from "./start-case.js";
 
 suite("startCase", () => {

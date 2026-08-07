@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { httpIsRedirectStatus } from "./is-redirect-status.js";
 import { HttpStatusCode } from "./types.js";
 

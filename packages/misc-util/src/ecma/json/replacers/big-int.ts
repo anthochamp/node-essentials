@@ -5,11 +5,13 @@ import { jsonMakeReplacerFunction } from "../make-replacer-function.js";
  * (if within safe range) or strings.
  *
  * This function can be used as a base replacer to ensure that BigInt values are
- * properly handled during JSON serialization, and can be combined with a user-defined
- * replacer for additional customization.
+ * properly handled during JSON serialization, and can be combined with a
+ * user-defined replacer for additional customization.
  *
- * @param replacer An optional user-defined replacer (function or property list) to apply after the BigInt replacer.
- * @returns A JSON replacer function that handles BigInt values and applies the user-defined replacer if provided.
+ * @param replacer An optional user-defined replacer (function or property list)
+ *   to apply after the BigInt replacer.
+ * @returns A JSON replacer function that handles BigInt values and applies the
+ *   user-defined replacer if provided.
  */
 export function jsonMakeBigIntReplacerFunction(
 	replacer?: JsonReplacer,

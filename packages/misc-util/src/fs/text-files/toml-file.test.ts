@@ -1,9 +1,9 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: fixture */
-
 import { rmdirSync, unlinkSync } from "node:fs";
 import { mkdtemp } from "node:fs/promises";
 import path from "node:path";
+
 import { afterEach, beforeEach, expect, suite, test } from "vitest";
+
 import { readTomlFile, writeTomlFile } from "./toml-file.js";
 
 suite("readTomlFile", () => {

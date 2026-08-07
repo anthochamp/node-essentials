@@ -140,9 +140,9 @@ export function httpFieldSplitValueByWs(value: string): string[] {
 /**
  * Parse a comment from a HTTP field value.
  *
- * @see https://httpwg.org/specs/rfc9110.html#comments
  * @param value The HTTP field value containing the comment.
  * @returns The parsed comment, or null if not found.
+ * @see https://httpwg.org/specs/rfc9110.html#comments
  */
 export function httpFieldParseHttpComment(value: string): string | null {
 	const match = httpCommentRe.exec(value);
@@ -152,9 +152,9 @@ export function httpFieldParseHttpComment(value: string): string | null {
 /**
  * Parse a quoted string from a HTTP field value.
  *
- * @see https://httpwg.org/specs/rfc9110.html#rfc.section.5.6.4
  * @param value The HTTP field value containing the quoted string.
  * @returns The parsed quoted string, or null if not found.
+ * @see https://httpwg.org/specs/rfc9110.html#rfc.section.5.6.4
  */
 export function httpFieldParseQuotedString(value: string): string | null {
 	const match = httpQuotedStringRe.exec(value);
@@ -165,9 +165,9 @@ export function httpFieldParseQuotedString(value: string): string | null {
  * Unfold a HTTP field value into its list elements, handling quoted strings,
  * comments, and date formats as per RFC 9110.
  *
- * @see https://httpwg.org/specs/rfc9110.html#rfc.section.5.6.1
  * @param value The HTTP field value to unfold.
  * @returns An array of unfolded field values.
+ * @see https://httpwg.org/specs/rfc9110.html#rfc.section.5.6.1
  */
 export function httpFieldUnfoldValues(value?: string): string[] {
 	if (!value) return [];
@@ -175,7 +175,6 @@ export function httpFieldUnfoldValues(value?: string): string[] {
 	const values: string[] = [];
 	let lastEnd = 0;
 	for (let index = 0; index < separators.length; index++) {
-		// biome-ignore lint/style/noNonNullAssertion: indexed loop
 		const separator = separators[index]!;
 		const end = separator.index + separator[0].length;
 		values.push(
@@ -192,10 +191,11 @@ export function httpFieldUnfoldValues(value?: string): string[] {
  * Fold a list of HTTP field values into a single string, separated by commas
  * and optional whitespace, as per RFC 9110.
  *
- * @see https://httpwg.org/specs/rfc9110.html#rfc.section.5.3
  * @param values The list of HTTP field values to fold.
- * @param spacing Optional whitespace to insert after each comma (default is a single space).
+ * @param spacing Optional whitespace to insert after each comma (default is a
+ *   single space).
  * @returns The folded HTTP field value string.
+ * @see https://httpwg.org/specs/rfc9110.html#rfc.section.5.3
  */
 export function httpFieldFoldValues(values: string[], spacing = " "): string {
 	if (!owsValidRe.test(spacing)) {

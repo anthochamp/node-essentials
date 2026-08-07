@@ -11,8 +11,8 @@ export function clamp(value: number, min: number, max: number): number {
 }
 
 /**
- * Clamp a number between a minimum and a maximum value and return an integer
- * in range.
+ * Clamp a number between a minimum and a maximum value and return an integer in
+ * range.
  *
  * Min is rounding up and max is rounded down prior to clamping.
  *

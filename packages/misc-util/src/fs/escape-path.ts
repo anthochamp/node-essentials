@@ -7,15 +7,14 @@ import os from "node:os";
  * with an underscore (_). It also ensures that the name does not exceed the
  * maximum length allowed by the operating system (255 characters).
  *
- * On POSIX systems, it replaces / and null characters.
- * On Windows systems, it replaces < > : " / \ | ? * and control characters (0-31).
- * It also avoids reserved names like CON, PRN, AUX, NUL, COM1, LPT1, etc.
- *
- * @see https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names
- * @see https://en.wikipedia.org/wiki/Comparison_of_file_systems#Limits
+ * On POSIX systems, it replaces / and null characters. On Windows systems, it
+ * replaces < > : " / \ | ? * and control characters (0-31). It also avoids
+ * reserved names like CON, PRN, AUX, NUL, COM1, LPT1, etc.
  *
  * @param str The string to escape
  * @returns The escaped string
+ * @see https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names
+ * @see https://en.wikipedia.org/wiki/Comparison_of_file_systems#Limits
  */
 export const escapePath: (str: string, replacement?: string) => string =
 	os.platform() === "win32" ? escapeWin32Path : escapePosixPath;
@@ -32,7 +31,7 @@ export function escapePosixPath(str: string, replacement = "_"): string {
 		str = `_${str}`;
 	}
 
-	// biome-ignore lint/suspicious/noControlCharactersInRegex: intended
+	// eslint-disable-next-line no-control-regex
 	return str.replace(/[/\x00]/g, replacement).substring(0, 255);
 }
 
@@ -50,7 +49,7 @@ export function escapeWin32Path(str: string, replacement = "_"): string {
 
 	return (
 		str
-			// biome-ignore lint/suspicious/noControlCharactersInRegex: intended
+			// eslint-disable-next-line no-control-regex
 			.replace(/[<>:"/\\|?*\x00-\x1F]/g, replacement)
 			.replace(/[ .]+$/, replacement)
 			.substring(0, 255)

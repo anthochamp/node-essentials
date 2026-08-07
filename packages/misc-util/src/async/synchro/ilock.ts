@@ -1,8 +1,6 @@
 import type { Promisable } from "type-fest";
 
-/**
- * Error thrown when attempting to release a lock that is not currently held.
- */
+/** Error thrown when attempting to release a lock that is not currently held. */
 export class LockNotAcquiredError extends Error {
 	constructor(message?: string) {
 		super(message ?? "Lock is not acquired");
@@ -16,9 +14,7 @@ export class LockNotAcquiredError extends Error {
  * A lockable resource can be acquired and released to control access.
  */
 export interface ILock {
-	/**
-	 * Indicates whether the lock is currently held.
-	 */
+	/** Indicates whether the lock is currently held. */
 	readonly locked: boolean;
 
 	/**
@@ -36,8 +32,6 @@ export interface ILock {
 	 */
 	lock(signal?: AbortSignal | null): Promisable<void>;
 
-	/**
-	 * Releases the lock.
-	 */
+	/** Releases the lock. */
 	unlock(): Promisable<void>;
 }

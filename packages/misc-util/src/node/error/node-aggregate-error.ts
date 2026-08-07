@@ -12,7 +12,8 @@ import { type INodeError, isNodeErrorLike } from "./node-error.js";
 export interface INodeAggregateError extends IAggregateError, INodeError {}
 
 /**
- * Test if value is Node AggregateError-like (has name, message, code and errors properties)
+ * Test if value is Node AggregateError-like (has name, message, code and errors
+ * properties)
  *
  * @param value The value to test
  * @returns True if the value is Node AggregateError-like

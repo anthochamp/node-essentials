@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+
 import { EventDispatcherBase } from "./_event-dispatcher-base.js";
 
 describe("EventDispatcherBase", () => {

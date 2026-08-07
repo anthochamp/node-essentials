@@ -1,4 +1,5 @@
 import { assertType, suite, test } from "vitest";
+
 import type { Defined } from "./defined.js";
 
 suite("Defined", () => {

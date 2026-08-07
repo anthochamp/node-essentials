@@ -1,16 +1,15 @@
 import { defaults, waitFor } from "@ac-essentials/misc-util";
+
 import { getProcessesSnapshot } from "./get-processes-snapshot.js";
 
 export type ProcessWaitPidOptions = {
-	/**
-	 * An optional AbortSignal that can be used to abort the operation.
-	 */
+	/** An optional AbortSignal that can be used to abort the operation. */
 	signal?: AbortSignal | null;
 
 	/**
-	 * If specified, the function will poll at the given interval (in milliseconds)
-	 * to check if the process has terminated after sending the kill signal.
-	 * Default is 50 ms.
+	 * If specified, the function will poll at the given interval (in
+	 * milliseconds) to check if the process has terminated after sending the kill
+	 * signal. Default is 50 ms.
 	 */
 	pollIntervalMs?: number;
 };

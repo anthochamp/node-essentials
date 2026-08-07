@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { escapePosixShSqe } from "./escape-posix-sh-sqe.js";
 
 suite("escapePosixShSqe", () => {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { Event } from "../event.js";
 import { eventDispatcherToAsyncIterator } from "./event-dispatcher-to-async-iterator.js";
 

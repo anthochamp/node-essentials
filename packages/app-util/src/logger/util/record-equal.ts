@@ -1,4 +1,5 @@
 import { isDeepEqual } from "@ac-essentials/misc-util";
+
 import type { LoggerRecord } from "../logger-record.js";
 
 export function loggerPrinterRecordEqual(

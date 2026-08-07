@@ -1,7 +1,7 @@
-/** biome-ignore-all lint/style/noNonNullAssertion: tests */
-
 import { inspect } from "node:util";
+
 import { expect, suite, test } from "vitest";
+
 import { HttpHeaders } from "./http-headers.js";
 
 suite("HttpHeaders", () => {

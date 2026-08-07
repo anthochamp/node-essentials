@@ -5,7 +5,8 @@ import type { Pattern } from "./types.js";
  * a string. Prefer this over {@link patternTrim} when trimming the same pattern
  * repeatedly, as the regex is compiled once.
  *
- * @param pattern The pattern to trim. If not provided, whitespace and line terminators are trimmed.
+ * @param pattern The pattern to trim. If not provided, whitespace and line
+ *   terminators are trimmed.
  * @returns A function that trims the pattern from both ends of a string.
  */
 export function buildPatternTrim(
@@ -23,7 +24,8 @@ export function buildPatternTrim(
  * string. Prefer this over {@link patternTrimStart} when trimming the same
  * pattern repeatedly, as the regex is compiled once.
  *
- * @param pattern The pattern to trim. If not provided, whitespace and line terminators are trimmed.
+ * @param pattern The pattern to trim. If not provided, whitespace and line
+ *   terminators are trimmed.
  * @returns A function that trims the pattern from the start of a string.
  */
 export function buildPatternTrimStart(
@@ -41,7 +43,8 @@ export function buildPatternTrimStart(
  * Prefer this over {@link patternTrimEnd} when trimming the same pattern
  * repeatedly, as the regex is compiled once.
  *
- * @param pattern The pattern to trim. If not provided, whitespace and line terminators are trimmed.
+ * @param pattern The pattern to trim. If not provided, whitespace and line
+ *   terminators are trimmed.
  * @returns A function that trims the pattern from the end of a string.
  */
 export function buildPatternTrimEnd(
@@ -62,7 +65,8 @@ export function buildPatternTrimEnd(
  * repeatedly.
  *
  * @param string The string to be trimmed.
- * @param pattern The pattern to be trimmed. If not provided, whitespace and line terminators are trimmed.
+ * @param pattern The pattern to be trimmed. If not provided, whitespace and
+ *   line terminators are trimmed.
  * @returns The trimmed string.
  */
 export function patternTrim(string: string, pattern?: Pattern): string {
@@ -77,7 +81,8 @@ export function patternTrim(string: string, pattern?: Pattern): string {
  * same pattern repeatedly.
  *
  * @param string The string to be trimmed.
- * @param pattern The pattern to be trimmed. If not provided, whitespace and line terminators are trimmed.
+ * @param pattern The pattern to be trimmed. If not provided, whitespace and
+ *   line terminators are trimmed.
  * @returns The trimmed string.
  */
 export function patternTrimStart(string: string, pattern?: Pattern): string {
@@ -88,11 +93,12 @@ export function patternTrimStart(string: string, pattern?: Pattern): string {
  * Trims the specified pattern from the end of the string.
  *
  * This method is like `String.prototype.trimEnd()`, but allows specifying a
- * custom pattern. Use {@link buildPatternTrimEnd} instead when trimming the
- * same pattern repeatedly.
+ * custom pattern. Use {@link buildPatternTrimEnd} instead when trimming the same
+ * pattern repeatedly.
  *
  * @param string The string to be trimmed.
- * @param pattern The pattern to be trimmed. If not provided, whitespace and line terminators are trimmed.
+ * @param pattern The pattern to be trimmed. If not provided, whitespace and
+ *   line terminators are trimmed.
  * @returns The trimmed string.
  */
 export function patternTrimEnd(string: string, pattern?: Pattern): string {

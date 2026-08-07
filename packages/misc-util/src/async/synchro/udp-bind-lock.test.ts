@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
+
 import { UdpBindLock } from "./udp-bind-lock.js";
 
 const TEST_PORT = 54321;

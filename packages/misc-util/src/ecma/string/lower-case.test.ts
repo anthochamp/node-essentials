@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { buildLowerCase, lowerCase } from "./lower-case.js";
 
 suite("lowerCase", () => {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { Channel, ChannelClosedError } from "./channel.js";
 
 function delay(ms: number) {

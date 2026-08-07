@@ -1,6 +1,8 @@
 import { readFile, type writeFile } from "node:fs/promises";
+
 import ini from "ini";
 import type { UnknownRecord } from "type-fest";
+
 import { chardetCharsetToBufferEncoding } from "../../3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
 import { defaults } from "../../ecma/object/defaults.js";
 import {
@@ -87,7 +89,7 @@ export const READ_INI_FILE_DEFAULT_OPTIONS: Required<ReadIniFileOptions> = {
  *
  * @param path Path to the INI file.
  * @param options Options for reading the file and parsing INI.
- * @returns	Parsed INI content.
+ * @returns Parsed INI content.
  */
 export async function readIniFile(
 	path: Parameters<typeof readFile>[0],

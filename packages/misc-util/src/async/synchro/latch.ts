@@ -9,26 +9,26 @@ import { Counter } from "./counter.js";
  * After releasing all waiters, the latch remains released.
  *
  * @example
- * const latch = new Latch(3);
+ * 	const latch = new Latch(3);
  *
- * async function task(id: number) {
- *     console.log(`Task ${id} is waiting at the latch.`);
- *     await latch.wait();
- *     console.log(`Task ${id} has crossed the latch.`);
- * }
+ * 	async function task(id: number) {
+ * 		console.log(`Task ${id} is waiting at the latch.`);
+ * 		await latch.wait();
+ * 		console.log(`Task ${id} has crossed the latch.`);
+ * 	}
  *
- * // Start 3 tasks that will wait at the latch
- * task(1);
- * task(2);
- * task(3);
+ * 	// Start 3 tasks that will wait at the latch
+ * 	task(1);
+ * 	task(2);
+ * 	task(3);
  *
- * // Simulate some work before counting down
- * setTimeout(() => {
- *     console.log("Counting down the latch");
- *     latch.countDown();
- *     latch.countDown();
- *     latch.countDown();
- * }, 1000);
+ * 	// Simulate some work before counting down
+ * 	setTimeout(() => {
+ * 		console.log("Counting down the latch");
+ * 		latch.countDown();
+ * 		latch.countDown();
+ * 		latch.countDown();
+ * 	}, 1000);
  */
 export class Latch {
 	private counter: Counter;
@@ -46,9 +46,7 @@ export class Latch {
 		this.counter = new Counter(count);
 	}
 
-	/**
-	 * Returns true if the latch has been released.
-	 */
+	/** Returns true if the latch has been released. */
 	get released(): boolean {
 		return this.counter.value === 0;
 	}
@@ -64,9 +62,7 @@ export class Latch {
 		await this.counter.wait(0, signal);
 	}
 
-	/**
-	 * Decrement the latch. When the count reaches zero, all waiters are released.
-	 */
+	/** Decrement the latch. When the count reaches zero, all waiters are released. */
 	countDown(): void {
 		if (this.counter.value === 0) {
 			return;

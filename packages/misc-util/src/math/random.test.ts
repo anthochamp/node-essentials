@@ -7,6 +7,7 @@ import {
 	test,
 	vi,
 } from "vitest";
+
 import { random, randomInt } from "./random.js";
 
 suite("random", () => {

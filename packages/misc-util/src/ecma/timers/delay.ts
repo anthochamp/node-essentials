@@ -1,7 +1,8 @@
 import type { MaybeAsyncCallable } from "../function/types.js";
 
 /**
- * Delay the execution of a callback function by a specified number of milliseconds.
+ * Delay the execution of a callback function by a specified number of
+ * milliseconds.
  */
 export async function delay<T, R>(
 	delayMs: number,

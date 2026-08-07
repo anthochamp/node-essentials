@@ -1,23 +1,14 @@
 export type GetObjectKeysOptions = {
-	/**
-	 * Include symbol keys
-	 */
+	/** Include symbol keys */
 	includeSymbolKeys?: boolean;
 
-	/**
-	 * Include non-enumerable keys
-	 */
+	/** Include non-enumerable keys */
 	includeNonEnumerable?: boolean;
 
-	/**
-	 * Include keys from the prototype chain
-	 */
+	/** Include keys from the prototype chain */
 	includePrototypeChain?: boolean;
 };
 
-/**
- *
- */
 export type ObjectKey = {
 	property: string | symbol;
 	prototype: unknown;

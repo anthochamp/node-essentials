@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { Broadcast, BroadcastSubscriberLaggedError } from "./broadcast.js";
 import { ChannelClosedError } from "./channel.js";
 

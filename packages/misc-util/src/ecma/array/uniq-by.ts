@@ -2,13 +2,14 @@
  * Returns a new array with unique items based on a key function.
  *
  * Example:
+ *
  * ```ts
  * const array = [
- *  { id: 1, name: "Alice" },
- *  { id: 2, name: "Bob" },
- *  { id: 1, name: "Alice" },
- *  { id: 3, name: "Charlie" },
- *  { id: 2, name: "Bob" },
+ * 	{ id: 1, name: "Alice" },
+ * 	{ id: 2, name: "Bob" },
+ * 	{ id: 1, name: "Alice" },
+ * 	{ id: 3, name: "Charlie" },
+ * 	{ id: 2, name: "Bob" },
  * ];
  * const uniqueById = uniqBy(array, (item) => item.id);
  * console.log(uniqueById);

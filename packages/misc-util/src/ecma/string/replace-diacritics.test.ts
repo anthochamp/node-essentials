@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { replaceDiacritics } from "./replace-diacritics.js";
 
 suite("replaceDiacritics", () => {

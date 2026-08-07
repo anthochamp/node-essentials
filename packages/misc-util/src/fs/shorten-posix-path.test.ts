@@ -9,6 +9,7 @@ import {
 	test,
 	vi,
 } from "vitest";
+
 import { shortenPosixPath } from "./shorten-posix-path.js";
 
 const PROCESS_CWD = "/opt/myapp";

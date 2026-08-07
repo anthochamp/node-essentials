@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { isAggregateErrorLike } from "./aggregate-error.js";
 
 suite("isAggregateErrorLike", () => {

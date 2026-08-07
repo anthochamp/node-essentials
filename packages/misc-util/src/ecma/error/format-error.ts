@@ -2,8 +2,8 @@ import { defaults } from "../object/defaults.js";
 import { joinNonEmpty } from "../string/join-non-empty.js";
 import { prefixLines } from "../string/prefix-lines.js";
 import { isAggregateErrorLike } from "./aggregate-error.js";
-import { type IError, isErrorLike } from "./error.js";
 import { formatErrorStack, parseErrorStack } from "./error-stack.js";
+import { type IError, isErrorLike } from "./error.js";
 import { isSuppressedErrorLike } from "./suppressed-error.js";
 
 export type FormatErrorOptions = {
@@ -106,11 +106,11 @@ const FORMAT_ERROR_DEFAULT_OPTIONS: Required<FormatErrorOptions> = {
  * Format errors and other values into a single string.
  *
  * This function can handle nested causes and aggregated errors, formatting them
- * recursively. It also allows customization of the output format through various
- * options.
+ * recursively. It also allows customization of the output format through
+ * various options.
  *
- * The default options can be overridden by setting the `formatError.defaultOptions`
- * property.
+ * The default options can be overridden by setting the
+ * `formatError.defaultOptions` property.
  *
  * @param error The error or value to format
  * @param options Options for formatting the error
@@ -292,7 +292,5 @@ export declare namespace formatError {
 	export var defaultOptions: Required<FormatErrorOptions>;
 }
 
-/**
- * Default options for formatError function.
- */
+/** Default options for formatError function. */
 formatError.defaultOptions = FORMAT_ERROR_DEFAULT_OPTIONS;

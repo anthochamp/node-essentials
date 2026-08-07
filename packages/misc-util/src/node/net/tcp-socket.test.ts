@@ -1,5 +1,7 @@
 import * as net from "node:net";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { InetAddress, InetEndpoint } from "./inet.js";
 import { TcpSocket } from "./tcp-socket.js";
 

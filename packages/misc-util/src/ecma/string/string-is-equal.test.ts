@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { stringIsEqual } from "./string-is-equal.js";
 
 suite("stringIsEqual", () => {

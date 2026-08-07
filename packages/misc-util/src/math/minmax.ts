@@ -9,7 +9,7 @@
  *
  * @param values The values to calculate the min and max of.
  * @returns An object containing the min and max values, or min = `Infinity` and
- * max = `-Infinity` if no values are provided.
+ *   max = `-Infinity` if no values are provided.
  */
 export function minmax(...values: number[]): { min: number; max: number } {
 	if (values[0] === undefined) {

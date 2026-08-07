@@ -1,10 +1,11 @@
 /**
  * Error indicating that a feature is not implemented.
  *
- * Use this error to indicate that a particular feature or functionality is
- * not yet implemented in the codebase.
+ * Use this error to indicate that a particular feature or functionality is not
+ * yet implemented in the codebase.
  *
  * Usage example:
+ *
  * ```ts
  * switch (type) {
  *  case "A":

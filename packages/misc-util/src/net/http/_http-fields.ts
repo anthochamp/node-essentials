@@ -1,5 +1,6 @@
 import { EOL } from "node:os";
 import { type InspectOptionsStylized, inspect } from "node:util";
+
 import type { Predicate } from "../../ecma/function/types.js";
 import { CaseInsensitiveMap } from "../../ecma/map/case-insensitive-map.js";
 import { stringIsEqualCaseInsensitive } from "../../ecma/string/string-is-equal.js";
@@ -36,25 +37,25 @@ export type HttpFieldsOptions = {
 	 */
 	unfoldableFields?: ReadonlyArray<string | RegExp>;
 
-	/**
-	 * Spacing to use when folding fields (default: single space).
-	 */
+	/** Spacing to use when folding fields (default: single space). */
 	foldSpacing?: string;
 
 	/**
-	 * If true, the `toString` method will redact sensitive fields (default: true).
+	 * If true, the `toString` method will redact sensitive fields (default:
+	 * true).
 	 */
 	toStringRedacted?: boolean;
 
 	/**
-	 * If true, the custom Node.js inspect method will redact sensitive fields (default: true).
+	 * If true, the custom Node.js inspect method will redact sensitive fields
+	 * (default: true).
 	 */
 	nodeInspectRedacted?: boolean;
 };
 
-export class HttpFields
-	implements Iterable<[HttpFieldName, ReadonlyArray<HttpFieldValue>]>
-{
+export class HttpFields implements Iterable<
+	[HttpFieldName, ReadonlyArray<HttpFieldValue>]
+> {
 	private readonly options: Required<HttpFieldsOptions>;
 	private readonly map: CaseInsensitiveMap<HttpFieldName, HttpFieldValue[]> =
 		new CaseInsensitiveMap();

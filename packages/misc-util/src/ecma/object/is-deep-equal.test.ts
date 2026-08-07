@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { isDeepEqual } from "./is-deep-equal.js";
 
 suite("deepEqual", () => {

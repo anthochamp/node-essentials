@@ -4,11 +4,10 @@ import { escapePosixShSqe } from "./escape-posix-sh-sqe.js";
  * Escape a string to be safely used as a shell argument, depending on the
  * current platform (POSIX-compliant shell or Windows cmd.exe).
  *
- * On POSIX, it adds single quotes around a string and quotes/escapes any existing single
- * quotes.
- * On Windows, it adds double quotes around a string and escapes any existing problematic
- * characters (such as %, !, and ") by replacing them with spaces. Backslashes
- * are escaped by doubling them.
+ * On POSIX, it adds single quotes around a string and quotes/escapes any
+ * existing single quotes. On Windows, it adds double quotes around a string and
+ * escapes any existing problematic characters (such as %, !, and ") by
+ * replacing them with spaces. Backslashes are escaped by doubling them.
  *
  * @param expr The string to escape
  * @returns The escaped string
@@ -19,12 +18,14 @@ export const escapeCommandArg: (expr: string) => string =
 		: escapePosixShCommandArg;
 
 /**
- * Escape a string to be safely used as a shell argument in POSIX-compliant shells
+ * Escape a string to be safely used as a shell argument in POSIX-compliant
+ * shells
  *
  * It adds single quotes around a string and quotes/escapes any existing single
  * quotes.
  *
  * Example:
+ *
  * ```ts
  * const unsafe = "It's a test";
  * const safe = escapeShellArgPosix(unsafe);
@@ -50,6 +51,7 @@ export function escapePosixShCommandArg(expr: string): string {
  * are escaped by doubling them.
  *
  * Example:
+ *
  * ```ts
  * const unsafe = 'A "complex" %string% with !special! chars \\';
  * const safe = escapeShellArgWindows(unsafe);

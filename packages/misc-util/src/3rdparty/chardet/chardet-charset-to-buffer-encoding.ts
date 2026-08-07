@@ -1,17 +1,16 @@
 import type { EncodingName } from "chardet";
 
 /**
- * Convert a charset name as returned by chardet to a Node.js supported charset name.
- *
- * @see https://github.com/runk/node-chardet#supported-encodings
+ * Convert a charset name as returned by chardet to a Node.js supported charset
+ * name.
  *
  * @param chardetCharset Charset name as returned by chardet.
  * @returns Charset name supported by Node.js, or null if not supported.
+ * @see https://github.com/runk/node-chardet#supported-encodings
  */
 export function chardetCharsetToBufferEncoding(
 	chardetCharset: EncodingName,
 ): BufferEncoding | null {
-	// biome-ignore lint/nursery/noUnnecessaryConditions: false positive
 	switch (chardetCharset) {
 		case "UTF-8":
 			return "utf8";

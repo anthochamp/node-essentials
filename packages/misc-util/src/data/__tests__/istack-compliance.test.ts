@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import type { Callable } from "../../ecma/function/types.js";
 import type { IStack } from "../istack.js";
 import { Stack } from "../stack.js";

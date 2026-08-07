@@ -1,37 +1,29 @@
 import { UnsupportedError } from "../../ecma/error/unsupported-error.js";
 
-/**
- * Represents an Internet address with IP family and address.
- */
+/** Represents an Internet address with IP family and address. */
 export type InetAddress = {
-	/**
-	 * IP family: 4 for IPv4, 6 for IPv6, or null for unknown family.
-	 */
+	/** IP family: 4 for IPv4, 6 for IPv6, or null for unknown family. */
 	family: 4 | 6 | null;
-	/**
-	 * IP address string.
-	 */
+	/** IP address string. */
 	address: string;
 };
 
-/**
- * Represents an Internet endpoint with IP family, address, and port.
- */
+/** Represents an Internet endpoint with IP family, address, and port. */
 export type InetEndpoint = InetAddress & {
-	/**
-	 * Port number.
-	 */
+	/** Port number. */
 	port: number;
 };
 
 /**
- * Composes an InetAddress from a family and address.
- * Validates and converts the family to ensure it is 4, 6, or null.
+ * Composes an InetAddress from a family and address. Validates and converts the
+ * family to ensure it is 4, 6, or null.
  *
- * @param family The IP family, either as a string ('IPv4', 'IPv6'), number (4, 6), or null for unknown.
+ * @param family The IP family, either as a string ('IPv4', 'IPv6'), number (4,
+ *   6), or null for unknown.
  * @param address The IP address string.
  * @returns An InetAddress object.
- * @throws {UnsupportedError} If the family is not valid (not 'IPv4'/'IPv6' or 4/6 or null).
+ * @throws {UnsupportedError} If the family is not valid (not 'IPv4'/'IPv6' or
+ *   4/6 or null).
  */
 export function composeInetAddress(
 	family: string | number | null,

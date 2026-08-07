@@ -1,4 +1,5 @@
 import type { Promisable } from "type-fest";
+
 import type { CallableNoArgs } from "../function/types.js";
 
 export type PromiseResolve<T> = PromiseWithResolvers<T>["resolve"];

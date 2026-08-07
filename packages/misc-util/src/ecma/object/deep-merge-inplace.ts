@@ -1,4 +1,5 @@
 import type { MergeDeep } from "type-fest";
+
 import { isObject } from "../is-object.js";
 import { isPojo } from "../is-pojo.js";
 import { deepClone } from "./deep-clone.js";

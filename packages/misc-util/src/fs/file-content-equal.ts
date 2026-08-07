@@ -1,17 +1,14 @@
 import type { PathLike } from "node:fs";
 import { open, stat } from "node:fs/promises";
+
 import { BYTES_PER_KIB } from "../constants.js";
 import { defaults } from "../ecma/object/defaults.js";
 
 export type FileContentEqualOptions = {
-	/**
-	 * The size of the buffer to use when reading the file (default: 64KiB)
-	 */
+	/** The size of the buffer to use when reading the file (default: 64KiB) */
 	bufferSize?: number;
 
-	/**
-	 * An AbortSignal to cancel the operation.
-	 */
+	/** An AbortSignal to cancel the operation. */
 	signal?: AbortSignal | null;
 };
 
@@ -26,7 +23,8 @@ const DEFAULT_FILE_CONTENT_EQUAL_OPTIONS: Required<FileContentEqualOptions> = {
  * @param path The path to the file to compare.
  * @param data The data to compare with the file content.
  * @param options Options for the file comparison.
- * @returns True if the file content is equal to the provided data, false otherwise.
+ * @returns True if the file content is equal to the provided data, false
+ *   otherwise.
  */
 export async function fileContentEqual(
 	path: PathLike,

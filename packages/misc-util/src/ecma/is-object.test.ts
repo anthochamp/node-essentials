@@ -1,6 +1,5 @@
-/** biome-ignore-all lint/style/useArrayLiterals: test */
-/** biome-ignore-all lint/complexity/useArrowFunction: test */
 import { expect, suite, test } from "vitest";
+
 import { isObject } from "./is-object.js";
 
 suite("isObject", () => {

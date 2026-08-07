@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import type { Callable } from "../../ecma/function/types.js";
 import { BinaryHeap } from "../binary-heap.js";
 import { Deque } from "../deque.js";
@@ -12,10 +13,12 @@ import { Stack } from "../stack.js";
 /**
  * ICollection compliance tests for various data structures.
  *
- * These tests ensure that the data structures adhere to the ICollection interface.
+ * These tests ensure that the data structures adhere to the ICollection
+ * interface.
  *
  * Note: If you are editing this file to add a new data structure, please also
- * update the ICollection compliance tests in the `ipriority-queue-compliance.test.ts` file.
+ * update the ICollection compliance tests in the
+ * `ipriority-queue-compliance.test.ts` file.
  */
 
 suite.each<{

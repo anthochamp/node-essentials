@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { buildCamelCase, camelCase } from "./camel-case.js";
 
 suite("camelCase", () => {

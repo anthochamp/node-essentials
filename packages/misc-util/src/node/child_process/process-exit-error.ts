@@ -2,8 +2,8 @@ import { joinNonEmpty } from "../../ecma/string/join-non-empty.js";
 import type { INodeExecError } from "../error/node-exec-error.js";
 
 /**
- * Error thrown when a shell command exits with a non-zero code or is
- * terminated by a signal.
+ * Error thrown when a shell command exits with a non-zero code or is terminated
+ * by a signal.
  */
 export class ProcessExitError extends Error {
 	constructor(
@@ -30,8 +30,8 @@ export class ProcessExitError extends Error {
 }
 
 /**
- * Error thrown when a shell command exits with a non-zero code or is
- * terminated by a signal, including its stdout and stderr output.
+ * Error thrown when a shell command exits with a non-zero code or is terminated
+ * by a signal, including its stdout and stderr output.
  */
 export class ProcessExitWithOutputError extends ProcessExitError {
 	static fromNodeExecError(error: INodeExecError): ProcessExitWithOutputError {

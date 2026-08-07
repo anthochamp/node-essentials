@@ -1,26 +1,38 @@
 # @ac-essentials/tsconfig
 
-Hey! This package is just a collection of handy, reusable TypeScript config files for Node.js and TS projects. **It's primarily for my own use, but feel free to use it if it helps you too!** If you’re tired of copy-pasting `tsconfig.json` everywhere, this is for you.
+Hey! This package is just a collection of handy, reusable TypeScript config
+files for Node.js and TS projects. **It's primarily for my own use, but feel
+free to use it if it helps you too!** If you’re tired of copy-pasting
+`tsconfig.json` everywhere, this is for you.
 
 ## What’s the point?
 
-You get a set of base configs (`base.json`, `node-lib.json`, `node-cli.json`) that set up strict, modern TypeScript settings. It keeps your projects consistent, saves you from config drift, and makes it super easy to update settings everywhere at once.
+You get a set of base configs (`base.json`, `node-lib.json`, `node-cli.json`)
+that set up strict, modern TypeScript settings. It keeps your projects
+consistent, saves you from config drift, and makes it super easy to update
+settings everywhere at once.
 
 ## Config File Summary
 
 The following configs are available (see the actual files for details):
 
 - [`base.json`](./base.json):
-  - The strict, modern TypeScript config for Node.js and TypeScript projects. Sets up strict type checking, ESM support, and fast builds. Use this as your starting point for most projects.
+  - The strict, modern TypeScript config for Node.js and TypeScript projects.
+    Sets up strict type checking, ESM support, and fast builds. Use this as your
+    starting point for most projects.
 
 - [`node-lib.json`](./node-lib.json):
-  - Extends `base.json` for Node.js library development. Adds declaration file generation, source maps, and ensures ESM compatibility for published packages.
+  - Extends `base.json` for Node.js library development. Adds declaration file
+    generation, source maps, and ensures ESM compatibility for published
+    packages.
 
 - [`node-cli.json`](./node-cli.json):
-  - Extends `base.json` for Node.js CLI tools. Tweaks the module system for CLI entrypoints and keeps things simple for building command-line apps.
+  - Extends `base.json` for Node.js CLI tools. Tweaks the module system for CLI
+    entrypoints and keeps things simple for building command-line apps.
 
 - [`dom-lib.json`](./dom-lib.json):
-  - Extends `base.json` for libraries targeting DOM/WebWorker/Node. Adds DOM/WebWorker libs, declaration, source maps, and NodeNext module.
+  - Extends `base.json` for libraries targeting DOM/WebWorker/Node. Adds
+    DOM/WebWorker libs, declaration, source maps, and NodeNext module.
 
 ## How do I use it?
 
@@ -78,20 +90,27 @@ The following configs are available (see the actual files for details):
 
 ## When should I use this?
 
-- If you have a bunch of TypeScript projects and want them all to follow the same rules.
+- If you have a bunch of TypeScript projects and want them all to follow the
+  same rules.
 - If you want to avoid the pain of updating configs everywhere.
 
 ## More info
 
-- Check out the actual config files in `packages/tsconfig/` for details (see summary table above).
-- Read more about extending configs: <https://www.typescriptlang.org/tsconfig#extends>
-- When you want to avoid copy-pasting and manually updating `tsconfig.json` files.
+- Check out the actual config files in `packages/tsconfig/` for details (see
+  summary table above).
+- Read more about extending configs:
+  <https://www.typescriptlang.org/tsconfig#extends>
+- When you want to avoid copy-pasting and manually updating `tsconfig.json`
+  files.
 
 ## References
 
 - See the actual config files in `packages/tsconfig/` for details.
-- For more on extending configs: <https://www.typescriptlang.org/tsconfig#extends>
+- For more on extending configs:
+  <https://www.typescriptlang.org/tsconfig#extends>
 
 ## Contributing
 
-Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/anthochamp/node-essentials).
+Contributions are welcome! If you find a bug or have a feature request, please
+open an issue on the
+[GitHub repository](https://github.com/anthochamp/node-essentials).

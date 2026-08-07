@@ -1,34 +1,32 @@
 import * as net from "node:net";
+
 import type { Except } from "type-fest";
+
 import type { IError } from "../../ecma/error/error.js";
 import { composeInetAddress, type InetEndpoint } from "./inet.js";
 import { StreamSocket, type StreamSocketEvents } from "./stream-socket.js";
 
-/**
- * Event map for IpcSocket socket-specific events.
- */
+/** Event map for IpcSocket socket-specific events. */
 export type IpcSocketEvents = StreamSocketEvents & {
 	/**
-	 * Emitted when a new connection attempt is started.
-	 * May be emitted multiple times if family autoselection is enabled.
+	 * Emitted when a new connection attempt is started. May be emitted multiple
+	 * times if family autoselection is enabled.
 	 */
 	connectionAttempt: [endpoint: InetEndpoint];
 
 	/**
-	 * Emitted when a connection attempt failed.
-	 * May be emitted multiple times if family autoselection is enabled.
+	 * Emitted when a connection attempt failed. May be emitted multiple times if
+	 * family autoselection is enabled.
 	 */
 	connectionAttemptFailed: [endpoint: InetEndpoint, error: Error];
 
 	/**
-	 * Emitted when a connection attempt timed out.
-	 * May be emitted multiple times if family autoselection is enabled.
+	 * Emitted when a connection attempt timed out. May be emitted multiple times
+	 * if family autoselection is enabled.
 	 */
 	connectionAttemptTimeout: [endpoint: InetEndpoint];
 };
 
-/**
- */
 export class IpcSocket<
 	TSock extends net.Socket = net.Socket,
 	TEvents extends IpcSocketEvents = IpcSocketEvents,
@@ -48,9 +46,6 @@ export class IpcSocket<
 		this.setupEventForwarding();
 	}
 
-	/**
-	 *
-	 */
 	connect(
 		path: string,
 		options?: Except<net.IpcSocketConnectOpts, "path">,

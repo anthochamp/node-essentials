@@ -10,9 +10,9 @@ type PendingAcquisition_ = {
 /**
  * A general/counting strong semaphore implementation.
  *
- * A semaphore maintains a set of permits. Each `acquire` call blocks if necessary
- * until a permit is available, and then takes it. Each `release` call adds a permit,
- * potentially releasing a blocking acquirer.
+ * A semaphore maintains a set of permits. Each `acquire` call blocks if
+ * necessary until a permit is available, and then takes it. Each `release` call
+ * adds a permit, potentially releasing a blocking acquirer.
  *
  * The semaphore is initialized with a given number of permits. The number of
  * permits can be increased up to a maximum value.
@@ -28,10 +28,12 @@ export class Semaphore {
 	);
 
 	/**
-	 * Creates a new semaphore with the given initial number of permits and maximum number of permits.
+	 * Creates a new semaphore with the given initial number of permits and
+	 * maximum number of permits.
 	 *
 	 * @param maxValue The maximum number of permits.
-	 * @param initialValue The initial number of permits available. Defaults to `maxValue`.
+	 * @param initialValue The initial number of permits available. Defaults to
+	 *   `maxValue`.
 	 */
 	constructor(
 		private readonly maxValue: number,

@@ -5,9 +5,9 @@ import { minmax } from "./minmax.js";
  *
  * The arithmetic mean is the sum of the values divided by the number of values.
  *
- * @see https://en.wikipedia.org/wiki/Arithmetic_mean
  * @param values The values to calculate the mean of.
  * @returns The arithmetic mean of the given values.
+ * @see https://en.wikipedia.org/wiki/Arithmetic_mean
  */
 export function mean(...values: number[]): number {
 	if (values.length === 0) {
@@ -27,9 +27,9 @@ export function mean(...values: number[]): number {
  * The geometric mean is the nth root of the product of the values, where n is
  * the number of values.
  *
- * @see https://en.wikipedia.org/wiki/Geometric_mean
  * @param values The values to calculate the mean of.
  * @returns The geometric mean of the given values.
+ * @see https://en.wikipedia.org/wiki/Geometric_mean
  */
 export function geometricMean(...values: number[]): number {
 	if (values.length === 0) {
@@ -46,12 +46,12 @@ export function geometricMean(...values: number[]): number {
 /**
  * Calculates the harmonic mean of the given values.
  *
- * The harmonic mean is the number of values divided by the sum of the reciprocals
- * of the values.
+ * The harmonic mean is the number of values divided by the sum of the
+ * reciprocals of the values.
  *
- * @see https://en.wikipedia.org/wiki/Harmonic_mean
  * @param values The values to calculate the mean of.
  * @returns The harmonic mean of the given values.
+ * @see https://en.wikipedia.org/wiki/Harmonic_mean
  */
 export function harmonicMean(...values: number[]): number {
 	if (values.length === 0) {
@@ -72,9 +72,9 @@ export function harmonicMean(...values: number[]): number {
  * The quadratic mean is the square root of the arithmetic mean of the squares
  * of the values.
  *
- * @see https://en.wikipedia.org/wiki/Root_mean_square
  * @param values The values to calculate the mean of.
  * @returns The root mean square of the given values.
+ * @see https://en.wikipedia.org/wiki/Root_mean_square
  */
 export function rootMeanSquare(...values: number[]): number {
 	if (values.length === 0) {
@@ -91,14 +91,15 @@ export function rootMeanSquare(...values: number[]): number {
 /**
  * Calculates the median of a list of numbers.
  *
- * The median is the middle value when the numbers are sorted in ascending order.
+ * The median is the middle value when the numbers are sorted in ascending
+ * order.
  *
  * If there is an even number of values, the median is the average of the two
  * middle values.
  *
- * @see https://en.wikipedia.org/wiki/Median
  * @param values Array of numbers
  * @returns Median of the numbers
+ * @see https://en.wikipedia.org/wiki/Median
  */
 export function median(...values: number[]): number {
 	if (values.length === 0) {
@@ -111,11 +112,9 @@ export function median(...values: number[]): number {
 
 	if (values.length % 2 === 0) {
 		// Even number of values, average the two middle values
-		// biome-ignore lint/style/noNonNullAssertion: value.length > 1 so mid > 0
 		return (values[mid - 1]! + values[mid]!) / 2;
 	} else {
 		// Odd number of values, return the middle value
-		// biome-ignore lint/style/noNonNullAssertion: value.length > 0 so mid >= 0
 		return values[mid]!;
 	}
 }
@@ -123,12 +122,12 @@ export function median(...values: number[]): number {
 /**
  * Calculates the mode of a list of numbers.
  *
- * The mode is the number that appears most frequently in the list.
- * If multiple numbers have the same highest frequency, all of them are returned.
+ * The mode is the number that appears most frequently in the list. If multiple
+ * numbers have the same highest frequency, all of them are returned.
  *
- * @see https://en.wikipedia.org/wiki/Mode_(statistics)
  * @param values Array of numbers
  * @returns Mode of the numbers (can be multiple values)
+ * @see https://en.wikipedia.org/wiki/Mode_(statistics)
  */
 export function mode(...values: number[]): number[] {
 	if (values.length === 0) {
@@ -162,9 +161,9 @@ export function mode(...values: number[]): number[] {
  *
  * The midrange is the average of the minimum and maximum values in the list.
  *
- * @see https://en.wikipedia.org/wiki/Mid-range *
  * @param values The values to calculate the midrange of.
  * @returns The midrange of the given values.
+ * @see https://en.wikipedia.org/wiki/Mid-range *
  */
 export function midrange(...values: number[]): number {
 	if (values.length === 0) {

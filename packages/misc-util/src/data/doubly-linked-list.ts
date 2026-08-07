@@ -13,13 +13,9 @@ type DoublyLinkedListNode<T> = {
 /**
  * A doubly linked list implementation.
  *
- * Time complexity:
- * - Access (by index): O(n)
- * - Update (by index): O(n)
- * - Insert: O(1) at head and tail, O(n) otherwise
- * - Remove: O(1) at head and tail, O(n) otherwise
- * - Search: O(n)
- * Space complexity: O(n)
+ * Time complexity: - Access (by index): O(n) - Update (by index): O(n) -
+ * Insert: O(1) at head and tail, O(n) otherwise - Remove: O(1) at head and
+ * tail, O(n) otherwise - Search: O(n) Space complexity: O(n)
  *
  * @template T The type of elements in the list.
  */

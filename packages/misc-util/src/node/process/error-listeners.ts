@@ -1,12 +1,13 @@
 import { writeFileSync } from "node:fs";
 import { EOL } from "node:os";
+
 import { formatError } from "../../ecma/error/format-error.js";
 import type { Callable } from "../../ecma/function/types.js";
 import { defaults } from "../../ecma/object/defaults.js";
 
 /**
- * The origin of an uncaught exception.
- * Matches Node.js process 'uncaughtException' event callback.
+ * The origin of an uncaught exception. Matches Node.js process
+ * 'uncaughtException' event callback.
  */
 export type UncaughtExceptionOrigin =
 	| "uncaughtException"
@@ -77,7 +78,8 @@ export class ErrorListeners {
 	}
 
 	/**
-	 * Attaches the listeners for unhandled promise rejections and uncaught exceptions.
+	 * Attaches the listeners for unhandled promise rejections and uncaught
+	 * exceptions.
 	 *
 	 * If the listeners are already attached, this method does nothing.
 	 */
@@ -99,7 +101,8 @@ export class ErrorListeners {
 	}
 
 	/**
-	 * Detaches the listeners for unhandled promise rejections and uncaught exceptions.
+	 * Detaches the listeners for unhandled promise rejections and uncaught
+	 * exceptions.
 	 *
 	 * If the listeners are not attached, this method does nothing.
 	 */

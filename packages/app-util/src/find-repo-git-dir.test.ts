@@ -1,5 +1,6 @@
 import { findUp } from "find-up";
 import { beforeEach, expect, suite, test, vi } from "vitest";
+
 import { findRepoGitDir } from "./find-repo-git-dir.js";
 
 vi.mock(import("find-up"), async (importActual) => {

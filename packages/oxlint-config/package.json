@@ -1,0 +1,23 @@
+{
+	"name": "@ac-essentials/oxlint-config",
+	"version": "0.1.0",
+	"type": "module",
+	"main": "./oxlintrc.js",
+	"exports": {
+		".": {
+			"types": "./oxlint.d.ts",
+			"default": "./oxlint.js"
+		},
+		"./oxfmt": {
+			"types": "./oxfmt.d.ts",
+			"default": "./oxfmt.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"oxfmt": "^0.62.0",
+		"oxlint": "^1.77.0"
+	}
+}

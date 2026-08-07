@@ -1,6 +1,9 @@
 # Miscellaneous utilities for JavaScript and TypeScript
 
-This package provides a collection of utility functions and types that can be used in various JavaScript and TypeScript projects. It includes functions for string manipulation, number formatting, object merging, timer management, and more.
+This package provides a collection of utility functions and types that can be
+used in various JavaScript and TypeScript projects. It includes functions for
+string manipulation, number formatting, object merging, timer management, and
+more.
 
 ## Installation
 
@@ -21,14 +24,22 @@ yarn add @ac-essentials/misc-util
 You can import and use the utilities in your project as follows:
 
 ```typescript
-import { truncate } from '@ac-essentials/misc-util';
+import { truncate } from "@ac-essentials/misc-util";
 
-const shortString = truncate("This is a very long string that needs to be truncated.", { length: 20 });
+const shortString = truncate(
+  "This is a very long string that needs to be truncated.",
+  {
+    length: 20,
+  },
+);
 console.log(shortString); // Output: "This is a very lo..."
 ```
 
-For more detailed documentation and examples, please refer to the [official documentation](https://anthochamp.github.io/node-essentials/misc-util/).
+For more detailed documentation and examples, please refer to the
+[official documentation](https://anthochamp.github.io/node-essentials/misc-util/).
 
 ## Contributing
 
-Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/anthochamp/node-essentials).
+Contributions are welcome! If you find a bug or have a feature request, please
+open an issue on the
+[GitHub repository](https://github.com/anthochamp/node-essentials).

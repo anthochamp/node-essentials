@@ -1,4 +1,5 @@
 import { type InspectOptions, inspect } from "node:util";
+
 import {
 	type CaptureStackTraceOptions,
 	captureStackTrace,
@@ -9,6 +10,7 @@ import {
 	type StackTrace,
 } from "@ac-essentials/misc-util";
 import type { Except } from "type-fest";
+
 import type { ILoggerPrinter } from "./logger-printer.js";
 import {
 	LoggerLogLevel,
@@ -20,13 +22,12 @@ import { loggerCompareLogLevel } from "./util/compare-log-level.js";
 export type LoggerMetadataWithoutError = LoggerMetadata & { error?: never };
 
 export type LoggerOptions = {
-	/**
-	 * Initial metadata to attach to all log messages from this printer.
-	 */
+	/** Initial metadata to attach to all log messages from this printer. */
 	initialPersistantMetadata?: LoggerMetadata;
 
 	/**
-	 * Minimum log level to print. Messages with a log level less severe than this will be ignored.
+	 * Minimum log level to print. Messages with a log level less severe than this
+	 * will be ignored.
 	 */
 	minLogLevel?: LoggerLogLevel | null;
 
@@ -35,13 +36,12 @@ export type LoggerOptions = {
 	 *
 	 * The `prefix` option is omitted here as it is set per-log message.
 	 *
-	 * Defaults to true if `process.env.DEBUG` is truthy, otherwise "top-level-only".
+	 * Defaults to true if `process.env.DEBUG` is truthy, otherwise
+	 * "top-level-only".
 	 */
 	formatErrorOptions?: Except<FormatErrorOptions, "prefix">;
 
-	/**
-	 * debug log metadata inspect options.
-	 */
+	/** Debug log metadata inspect options. */
 	debugInspectOptions?: InspectOptions;
 };
 
@@ -73,7 +73,8 @@ export class Logger {
 	 *
 	 * @param printers The printer(s) to use for logging
 	 * @param options Options for the logger
-	 * @param parent An optional parent logger to inherit settings from (used when forking a new logger)
+	 * @param parent An optional parent logger to inherit settings from (used when
+	 *   forking a new logger)
 	 */
 	constructor(
 		private readonly printers: ILoggerPrinter[],
@@ -100,18 +101,18 @@ export class Logger {
 		return new Logger(this.printers, options, this);
 	}
 
-	/**
-	 * Clear the console.
-	 */
+	/** Clear the console. */
 	async clear(): Promise<void> {
-		await Promise.all(this.printers.map((printer) => printer.clear()));
+		await Promise.all(
+			this.printers.map((printer) => Promise.resolve(printer.clear())),
+		);
 	}
 
-	/**
-	 * Flush any buffered output.
-	 */
+	/** Flush any buffered output. */
 	async flush(): Promise<void> {
-		await Promise.all(this.printers.map((printer) => printer.flush()));
+		await Promise.all(
+			this.printers.map((printer) => Promise.resolve(printer.flush())),
+		);
 	}
 
 	/**
@@ -125,8 +126,8 @@ export class Logger {
 		error: unknown,
 		description?: string,
 		metadata?: LoggerMetadataWithoutError,
-	): Promise<void> {
-		return this.log(
+	): void {
+		this.log(
 			LoggerLogLevel.EMERG,
 			formatError(error, {
 				...this.options.formatErrorOptions,
@@ -147,8 +148,8 @@ export class Logger {
 		error: unknown,
 		description?: string,
 		metadata?: LoggerMetadataWithoutError,
-	): Promise<void> {
-		return this.log(
+	): void {
+		this.log(
 			LoggerLogLevel.ALERT,
 			formatError(error, {
 				...this.options.formatErrorOptions,
@@ -169,8 +170,8 @@ export class Logger {
 		error: unknown,
 		description?: string,
 		metadata?: LoggerMetadataWithoutError,
-	): Promise<void> {
-		return this.log(
+	): void {
+		this.log(
 			LoggerLogLevel.CRITICAL,
 			formatError(error, {
 				...this.options.formatErrorOptions,
@@ -191,8 +192,8 @@ export class Logger {
 		error: unknown,
 		description?: string,
 		metadata?: LoggerMetadataWithoutError,
-	): Promise<void> {
-		return this.log(
+	): void {
+		this.log(
 			LoggerLogLevel.ERROR,
 			formatError(error, {
 				...this.options.formatErrorOptions,
@@ -213,8 +214,8 @@ export class Logger {
 		error: unknown,
 		description?: string,
 		metadata?: LoggerMetadataWithoutError,
-	): Promise<void> {
-		return this.log(
+	): void {
+		this.log(
 			LoggerLogLevel.WARNING,
 			formatError(error, {
 				...this.options.formatErrorOptions,
@@ -230,8 +231,8 @@ export class Logger {
 	 * @param message The message to log
 	 * @param metadata Optional metadata to attach to the log message
 	 */
-	notice(message: string, metadata?: LoggerMetadata): Promise<void> {
-		return this.log(LoggerLogLevel.NOTICE, message, { metadata });
+	notice(message: string, metadata?: LoggerMetadata): void {
+		this.log(LoggerLogLevel.NOTICE, message, { metadata });
 	}
 
 	/**
@@ -240,8 +241,8 @@ export class Logger {
 	 * @param message The message to log
 	 * @param metadata Optional metadata to attach to the log message
 	 */
-	info(message: string, metadata?: LoggerMetadata): Promise<void> {
-		return this.log(LoggerLogLevel.INFO, message, { metadata });
+	info(message: string, metadata?: LoggerMetadata): void {
+		this.log(LoggerLogLevel.INFO, message, { metadata });
 	}
 
 	/**
@@ -253,10 +254,10 @@ export class Logger {
 	 * @param metadata Metadata to log
 	 * @param description Description of the debug log
 	 */
-	debug(metadata: LoggerMetadata, description: string): Promise<void> {
+	debug(metadata: LoggerMetadata, description: string): void {
 		const message = `${description}: ${inspect(metadata, this.options.debugInspectOptions)}`;
 
-		return this.log(LoggerLogLevel.DEBUG, message, {
+		this.log(LoggerLogLevel.DEBUG, message, {
 			stackTraceReference: parseEnvVariableValueAsBool(process.env.DEBUG)
 				? this.debug
 				: null,
@@ -271,11 +272,11 @@ export class Logger {
 	 * @param message Message
 	 * @param options Optional log options
 	 */
-	async log(
+	log(
 		level: LoggerLogLevel,
 		message: string,
 		options?: LoggerLogOptions,
-	): Promise<void> {
+	): void {
 		if (
 			this.options.minLogLevel !== null &&
 			loggerCompareLogLevel(level, this.options.minLogLevel) > 0
@@ -301,7 +302,7 @@ export class Logger {
 			},
 		};
 
-		return this.print(record);
+		void this.print(record);
 	}
 
 	private async print(record: LoggerRecord): Promise<void> {

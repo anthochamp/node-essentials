@@ -6,7 +6,8 @@ import { type IsEqualWellKnownStrategy, isEqual } from "../object/is-equal.js";
  * comparison strategy.
  *
  * @param array The input array.
- * @param strategy The equality comparison strategy to use (default is "sameValueZero").
+ * @param strategy The equality comparison strategy to use (default is
+ *   "sameValueZero").
  * @returns A new array with duplicate values removed.
  */
 export function uniq<T>(
@@ -19,7 +20,6 @@ export function uniq<T>(
 
 	return array.filter((item, index) => {
 		for (let i = 0; i < index; i++) {
-			// biome-ignore lint/style/noNonNullAssertion: indexed loop
 			if (isEqual(item, array[i]!, strategy)) {
 				return false;
 			}

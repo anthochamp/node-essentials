@@ -8,6 +8,7 @@ import {
 	unlink,
 	writeFile,
 } from "node:fs/promises";
+
 import { defaults } from "../../ecma/object/defaults.js";
 import { isNodeErrorWithCode } from "../error/node-error.js";
 import {
@@ -16,15 +17,18 @@ import {
 } from "./types.js";
 
 /**
- * Writes data to a file atomically, ensuring that the file is either fully written or not modified at all.
+ * Writes data to a file atomically, ensuring that the file is either fully
+ * written or not modified at all.
  *
- * This function first writes the data to a temporary file and then renames it to the target file path.
- * This approach minimizes the risk of data corruption in case of interruptions during the write process.
+ * This function first writes the data to a temporary file and then renames it
+ * to the target file path. This approach minimizes the risk of data corruption
+ * in case of interruptions during the write process.
  *
  * @param filePath The path to the file where data should be written.
  * @param data The data to write to the file. Can be a string or a Buffer.
- * @param options Optional settings for writing the file, including encoding, mode, and flags.
- *                If `options.signal` is provided, it can be used to abort the operation.
+ * @param options Optional settings for writing the file, including encoding,
+ *   mode, and flags. If `options.signal` is provided, it can be used to abort
+ *   the operation.
  * @returns A promise that resolves when the write operation is complete.
  * @throws Will throw an error if the write operation fails.
  */

@@ -1,7 +1,9 @@
 import type { X509Certificate } from "node:crypto";
 import type { Duplex } from "node:stream";
 import * as tls from "node:tls";
+
 import type { Except } from "type-fest";
+
 import { isObject } from "../../ecma/is-object.js";
 import type { StreamSocketEvents } from "./stream-socket.js";
 import { StreamSocket } from "./stream-socket.js";

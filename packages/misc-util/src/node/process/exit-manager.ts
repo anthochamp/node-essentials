@@ -68,7 +68,8 @@ export class ExitManager {
 	 * Unregister a previously registered clean-up handler.
 	 *
 	 * @param handler A function to be removed from the clean-up handlers.
-	 * @param priority The priority of the clean-up handler. (optional, for disambiguation)
+	 * @param priority The priority of the clean-up handler. (optional, for
+	 *   disambiguation)
 	 */
 	unregisterCleanUpHandler(
 		handler: MaybeAsyncCallable,
@@ -81,7 +82,8 @@ export class ExitManager {
 	}
 
 	/**
-	 * Registers a synchronous exit handler to be called when the process is exiting.
+	 * Registers a synchronous exit handler to be called when the process is
+	 * exiting.
 	 *
 	 * Note: The handler should be a synchronous function. Asynchronous operations
 	 * may not complete before the process exits.
@@ -102,7 +104,8 @@ export class ExitManager {
 	 * Unregister a previously registered exit handler.
 	 *
 	 * @param handler A function to be removed from the exit handlers.
-	 * @param priority The priority of the exit handler. (optional, for disambiguation)
+	 * @param priority The priority of the exit handler. (optional, for
+	 *   disambiguation)
 	 */
 	unregisterExitHandler(
 		handler: Callable,

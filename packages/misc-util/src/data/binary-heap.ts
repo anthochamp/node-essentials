@@ -119,7 +119,8 @@ export class BinaryHeap<T> extends NativeListCollection<T> implements IHeap<T> {
 	 * Gets the parent index of a given index in the heap.
 	 *
 	 * @param index The index to get the parent index for.
-	 * @returns The parent index of the given index. Returns -1 if the index is 0 (root).
+	 * @returns The parent index of the given index. Returns -1 if the index is 0
+	 *   (root).
 	 */
 	private getParentIndex(index: number): number {
 		return Math.floor((index - 1) / 2);
@@ -145,9 +146,7 @@ export class BinaryHeap<T> extends NativeListCollection<T> implements IHeap<T> {
 		return 2 * index + 2;
 	}
 
-	/**
-	 * Heapifies the entire data array to maintain the heap property.
-	 */
+	/** Heapifies the entire data array to maintain the heap property. */
 	private heapifyAll() {
 		for (let i = Math.floor(this.data.count() / 2) - 1; i >= 0; i--) {
 			this.heapifyDown(i);

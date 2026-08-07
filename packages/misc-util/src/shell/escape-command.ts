@@ -1,10 +1,12 @@
 /**
- * Escapes any characters in a string that might be used to trick a shell command
- * into executing arbitrary commands.
+ * Escapes any characters in a string that might be used to trick a shell
+ * command into executing arbitrary commands.
  *
  * It uses different escaping mechanisms depending on the current platform:
+ *
  * - On Windows, it uses caret (^) to escape special characters.
- * - On POSIX-compliant systems, it uses backslash (\) to escape special characters.
+ * - On POSIX-compliant systems, it uses backslash () to escape special
+ *   characters.
  *
  * @param cmd The command to escape
  * @returns The escaped command
@@ -13,19 +15,21 @@ export const escapeCommand: (cmd: string) => string =
 	process.platform === "win32" ? escapeWin32CmdCommand : escapePosixShCommand;
 
 /**
- * Escapes any characters in a string that might be used to trick a POSIX-compliant
- * shell command into executing arbitrary commands.
+ * Escapes any characters in a string that might be used to trick a
+ * POSIX-compliant shell command into executing arbitrary commands.
  *
  * It escapes the following characters by adding a backslash before them:
- * &#;`|*?~<>^()[]{}$\, \n and \xFF.
+ * &#;`|*?~<>^()[]{}$, \n and \xFF.
  *
  * The characters ' and " are escaped only if they are not paired.
  *
- * Based on PHP escapeshellcmd: https://www.php.net/manual/en/function.escapeshellcmd.php
- * Source code: https://github.com/php/php-src/blob/d85662d6cc2c6d5f69403f6fb2001ff78e1bd174/ext/standard/exec.c#L270
+ * Based on PHP escapeshellcmd:
+ * https://www.php.net/manual/en/function.escapeshellcmd.php
  *
- * @param cmd The command to escape
- * @returns The escaped command
+ * Source code:
+ * https://github.com/php/php-src/blob/d85662d6cc2c6d5f69403f6fb2001ff78e1bd174/ext/standard/exec.c#L270
+ *
+ * @param cmd The command to escape @returns The escaped command
  */
 export function escapePosixShCommand(cmd: string): string {
 	// Escape any of the special characters with a backslash
@@ -66,14 +70,17 @@ export function escapePosixShCommand(cmd: string): string {
 }
 
 /**
- * Escape any characters in a string that might be used to trick a Windows cmd.exe
- * command into executing arbitrary commands.
+ * Escape any characters in a string that might be used to trick a Windows
+ * cmd.exe command into executing arbitrary commands.
  *
  * It escapes the following characters by adding a caret (^) before them:
- * '"%!&#;`|*?~<>^()[]{}$\, \n and \xFF.
+ * '"%!&#;`|*?~<>^()[]{}$, \n and \xFF.
  *
- * Based on PHP escapeshellcmd: https://www.php.net/manual/en/function.escapeshellcmd.php
- * Source code: https://github.com/php/php-src/blob/d85662d6cc2c6d5f69403f6fb2001ff78e1bd174/ext/standard/exec.c#L270
+ * Based on PHP escapeshellcmd:
+ * https://www.php.net/manual/en/function.escapeshellcmd.php
+ *
+ * Source code:
+ * https://github.com/php/php-src/blob/d85662d6cc2c6d5f69403f6fb2001ff78e1bd174/ext/standard/exec.c#L270
  *
  * @param cmd The command to escape
  * @returns The escaped command

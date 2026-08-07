@@ -1,5 +1,6 @@
 import { type FileHandle, open } from "node:fs/promises";
 import * as path from "node:path";
+
 import {
 	defaults,
 	ProcessExitError,
@@ -84,7 +85,6 @@ ${"=".repeat(140)}
 		if (error instanceof ProcessExitError) {
 			effectiveOptions.console?.error("Command failed with error:", error);
 			effectiveOptions.console?.error(
-				// biome-ignore lint/style/noNonNullAssertion: defined if runLogDir is defined
 				`Run log available at ${shortenPosixPath(runLogFilePath!)}`,
 			);
 			return;
@@ -92,7 +92,7 @@ ${"=".repeat(140)}
 
 		throw error;
 	} finally {
-		runLogFd?.close();
+		await runLogFd?.close();
 		effectiveOptions.console?.groupEnd();
 	}
 }

@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { prefixLines } from "./prefix-lines.js";
 
 suite("prefixLines", () => {

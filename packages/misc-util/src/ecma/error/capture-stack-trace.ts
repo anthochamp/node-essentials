@@ -1,6 +1,6 @@
 import { defaults } from "../object/defaults.js";
-import type { IError } from "./error.js";
 import { parseErrorStack, type StackTrace } from "./error-stack.js";
+import type { IError } from "./error.js";
 
 export type CaptureStackTraceOptions = {
 	// A function to use as the reference point for the stack trace.
@@ -8,7 +8,6 @@ export type CaptureStackTraceOptions = {
 	//
 	// The stack frames above the function will be skipped (including the function
 	// itself).
-	// biome-ignore lint/complexity/noBannedTypes: per spec
 	reference?: Function | null;
 
 	// Maximum number of stack frames to capture.
@@ -28,7 +27,8 @@ const CAPTURE_STACK_TRACE_DEFAULT_OPTIONS: Required<CaptureStackTraceOptions> =
 /**
  * Capture the stack trace of the caller.
  *
- * @returns  An array of strings representing the stack trace, or `undefined` if the stack trace is not available
+ * @returns An array of strings representing the stack trace, or `undefined` if
+ *   the stack trace is not available
  */
 export function captureStackTrace(
 	options?: CaptureStackTraceOptions,

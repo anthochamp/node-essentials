@@ -15,7 +15,6 @@ export function random(min: number, max: number): number {
  * @deprecated Use `crypto.randomInt` from Node.js standard library instead.
  *
  * Get a random integer between min (inclusive) and max (exclusive)
- *
  * @param min Minimum integer value (inclusive)
  * @param max Maximum integer value (exclusive)
  * @returns A random integer between min and max

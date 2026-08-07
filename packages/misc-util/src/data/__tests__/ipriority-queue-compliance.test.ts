@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import type { Callable } from "../../ecma/function/types.js";
 import type { ICollection } from "../icollection.js";
 import type { IPriorityQueue } from "../ipriority-queue.js";
@@ -7,7 +8,8 @@ import { PriorityQueue } from "../priority-queue.js";
 /**
  * IPriorityQueue compliance tests for various data structures.
  *
- * These tests ensure that the data structures adhere to the IPriorityQueue interface.
+ * These tests ensure that the data structures adhere to the IPriorityQueue
+ * interface.
  */
 
 suite.each<{

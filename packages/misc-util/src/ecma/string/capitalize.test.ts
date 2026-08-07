@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { capitalize } from "./capitalize.js";
 
 suite("capitalize", () => {

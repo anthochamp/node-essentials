@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { isErrorLike } from "./error.js";
 
 suite("isErrorLike", () => {

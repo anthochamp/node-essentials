@@ -9,7 +9,6 @@ export type CaptureV8StackTraceOptions = {
 	// The stack frames above the function will be skipped (including the function
 	// itself).
 	// Defaults to the `captureStackTrace` function itself.
-	// biome-ignore lint/complexity/noBannedTypes: per spec
 	reference?: Function | null;
 
 	// Maximum number of stack frames to capture.
@@ -26,7 +25,8 @@ const CAPTURE_V8_STACK_TRACE_DEFAULT_OPTIONS: Required<CaptureV8StackTraceOption
 /**
  * Capture the stack trace of the caller.
  *
- * @returns  An array of strings representing the stack trace, or `undefined` if the stack trace is not available
+ * @returns An array of strings representing the stack trace, or `undefined` if
+ *   the stack trace is not available
  */
 export function captureV8StackTrace(
 	options?: CaptureV8StackTraceOptions,
@@ -43,6 +43,7 @@ export function captureV8StackTrace(
 	const originalStackTraceLimit = Error.stackTraceLimit;
 	Error.stackTraceLimit = effectiveOptions.maxFrames;
 
+	// oxlint-disable-next-line typescript/unbound-method
 	const originalPrepareStackTrace = Error.prepareStackTrace;
 	Error.prepareStackTrace = (err, stack) => {
 		return err === tmp ? stack : originalPrepareStackTrace(err, stack);

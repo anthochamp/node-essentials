@@ -1,5 +1,7 @@
 import * as net from "node:net";
+
 import type { Except } from "type-fest";
+
 import { EventDispatcherMapBase } from "../../async/events/_event-dispatcher-map-base.js";
 import type { IEventDispatcherMap } from "../../async/events/ievent-dispatcher-map.js";
 import type { IError } from "../../ecma/error/error.js";
@@ -7,38 +9,30 @@ import { UnsupportedError } from "../../ecma/error/unsupported-error.js";
 import { composeInetAddress, type InetEndpoint } from "./inet.js";
 import { TcpSocket } from "./tcp-socket.js";
 
-/**
- * Event map for TcpServer server-specific events.
- */
+/** Event map for TcpServer server-specific events. */
 export type TcpServerEvents = {
-	/**
-	 * Emitted when the server closes.
-	 */
+	/** Emitted when the server closes. */
 	close: [];
 
 	/**
-	 * Emitted when a new connection is made.
-	 * The connection is wrapped in a TcpClient instance.
+	 * Emitted when a new connection is made. The connection is wrapped in a
+	 * TcpClient instance.
 	 */
 	connection: [client: TcpSocket];
 
 	/**
-	 * Emitted when a new connection is dropped.
-	 * Provides the local and remote endpoint information of the dropped connection.
+	 * Emitted when a new connection is dropped. Provides the local and remote
+	 * endpoint information of the dropped connection.
 	 */
 	drop: [
 		localEndpoint: InetEndpoint | null,
 		remoteEndpoint: InetEndpoint | null,
 	];
 
-	/**
-	 * Emitted when an error occurs.
-	 */
+	/** Emitted when an error occurs. */
 	error: [err: IError];
 
-	/**
-	 * Emitted when the server has been bound after calling server.listen().
-	 */
+	/** Emitted when the server has been bound after calling server.listen(). */
 	listening: [];
 };
 
@@ -46,13 +40,14 @@ export type TcpServerEvents = {
  * TCP server to accept incoming connections.
  *
  * Example usage:
+ *
  * ```ts
  * const server = TcpServer.from();
  * server.on("connection", (client) => {
- *   console.log("Client connected");
- *   client.stream.on("data", (data) => {
- *     console.log("Received:", data.toString());
- *   });
+ * 	console.log("Client connected");
+ * 	client.stream.on("data", (data) => {
+ * 		console.log("Received:", data.toString());
+ * 	});
  * });
  * await server.listen(8080, "0.0.0.0");
  * // ... later
@@ -97,9 +92,7 @@ export class TcpServer
 		});
 	}
 
-	/**
-	 * Gets whether the server is currently listening for connections.
-	 */
+	/** Gets whether the server is currently listening for connections. */
 	get listening(): boolean {
 		return this.srv.listening;
 	}
@@ -113,22 +106,22 @@ export class TcpServer
 		this.srv.maxConnections = maxConnections;
 	}
 
-	/**
-	 * Gets the maximum number of queued pending connections.
-	 */
+	/** Gets the maximum number of queued pending connections. */
 	get maxConnections(): number {
 		return this.srv.maxConnections;
 	}
 
 	/**
-	 * References the server, preventing the process from exiting while the server is active.
+	 * References the server, preventing the process from exiting while the server
+	 * is active.
 	 */
 	ref(): void {
 		this.srv.ref();
 	}
 
 	/**
-	 * Unreferences the server, allowing the process from exiting even if the server is active.
+	 * Unreferences the server, allowing the process from exiting even if the
+	 * server is active.
 	 */
 	unref(): void {
 		this.srv.unref();
@@ -137,8 +130,10 @@ export class TcpServer
 	/**
 	 * Starts the TCP server listening on the specified port and host.
 	 *
-	 * @param port The port to listen on. If 0, a random available port will be assigned.
-	 * @param host The host/interface to bind to. Defaults to '::' (IPv6) or '0.0.0.0' (IPv4).
+	 * @param port The port to listen on. If 0, a random available port will be
+	 *   assigned.
+	 * @param host The host/interface to bind to. Defaults to '::' (IPv6) or
+	 *   '0.0.0.0' (IPv4).
 	 * @param options Additional listen options.
 	 * @returns A promise that resolves when the server is successfully listening.
 	 */
@@ -169,8 +164,8 @@ export class TcpServer
 	}
 
 	/**
-	 * Closes the TCP server, stopping it from accepting new connections.
-	 * Existing connections are not automatically closed.
+	 * Closes the TCP server, stopping it from accepting new connections. Existing
+	 * connections are not automatically closed.
 	 *
 	 * @returns A promise that resolves when the server is fully closed.
 	 */
@@ -189,7 +184,8 @@ export class TcpServer
 	/**
 	 * Gets the address information of the server.
 	 *
-	 * @returns The server's endpoint information or null if the server is not listening.
+	 * @returns The server's endpoint information or null if the server is not
+	 *   listening.
 	 */
 	address(): InetEndpoint | null {
 		const addr = this.srv.address();

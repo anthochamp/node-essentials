@@ -3,7 +3,8 @@ import { findUp, type Options } from "find-up";
 export type FindRepoGitDirOptions = Omit<Options, "cwd" | "type">;
 
 /**
- * Finds the .git directory by looking in the specified directory and its parents.
+ * Finds the .git directory by looking in the specified directory and its
+ * parents.
  *
  * @param fromDir The directory to start searching from.
  * @param options Options for finding the git directory.

@@ -28,6 +28,7 @@ export function buildUpperCase(options?: StringCaseOptions): UpperCaseFn {
  * Converts a string to upper case, replacing word separators with spaces.
  *
  * @param input The input string.
- * @returns The string converted to upper case, with word separators replaced by spaces.
+ * @returns The string converted to upper case, with word separators replaced by
+ *   spaces.
  */
 export const upperCase: UpperCaseFn = buildUpperCase();

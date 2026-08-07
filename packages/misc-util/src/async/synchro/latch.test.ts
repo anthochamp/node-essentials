@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { Latch } from "./latch.js";
 
 function delay(ms: number) {

@@ -1,5 +1,7 @@
 import * as net from "node:net";
+
 import { describe, expect, it, vi } from "vitest";
+
 import type { IError } from "../../ecma/error/error.js";
 import { StreamSocket } from "./stream-socket.js";
 

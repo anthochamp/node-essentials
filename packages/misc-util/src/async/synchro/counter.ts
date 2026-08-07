@@ -10,15 +10,15 @@ type Waiter_ = {
  * A counter primitive that can be incremented, decremented, and waited upon.
  *
  * @example
- * const counter = new Counter(0);
+ * 	const counter = new Counter(0);
  *
- * // Increment the counter
- * counter.increment();
- * // Decrement the counter
- * counter.decrement();
+ * 	// Increment the counter
+ * 	counter.increment();
+ * 	// Decrement the counter
+ * 	counter.decrement();
  *
- * // Wait for the counter to reach a specific value
- * await counter.wait(5);
+ * 	// Wait for the counter to reach a specific value
+ * 	await counter.wait(5);
  */
 export class Counter {
 	private value_: number;
@@ -37,9 +37,7 @@ export class Counter {
 		return this.value_;
 	}
 
-	/**
-	 * Resets the counter to zero.
-	 */
+	/** Resets the counter to zero. */
 	reset(): void {
 		this.value_ = 0;
 		this.handleWaiters(this.value_);

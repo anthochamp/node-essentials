@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { truncate } from "./truncate.js";
 
 suite("truncate", () => {

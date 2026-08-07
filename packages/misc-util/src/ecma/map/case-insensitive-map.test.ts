@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { CaseInsensitiveMap } from "./case-insensitive-map.js";
 
 suite("CaseInsensitiveMap", () => {

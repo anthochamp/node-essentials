@@ -1,4 +1,5 @@
 import { access, constants } from "node:fs/promises";
+
 import {
 	afterAll,
 	beforeAll,
@@ -9,6 +10,7 @@ import {
 	test,
 	vi,
 } from "vitest";
+
 import { existsAsync } from "./exists-async.js";
 
 vi.mock("node:fs/promises");

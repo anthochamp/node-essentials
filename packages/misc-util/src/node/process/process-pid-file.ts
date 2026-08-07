@@ -1,5 +1,6 @@
 import { existsSync, unlinkSync } from "node:fs";
 import { unlink } from "node:fs/promises";
+
 import type { Callable } from "../../ecma/function/types.js";
 import { existsAsync } from "../fs/exists-async.js";
 import { ExitManager, ExitManagerPriority } from "./exit-manager.js";
@@ -11,10 +12,11 @@ import { writePidFile } from "./pid-file.js";
  * This class provides methods to write the current process PID to a specified
  * file and to remove the PID file when it is no longer needed.
  *
- * Note: The PID file is automatically removed when the process exits, if it
- * was created by this class instance.
+ * Note: The PID file is automatically removed when the process exits, if it was
+ * created by this class instance.
  *
  * Example usage:
+ *
  * ```ts
  * const pidFile = new ProcessPidFile("/var/run/myapp.pid");
  * await pidFile.write();
@@ -34,8 +36,8 @@ export class ProcessPidFile {
 	 * Note: If the process crashes or is forcefully terminated, the PID file may
 	 * not be removed. In such cases, manual cleanup may be necessary.
 	 *
-	 * This method ensures that the directory for the PID file exists before writing
-	 * the file.
+	 * This method ensures that the directory for the PID file exists before
+	 * writing the file.
 	 */
 	async write(): Promise<void> {
 		await writePidFile(this.filePath, process.pid);
@@ -50,9 +52,7 @@ export class ProcessPidFile {
 		);
 	}
 
-	/**
-	 * Removes the PID file if it exists and cleans up the exit handler.
-	 */
+	/** Removes the PID file if it exists and cleans up the exit handler. */
 	async remove(): Promise<void> {
 		if (await existsAsync(this.filePath)) {
 			await unlink(this.filePath);

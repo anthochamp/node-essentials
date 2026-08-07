@@ -7,11 +7,9 @@ export type SnakeCaseFn = (input: string) => string;
 /**
  * Creates a function that converts strings to snake case.
  *
- * Rules:
- * - Leading/trailing separators are removed.
- * - All letters are converted to lowercase.
- * - Separators are replaced with underscores.
- * - Multiple consecutive separators are collapsed to a single underscore.
+ * Rules: - Leading/trailing separators are removed. - All letters are converted
+ * to lowercase. - Separators are replaced with underscores. - Multiple
+ * consecutive separators are collapsed to a single underscore.
  *
  * @param options Options to customise separators and kept characters.
  * @returns A function that converts strings to snake case.

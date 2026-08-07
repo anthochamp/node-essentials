@@ -1,5 +1,7 @@
 import { readFile, type writeFile } from "node:fs/promises";
+
 import toml, { type TomlTable, type TomlTableWithoutBigInt } from "smol-toml";
+
 import { defaults } from "../../ecma/object/defaults.js";
 import {
 	READ_TEXT_FILE_DEFAULT_OPTIONS,
@@ -17,9 +19,6 @@ export type TomlFileFormatOptions = TextFileFormatOptions &
 	NonNullable<Parameters<typeof toml.stringify>[1]>;
 
 export type ReadTomlFileOptions = ReadTextFileOptions & {
-	/**
-	 *
-	 */
 	useBigInt?: boolean | "asNeeded";
 };
 
@@ -38,7 +37,7 @@ type ReadTomlFileResult_<TOptions extends ReadTomlFileOptions> =
  *
  * @param path Path to the TOML file.
  * @param options Options for reading the file and parsing TOML.
- * @returns	Parsed TOML content.
+ * @returns Parsed TOML content.
  */
 export async function readTomlFile<TOptions extends ReadTomlFileOptions>(
 	path: Parameters<typeof readFile>[0],

@@ -6,18 +6,19 @@ import { Condition } from "./condition.js";
 import { Mutex } from "./mutex.js";
 
 /**
- * Error thrown when a broadcast subscriber has lagged behind and missed messages.
+ * Error thrown when a broadcast subscriber has lagged behind and missed
+ * messages.
  *
  * @example
- * try {
- *     const msg = await subscriber.receive();
- * } catch (error) {
- *     if (error instanceof BroadcastSubscriberLaggedError) {
- *         console.error(`Missed ${error.missed} messages`);
- *     } else {
- *         throw error;
+ * 	try {
+ * 		const msg = await subscriber.receive();
+ * 	} catch (error) {
+ * 		if (error instanceof BroadcastSubscriberLaggedError) {
+ * 			console.error(`Missed ${error.missed} messages`);
+ * 		} else {
+ * 			throw error;
  * 		}
- * }
+ * 	}
  */
 export class BroadcastSubscriberLaggedError extends Error {
 	constructor(public readonly missed: number) {
@@ -26,30 +27,29 @@ export class BroadcastSubscriberLaggedError extends Error {
 	}
 }
 
-/**
- * A subscriber to a Broadcast channel.
- */
+/** A subscriber to a Broadcast channel. */
 export interface IBroadcastSubscriber<T> {
 	/**
 	 * Indicates whether the subscriber is closed.
 	 *
-	 * @returns true if the subscriber is closed, false otherwise.
+	 * @returns True if the subscriber is closed, false otherwise.
 	 */
 	readonly closed: boolean;
 
 	/**
 	 * Closes the subscriber.
 	 *
-	 * This will prevent further messages from being received.
-	 * Any pending receive operations will be aborted.
+	 * This will prevent further messages from being received. Any pending receive
+	 * operations will be aborted.
 	 */
 	close(): void;
 
 	/**
 	 * Wait to receive a message from the broadcast channel.
 	 *
-	 * @throws {BroadcastSubscriberLaggedError} If the subscriber has lagged behind and missed messages.
 	 * @param signal An optional AbortSignal to cancel the receive operation.
+	 * @throws {BroadcastSubscriberLaggedError} If the subscriber has lagged
+	 *   behind and missed messages.
 	 */
 	receive(signal?: AbortSignal | null): Promise<T>;
 }
@@ -57,39 +57,39 @@ export interface IBroadcastSubscriber<T> {
 /**
  * A broadcast channel that allows multiple subscribers to receive messages.
  *
- * Each subscriber maintains its own message queue with a specified capacity.
- * If a subscriber's queue is full when a new message is sent, the oldest message
+ * Each subscriber maintains its own message queue with a specified capacity. If
+ * a subscriber's queue is full when a new message is sent, the oldest message
  * in that subscriber's queue is discarded to make room for the new message.
  *
  * @example
- * const broadcast = new Broadcast<number>(5); // Capacity of 5 messages per subscriber
+ * 	const broadcast = new Broadcast<number>(5); // Capacity of 5 messages per subscriber
  *
- * // Subscriber 1
- * const subscriber1 = broadcast.subscribe();
- * function listen1() {
- *     while (!subscriber1.closed) {
- *         const msg = await subscriber1.receive();
- *         console.log("Subscriber 1 received:", msg);
- *     }
- * }
- * listen1();
+ * 	// Subscriber 1
+ * 	const subscriber1 = broadcast.subscribe();
+ * 	function listen1() {
+ * 	while (!subscriber1.closed) {
+ * 	const msg = await subscriber1.receive();
+ * 	console.log("Subscriber 1 received:", msg);
+ * 	}
+ * 	}
+ * 	listen1();
  *
- * // Subscriber 2
- * const subscriber2 = broadcast.subscribe();
- * function listen2() {
- *     while (!subscriber2.closed) {
- *         const msg = await subscriber2.receive();
- *         console.log("Subscriber 2 received:", msg);
- *     }
- * }
- * listen2();
+ * 	// Subscriber 2
+ * 	const subscriber2 = broadcast.subscribe();
+ * 	function listen2() {
+ * 	while (!subscriber2.closed) {
+ * 	const msg = await subscriber2.receive();
+ * 	console.log("Subscriber 2 received:", msg);
+ * 	}
+ * 	}
+ * 	listen2();
  *
- * // Send messages
- * await broadcast.send(1);
- * await broadcast.send(2);
+ * 	// Send messages
+ * 	await broadcast.send(1);
+ * 	await broadcast.send(2);
  *
- * // Close the broadcast channel
- * broadcast.close();
+ * 	// Close the broadcast channel
+ * 	broadcast.close();
  */
 export class Broadcast<T> {
 	private readonly subscribers = new Set<Subscriber_<T>>();
@@ -101,8 +101,8 @@ export class Broadcast<T> {
 	 * All subscribers will have their own message queue with the specified
 	 * capacity.
 	 *
-	 * @throws {RangeError} If the capacity is less than or equal to zero.
 	 * @param capacity The capacity of each subscriber's message queue.
+	 * @throws {RangeError} If the capacity is less than or equal to zero.
 	 */
 	constructor(private readonly capacity: number) {
 		if (capacity <= 0) {
@@ -110,9 +110,7 @@ export class Broadcast<T> {
 		}
 	}
 
-	/**
-	 * Indicates whether the broadcast channel is closed.
-	 */
+	/** Indicates whether the broadcast channel is closed. */
 	get closed(): boolean {
 		return this.closeController.signal.aborted;
 	}
@@ -145,7 +143,8 @@ export class Broadcast<T> {
 	 *
 	 * @param message The message to send.
 	 * @param signal An optional AbortSignal to cancel the send operation.
-	 * @returns A promise that resolves when the message has been sent to all subscribers.
+	 * @returns A promise that resolves when the message has been sent to all
+	 *   subscribers.
 	 */
 	async send(message: T, signal?: AbortSignal | null): Promise<void> {
 		if (this.closed) {
@@ -168,9 +167,7 @@ export class Broadcast<T> {
 		}
 	}
 
-	/**
-	 * Closes the broadcast channel.
-	 */
+	/** Closes the broadcast channel. */
 	close(): void {
 		if (this.closed) {
 			return;

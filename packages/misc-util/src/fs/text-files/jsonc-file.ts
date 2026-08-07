@@ -1,10 +1,12 @@
 import { readFile, type writeFile } from "node:fs/promises";
+
 import jsonc, {
 	type FormattingOptions,
 	type ParseError,
 	type ParseOptions,
 } from "jsonc-parser";
 import type { Except, JsonValue, Simplify } from "type-fest";
+
 import { defaults } from "../../ecma/object/defaults.js";
 import {
 	type JsonFileFormat,
@@ -40,9 +42,7 @@ export type JsoncFileFormat = JsonFileFormat;
 
 export type JsoncFileFormatOptions = JsonFileFormatOptions &
 	Except<FormattingOptions, "eol" | "insertFinalNewline"> & {
-		/**
-		 * The original content of the JSONC file.
-		 */
+		/** The original content of the JSONC file. */
 		originalContent?: string;
 	};
 
@@ -60,7 +60,7 @@ export const READ_JSONC_FILE_DEFAULT_OPTIONS: Required<ReadJsoncFileOptions> = {
  *
  * @param path Path to the JSONC file.
  * @param options Options for reading the file and parsing JSONC.
- * @returns	Parsed JSONC content.
+ * @returns Parsed JSONC content.
  */
 export async function readJsoncFile<
 	O extends ReadJsoncFileOptions = ReadJsoncFileOptions,

@@ -1,5 +1,6 @@
 import type { ExecOptions } from "node:child_process";
 import { EOL } from "node:os";
+
 import {
 	defaults,
 	escapePosixShCommand,
@@ -32,60 +33,56 @@ export type PsSelector = "all" | "tty" | PsFilters;
 
 export type PsOptions = {
 	/**
-	 * Selector to filter processes.
-	 * Defaults to `"all"`.
+	 * Selector to filter processes. Defaults to `"all"`.
 	 *
-	 * If a string is provided, it can be:
-	 * - "all": Select all processes (equivalent to `-A` argument).
-	 * - "tty": Select processes associated with a terminal (equivalent to `-a` argument).
+	 * If a string is provided, it can be: - "all": Select all processes
+	 * (equivalent to `-A` argument). - "tty": Select processes associated with a
+	 * terminal (equivalent to `-a` argument).
 	 *
-	 * If an object is provided, it can contain any of the following optional properties to filter processes:
-	 * - `group`: An array of group IDs (numbers or strings) to filter by group ID (argument: `-G`).
-	 * - `pid`: An array of process IDs (numbers) to filter by process ID (argument: `-p`).
-	 * - `tty`: An array of terminal names (strings) to filter by terminal (argument: `-t`).
-	 * - `user`: An array of user IDs (numbers or strings) to filter by user ID (argument: `-U`).
+	 * If an object is provided, it can contain any of the following optional
+	 * properties to filter processes: - `group`: An array of group IDs (numbers
+	 * or strings) to filter by group ID (argument: `-G`). - `pid`: An array of
+	 * process IDs (numbers) to filter by process ID (argument: `-p`). - `tty`: An
+	 * array of terminal names (strings) to filter by terminal (argument: `-t`). -
+	 * `user`: An array of user IDs (numbers or strings) to filter by user ID
+	 * (argument: `-U`).
 	 */
 	selector?: PsSelector;
 
 	/**
-	 * Fields to include in the result.
-	 * Defaults to `null`.
+	 * Fields to include in the result. Defaults to `null`.
 	 *
-	 * If the array is empty or not provided, all available fields will be included in the result.
+	 * If the array is empty or not provided, all available fields will be
+	 * included in the result.
 	 *
-	 * Available fields are:
-	 * - `args`: Command and arguments.
-	 * - `comm`: Name to be used for accounting.
-	 * - `etime`: Elapsed time since the process was started.
-	 * - `group`: Text name of effective group ID.
-	 * - `nice`: The process scheduling increment (see setpriority(2)).
-	 * - `pcpu`: The CPU utilization of the process; this is a decaying average over up to a minute of previous (real) time. Since the time base over which this is computed varies (since processes may be very young), it is possible for the sum of all %cpu fields to exceed 100%.
-	 * - `pgid`: Process group number.
-	 * - `pid`: Process ID.
-	 * - `ppid`: Parent process ID.
-	 * - `rgroup`: Text name of real group ID.
-	 * - `ruser`: User name (from ruid).
-	 * - `time`: Accumulated CPU time, user + system.
-	 * - `tty`: Full name of controlling terminal.
-	 * - `user`: User name (from uid).
-	 * - `vsz`: Virtual size, in Kilobytes.
+	 * Available fields are: - `args`: Command and arguments. - `comm`: Name to be
+	 * used for accounting. - `etime`: Elapsed time since the process was started.
+	 * - `group`: Text name of effective group ID. - `nice`: The process
+	 * scheduling increment (see setpriority(2)). - `pcpu`: The CPU utilization of
+	 * the process; this is a decaying average over up to a minute of previous
+	 * (real) time. Since the time base over which this is computed varies (since
+	 * processes may be very young), it is possible for the sum of all %cpu fields
+	 * to exceed 100%. - `pgid`: Process group number. - `pid`: Process ID. -
+	 * `ppid`: Parent process ID. - `rgroup`: Text name of real group ID. -
+	 * `ruser`: User name (from ruid). - `time`: Accumulated CPU time, user +
+	 * system. - `tty`: Full name of controlling terminal. - `user`: User name
+	 * (from uid). - `vsz`: Virtual size, in Kilobytes.
 	 */
 	fields?: (keyof PsResult)[] | null;
 
 	/**
-	 * Additional command arguments to pass to `ps`.
-	 * Defaults to `null`.
+	 * Additional command arguments to pass to `ps`. Defaults to `null`.
 	 *
-	 * These will be appended to the command after the selector and output format arguments.
-	 * Use with caution, as they may conflict with other arguments.
+	 * These will be appended to the command after the selector and output format
+	 * arguments. Use with caution, as they may conflict with other arguments.
 	 *
-	 * Also, be careful to escape any argument if necessary to avoid shell injection vulnerabilities.
+	 * Also, be careful to escape any argument if necessary to avoid shell
+	 * injection vulnerabilities.
 	 */
 	extraArgs?: string[] | null;
 
 	/**
-	 * Additional execution options.
-	 * Defaults to `null`.
+	 * Additional execution options. Defaults to `null`.
 	 *
 	 * These options are passed to the underlying `exec` function.
 	 */
@@ -232,7 +229,6 @@ export async function ps<
 				continue;
 			}
 
-			// biome-ignore lint/style/noNonNullAssertion: for loop
 			let value: string | number = rowColumns[c]!;
 
 			const intValue = parseInt(value, 10);
@@ -308,9 +304,7 @@ export function psParseDuration(duration: string): number {
 	let days = 0;
 	let timePart = duration;
 	if (parts.length === 2) {
-		// biome-ignore lint/style/noNonNullAssertion: length is checked
 		days = +parts[0]!;
-		// biome-ignore lint/style/noNonNullAssertion: length is checked
 		timePart = parts[1]!;
 	}
 
@@ -320,18 +314,15 @@ export function psParseDuration(duration: string): number {
 		throw new Error(`Invalid duration format: ${duration}`);
 	}
 
-	// biome-ignore lint/style/noNonNullAssertion: length is checked
 	const seconds = timeParts[0]!.length === 2 ? +timeParts[0]! : NaN;
 
 	let minutes = 0;
 	if (timeParts.length > 1) {
-		// biome-ignore lint/style/noNonNullAssertion: length is checked
 		minutes = timeParts[1]!.length === 2 ? +timeParts[1]! : NaN;
 	}
 
 	let hours = 0;
 	if (timeParts.length > 2) {
-		// biome-ignore lint/style/noNonNullAssertion: length is checked
 		hours = timeParts[2]!.length === 2 ? +timeParts[2]! : NaN;
 	}
 

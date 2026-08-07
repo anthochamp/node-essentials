@@ -1,5 +1,6 @@
 import { createWriteStream, type Stats, type WriteStream } from "node:fs";
 import { stat } from "node:fs/promises";
+
 import {
 	BYTES_PER_MIB,
 	compressFile,
@@ -9,6 +10,7 @@ import {
 	Mutex,
 	serializeQueueNext,
 } from "@ac-essentials/misc-util";
+
 import {
 	ROTATE_LOG_FILES_DEFAULT_OPTIONS,
 	type RotateLogFilesOptions,
@@ -40,9 +42,7 @@ export type FilePrinterOptions = TextStreamPrinterOptions &
 		 */
 		maxFileAgeMs?: number | null;
 
-		/**
-		 * Whether to compress rotated log files using gzip.
-		 */
+		/** Whether to compress rotated log files using gzip. */
 		useCompression?: boolean;
 	};
 
@@ -82,8 +82,8 @@ export class FilePrinter implements ILoggerPrinter {
 	}
 
 	/**
-	 * Closes the file printer, ensuring all pending log records are flushed
-	 * and the file stream is properly closed.
+	 * Closes the file printer, ensuring all pending log records are flushed and
+	 * the file stream is properly closed.
 	 */
 	async close(): Promise<void> {
 		{
@@ -96,18 +96,14 @@ export class FilePrinter implements ILoggerPrinter {
 		await this.handleRotationSqn();
 	}
 
-	/**
-	 * Flushes any buffered log records to the file.
-	 */
+	/** Flushes any buffered log records to the file. */
 	async flush(): Promise<void> {
 		await this.textStreamPrinter?.flush();
 
 		await this.handleRotationSqn();
 	}
 
-	/**
-	 * This method is a no-op for FilePrinter.
-	 */
+	/** This method is a no-op for FilePrinter. */
 	async clear(): Promise<void> {
 		await this.textStreamPrinter?.clear();
 

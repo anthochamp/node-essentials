@@ -16,9 +16,7 @@ const PERIODICAL_TIMER_DEFAULT_OPTIONS: Required<PeriodicalTimerOptions> = {
 	waitForCompletion: false,
 };
 
-/**
- * A timer that calls a callback function at regular intervals.
- */
+/** A timer that calls a callback function at regular intervals. */
 export class PeriodicalTimer {
 	private readonly options: Required<PeriodicalTimerOptions>;
 	private started = false;
@@ -41,7 +39,8 @@ export class PeriodicalTimer {
 	}
 
 	/**
-	 * Starts the periodical timer. If the timer is already started, this does nothing.
+	 * Starts the periodical timer. If the timer is already started, this does
+	 * nothing.
 	 */
 	start(): void {
 		if (this.started) {
@@ -57,9 +56,7 @@ export class PeriodicalTimer {
 		}
 	}
 
-	/**
-	 * Stops the periodical timer. If the timer is not started, this does nothing.
-	 */
+	/** Stops the periodical timer. If the timer is not started, this does nothing. */
 	stop(): void {
 		this.started = false;
 		this.nextTickTimer.cancel();
@@ -68,7 +65,7 @@ export class PeriodicalTimer {
 	/**
 	 * Returns whether the timer is currently started.
 	 *
-	 * @return True if the timer is started, false otherwise.
+	 * @returns True if the timer is started, false otherwise.
 	 */
 	isStarted(): boolean {
 		return this.started;

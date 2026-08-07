@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { patternCapture, patternInOutCapture } from "./pattern-util.js";
 
 suite("patternCapture", () => {

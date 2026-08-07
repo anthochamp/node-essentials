@@ -1,5 +1,7 @@
 import { readFile, type writeFile } from "node:fs/promises";
+
 import type { JsonValue, Simplify } from "type-fest";
+
 import { chardetCharsetToBufferEncoding } from "../../3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
 import { defaults } from "../../ecma/object/defaults.js";
 import {
@@ -35,7 +37,8 @@ export type ReadJsonFileOptions = ReadTextFileOptions & {
 	/**
 	 * A function that alters the behavior of the stringification process.
 	 *
-	 * See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#the_reviver_parameter)
+	 * See
+	 * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#the_reviver_parameter)
 	 * for more information.
 	 */
 	reviver?: JsonReviver;
@@ -51,7 +54,7 @@ export const READ_JSON_FILE_DEFAULT_OPTIONS: Required<ReadJsonFileOptions> = {
  *
  * @param path Path to the JSON file.
  * @param options Options for reading the file and parsing JSON.
- * @returns	Parsed JSON content.
+ * @returns Parsed JSON content.
  */
 export async function readJsonFile(
 	path: Parameters<typeof readFile>[0],
@@ -84,7 +87,8 @@ export type WriteJsonFileOptions = Simplify<
 			/**
 			 * A function that alters the behavior of the stringification process.
 			 *
-			 * See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#the_replacer_parameter)
+			 * See
+			 * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#the_replacer_parameter)
 			 * for more information.
 			 */
 			replacer?: JsonReplacer;

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, expect, suite, test, vi } from "vitest";
+
 import { Timer } from "./timer.js";
 
 suite("Timer", () => {

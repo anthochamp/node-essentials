@@ -21,23 +21,28 @@ export type PatternInOutCaptureOptions = {
 };
 
 /**
- * Enclose the pattern with in-out capture groups, provided `pre`/`post` pattern strings.
+ * Enclose the pattern with in-out capture groups, provided `pre`/`post` pattern
+ * strings.
  *
  * `inCaptureName` is the name of the inner capture group (the main pattern).
- * `outCaptureName` is the name of the outer capture group (the whole pattern with pre/post).
+ * `outCaptureName` is the name of the outer capture group (the whole pattern
+ * with pre/post).
  *
- * If `inCaptureName` is not provided, the inner capture group will be non-capturing.
- * If `outCaptureName` is not provided, the outer capture group will be non-capturing.
+ * If `inCaptureName` is not provided, the inner capture group will be
+ * non-capturing. If `outCaptureName` is not provided, the outer capture group
+ * will be non-capturing.
  *
- * The `prePattern` and `postPattern` are added before and after the main pattern, respectively.
+ * The `prePattern` and `postPattern` are added before and after the main
+ * pattern, respectively.
  *
  * Exemple:
+ *
  * ```ts
  * const pattern = patternInOutCapture("\\d+", {
  * 	prePattern: "\\(",
- *  postPattern: "\\)",
- *  inCaptureName: "number",
- *  outCaptureName: "parenthesizedNumber",
+ * 	postPattern: "\\)",
+ * 	inCaptureName: "number",
+ * 	outCaptureName: "parenthesizedNumber",
  * });
  * // pattern is "(?<(parenthesizedNumber)>(?:\\((?<number>\\d+)\\)))"
  * // new RegExp(pattern) is /(?(<parenthesizedNumber>)(?:\((?<number>\d+)\)))/

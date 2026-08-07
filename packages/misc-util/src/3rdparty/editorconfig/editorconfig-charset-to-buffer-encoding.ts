@@ -2,7 +2,8 @@
  * Maps EditorConfig charset names to Node.js BufferEncoding names.
  *
  * @param charset An EditorConfig charset name.
- * @returns A Node.js BufferEncoding name, or null if the charset is not supported.
+ * @returns A Node.js BufferEncoding name, or null if the charset is not
+ *   supported.
  */
 export function editorconfigCharsetToBufferEncoding(
 	charset: string,

@@ -1,4 +1,3 @@
-import { UnimplementedError } from "../../ecma/error/unimplemented-error.js";
 import { UnsupportedError } from "../../ecma/error/unsupported-error.js";
 import { defaults } from "../../ecma/object/defaults.js";
 import type { EnvVariableValue } from "./env-variables-types.js";
@@ -12,7 +11,6 @@ import type { EnvVariableValue } from "./env-variables-types.js";
  * @returns The stringified string value.
  */
 export function stringifyEnvVariableStringValue(value: string): string {
-	// biome-ignore lint/style/noNonNullAssertion: a string input won't produce undefined
 	return /[\s"'=]/.test(value) ? JSON.stringify(value)! : value;
 }
 
@@ -35,7 +33,8 @@ export type EnvVariableBoolValueFlavor =
 	| "on/off";
 
 /**
- * Stringify a boolean environment variable value according to the specified flavor.
+ * Stringify a boolean environment variable value according to the specified
+ * flavor.
  *
  * @param value The boolean value to stringify.
  * @param flavor The flavor to use for stringifying the boolean value.
@@ -45,7 +44,6 @@ export function stringifyEnvVariableBoolValue(
 	value: boolean,
 	flavor: EnvVariableBoolValueFlavor,
 ): string {
-	// biome-ignore lint/nursery/noUnnecessaryConditions: false positive
 	switch (flavor) {
 		case "1/0":
 			return value ? "1" : "0";
@@ -58,17 +56,11 @@ export function stringifyEnvVariableBoolValue(
 
 		case "on/off":
 			return value ? "on" : "off";
-
-		default:
-			throw new UnimplementedError(`flavor "${flavor}"`);
 	}
 }
 
 export type StringifyEnvVariableValueOptions = {
-	/**
-	 * The flavor to use when stringifying boolean values.
-	 * Defaults to "1/0".
-	 */
+	/** The flavor to use when stringifying boolean values. Defaults to "1/0". */
 	boolFlavor?: EnvVariableBoolValueFlavor;
 };
 
@@ -104,7 +96,6 @@ export function stringifyEnvVariableValue(
 		case "boolean":
 			return stringifyEnvVariableBoolValue(value, effectiveOptions.boolFlavor);
 
-		// biome-ignore lint/suspicious/noFallthroughSwitchClause: intended
 		case "object":
 			if (value === null) {
 				return "";

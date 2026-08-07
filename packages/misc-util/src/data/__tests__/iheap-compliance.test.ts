@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import type { Callable } from "../../ecma/function/types.js";
 import { BinaryHeap } from "../binary-heap.js";
 import type { IHeap } from "../iheap.js";

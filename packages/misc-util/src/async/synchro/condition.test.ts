@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { Condition } from "./condition.js";
 import { Mutex } from "./mutex.js";
 

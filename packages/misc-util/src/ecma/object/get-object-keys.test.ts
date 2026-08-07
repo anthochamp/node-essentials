@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getObjectKeys } from "./get-object-keys.js";
 
 describe("getObjectKeys", () => {
@@ -298,7 +299,7 @@ describe("getObjectKeys", () => {
 		});
 
 		it("should handle sparse arrays", () => {
-			// biome-ignore lint/suspicious/noSparseArray: test
+			// eslint-disable-next-line no-sparse-arrays
 			const sparse = [1, , 3];
 
 			const keys = getObjectKeys(sparse, {
@@ -387,7 +388,6 @@ describe("getObjectKeys", () => {
 		it("should handle class instances", () => {
 			class TestClass {
 				public instanceProp = "instance";
-				// biome-ignore lint/correctness/noUnusedPrivateClassMembers: test
 				private privateProp = "private";
 
 				method() {

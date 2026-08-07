@@ -1,6 +1,7 @@
 import type * as fs from "node:fs";
 import type * as tty from "node:tty";
 import { stripVTControlCharacters } from "node:util";
+
 import {
 	defaults,
 	LockHold,
@@ -8,6 +9,7 @@ import {
 	Queue,
 	serializeQueueNext,
 } from "@ac-essentials/misc-util";
+
 import type { ILoggerPrinter } from "../logger-printer.js";
 import type { LoggerRecord } from "../logger-record.js";
 import { loggerIsErrorLogLevel } from "../util/is-error-log-level.js";
@@ -16,8 +18,8 @@ import type { LoggerRecordStringifier } from "../util/record-stringifiers/record
 
 export type TextStreamPrinterOptions = {
 	/**
-	 * The record stringifier to use to convert log records to strings.
-	 * Default is an instance of `AnsiLoggerRecordStringifier`.
+	 * The record stringifier to use to convert log records to strings. Default is
+	 * an instance of `AnsiLoggerRecordStringifier`.
 	 */
 	recordStringifier?: LoggerRecordStringifier;
 };

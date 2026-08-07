@@ -6,22 +6,22 @@ import { type ILock, LockNotAcquiredError } from "./ilock.js";
 
 export type UdpBindLockConfig = {
 	/**
-	 * The type of UDP socket to create, either "udp4" for IPv4 or "udp6" for IPv6.
+	 * The type of UDP socket to create, either "udp4" for IPv4 or "udp6" for
+	 * IPv6.
 	 *
 	 * It should match the IP version of the `udpBindAddress`.
 	 */
 	udpSocketType: "udp4" | "udp6";
 
 	/**
-	 * The address to bind the UDP socket to.
-	 * Default is "localhost"
+	 * The address to bind the UDP socket to. Default is "localhost"
 	 *
-	 * Example: "localhost" or "127.1.2.3" (in which case `udpSocketType` should be
-	 * "udp4") or "::1" (in which case `udpSocketType` should be "udp6").
+	 * Example: "localhost" or "127.1.2.3" (in which case `udpSocketType` should
+	 * be "udp4") or "::1" (in which case `udpSocketType` should be "udp6").
 	 *
 	 * Note: Using "localhost" is generally safe as it resolves to both IPv4 and
-	 * IPv6 loopback addresses, but if you want to be certain about the IP version,
-	 * specify the address explicitly.
+	 * IPv6 loopback addresses, but if you want to be certain about the IP
+	 * version, specify the address explicitly.
 	 */
 	udpBindAddress?: string | null;
 
@@ -35,8 +35,8 @@ export type UdpBindLockConfig = {
 
 export type UdpBindLockOptions = {
 	/**
-	 * Optional polling interval in milliseconds to check if the lock is still held.
-	 * Default is 100 ms.
+	 * Optional polling interval in milliseconds to check if the lock is still
+	 * held. Default is 100 ms.
 	 */
 	pollIntervalMs?: number;
 };
@@ -46,8 +46,8 @@ const UDP_BIND_LOCK_DEFAULT_OPTIONS: Required<UdpBindLockOptions> = {
 };
 
 /**
- * A class that provides a mechanism to ensure that only one instance of a process
- * is running at a time by attempting to bind to a specific UDP port.
+ * A class that provides a mechanism to ensure that only one instance of a
+ * process is running at a time by attempting to bind to a specific UDP port.
  *
  * This is useful for preventing multiple instances of a script or application
  * from running simultaneously.
@@ -56,16 +56,17 @@ const UDP_BIND_LOCK_DEFAULT_OPTIONS: Required<UdpBindLockOptions> = {
  * recommended to call `release` explicitly when the lock is no longer needed.
  *
  * Example usage:
+ *
  * ```ts
  * const lock = new UdpBindLock({
- *   udpSocketType: "udp4",
- *   udpBindPort: 12345,
+ * 	udpSocketType: "udp4",
+ * 	udpBindPort: 12345,
  * });
  *
  * const acquired = await lock.tryAcquire();
  * if (!acquired) {
- *   console.error("Another instance is already running.");
- *   process.exit(1);
+ * 	console.error("Another instance is already running.");
+ * 	process.exit(1);
  * }
  *
  * // ... application logic ...

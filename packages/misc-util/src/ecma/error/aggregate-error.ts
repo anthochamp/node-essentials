@@ -1,4 +1,5 @@
 import type { RequiredKeysOf, SetFieldType } from "type-fest";
+
 import { isErrorLike } from "./error.js";
 
 /**
@@ -6,13 +7,14 @@ import { isErrorLike } from "./error.js";
  *
  * Helps clarify the code to disambugate between the AggregateError JS class and
  * its interface (type), which have the same name, which can be confusing when
- * referring to an object that looks like an AggregateError but is not an instance
- * of the AggregateError class.
+ * referring to an object that looks like an AggregateError but is not an
+ * instance of the AggregateError class.
  */
 export type IAggregateError = SetFieldType<AggregateError, "errors", unknown[]>;
 
 /**
- * Test if value is AggregateError-like (has name, message and errors properties)
+ * Test if value is AggregateError-like (has name, message and errors
+ * properties)
  */
 export function isAggregateErrorLike(value: unknown): value is IAggregateError {
 	if (value instanceof AggregateError || isErrorLike(value)) {

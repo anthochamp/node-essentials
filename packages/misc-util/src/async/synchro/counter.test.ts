@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { Counter } from "./counter.js";
 
 describe("Counter", () => {

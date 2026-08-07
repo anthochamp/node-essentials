@@ -9,13 +9,14 @@ export type StringIsEqualOptions = {
 };
 
 /**
- * Compares two strings for equality, with options for case insensitivity
- * and diacritic replacement.
+ * Compares two strings for equality, with options for case insensitivity and
+ * diacritic replacement.
  *
  * @param a The first string to compare.
  * @param b The second string to compare.
  * @param options Comparison options.
- * @returns True if the strings are considered equal based on the provided options; otherwise, false.
+ * @returns True if the strings are considered equal based on the provided
+ *   options; otherwise, false.
  */
 export function stringIsEqual(
 	a: string,

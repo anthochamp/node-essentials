@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { toFixedLength } from "./to-fixed-length.js";
 
 suite("toFixedLength", () => {

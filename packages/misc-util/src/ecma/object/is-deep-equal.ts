@@ -1,4 +1,5 @@
 import { isDeepStrictEqual } from "node:util";
+
 import { UnsupportedError } from "../error/unsupported-error.js";
 import type { IsEqualWellKnownStrategy } from "./is-equal.js";
 

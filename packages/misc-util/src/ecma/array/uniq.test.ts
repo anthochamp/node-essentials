@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { uniq } from "./uniq.js";
 
 suite("uniq", () => {

@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { Semaphore } from "./semaphore.js";
 
 suite("Semaphore", () => {

@@ -19,9 +19,12 @@ const JSON_MAKE_CIRCULAR_REFERENCE_REPLACER_FUNCTION_DEFAULT_OPTIONS: Required<J
  * placeholder. It can be combined with an optional user-defined replacer for
  * additional customization.
  *
- * @param replacer An optional user-defined replacer (function or property list) to apply after the circular reference handling.
- * @param options Options for configuring the circular safe replacer function, including the placeholder string to use for circular references.
- * @returns A JSON replacer function that handles circular references and applies the user-defined replacer if provided.
+ * @param replacer An optional user-defined replacer (function or property list)
+ *   to apply after the circular reference handling.
+ * @param options Options for configuring the circular safe replacer function,
+ *   including the placeholder string to use for circular references.
+ * @returns A JSON replacer function that handles circular references and
+ *   applies the user-defined replacer if provided.
  */
 export function jsonMakeCircularReferenceReplacerFunction(
 	replacer?: JsonReplacer,

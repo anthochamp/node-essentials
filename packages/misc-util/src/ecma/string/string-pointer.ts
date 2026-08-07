@@ -4,8 +4,8 @@ import { clamp } from "../../math/clamp.js";
  * A C-like string pointer.
  *
  * It maintains an offset into a string and provides methods to get the
- * substring from the current offset, check if the offset is out of range,
- * and get the length of the remaining string.
+ * substring from the current offset, check if the offset is out of range, and
+ * get the length of the remaining string.
  */
 export class StringPointer {
 	private _valueCache: string | null = null;
@@ -18,16 +18,12 @@ export class StringPointer {
 	 */
 	constructor(readonly source: string) {}
 
-	/**
-	 * The current offset.
-	 */
+	/** The current offset. */
 	get offset(): number {
 		return this._offset;
 	}
 
-	/**
-	 * Sets the current offset.
-	 */
+	/** Sets the current offset. */
 	set offset(offset: number) {
 		if (this._offset !== offset) {
 			this._offset = offset;
@@ -44,16 +40,12 @@ export class StringPointer {
 		return this.offset < 0 || this.offset >= this.source.length;
 	}
 
-	/**
-	 * The length of the remaining string from the current offset.
-	 */
+	/** The length of the remaining string from the current offset. */
 	get length(): number {
 		return this.source.length - this.getBoundedOffset();
 	}
 
-	/**
-	 * The substring from the current offset to the end of the string.
-	 */
+	/** The substring from the current offset to the end of the string. */
 	get value(): string {
 		if (this._valueCache === null) {
 			this._valueCache = this.source.substring(this.getBoundedOffset());

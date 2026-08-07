@@ -1,38 +1,31 @@
 import * as dgram from "node:dgram";
 import type * as net from "node:net";
+
 import type { Except, TypedArray } from "type-fest";
+
 import { EventDispatcherMapBase } from "../../async/events/_event-dispatcher-map-base.js";
 import type { IEventDispatcherMap } from "../../async/events/ievent-dispatcher-map.js";
 import type { IError } from "../../ecma/error/error.js";
 import { isNodeErrorWithCode } from "../error/node-error.js";
 import { composeInetAddress, type InetEndpoint } from "./inet.js";
 
-/**
- * Event map for DgramSocket socket-specific events.
- */
+/** Event map for DgramSocket socket-specific events. */
 export type DgramSocketEvents = {
-	/**
-	 * Emitted when the socket is closed.
-	 */
+	/** Emitted when the socket is closed. */
 	close: [];
 
-	/**
-	 * Emitted after a socket is addressed using `bind()`.
-	 */
+	/** Emitted after a socket is addressed using `bind()`. */
 	connect: [];
 
-	/**
-	 * Emitted when an error occurs.
-	 */
+	/** Emitted when an error occurs. */
 	error: [error: IError];
 
-	/**
-	 * Emitted when the socket is ready to receive data.
-	 */
+	/** Emitted when the socket is ready to receive data. */
 	listening: [];
 
 	/**
 	 * Emitted when a new datagram is available on a socket.
+	 *
 	 * @param msg - The message buffer received
 	 * @param msgSize - The size of the message in bytes
 	 * @param from - The sender's endpoint information (address, port, and family)
@@ -41,22 +34,19 @@ export type DgramSocketEvents = {
 };
 
 export interface DgramSocketStat {
-	/**
-	 * The number of datagrams currently queued for sending.
-	 */
+	/** The number of datagrams currently queued for sending. */
 	sendQueueCount: number;
 
-	/**
-	 * The total number of bytes currently queued for sending.
-	 */
+	/** The total number of bytes currently queued for sending. */
 	sendQueueSize: number;
 }
 
 /**
- * High-level wrapper around Node.js {@link dgram.Socket | UDP datagram sockets}.
+ * High-level wrapper around Node.js
+ * {@link dgram.Socket | UDP datagram sockets}.
  *
- * This class delegates almost all behavior to an underlying {@link dgram.Socket}
- * instance while:
+ * This class delegates almost all behavior to an underlying
+ * {@link dgram.Socket} instance while:
  *
  * - Providing strongly-typed events via {@link DgramSocketEvents}.
  * - Using {@link InetEndpoint} instead of Node's `RemoteInfo`.
@@ -68,11 +58,14 @@ export interface DgramSocketStat {
  * their counterparts on {@link dgram.Socket}.
  *
  * Example usage:
+ *
  * ```ts
  * const dgramSocket = DgramSocket.from({ type: "udp4" });
  * await dgramSocket.bind(12345, "localhost");
  * dgramSocket.on("message", (msg, msgSize, from) => {
- *   console.log(`Received ${msgSize} bytes from ${from.address}:${from.port}`);
+ * 	console.log(
+ * 		`Received ${msgSize} bytes from ${from.address}:${from.port}`,
+ * 	);
  * });
  * await dgramSocket.send(54321, "localhost", Buffer.from("Hello, UDP!"));
  * await dgramSocket.close();
@@ -82,9 +75,7 @@ export class DgramSocket
 	extends EventDispatcherMapBase<DgramSocketEvents>
 	implements IEventDispatcherMap<DgramSocketEvents>
 {
-	/**
-	 * Creates a new `DgramSocket` instance with the specified options.
-	 */
+	/** Creates a new `DgramSocket` instance with the specified options. */
 	static from(options?: dgram.SocketOptions): DgramSocket {
 		return new DgramSocket(dgram.createSocket(options || { type: "udp4" }));
 	}
@@ -92,7 +83,8 @@ export class DgramSocket
 	private readonly handledErrorEvents: Set<IError> = new Set();
 
 	/**
-	 * Constructs a new `DgramSocket` instance wrapping the provided `dgram.Socket`.
+	 * Constructs a new `DgramSocket` instance wrapping the provided
+	 * `dgram.Socket`.
 	 */
 	constructor(private readonly sock: dgram.Socket) {
 		super();
@@ -100,14 +92,16 @@ export class DgramSocket
 	}
 
 	/**
-	 * References the socket, preventing the process from exiting while the socket is active.
+	 * References the socket, preventing the process from exiting while the socket
+	 * is active.
 	 */
 	ref(): void {
 		this.sock.ref();
 	}
 
 	/**
-	 * Unreferences the socket, allowing the process to exit even if the socket is active.
+	 * Unreferences the socket, allowing the process to exit even if the socket is
+	 * active.
 	 */
 	unref(): void {
 		this.sock.unref();
@@ -209,8 +203,8 @@ export class DgramSocket
 	 * Removes this socket from a source-specific multicast group.
 	 *
 	 * This is a thin wrapper around
-	 * {@link dgram.Socket.dropSourceSpecificMembership}, removing
-	 * source-specific multicast membership for the given source and group.
+	 * {@link dgram.Socket.dropSourceSpecificMembership}, removing source-specific
+	 * multicast membership for the given source and group.
 	 */
 	dropSourceMembership(
 		sourceAddress: string,
@@ -257,8 +251,8 @@ export class DgramSocket
 	/**
 	 * Sets the unicast time-to-live (TTL) value for outgoing packets.
 	 *
-	 * This is a thin wrapper around {@link dgram.Socket.setTTL}, which
-	 * configures the `IP_TTL` socket option.
+	 * This is a thin wrapper around {@link dgram.Socket.setTTL}, which configures
+	 * the `IP_TTL` socket option.
 	 */
 	setTtl(ttl: number): void {
 		this.sock.setTTL(ttl);
@@ -267,8 +261,10 @@ export class DgramSocket
 	/**
 	 * Gets the address information of the bound socket.
 	 *
-	 * @returns The socket's endpoint information or null if the socket is not bound.
-	 * @throws {UnsupportedError} If the address type is not an AddressInfo object.
+	 * @returns The socket's endpoint information or null if the socket is not
+	 *   bound.
+	 * @throws {UnsupportedError} If the address type is not an AddressInfo
+	 *   object.
 	 */
 	address(): InetEndpoint | null {
 		let addr: net.AddressInfo;
@@ -295,8 +291,10 @@ export class DgramSocket
 	/**
 	 * Binds the UDP socket to the specified address and port.
 	 *
-	 * @param port The port to bind to. If not specified, a random available port will be used.
-	 * @param address The address to bind to. If not specified, the socket will bind to all available interfaces.
+	 * @param port The port to bind to. If not specified, a random available port
+	 *   will be used.
+	 * @param address The address to bind to. If not specified, the socket will
+	 *   bind to all available interfaces.
 	 * @param options Binding options.
 	 * @returns A promise that resolves when the socket is successfully bound.
 	 */
@@ -368,20 +366,21 @@ export class DgramSocket
 	 * Sends a message to the specified address and port.
 	 *
 	 * The msg argument contains the message to be sent. Depending on its type,
-	 * different behavior can apply. If msg is a Buffer, any TypedArray or a DataView,
-	 * the offset and length specify the offset within the Buffer where the message
-	 * begins and the number of bytes in the message, respectively.
+	 * different behavior can apply. If msg is a Buffer, any TypedArray or a
+	 * DataView, the offset and length specify the offset within the Buffer where
+	 * the message begins and the number of bytes in the message, respectively.
 	 *
 	 * If msg is a String, then it is automatically converted to a Buffer with
 	 * 'utf8' encoding.
 	 *
 	 * With messages that contain multi-byte characters, offset and length will be
-	 * calculated with respect to byte length and not the character position.
-	 * If msg is an array, offset and length must not be specified.
+	 * calculated with respect to byte length and not the character position. If
+	 * msg is an array, offset and length must not be specified.
 	 *
 	 * @param port The destination port.
 	 * @param address The destination address.
-	 * @param msg The message to send. This can be a `Buffer`, `TypedArray`, or `DataView`.
+	 * @param msg The message to send. This can be a `Buffer`, `TypedArray`, or
+	 *   `DataView`.
 	 * @param offset Optional offset in the message buffer to start sending from.
 	 * @param length Optional number of bytes to send from the message buffer.
 	 * @returns A promise that resolves with the number of bytes sent.

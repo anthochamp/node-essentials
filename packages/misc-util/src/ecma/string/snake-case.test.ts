@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { buildSnakeCase, snakeCase } from "./snake-case.js";
 
 suite("snakeCase", () => {

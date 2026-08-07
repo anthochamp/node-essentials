@@ -7,6 +7,7 @@ import {
 	test,
 	vi,
 } from "vitest";
+
 import { noThrow, noThrowAsync } from "./no-throw.js";
 
 suite("noThrow", () => {

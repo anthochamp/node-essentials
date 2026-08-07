@@ -1,9 +1,7 @@
 import { noThrowAsync } from "../function/no-throw.js";
 import type { Callable } from "../function/types.js";
 
-/**
- * A simple timer that calls a callback after a specified delay.
- */
+/** A simple timer that calls a callback after a specified delay. */
 export class Timer {
 	private timeoutId: ReturnType<typeof setTimeout> | null = null;
 
@@ -19,17 +17,16 @@ export class Timer {
 	) {}
 
 	/**
-	 * Returns whether the timer is currently active (i.e., has been started and not yet fired or canceled).
+	 * Returns whether the timer is currently active (i.e., has been started and
+	 * not yet fired or canceled).
 	 *
-	 * @return True if the timer is active, false otherwise.
+	 * @returns True if the timer is active, false otherwise.
 	 */
 	isActive(): boolean {
 		return this.timeoutId !== null;
 	}
 
-	/**
-	 * Starts the timer. If the timer is already active, this does nothing.
-	 */
+	/** Starts the timer. If the timer is already active, this does nothing. */
 	start(): void {
 		if (this.timeoutId !== null) {
 			return;
@@ -38,9 +35,7 @@ export class Timer {
 		this.timeoutId = setTimeout(() => this.onTick(), this.delayMs);
 	}
 
-	/**
-	 * Cancels the timer. If the timer is not active, this does nothing.
-	 */
+	/** Cancels the timer. If the timer is not active, this does nothing. */
 	cancel(): void {
 		if (this.timeoutId !== null) {
 			clearTimeout(this.timeoutId);
@@ -48,9 +43,7 @@ export class Timer {
 		}
 	}
 
-	/**
-	 * Restarts the timer. If the timer is not active, this starts it.
-	 */
+	/** Restarts the timer. If the timer is not active, this starts it. */
 	restart(): void {
 		this.cancel();
 		this.start();

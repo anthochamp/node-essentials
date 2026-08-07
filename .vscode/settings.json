@@ -4,13 +4,13 @@
 		"**/.pnp.*": true
 	},
 	"[typescript][javascript][json][jsonc]": {
-		"editor.defaultFormatter": "biomejs.biome",
+		"editor.defaultFormatter": "oxc.oxc-vscode",
 		"editor.formatOnSave": true,
 		"editor.codeActionsOnSave": {
 			"source.addMissingImports.ts": "explicit",
-			"source.fixAll.biome": "explicit",
+			"source.fixAll.oxc": "explicit",
 			"source.removeUnusedImports": "explicit",
-			"source.organizeImports.biome": "explicit"
+			"source.organizeImports": "explicit"
 		}
 	}
 }

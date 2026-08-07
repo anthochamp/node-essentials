@@ -1,5 +1,7 @@
 import { Writable } from "node:stream";
+
 import { expect, suite, test, vi } from "vitest";
+
 import { ProcessExitError } from "./process-exit-error.js";
 import { shellExec } from "./shell-exec.js";
 

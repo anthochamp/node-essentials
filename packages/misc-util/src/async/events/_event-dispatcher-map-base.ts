@@ -1,10 +1,10 @@
 import type { Callable } from "../../ecma/function/types.js";
 import { EventDispatcherBase } from "./_event-dispatcher-base.js";
+import type { IEventDispatcherMap } from "./ievent-dispatcher-map.js";
 import type {
 	EventDispatcherSubscribeOptions,
 	EventDispatcherWaitOptions,
 } from "./ievent-dispatcher.js";
-import type { IEventDispatcherMap } from "./ievent-dispatcher-map.js";
 
 class EventDispatcher_<T extends unknown[]> extends EventDispatcherBase<T> {
 	override dispatch(...args: T): void {
@@ -14,8 +14,7 @@ class EventDispatcher_<T extends unknown[]> extends EventDispatcherBase<T> {
 
 export class EventDispatcherMapBase<
 	Events extends Record<PropertyKey, unknown[]>,
-> implements IEventDispatcherMap<Events>
-{
+> implements IEventDispatcherMap<Events> {
 	private readonly dispatchers: {
 		[K in keyof Events]?: EventDispatcher_<Events[K]>;
 	} = {};

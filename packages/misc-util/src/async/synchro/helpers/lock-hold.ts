@@ -10,41 +10,42 @@ const LOCK_ID_SYMBOL = Symbol.for("ac-essentials.lock-id");
  *
  * Locks are acquired in a globally consistent order to prevent deadlocks.
  *
- * When a LockHold is no longer needed, the `unlock` method should be called
- * to release all held locks. Alternatively, it can be used with the `using`
+ * When a LockHold is no longer needed, the `unlock` method should be called to
+ * release all held locks. Alternatively, it can be used with the `using`
  * statement for automatic disposal.
  *
  * Locks are released in the reverse order of acquisition to maintain proper
  * locking semantics.
  *
  * @example
- * ```ts
- * const lockA = new Mutex();
- * const lockB = new Mutex();
+ * 	```ts
+ * 	const lockA = new Mutex();
+ * 	const lockB = new Mutex();
  *
- * async function criticalSection() {
- *     // Acquire both locks
- *     const lockHold = await LockHold.from([lockA, lockB]);
- *     try {
- *         // Critical section code goes here
- *     } finally {
- *         // Release the locks
- *         await lockHold.unlock();
- *     }
- * }
- * ```
+ * 	async function criticalSection() {
+ * 		// Acquire both locks
+ * 		const lockHold = await LockHold.from([lockA, lockB]);
+ * 		try {
+ * 			// Critical section code goes here
+ * 		} finally {
+ * 			// Release the locks
+ * 			await lockHold.unlock();
+ * 		}
+ * 	}
+ * 	```;
  *
- * @example Using with `using` statement
- * ```ts
- * const lockA = new Mutex();
- * const lockB = new Mutex();
+ * @example
+ * 	Using with `using` statement
+ * 	```ts
+ * 	const lockA = new Mutex();
+ * 	const lockB = new Mutex();
  *
- * async function criticalSection() {
- *     // Acquire both locks
- *     await using _ = await LockHold.from([lockA, lockB]);
- *     // Critical section code goes here
- * }
- * ```
+ * 	async function criticalSection() {
+ * 	// Acquire both locks
+ * 	await using _ = await LockHold.from([lockA, lockB]);
+ * 	// Critical section code goes here
+ * 	}
+ * 	```
  */
 export class LockHold implements AsyncDisposable {
 	private constructor(private readonly locks: Iterable<ILock>) {}
@@ -115,7 +116,7 @@ export class LockHold implements AsyncDisposable {
 	 *
 	 * @param locks The locks to acquire.
 	 * @returns A promise that resolves to a LockHold if all locks were acquired,
-	 * or `null` if any lock could not be acquired.
+	 *   or `null` if any lock could not be acquired.
 	 */
 	static async tryFrom(...locks: ILock[]): Promise<LockHold | null> {
 		const sortedLocks = [...locks].sort(
@@ -142,9 +143,7 @@ export class LockHold implements AsyncDisposable {
 		return new LockHold(heldLocks);
 	}
 
-	/**
-	 * Releases all held locks.
-	 */
+	/** Releases all held locks. */
 	async unlock(): Promise<void> {
 		await LockHold._unlock(Array.from(this.locks));
 	}

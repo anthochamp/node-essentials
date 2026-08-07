@@ -1,5 +1,7 @@
 import * as net from "node:net";
+
 import type { Except } from "type-fest";
+
 import type { IError } from "../../ecma/error/error.js";
 import {
 	composeInetAddress,
@@ -8,31 +10,27 @@ import {
 } from "./inet.js";
 import { StreamSocket, type StreamSocketEvents } from "./stream-socket.js";
 
-/**
- * Event map for TcpSocket socket-specific events.
- */
+/** Event map for TcpSocket socket-specific events. */
 export type TcpSocketEvents = StreamSocketEvents & {
 	/**
-	 * Emitted when a new connection attempt is started.
-	 * May be emitted multiple times if family autoselection is enabled.
+	 * Emitted when a new connection attempt is started. May be emitted multiple
+	 * times if family autoselection is enabled.
 	 */
 	connectionAttempt: [endpoint: InetEndpoint];
 
 	/**
-	 * Emitted when a connection attempt failed.
-	 * May be emitted multiple times if family autoselection is enabled.
+	 * Emitted when a connection attempt failed. May be emitted multiple times if
+	 * family autoselection is enabled.
 	 */
 	connectionAttemptFailed: [endpoint: InetEndpoint, error: Error];
 
 	/**
-	 * Emitted when a connection attempt timed out.
-	 * May be emitted multiple times if family autoselection is enabled.
+	 * Emitted when a connection attempt timed out. May be emitted multiple times
+	 * if family autoselection is enabled.
 	 */
 	connectionAttemptTimeout: [endpoint: InetEndpoint];
 
-	/**
-	 * Emitted after resolving the host name but before connecting.
-	 */
+	/** Emitted after resolving the host name but before connecting. */
 	lookup: [err: Error | null, address: InetAddress, host: string];
 };
 
@@ -40,6 +38,7 @@ export type TcpSocketEvents = StreamSocketEvents & {
  * TCP socket for establishing connections to TCP servers.
  *
  * Example usage:
+ *
  * ```ts
  * const tcpSocket = new TcpSocket.from();
  * await tcpSocket.connect(80, "example.com");
@@ -70,6 +69,7 @@ export class TcpSocket<
 
 	/**
 	 * Returns the remote endpoint information of the socket.
+	 *
 	 * @throws {UnsupportedError} If the socket family is not IPv4 or IPv6.
 	 */
 	get remoteEndpoint(): InetEndpoint | null {
@@ -93,6 +93,7 @@ export class TcpSocket<
 
 	/**
 	 * Returns the local endpoint information of the socket.
+	 *
 	 * @throws {UnsupportedError} If the socket family is not IPv4 or IPv6.
 	 */
 	get localEndpoint(): InetEndpoint | null {
@@ -118,7 +119,8 @@ export class TcpSocket<
 	 * Sets the keep-alive option for the socket.
 	 *
 	 * @param enable Whether to enable keep-alive.
-	 * @param initialDelay The initial delay in milliseconds before the first keep-alive probe.
+	 * @param initialDelay The initial delay in milliseconds before the first
+	 *   keep-alive probe.
 	 */
 	setKeepAlive(enable: boolean, initialDelay?: number): void {
 		this.sock.setKeepAlive(enable, initialDelay);
@@ -139,7 +141,8 @@ export class TcpSocket<
 	 * @param port The port to connect to.
 	 * @param host The host to connect to (defaults to `localhost`).
 	 * @param options Connection options.
-	 * @returns A promise that resolves when the connection is successfully established.
+	 * @returns A promise that resolves when the connection is successfully
+	 *   established.
 	 */
 	connect(
 		port: number,

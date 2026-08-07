@@ -3,29 +3,23 @@ import { LockNotAcquiredError } from "./ilock.js";
 import { Mutex } from "./mutex.js";
 
 /**
- * An asynchronous read-write lock (RwLock) for coordinating access to shared resources.
+ * An asynchronous read-write lock (RwLock) for coordinating access to shared
+ * resources.
  *
  * Allows multiple concurrent readers or exclusive access for a single writer.
  *
  * All lock/unlock operations are asynchronous and must be awaited.
  *
- * WARNING: Deadlock is possible if:
- *   - A task attempts to acquire a lock it already holds (no reentrancy).
- *   - Locks are acquired in inconsistent order across tasks.
- *   - A task forgets to unlock after acquiring.
+ * WARNING: Deadlock is possible if: - A task attempts to acquire a lock it
+ * already holds (no reentrancy). - Locks are acquired in inconsistent order
+ * across tasks. - A task forgets to unlock after acquiring.
  *
- * Best practices:
- *   - Always use try/finally to ensure unlock.
- *   - Avoid holding locks across await points that may block indefinitely.
- *   - Never call lock methods from within unlock callbacks.
+ * Best practices: - Always use try/finally to ensure unlock. - Avoid holding
+ * locks across await points that may block indefinitely. - Never call lock
+ * methods from within unlock callbacks.
  *
- * Example usage:
- *   await rwLock.readLock();
- *   try {
- *     // read shared resource
- *   } finally {
- *     rwLock.readUnlock();
- *   }
+ * Example usage: await rwLock.readLock(); try { // read shared resource }
+ * finally { rwLock.readUnlock(); }
  */
 export class RwLock {
 	private mutex = new Mutex();
@@ -35,7 +29,8 @@ export class RwLock {
 	private writersWaiting = 0;
 
 	/**
-	 * Acquire a read lock. Multiple readers may hold the lock concurrently unless a writer is waiting or active.
+	 * Acquire a read lock. Multiple readers may hold the lock concurrently unless
+	 * a writer is waiting or active.
 	 *
 	 * @param signal Optional AbortSignal to cancel the wait.
 	 * @throws Error if the lock cannot be acquired due to cancellation.
@@ -53,7 +48,8 @@ export class RwLock {
 	}
 
 	/**
-	 * Acquire a write lock. Only one writer may hold the lock, and no readers may be active.
+	 * Acquire a write lock. Only one writer may hold the lock, and no readers may
+	 * be active.
 	 *
 	 * @param signal Optional AbortSignal to cancel the wait.
 	 * @throws Error if the lock cannot be acquired due to cancellation.
@@ -93,7 +89,8 @@ export class RwLock {
 	}
 
 	/**
-	 * Attempt to acquire a write lock without waiting. Returns true if successful.
+	 * Attempt to acquire a write lock without waiting. Returns true if
+	 * successful.
 	 *
 	 * @returns True if the write lock was acquired, false otherwise.
 	 */
@@ -113,7 +110,8 @@ export class RwLock {
 	}
 
 	/**
-	 * Upgrade a held read lock to a write lock. The caller must already hold a read lock.
+	 * Upgrade a held read lock to a write lock. The caller must already hold a
+	 * read lock.
 	 *
 	 * @param signal Optional AbortSignal to cancel the wait.
 	 * @throws Error if the upgrade cannot be completed due to cancellation.
@@ -150,7 +148,8 @@ export class RwLock {
 	}
 
 	/**
-	 * Downgrade a held write lock to a read lock. The caller must already hold the write lock.
+	 * Downgrade a held write lock to a read lock. The caller must already hold
+	 * the write lock.
 	 *
 	 * @param signal Optional AbortSignal to cancel the wait.
 	 */
@@ -193,7 +192,8 @@ export class RwLock {
 	/**
 	 * Release a previously acquired write lock.
 	 *
-	 * WARNING: Failing to call writeUnlock() after writeLock() will cause deadlock.
+	 * WARNING: Failing to call writeUnlock() after writeLock() will cause
+	 * deadlock.
 	 */
 	async writeUnlock(): Promise<void> {
 		await this.mutex.lock();

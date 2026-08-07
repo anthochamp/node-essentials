@@ -40,22 +40,18 @@ export type GetProcessesSnapshotFilters = {
 };
 
 export type GetProcessesSnapshotOptions = {
-	/**
-	 * Filters to apply to the process list.
-	 */
+	/** Filters to apply to the process list. */
 	filters?: GetProcessesSnapshotFilters | null;
 
 	/**
-	 * Fields to include in the result.
-	 * Defaults to `null`.
+	 * Fields to include in the result. Defaults to `null`.
 	 *
-	 * If the array is empty or not provided, all available fields will be included in the result.
+	 * If the array is empty or not provided, all available fields will be
+	 * included in the result.
 	 */
 	fields?: (keyof ProcessInfo)[] | null;
 
-	/**
-	 * Optional signal that can be used to abort the operation.
-	 */
+	/** Optional signal that can be used to abort the operation. */
 	signal?: AbortSignal | null;
 };
 
@@ -203,7 +199,6 @@ export async function getProcessesSnapshotPosix<
 				}
 
 				for (let i = 0; i < args.length; i++) {
-					// biome-ignore lint/style/noNonNullAssertion: for loop
 					const arg = args[i]!;
 
 					const entryArg = entry.command[i + 1];

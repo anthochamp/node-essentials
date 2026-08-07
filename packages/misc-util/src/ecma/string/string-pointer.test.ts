@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { StringPointer } from "./string-pointer.js";
 
 suite("StringPointer", () => {

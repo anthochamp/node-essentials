@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { delay } from "./delay.js";
 
 suite("delay", () => {

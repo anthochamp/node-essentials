@@ -3,6 +3,7 @@ import {
 	ProcessExitWithOutputError,
 } from "@ac-essentials/misc-util";
 import { beforeEach, expect, suite, test, vi } from "vitest";
+
 import { ps, psParseDuration } from "./ps.js";
 
 vi.mock(import("@ac-essentials/misc-util"), async (importActual) => {

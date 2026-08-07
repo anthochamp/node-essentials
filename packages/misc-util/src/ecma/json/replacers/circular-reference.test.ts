@@ -1,11 +1,10 @@
-/** biome-ignore-all lint/style/noNonNullAssertion: tests */
 import { describe, expect, it } from "vitest";
+
 import { jsonMakeCircularReferenceReplacerFunction } from "./circular-reference.js";
 
 describe("jsonMakeCircularReferenceReplacerFunction", () => {
 	it("should replace circular references with the default placeholder", () => {
 		const replacer = jsonMakeCircularReferenceReplacerFunction();
-		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
 		obj.self = obj;
 		const result = JSON.parse(JSON.stringify(obj, replacer)!);
@@ -16,7 +15,6 @@ describe("jsonMakeCircularReferenceReplacerFunction", () => {
 		const replacer = jsonMakeCircularReferenceReplacerFunction(undefined, {
 			placeholder: "[CIRCULAR_REF]",
 		});
-		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
 		obj.self = obj;
 		const result = JSON.parse(JSON.stringify(obj, replacer)!);
@@ -32,7 +30,6 @@ describe("jsonMakeCircularReferenceReplacerFunction", () => {
 
 	it("should work with nested circular references", () => {
 		const replacer = jsonMakeCircularReferenceReplacerFunction();
-		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { a: 1 };
 		obj.self = obj;
 		obj.nested = { parent: obj };
@@ -46,7 +43,6 @@ describe("jsonMakeCircularReferenceReplacerFunction", () => {
 
 	it("should work with arrays containing circular references", () => {
 		const replacer = jsonMakeCircularReferenceReplacerFunction();
-		// biome-ignore lint/suspicious/noExplicitAny: test
 		const arr: any[] = [1, 2];
 		arr.push(arr);
 		const result = JSON.parse(JSON.stringify(arr, replacer)!);
@@ -55,7 +51,6 @@ describe("jsonMakeCircularReferenceReplacerFunction", () => {
 
 	it("should work with complex objects containing circular references", () => {
 		const replacer = jsonMakeCircularReferenceReplacerFunction();
-		// biome-ignore lint/suspicious/noExplicitAny: test
 		const obj: any = { name: "Alice" };
 		obj.self = obj;
 		obj.friends = [{ name: "Bob", friend: obj }];

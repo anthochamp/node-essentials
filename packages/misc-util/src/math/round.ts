@@ -1,19 +1,13 @@
 import { defaults } from "../ecma/object/defaults.js";
 
-/**
- * Supported rounding methods.
- */
+/** Supported rounding methods. */
 export type RoundingMethod = "round" | "floor" | "ceil" | "trunc";
 
 export type RoundOptions = {
-	/**
-	 * Rounding method to use.
-	 */
+	/** Rounding method to use. */
 	roundingMethod?: RoundingMethod;
 
-	/**
-	 * Number of digits to keep after the decimal point.
-	 */
+	/** Number of digits to keep after the decimal point. */
 	fractionDigits?: number;
 };
 

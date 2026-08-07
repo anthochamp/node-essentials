@@ -1,5 +1,6 @@
 /**
- * Capitalizes the first letter of a string and the remaining letters as lower case.
+ * Capitalizes the first letter of a string and the remaining letters as lower
+ * case.
  *
  * @param value The input string.
  * @returns The capitalized string.

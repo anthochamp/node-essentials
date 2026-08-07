@@ -1,5 +1,7 @@
 import * as dgram from "node:dgram";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import { DgramSocket } from "./dgram-socket.js";
 
 describe("DgramSocket", () => {
@@ -428,7 +430,6 @@ describe("DgramSocket", () => {
 				});
 				// Emit an error directly on the underlying socket to test error forwarding
 				// (Note: bind errors are handled specially by bind() and won't be re-emitted)
-				// biome-ignore lint/suspicious/noExplicitAny: accessing private property for testing
 				(socket as any).sock.emit("error", testError);
 				const error = await errorPromise;
 				expect(error).toBe(testError);

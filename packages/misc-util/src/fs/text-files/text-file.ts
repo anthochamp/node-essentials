@@ -4,6 +4,7 @@ import chardet = require("chardet");
 
 import iconvLite from "iconv-lite";
 import type { Except, SetNonNullable } from "type-fest";
+
 import { chardetCharsetToBufferEncoding } from "../../3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
 import { UnsupportedError } from "../../ecma/error/unsupported-error.js";
 import { defaults } from "../../ecma/object/defaults.js";
@@ -14,9 +15,7 @@ import {
 	type NodeWriteFileOptions,
 } from "../../node/fs/types.js";
 
-/**
- * Describes the format of a text file.
- */
+/** Describes the format of a text file. */
 export type TextFileFormat = {
 	/**
 	 * The character set encoding of the file.
@@ -32,14 +31,10 @@ export type TextFileFormat = {
 	 */
 	endOfLine: "\n" | "\r\n" | null;
 
-	/**
-	 * Whether the file ends with a newline.
-	 */
+	/** Whether the file ends with a newline. */
 	finalNewline: boolean;
 
-	/**
-	 * Whether to the file has lines with trailing whitespace.
-	 */
+	/** Whether to the file has lines with trailing whitespace. */
 	trailingWhitespace: boolean;
 
 	/**
@@ -52,9 +47,7 @@ export type TextFileFormat = {
 	indentation: string | null;
 };
 
-/**
- * Options for formatting text files when writing.
- */
+/** Options for formatting text files when writing. */
 export type TextFileFormatOptions = {
 	/**
 	 * The character set encoding of the file.
@@ -101,9 +94,7 @@ export type ReadTextFileOptions = SetNonNullable<
 	"encoding"
 >;
 
-/**
- * Default options for reading text files.
- */
+/** Default options for reading text files. */
 export const READ_TEXT_FILE_DEFAULT_OPTIONS: Required<ReadTextFileOptions> = {
 	...NODE_READ_FILE_DEFAULT_OPTIONS,
 	encoding: "utf-8",
@@ -124,15 +115,11 @@ export function readTextFile(
 	});
 }
 
-/**
- * Options for writing text files.
- */
+/** Options for writing text files. */
 export type WriteTextFileOptions = Except<NodeWriteFileOptions, "encoding"> &
 	TextFileFormatOptions;
 
-/**
- * Default options for writing text files.
- */
+/** Default options for writing text files. */
 export const WRITE_TEXT_FILE_DEFAULT_OPTIONS: Required<WriteTextFileOptions> = {
 	...NODE_WRITE_FILE_DEFAULT_OPTIONS,
 	charsetEncoding: "utf-8",

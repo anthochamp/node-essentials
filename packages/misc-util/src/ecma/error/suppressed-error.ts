@@ -1,13 +1,14 @@
 import type { RequiredKeysOf, SetFieldType } from "type-fest";
+
 import { isErrorLike } from "./error.js";
 
 /**
  * Type alias for the built-in SuppressedError type.
  *
- * Helps clarify the code to disambugate between the SuppressedError JS class and
- * its interface (type), which have the same name, which can be confusing when
- * referring to an object that looks like an SuppressedError but is not an instance
- * of the SuppressedError class.
+ * Helps clarify the code to disambugate between the SuppressedError JS class
+ * and its interface (type), which have the same name, which can be confusing
+ * when referring to an object that looks like an SuppressedError but is not an
+ * instance of the SuppressedError class.
  */
 export type ISuppressedError = SetFieldType<
 	SuppressedError,
@@ -16,7 +17,8 @@ export type ISuppressedError = SetFieldType<
 >;
 
 /**
- * Test if value is SuppressedError-like (has name, message, error and suppressed properties)
+ * Test if value is SuppressedError-like (has name, message, error and
+ * suppressed properties)
  */
 export function isSuppressedErrorLike(
 	value: unknown,

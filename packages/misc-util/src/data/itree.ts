@@ -1,9 +1,8 @@
 import type { Promisable } from "type-fest";
+
 import type { ICollection } from "./icollection.js";
 
-/**
- * Interface representing the children of a tree node.
- */
+/** Interface representing the children of a tree node. */
 export interface ITreeNodeChildren<
 	T,
 	N extends ITreeNode<T, N, C>,
@@ -17,7 +16,8 @@ export interface ITreeNodeChildren<
  *
  * @template T The type of the value contained in the tree node.
  * @template N The type of the tree node itself, extending ITreeNode.
- * @template I The type of the iterable used for child nodes, which can be synchronous or asynchronous.
+ * @template I The type of the iterable used for child nodes, which can be
+ *   synchronous or asynchronous.
  */
 export interface ITreeNode<
 	T,

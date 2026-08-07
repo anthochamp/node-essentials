@@ -7,6 +7,7 @@ import {
 	Queue,
 	serializeQueueNext,
 } from "@ac-essentials/misc-util";
+
 import type { ILoggerPrinter } from "../logger-printer.js";
 import type { LoggerRecord } from "../logger-record.js";
 import { loggerPrinterRecordEqual } from "../util/record-equal.js";
@@ -124,9 +125,8 @@ export class NoRepeatPrinterProxy implements ILoggerPrinter {
 				recordEqual = loggerPrinterRecordEqual(record, this.lastRecord, false);
 			}
 
-			const counterResetted = await this._unprotected_handleRepeatCount(
-				!recordEqual,
-			);
+			const counterResetted =
+				await this._unprotected_handleRepeatCount(!recordEqual);
 
 			this.lastRecord = record;
 

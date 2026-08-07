@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
+
 import {
 	afterAll,
 	beforeAll,
@@ -9,6 +10,7 @@ import {
 	test,
 	vi,
 } from "vitest";
+
 import { readJsonFile, writeJsonFile } from "./json-file.js";
 
 vi.mock("node:fs/promises");
@@ -30,7 +32,6 @@ suite("json-file", () => {
 		test("should read and parse JSON file with default encoding", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
-				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 			);
 
@@ -45,7 +46,6 @@ suite("json-file", () => {
 		test("should read and parse JSON file with specified encoding", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
-				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 			);
 
@@ -64,7 +64,6 @@ suite("json-file", () => {
 		test("should read and parse JSON file with reviver", async () => {
 			const jsonContent = { key: "value" };
 			readFileMock.mockResolvedValueOnce(
-				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 			);
 
@@ -119,7 +118,6 @@ suite("json-file", () => {
 			await writeJsonFile("/path/to/file.json", jsonContent);
 			expect(writeFileMock).toHaveBeenCalledWith(
 				"/path/to/file.json",
-				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 				expect.anything(),
 			);
@@ -139,7 +137,6 @@ suite("json-file", () => {
 			});
 			expect(writeFileMock).toHaveBeenCalledWith(
 				"/path/to/file.json",
-				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent, replacer, space)!),
 				expect.objectContaining({
 					encoding: null,
@@ -156,7 +153,6 @@ suite("json-file", () => {
 			).rejects.toThrow("Write error");
 			expect(writeFileMock).toHaveBeenCalledWith(
 				"/path/to/file.json",
-				// biome-ignore lint/style/noNonNullAssertion: jsonContent is neither undefined, function nor symbol
 				Buffer.from(JSON.stringify(jsonContent)!),
 				expect.anything(),
 			);

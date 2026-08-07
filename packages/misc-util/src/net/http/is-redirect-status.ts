@@ -3,10 +3,10 @@ import { HttpStatusCode } from "./types.js";
 /**
  * Check if the given HTTP status code is a redirect status code.
  *
- * @see https://fetch.spec.whatwg.org/#statuses
- *
  * @param status HTTP status code
- * @returns true if the status code is a redirect status (301, 302, 303, 307, 308), false otherwise.
+ * @returns True if the status code is a redirect status (301, 302, 303, 307,
+ *   308), false otherwise.
+ * @see https://fetch.spec.whatwg.org/#statuses
  */
 export function httpIsRedirectStatus(status: number): boolean {
 	return [

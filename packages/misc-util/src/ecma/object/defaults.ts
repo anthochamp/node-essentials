@@ -9,18 +9,15 @@ import type { UnknownRecord } from "type-fest";
  *
  * This is equivalent to `_.defaults` from Lodash.
  *
+ * @example
+ * 	```ts
+ * 	const options = defaults({ a: 1 }, { a: 2, b: 2 }, { a: 3, b: 3, c: 3 });
+ *
+ * 	console.log(options); // { a: 1, b: 2, c: 3 }
+ * 	```;
+ *
  * @param args The objects to merge.
  * @returns The merged object.
- * @example
- * ```ts
- * const options = defaults(
- *   { a: 1 },
- *   { a: 2, b: 2 },
- *   { a: 3, b: 3, c: 3 }
- * );
- *
- * console.log(options); // { a: 1, b: 2, c: 3 }
- * ```
  */
 export function defaults<R extends object, P extends Partial<R> = Partial<R>>(
 	...args: [...(P | undefined)[], R]

@@ -1,5 +1,5 @@
-/** biome-ignore-all lint/style/noNonNullAssertion: tests */
 import { describe, expect, it } from "vitest";
+
 import { jsonMakeErrorReplacerFunction } from "./error.js";
 
 const error = new Error("Test error");

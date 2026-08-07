@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { minmax } from "./minmax.js";
 
 suite("minmax", () => {

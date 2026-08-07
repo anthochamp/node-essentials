@@ -1,10 +1,12 @@
 import type { Promisable } from "type-fest";
+
 import type { ITree, ITreeNode, ITreeNodeChildren } from "./itree.js";
 
 /**
  * Interface representing a node in a binary tree.
  *
- * A binary tree node contains a value and references to its left and right child nodes.
+ * A binary tree node contains a value and references to its left and right
+ * child nodes.
  *
  * @template T The type of the value stored in the node.
  * @template N The type of nodes in the binary tree, extending IBinaryTreeNode.

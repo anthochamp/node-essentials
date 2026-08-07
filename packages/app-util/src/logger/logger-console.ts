@@ -1,6 +1,7 @@
 import { Console, type ConsoleConstructor } from "node:console";
 import { EOL } from "node:os";
 import { formatWithOptions, type InspectOptions, inspect } from "node:util";
+
 import {
 	captureStackTrace,
 	defaults,
@@ -8,6 +9,7 @@ import {
 	Stack,
 } from "@ac-essentials/misc-util";
 import { Temporal } from "temporal-polyfill";
+
 import type { ILoggerPrinter } from "./logger-printer.js";
 import {
 	LoggerLogLevel,
@@ -87,15 +89,15 @@ const LOGGER_CONSOLE_PATCHABLE_METHODS = [
 	"profileEnd",
 ] as const;
 
-/**
- * Options for the `LoggerConsole` class.
- */
+/** Options for the `LoggerConsole` class. */
 
 export type LoggerConsoleOptions = {
 	/**
-	 * Options to pass to `util.formatWithOptions` and `util.inspect` when formatting log messages.
+	 * Options to pass to `util.formatWithOptions` and `util.inspect` when
+	 * formatting log messages.
 	 *
-	 * See: https://nodejs.org/api/util.html#util_util_formatwithoptions_inspect_options_args
+	 * See:
+	 * https://nodejs.org/api/util.html#util_util_formatwithoptions_inspect_options_args
 	 */
 	inspectOptions?: InspectOptions;
 };
@@ -110,8 +112,8 @@ const LOGGER_CONSOLE_DEFAULT_OPTIONS: Required<LoggerConsoleOptions> = {
  * Implements the standard `Console` interface as defined by:
  * https://console.spec.whatwg.org/
  *
- * Also implements the Node.js extensions to the `Console` interface as defined by:
- * https://nodejs.org/api/console.html#console_console
+ * Also implements the Node.js extensions to the `Console` interface as defined
+ * by: https://nodejs.org/api/console.html#console_console
  */
 export class LoggerConsole implements Console {
 	private readonly options: Required<LoggerConsoleOptions>;
@@ -143,16 +145,14 @@ export class LoggerConsole implements Console {
 	 * This can be used to redirect the output of the global `console` object to
 	 * an instance of `LoggerConsole`.
 	 *
-	 * Example:
-	 * 	const loggerConsole = new LoggerConsole(printer);
-	 * 	LoggerConsole.patchConsole(console, loggerConsole);
+	 * Example: const loggerConsole = new LoggerConsole(printer);
+	 * LoggerConsole.patchConsole(console, loggerConsole);
 	 *
 	 * @param target The target `Console` object to patch
 	 * @param source The source `Console` object to use for the methods
 	 */
 	static patchConsole(target: Console, source: Console): void {
 		for (const methodName of LOGGER_CONSOLE_PATCHABLE_METHODS) {
-			// biome-ignore lint/suspicious/noExplicitAny: dynamic property access
 			(target as any)[methodName] = source[methodName].bind(source);
 		}
 	}
@@ -181,7 +181,7 @@ export class LoggerConsole implements Console {
 			messageRest = data;
 		}
 
-		void this.logger("assert", [message0.join(": "), ...messageRest]);
+		this.logger("assert", [message0.join(": "), ...messageRest]);
 	}
 
 	// https://console.spec.whatwg.org/#clear
@@ -193,33 +193,35 @@ export class LoggerConsole implements Console {
 			this.groupEnd();
 		}
 
-		void Promise.all(this.printers.map((printer) => printer.clear()));
+		void Promise.all(
+			this.printers.map((printer) => Promise.resolve(printer.clear())),
+		);
 	}
 
 	// https://console.spec.whatwg.org/#debug
 	debug(...data: unknown[]): void {
-		void this.logger("debug", data);
+		this.logger("debug", data);
 	}
 
 	// https://console.spec.whatwg.org/#error
 	error(...data: unknown[]): void {
-		void this.logger("error", data);
+		this.logger("error", data);
 	}
 
 	// https://console.spec.whatwg.org/#info
 	info(...data: unknown[]): void {
-		void this.logger("info", data);
+		this.logger("info", data);
 	}
 
 	// https://console.spec.whatwg.org/#log
 	log(...data: unknown[]): void {
-		void this.logger("log", data);
+		this.logger("log", data);
 	}
 
 	// https://console.spec.whatwg.org/#table
 	table(tabularData: unknown, properties?: string[]): void {
 		if (tabularData === null || tabularData === undefined) {
-			void this.logger("log", [tabularData]);
+			this.logger("log", [tabularData]);
 			return;
 		}
 
@@ -228,7 +230,7 @@ export class LoggerConsole implements Console {
 			(Array.isArray(tabularData) && tabularData.length === 0) ||
 			(!Array.isArray(tabularData) && Object.keys(tabularData).length === 0)
 		) {
-			void this.logger("log", ["(empty)"]);
+			this.logger("log", ["(empty)"]);
 			return;
 		}
 
@@ -253,7 +255,7 @@ export class LoggerConsole implements Console {
 		}
 
 		if (rows.length === 0) {
-			void this.logger("log", ["(empty)"]);
+			this.logger("log", ["(empty)"]);
 			return;
 		}
 
@@ -282,7 +284,6 @@ export class LoggerConsole implements Console {
 
 		// Compute column widths
 		const colWidths = header.map((col, i) =>
-			// biome-ignore lint/style/noNonNullAssertion: tableRows's row has been created from selectedProperties (same length as header)
 			Math.max(col.length, ...tableRows.map((row) => row[i]!.length)),
 		);
 
@@ -291,25 +292,19 @@ export class LoggerConsole implements Console {
 
 		// Format the table
 		const lines = [
-			header
-				// biome-ignore lint/style/noNonNullAssertion: colWidths has been created from header (same length)
-				.map((col, i) => col.padEnd(colWidths[i]!))
-				.join(" | "),
+			header.map((col, i) => col.padEnd(colWidths[i]!)).join(" | "),
 			separator,
 			...tableRows.map((row) =>
-				row
-					// biome-ignore lint/style/noNonNullAssertion: colWidths has been created from header (same length as tableRows)
-					.map((cell, i) => cell.padEnd(colWidths[i]!))
-					.join(" | "),
+				row.map((cell, i) => cell.padEnd(colWidths[i]!)).join(" | "),
 			),
 		];
 
-		void this.logger("log", [lines.join("\n")]);
+		this.logger("log", [lines.join("\n")]);
 	}
 
 	// https://console.spec.whatwg.org/#trace
 	trace(...data: unknown[]): void {
-		void this.print(
+		this.print(
 			"trace",
 			[
 				joinNonEmpty(["Trace", this.format(data)], ": "),
@@ -320,17 +315,17 @@ export class LoggerConsole implements Console {
 
 	// https://console.spec.whatwg.org/#warn
 	warn(...data: unknown[]): void {
-		void this.logger("warn", data);
+		this.logger("warn", data);
 	}
 
 	// https://console.spec.whatwg.org/#dir
 	dir(item: unknown, options?: InspectOptions): void {
-		void this.print("dir", item, options);
+		this.print("dir", item, options);
 	}
 
 	// https://console.spec.whatwg.org/#dirxml
 	dirxml(...data: unknown[]): void {
-		void this.logger("dirxml", data);
+		this.logger("dirxml", data);
 	}
 
 	//
@@ -343,7 +338,7 @@ export class LoggerConsole implements Console {
 		const count = (this.countMap.get(label) ?? 0) + 1;
 		this.countMap.set(label, count);
 
-		void this.logger("count", [`${label}: ${count}`]);
+		this.logger("count", [`${label}: ${count}`]);
 	}
 
 	// https://console.spec.whatwg.org/#countreset
@@ -353,7 +348,7 @@ export class LoggerConsole implements Console {
 			return;
 		}
 
-		void this.logger("countReset", [`Counter '${label}' does not exist`]);
+		this.logger("countReset", [`Counter '${label}' does not exist`]);
 	}
 
 	//
@@ -366,7 +361,7 @@ export class LoggerConsole implements Console {
 		const label = data.length === 0 ? "Group" : this.format(data);
 		this.groupStack.push(label);
 
-		void this.print("group", label);
+		this.print("group", label);
 	}
 
 	// https://console.spec.whatwg.org/#groupcollapsed
@@ -374,7 +369,7 @@ export class LoggerConsole implements Console {
 		const label = data.length === 0 ? "Group" : this.format(data);
 		this.groupStack.push(label);
 
-		void this.print("groupCollapsed", label);
+		this.print("groupCollapsed", label);
 	}
 
 	// https://console.spec.whatwg.org/#groupend
@@ -383,17 +378,15 @@ export class LoggerConsole implements Console {
 		if ((groupLabel = this.groupStack.pop()) !== undefined) {
 			const now = Date.now();
 
-			void Promise.all(
-				this.printers.map((printer) =>
-					printer.print({
-						timestamp: now,
-						metadata: {},
-						message: `end of ${groupLabel}`,
-						logLevel: null,
-						stackTrace: null,
-					}),
-				),
-			);
+			for (const printer of this.printers) {
+				printer.print({
+					timestamp: now,
+					metadata: {},
+					message: `end of ${groupLabel}`,
+					logLevel: null,
+					stackTrace: null,
+				});
+			}
 		}
 	}
 
@@ -405,7 +398,7 @@ export class LoggerConsole implements Console {
 	// https://console.spec.whatwg.org/#time
 	time(label: string): void {
 		if (this.timerTable.has(label)) {
-			void this.logger("warn", [`Timer '${label}' already exists`]);
+			this.logger("warn", [`Timer '${label}' already exists`]);
 			return;
 		}
 		this.timerTable.set(label, Temporal.Now.instant());
@@ -415,27 +408,27 @@ export class LoggerConsole implements Console {
 	timeLog(label: string, ...data: unknown[]): void {
 		const startTime = this.timerTable.get(label);
 		if (startTime === undefined) {
-			void this.logger("warn", [`Timer '${label}' does not exist`]);
+			this.logger("warn", [`Timer '${label}' does not exist`]);
 			return;
 		}
 		const duration = this.durationFormatter.format(
 			Temporal.Now.instant().since(startTime),
 		);
-		void this.logger("timeLog", [`${label}: ${duration}`, ...data]);
+		this.logger("timeLog", [`${label}: ${duration}`, ...data]);
 	}
 
 	// https://console.spec.whatwg.org/#timeend
 	timeEnd(label: string): void {
 		const startTime = this.timerTable.get(label);
 		if (startTime === undefined) {
-			void this.logger("warn", [`Timer '${label}' does not exist`]);
+			this.logger("warn", [`Timer '${label}' does not exist`]);
 			return;
 		}
 		const duration = this.durationFormatter.format(
 			Temporal.Now.instant().since(startTime),
 		);
 		this.timerTable.delete(label);
-		void this.logger("timeEnd", [`${label}: ${duration}`]);
+		this.logger("timeEnd", [`${label}: ${duration}`]);
 	}
 
 	//
@@ -465,10 +458,7 @@ export class LoggerConsole implements Console {
 	//
 
 	// https://console.spec.whatwg.org/#logger
-	private async logger(
-		logLevel: LoggerConsoleLogLevel,
-		data: unknown[],
-	): Promise<void> {
+	private logger(logLevel: LoggerConsoleLogLevel, data: unknown[]): void {
 		if (data.length === 0) {
 			return;
 		}
@@ -476,10 +466,10 @@ export class LoggerConsole implements Console {
 		const [first, ...rest] = data;
 
 		if (rest.length === 0) {
-			return this.print(logLevel, first);
+			this.print(logLevel, first);
+		} else {
+			this.print(logLevel, this.format(data));
 		}
-
-		return this.print(logLevel, this.format(data));
 	}
 
 	// https://console.spec.whatwg.org/#formatter
@@ -488,11 +478,11 @@ export class LoggerConsole implements Console {
 	}
 
 	// https://console.spec.whatwg.org/#printer
-	private async print(
+	private print(
 		logLevel: LoggerConsoleLogLevel,
 		data: unknown,
 		options?: InspectOptions,
-	): Promise<void> {
+	): void {
 		let message: string;
 		const metadata: LoggerMetadata = {};
 		if (typeof data === "string") {
@@ -524,6 +514,8 @@ export class LoggerConsole implements Console {
 			};
 		}
 
-		await Promise.all(this.printers.map((printer) => printer.print(record)));
+		for (const printer of this.printers) {
+			printer.print(record);
+		}
 	}
 }

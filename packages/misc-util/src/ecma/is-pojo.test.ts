@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { isPojo } from "./is-pojo.js";
 
 suite("isPojo", () => {

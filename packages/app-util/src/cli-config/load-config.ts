@@ -1,7 +1,9 @@
 import * as path from "node:path";
+
 import { deepMerge, defaults } from "@ac-essentials/misc-util";
 import { cosmiconfig } from "cosmiconfig";
 import type { PartialDeep } from "type-fest";
+
 import {
 	type ExtendableConfig,
 	type ExtendableConfigParser,
@@ -9,13 +11,9 @@ import {
 	resolveExtendableConfig,
 } from "./extendable-config/resolve-extendable-config.js";
 
-/**
- * Options for loading CLI configuration.
- */
+/** Options for loading CLI configuration. */
 export type LoadConfigOptions = {
-	/**
-	 * Options for resolving "extends" field in the configuration.
-	 */
+	/** Options for resolving "extends" field in the configuration. */
 	resolveExtendsOptions?: ResolveExtendableConfigOptions;
 };
 

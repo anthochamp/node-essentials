@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, expect, suite, test, vi } from "vitest";
 import { mock, mockClear } from "vitest-mock-extended";
+
 import { LoggerConsole } from "./logger-console.js";
 import type { ILoggerPrinter } from "./logger-printer.js";
 

@@ -1,26 +1,29 @@
 import type { IEventDispatcher } from "../ievent-dispatcher.js";
 
 /**
- * Creates an async iterator over events emitted by the given {@link IEventDispatcher}.
+ * Creates an async iterator over events emitted by the given
+ * {@link IEventDispatcher}.
  *
- * Each time the dispatcher emits an event, the iterator yields the event arguments
- * as an array.
+ * Each time the dispatcher emits an event, the iterator yields the event
+ * arguments as an array.
  *
  * @example
- * ```ts
- * const dispatcher = new EventDispatcher<[number, string]>();
+ * 	```ts
+ * 	const dispatcher = new EventDispatcher<[number, string]>();
  *
- * async function consumeEvents() {
- *     for await (const [num, str] of eventDispatcherToAsyncIterator(dispatcher)) {
- *         console.log(`Received event with number: ${num} and string: ${str}`);
- *     }
- * }
+ * 	async function consumeEvents() {
+ * 	for await (const [num, str] of eventDispatcherToAsyncIterator(
+ * 	dispatcher,
+ * 	)) {
+ * 	console.log(`Received event with number: ${num} and string: ${str}`);
+ * 	}
+ * 	}
  *
- * consumeEvents();
+ * 	consumeEvents();
  *
- * dispatcher.dispatch(1, "first");
- * dispatcher.dispatch(2, "second");
- * ```
+ * 	dispatcher.dispatch(1, "first");
+ * 	dispatcher.dispatch(2, "second");
+ * 	```
  *
  * @param dispatcher The event dispatcher to convert into an async iterator.
  * @returns An async iterable that yields event arguments as arrays.

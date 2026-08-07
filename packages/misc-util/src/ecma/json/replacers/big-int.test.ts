@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { jsonMakeBigIntReplacerFunction } from "./big-int.js";
 
 describe("jsonMakeBigIntReplacerFunction", () => {

@@ -2,7 +2,9 @@ import { type SpawnOptions, spawn } from "node:child_process";
 import { EOL } from "node:os";
 import * as readline from "node:readline";
 import { PassThrough, type Stream } from "node:stream";
+
 import type { Except, SetFieldType } from "type-fest";
+
 import { defaults } from "../../ecma/object/defaults.js";
 import { ProcessExitError } from "./process-exit-error.js";
 
@@ -40,7 +42,7 @@ const SHELL_EXEC_DEFAULT_OPTIONS: Required<ShellExecOptions> = {
  * @param command The command to execute (with arguments)
  * @param options Options for executing the command
  * @returns A promise that resolves when the command completes successfully, or
- * rejects with a `ShellExecExitError` if the command fails.
+ *   rejects with a `ShellExecExitError` if the command fails.
  */
 export async function shellExec(
 	command: string,
@@ -65,9 +67,7 @@ export async function shellExec(
 	});
 
 	if (effectiveOptions.outputStream) {
-		// biome-ignore lint/style/noNonNullAssertion: defined as stdio[1] is "pipe"
 		handle.stdout!.pipe(effectiveOptions.outputStream);
-		// biome-ignore lint/style/noNonNullAssertion: defined as stdio[2] is "pipe"
 		handle.stderr!.pipe(effectiveOptions.outputStream);
 	}
 
@@ -75,12 +75,10 @@ export async function shellExec(
 		let input: Stream.Readable;
 		if (effectiveOptions.outputStream) {
 			const passthrough = new PassThrough();
-			// biome-ignore lint/style/noNonNullAssertion: defined as stdio[2] is "pipe"
 			handle.stderr!.pipe(passthrough);
 
 			input = passthrough;
 		} else {
-			// biome-ignore lint/style/noNonNullAssertion: defined as stdio[2] is "pipe"
 			input = handle.stderr!;
 		}
 

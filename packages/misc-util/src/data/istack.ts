@@ -1,4 +1,5 @@
 import type { Promisable } from "type-fest";
+
 import type { ICollection } from "./icollection.js";
 
 /**
@@ -17,29 +18,32 @@ export interface IStack<T = unknown> extends ICollection<T> {
 	 * argument list will be the first one to be popped.
 	 *
 	 * @param items The items to add to the stack.
-	 * @throws {CollectionCapacityExceededError} If the operation would exceed the stack's capacity.
+	 * @throws {CollectionCapacityExceededError} If the operation would exceed the
+	 *   stack's capacity.
 	 */
 	push(...items: T[]): Promisable<void>;
 
 	/**
 	 * Same as `push`, but waits for capacity if the operation would exceed it.
 	 *
-	 * @see IStack.push
 	 * @param signal Optional abort signal to cancel the operation.
+	 * @see IStack.push
 	 */
 	waitPush(items: Iterable<T>, signal?: AbortSignal | null): PromiseLike<void>;
 
 	/**
 	 * Removes and returns the item at the top of the stack.
 	 *
-	 * @returns The item at the top of the stack, or `undefined` if the stack is empty.
+	 * @returns The item at the top of the stack, or `undefined` if the stack is
+	 *   empty.
 	 */
 	pop(): Promisable<T | undefined>;
 
 	/**
 	 * Returns the item at the top of the stack without removing it.
 	 *
-	 * @returns The item at the top of the stack, or `undefined` if the stack is empty.
+	 * @returns The item at the top of the stack, or `undefined` if the stack is
+	 *   empty.
 	 */
 	top(): Promisable<T | undefined>;
 }

@@ -7,9 +7,9 @@ import type {
 	IEventDispatcher,
 } from "./ievent-dispatcher.js";
 
-export class EventDispatcherBase<T extends unknown[] = never[]>
-	implements IEventDispatcher<T>
-{
+export class EventDispatcherBase<
+	T extends unknown[] = never[],
+> implements IEventDispatcher<T> {
 	private readonly subscribers = new Map<Callable<T>, Callable<T>>();
 	private queueSeq = 0;
 	private readonly queue = new PriorityQueue<Callable<T>, [number, number]>(

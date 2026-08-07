@@ -5,21 +5,21 @@ import type { IEventDispatcher } from "./ievent-dispatcher.js";
  * An event that can be emitted with data of type `T` and waited upon.
  *
  * @example
- * ```ts
- * const event = new Event<number>();
+ * 	```ts
+ * 	const event = new Event<number>();
  *
- * // Subscriber
- * event.subscribe((data) => {
- * 	 console.log("Event received with data:", data);
- * });
+ * 	// Subscriber
+ * 	event.subscribe((data) => {
+ * 		console.log("Event received with data:", data);
+ * 	});
  *
- * // Emitter
- * event.emit(42);
+ * 	// Emitter
+ * 	event.emit(42);
  *
- * // Waiter
- * const data = await event.wait();
- * console.log("Waited event received with data:", data);
- * ```
+ * 	// Waiter
+ * 	const data = await event.wait();
+ * 	console.log("Waited event received with data:", data);
+ * 	```;
  *
  * @template T - The type of data emitted with the event.
  */

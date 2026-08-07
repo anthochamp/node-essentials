@@ -39,7 +39,6 @@ export function parseErrorStack(error: IError): ErrorStack | undefined {
 		.split(/\r?\n/)
 		.map((line) => line.trim());
 
-	// biome-ignore lint/style/noNonNullAssertion: "".split(/r?\n/) always returns at least [""]
 	return { message: message!, stackTrace };
 }
 

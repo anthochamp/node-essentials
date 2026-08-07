@@ -1,6 +1,4 @@
-/**
- * Recursively compute the intersection of element types from multiple arrays.
- */
+/** Recursively compute the intersection of element types from multiple arrays. */
 type IntersectArrayElements<T extends readonly unknown[][]> =
 	T extends readonly [
 		infer First extends readonly unknown[],

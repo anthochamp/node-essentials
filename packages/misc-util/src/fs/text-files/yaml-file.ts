@@ -1,6 +1,8 @@
 import { readFile, type writeFile } from "node:fs/promises";
+
 import type { Except } from "type-fest";
 import * as yaml from "yaml";
+
 import { defaults } from "../../ecma/object/defaults.js";
 import {
 	READ_TEXT_FILE_DEFAULT_OPTIONS,
@@ -50,7 +52,7 @@ export const READ_YAML_FILE_DEFAULT_OPTIONS: Required<ReadYamlFileOptions> = {
  *
  * @param path Path to the YAML file.
  * @param options Options for reading the file and parsing YAML.
- * @returns	Parsed YAML content.
+ * @returns Parsed YAML content.
  */
 export async function readYamlFile(
 	path: Parameters<typeof readFile>[0],

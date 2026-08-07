@@ -1,4 +1,5 @@
 import { expect, suite, test, vi } from "vitest";
+
 import { traverseError } from "./traverse-error.js";
 
 suite("traverseError", () => {
@@ -102,7 +103,9 @@ suite("traverseError", () => {
 		const aggregateErrorB = new AggregateError(
 			[errorD1, errorD2],
 			"Aggregate B",
-			{ cause: errorC },
+			{
+				cause: errorC,
+			},
 		);
 		const errorA = new Error("Error A", { cause: aggregateErrorB });
 

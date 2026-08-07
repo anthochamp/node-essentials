@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { sleep } from "../timers/sleep.js";
 import { serializeQueueNext } from "./serialize-queue-next.js";
 

@@ -1,5 +1,7 @@
 import * as net from "node:net";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { InetEndpoint } from "./inet.js";
 import { TcpServer } from "./tcp-server.js";
 import { TcpSocket } from "./tcp-socket.js";
@@ -645,7 +647,6 @@ describe("TcpServer", () => {
 
 			// Emit an error directly on the underlying server to test error forwarding
 			// (Note: bind errors are handled specially by listen() and won't be re-emitted)
-			// biome-ignore lint/suspicious/noExplicitAny: accessing private property for testing
 			(server as any).srv.emit("error", testError);
 
 			const error = await errorPromise;

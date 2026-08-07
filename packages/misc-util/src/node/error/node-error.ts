@@ -1,9 +1,8 @@
 import type { RequiredKeysOf } from "type-fest";
+
 import { type IError, isErrorLike } from "../../ecma/error/error.js";
 
-/**
- * Node Error interface (error with a code property)
- */
+/** Node Error interface (error with a code property) */
 export interface INodeError extends IError {
 	/**
 	 * The error code

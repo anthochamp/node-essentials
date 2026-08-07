@@ -3,7 +3,8 @@ import type { EnvVariable, EnvVariableValue } from "./env-variables-types.js";
 /**
  * Parse a string as an environment variable definition.
  *
- * If the string does not contain an equal sign, the variable value will be null.
+ * If the string does not contain an equal sign, the variable value will be
+ * null.
  *
  * @param value The environment variable string to parse.
  * @returns The parsed environment variable.
@@ -23,7 +24,8 @@ export function parseEnvVariable(value: string): EnvVariable {
  * Parse a string value as an environment variable value.
  *
  * @param value The string value to parse.
- * @returns The parsed string, number, bigint, boolean value, or null if the input is null or empty.
+ * @returns The parsed string, number, bigint, boolean value, or null if the
+ *   input is null or empty.
  */
 export function parseEnvVariableValue(
 	value: string | undefined | null,
@@ -69,7 +71,8 @@ export function parseEnvVariableValueAsString(
  * Parse a string value as a number or bigint environment variable value.
  *
  * @param value The string value to parse.
- * @returns The parsed number or bigint value, or null if the value is not a valid number or bigint representation.
+ * @returns The parsed number or bigint value, or null if the value is not a
+ *   valid number or bigint representation.
  */
 export function parseEnvVariableValueAsNumber(
 	value: string | undefined | null,
@@ -102,7 +105,8 @@ export function parseEnvVariableValueAsNumber(
  * Parse a string value as a boolean environment variable value.
  *
  * @param value The string value to parse.
- * @returns The parsed boolean value, or null if the value is not a valid boolean representation.
+ * @returns The parsed boolean value, or null if the value is not a valid
+ *   boolean representation.
  */
 export function parseEnvVariableValueAsBool(
 	value: string | undefined | null,

@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { UnsupportedError } from "../error/unsupported-error.js";
 import { clone } from "./clone.js";
 

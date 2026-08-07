@@ -7,10 +7,9 @@ import type { Primitive } from "type-fest";
  * primitive data types: string, number, bigint, boolean, symbol, null, and
  * undefined.
  *
- * @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
- *
  * @param value The value to check
  * @returns True if the value is a primitive
+ * @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
  */
 export function isPrimitive(value: unknown): value is Primitive {
 	return (

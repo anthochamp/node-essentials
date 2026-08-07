@@ -1,16 +1,23 @@
 # @ac-essentials/typedoc-config
 
-Reusable Typedoc configuration for TypeScript projects. This package provides a shareable `public.json` config for generating clean, public-facing API documentation with Typedoc.
+Reusable Typedoc configuration for TypeScript projects. This package provides a
+shareable `public.json` config for generating clean, public-facing API
+documentation with Typedoc.
 
 ## What’s included?
 
-- **public.json**: A strict, minimal config for generating documentation that only includes your public API surface. Designed to hide internal, private, and external details from the docs.
+- **public.json**: A strict, minimal config for generating documentation that
+  only includes your public API surface. Designed to hide internal, private, and
+  external details from the docs.
 
 ## Config Options in `public.json`
 
-- `excludeExternals`: **false** — Includes symbols that come from external dependencies (node_modules) in the docs.
-- `excludeNotDocumented`: **false** — Includes all symbols, even if they do not have a documentation comment. (Set to `true` to only show documented items.)
-- `excludeInternal`: **true** — Excludes items marked as `@internal` from the docs.
+- `excludeExternals`: **false** — Includes symbols that come from external
+  dependencies (node_modules) in the docs.
+- `excludeNotDocumented`: **false** — Includes all symbols, even if they do not
+  have a documentation comment. (Set to `true` to only show documented items.)
+- `excludeInternal`: **true** — Excludes items marked as `@internal` from the
+  docs.
 - `excludePrivate`: **true** — Excludes private class members from the docs.
 - `excludeProtected`: **false** — Includes protected members in the docs.
 
@@ -18,9 +25,11 @@ Reusable Typedoc configuration for TypeScript projects. This package provides a 
 
 By using `public.json`, your generated documentation will:
 
-- Only show the public API surface of your code (no private or internal members).
+- Only show the public API surface of your code (no private or internal
+  members).
 - Show anything from external dependencies.
-- Still include protected members (useful for library authors who want to show subclassing points).
+- Still include protected members (useful for library authors who want to show
+  subclassing points).
 - Show all items, even if they lack a doc comment (for full API visibility).
 
 ## Usage
@@ -43,7 +52,8 @@ By using `public.json`, your generated documentation will:
 
 3. **Override as needed:**
 
-   You can extend or override any option by passing additional flags or by creating your own `typedoc.json` that extends this config.
+   You can extend or override any option by passing additional flags or by
+   creating your own `typedoc.json` that extends this config.
 
 ## Example
 
@@ -57,9 +67,12 @@ By using `public.json`, your generated documentation will:
 
 ## References
 
-- See the actual config file in `packages/typedoc-config/public.json` for details.
+- See the actual config file in `packages/typedoc-config/public.json` for
+  details.
 - Typedoc options reference: <https://typedoc.org/options/>
 
 ## Contributing
 
-Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/anthochamp/node-essentials).
+Contributions are welcome! If you find a bug or have a feature request, please
+open an issue on the
+[GitHub repository](https://github.com/anthochamp/node-essentials).

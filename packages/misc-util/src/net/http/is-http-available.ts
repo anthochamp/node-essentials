@@ -3,7 +3,8 @@
  *
  * @param url The URL to test.
  * @param signal An optional AbortSignal to cancel the request.
- * @returns A promise that resolves to `true` if the URL is available, `false` otherwise.
+ * @returns A promise that resolves to `true` if the URL is available, `false`
+ *   otherwise.
  */
 export async function isHttpAvailable(
 	url: string | URL,
@@ -19,7 +20,7 @@ export async function isHttpAvailable(
 			signal,
 		});
 		return true;
-	} catch (_) {
+	} catch {
 		return false;
 	}
 }

@@ -1,5 +1,7 @@
 import { getSystemErrorMessage, getSystemErrorName } from "node:util";
+
 import type { RequiredKeysOf } from "type-fest";
+
 import { isErrorLike } from "../../ecma/error/error.js";
 import type { INodeError } from "./node-error.js";
 
@@ -13,14 +15,13 @@ export type NodeSystemErrorInfo = {
 };
 
 /**
- * Node System Error interface (Error with code, errno, syscall and optional path and dest properties)
+ * Node System Error interface (Error with code, errno, syscall and optional
+ * path and dest properties)
  *
  * @see https://github.com/nodejs/node/blob/main/lib/internal/errors.js
  */
 export interface INodeSystemError extends INodeError {
-	/**
-	 * The uv error context
-	 */
+	/** The uv error context */
 	info: NodeSystemErrorInfo;
 
 	errno: number;
@@ -30,7 +31,8 @@ export interface INodeSystemError extends INodeError {
 }
 
 /**
- * Test if value is Node System Error-like (has name, message, code, info, errno and syscall properties)
+ * Test if value is Node System Error-like (has name, message, code, info, errno
+ * and syscall properties)
  *
  * @param value The value to test
  * @returns True if the value is Node System Error-like
@@ -63,7 +65,8 @@ export function getNodeSystemErrorName(
 }
 
 /**
- * Get the system error message (eg. no such file or directory) for a Node System Error
+ * Get the system error message (eg. no such file or directory) for a Node
+ * System Error
  *
  * @param error The Node System Error
  * @returns The system error message, or undefined if not found

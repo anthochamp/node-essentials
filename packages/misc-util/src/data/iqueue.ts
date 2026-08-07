@@ -1,4 +1,5 @@
 import type { Promisable } from "type-fest";
+
 import type { ICollection } from "./icollection.js";
 
 /**
@@ -17,15 +18,16 @@ export interface IQueue<T = unknown> extends ICollection<T> {
 	 * argument list will be the last one to be dequeued.
 	 *
 	 * @param items The items to add to the queue.
-	 * @throws {CollectionCapacityExceededError} If the operation would exceed the queue's capacity.
+	 * @throws {CollectionCapacityExceededError} If the operation would exceed the
+	 *   queue's capacity.
 	 */
 	enqueue(...items: T[]): Promisable<void>;
 
 	/**
 	 * Same as `enqueue`, but waits for capacity if the operation would exceed it.
 	 *
-	 * @see IQueue.enqueue
 	 * @param signal Optional abort signal to cancel the operation.
+	 * @see IQueue.enqueue
 	 */
 	waitEnqueue(
 		items: Iterable<T>,
@@ -35,14 +37,16 @@ export interface IQueue<T = unknown> extends ICollection<T> {
 	/**
 	 * Removes and returns the item at the front of the queue.
 	 *
-	 * @returns The item at the front of the queue, or `undefined` if the queue is empty.
+	 * @returns The item at the front of the queue, or `undefined` if the queue is
+	 *   empty.
 	 */
 	dequeue(): Promisable<T | undefined>;
 
 	/**
 	 * Returns the item at the front of the queue without removing it.
 	 *
-	 * @returns The item at the front of the queue, or `undefined` if the queue is empty.
+	 * @returns The item at the front of the queue, or `undefined` if the queue is
+	 *   empty.
 	 */
 	front(): Promisable<T | undefined>;
 }

@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: "Publish in dry-run mode (no actual publishing or GitHub Release)"
+        description:
+          "Publish in dry-run mode (no actual publishing or GitHub Release)"
         required: false
         default: "false"
         type: choice
@@ -73,7 +74,9 @@ jobs:
       contents: write
     needs: publish
     runs-on: ubuntu-latest
-    if: ${{ inputs.dry-run != 'true' && needs.publish.outputs.published-tags != '' }}
+    if:
+      ${{ inputs.dry-run != 'true' && needs.publish.outputs.published-tags != ''
+      }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7

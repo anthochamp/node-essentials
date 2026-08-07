@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { removeSafe } from "./remove-safe.js";
 
 // Helper to create deep equality for objects

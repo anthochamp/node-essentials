@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import type { Callable } from "../../ecma/function/types.js";
 import type { MaybeAsyncIterableIterator } from "../../ecma/iterator/types.js";
 import { DoublyLinkedList } from "../doubly-linked-list.js";

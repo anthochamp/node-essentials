@@ -1,6 +1,8 @@
 import { readFile, type writeFile } from "node:fs/promises";
+
 import json5 from "json5";
 import type { JsonValue, Simplify } from "type-fest";
+
 import { defaults } from "../../ecma/object/defaults.js";
 import {
 	type JsonFileFormat,
@@ -41,7 +43,7 @@ export const READ_JSON5_FILE_DEFAULT_OPTIONS: Required<ReadJson5FileOptions> = {
  *
  * @param path Path to the JSON5 file.
  * @param options Options for reading the file and parsing JSON5.
- * @returns	Parsed JSON5 content.
+ * @returns Parsed JSON5 content.
  */
 export async function readJson5File(
 	path: Parameters<typeof readFile>[0],

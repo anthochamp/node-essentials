@@ -1,4 +1,5 @@
 import type { Url } from "node:url";
+
 import { escapePosixShSqe, execAsync } from "@ac-essentials/misc-util";
 
 export interface DockerBuildxBuildOptions {
@@ -15,6 +16,7 @@ export async function dockerBuildxBuild(
 		execArgs.push(`--tag '${escapePosixShSqe(tag)}'`);
 	}
 
+	// oxlint-disable-next-line typescript/no-base-to-string
 	execArgs.push(`'${escapePosixShSqe(pathOrUrl.toString())}'`);
 
 	await execAsync(`docker buildx build ${execArgs.join(" ")}`);

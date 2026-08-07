@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { captureV8StackTrace } from "./capture-v8-stack-trace.js";
 
 suite("captureStackTrace", () => {

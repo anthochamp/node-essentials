@@ -4,6 +4,7 @@
  * Similar to `NonNullable<T>`, but only excludes `undefined`.
  *
  * Example:
+ *
  * ```ts
  * type A = Defined<string | number | undefined>; // string | number
  * type B = Defined<undefined>; // never

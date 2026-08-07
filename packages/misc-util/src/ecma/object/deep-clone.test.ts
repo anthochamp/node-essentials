@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { deepClone } from "./deep-clone.js";
 
 suite("deepClone", () => {

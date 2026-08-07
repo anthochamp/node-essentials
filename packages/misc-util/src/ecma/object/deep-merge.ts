@@ -1,4 +1,5 @@
 import type { MergeDeep } from "type-fest";
+
 import { isObject } from "../is-object.js";
 import { isPojo } from "../is-pojo.js";
 import { deepClone } from "./deep-clone.js";
@@ -112,11 +113,11 @@ export function deepMergeArray<
 	T extends unknown[],
 	U extends unknown[],
 	O extends DeepMergeOptions,
-	R extends O["arrayMergeMode"] extends "spread"
+	R extends (O["arrayMergeMode"] extends "spread"
 		? MergeDeep<T, U, { arrayMergeMode: "spread" }>
 		: O["arrayMergeMode"] extends "merge"
 			? MergeDeep<T, U, { arrayMergeMode: "replace" }>
-			: U,
+			: U),
 >(target: T, source: U, options?: O): R {
 	const effectiveOptions = defaults(options, DEEP_MERGE_DEFAULT_OPTIONS);
 

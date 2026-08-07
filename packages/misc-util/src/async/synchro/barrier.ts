@@ -10,18 +10,18 @@ import { Counter } from "./counter.js";
  * are released, and the barrier resets for reuse.
  *
  * @example
- * const barrier = new Barrier(3);
+ * 	const barrier = new Barrier(3);
  *
- * async function task(id: number) {
- *     console.log(`Task ${id} is waiting at the barrier.`);
- *     await barrier.wait();
- *     console.log(`Task ${id} has crossed the barrier.`);
- * }
+ * 	async function task(id: number) {
+ * 		console.log(`Task ${id} is waiting at the barrier.`);
+ * 		await barrier.wait();
+ * 		console.log(`Task ${id} has crossed the barrier.`);
+ * 	}
  *
- * // Start 3 tasks that will wait at the barrier
- * task(1);
- * task(2);
- * task(3);
+ * 	// Start 3 tasks that will wait at the barrier
+ * 	task(1);
+ * 	task(2);
+ * 	task(3);
  */
 export class Barrier {
 	private readonly counter = new Counter(0);

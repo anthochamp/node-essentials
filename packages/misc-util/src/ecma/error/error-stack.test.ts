@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { formatErrorStack, parseErrorStack } from "./error-stack.js";
 
 suite("ErrorStack", () => {

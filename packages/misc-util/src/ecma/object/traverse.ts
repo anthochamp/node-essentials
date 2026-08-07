@@ -1,4 +1,5 @@
 import type { Except, TaggedUnion } from "type-fest";
+
 import { defaults } from "./defaults.js";
 import {
 	type GetObjectKeysOptions,
@@ -36,14 +37,14 @@ export type TraverseVisitorContext = {
 	parentPath: TraverseKey[] | null;
 
 	/**
-	 * Replace the current value with a new value (including undefined)
-	 * If called multiple times, the last call takes precedence
+	 * Replace the current value with a new value (including undefined) If called
+	 * multiple times, the last call takes precedence
 	 */
 	replace(value: unknown): void;
 
 	/**
-	 * Remove the current value from its container
-	 * If called multiple times, the last call takes precedence
+	 * Remove the current value from its container If called multiple times, the
+	 * last call takes precedence
 	 */
 	remove(): void;
 };
@@ -55,59 +56,69 @@ export type TraverseVisitor = (
 
 export type TraverseCustomObjectsOption =
 	| false
-	// biome-ignore lint/complexity/noBannedTypes: intentional
 	| Function[]
 	| ((value: object) => boolean);
 
 export type TraverseOptions = GetObjectKeysOptions & {
 	/**
-	 * Whether to call the visitor on primitive values (string, number, boolean, null, undefined, symbol, bigint)
+	 * Whether to call the visitor on primitive values (string, number, boolean,
+	 * null, undefined, symbol, bigint)
+	 *
 	 * @default true
 	 */
 	visitPrimitives?: boolean;
 
 	/**
-	 * Whether to call the visitor on object values (arrays, maps, sets, plain objects, custom objects)
+	 * Whether to call the visitor on object values (arrays, maps, sets, plain
+	 * objects, custom objects)
+	 *
 	 * @default true
 	 */
 	visitObjects?: boolean;
 
 	/**
 	 * Whether to traverse into array elements
+	 *
 	 * @default true
 	 */
 	traverseArrays?: boolean;
 
 	/**
 	 * Whether to traverse into Map keys and values
+	 *
 	 * @default true
 	 */
 	traverseMaps?: boolean;
 
 	/**
-	 * Whether to traverse into Map keys specifically
-	 * Only applies when traverseMaps is true
+	 * Whether to traverse into Map keys specifically Only applies when
+	 * traverseMaps is true
+	 *
 	 * @default false
 	 */
 	traverseMapKeys?: boolean;
 
 	/**
 	 * Whether to traverse into Set values
+	 *
 	 * @default true
 	 */
 	traverseSets?: boolean;
 
 	/**
 	 * Whether to traverse into plain object (POJO) properties
+	 *
 	 * @default true
 	 */
 	traversePlainObjects?: boolean;
 
 	/**
-	 * Controls traversal into custom object (user-defined class instances) properties
-	 * - false: Don't traverse custom objects (treat as opaque)
-	 * - Constructor[]: Only traverse instances of these classes (or their descendants)
-	 * - (value: object) => boolean: Custom predicate to determine traversability
+	 * Controls traversal into custom object (user-defined class instances)
+	 * properties - false: Don't traverse custom objects (treat as opaque) -
+	 * Constructor[]: Only traverse instances of these classes (or their
+	 * descendants) - (value: object) => boolean: Custom predicate to determine
+	 * traversability
+	 *
 	 * @default false
 	 */
 	traverseCustomObjects?: TraverseCustomObjectsOption;
@@ -542,15 +553,14 @@ function isControlSymbol(value: unknown): value is TraverseControl {
 
 /**
  * Internal context with action state
+ *
  * @internal
  */
 type Context_ = TraverseVisitorContext & {
 	action_: TraverseAction | null;
 };
 
-/**
- * Wrap visitor context to add action methods
- */
+/** Wrap visitor context to add action methods */
 function wrapContext(
 	visitorContext: Except<TraverseVisitorContext, "replace" | "remove">,
 ): Context_ {
@@ -568,17 +578,13 @@ function wrapContext(
 	return context;
 }
 
-/**
- * Check if a value is a plain object (POJO)
- */
+/** Check if a value is a plain object (POJO) */
 function isPlainObject(value: object): boolean {
 	const proto = Object.getPrototypeOf(value);
 	return proto === Object.prototype || proto === null;
 }
 
-/**
- * Check if a custom object should be traversed based on options
- */
+/** Check if a custom object should be traversed based on options */
 function shouldTraverseCustomObject(
 	value: object,
 	options: TraverseCustomObjectsOption,

@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { defaults } from "./defaults.js";
 
 suite("defaults", () => {

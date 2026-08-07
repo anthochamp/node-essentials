@@ -4,12 +4,11 @@ import {
 	MS_PER_SECOND,
 	PeriodicalTimer,
 } from "@ac-essentials/misc-util";
+
 import type { ILoggerPrinter } from "../logger-printer.js";
 import type { LoggerRecord } from "../logger-record.js";
 
-/**
- * Options for `IdleMarkPrinterProxy`.
- */
+/** Options for `IdleMarkPrinterProxy`. */
 export type IdleMarkPrinterProxyOptions = {
 	/**
 	 * Delay in milliseconds after which a "MARK" log entry is printed if no other
@@ -36,7 +35,8 @@ export class IdleMarkPrinterProxy implements ILoggerPrinter {
 	/**
 	 * Constructs a new `IdleMarkPrinterProxy`.
 	 *
-	 * @param printer The underlying logger printer to which log entries are forwarded.
+	 * @param printer The underlying logger printer to which log entries are
+	 *   forwarded.
 	 * @param options Options for the proxy.
 	 */
 	constructor(

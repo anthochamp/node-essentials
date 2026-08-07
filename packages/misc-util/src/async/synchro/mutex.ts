@@ -5,8 +5,8 @@ import { type ILock, LockNotAcquiredError } from "./ilock.js";
 /**
  * A mutex (mutual exclusion) primitive for asynchronous tasks.
  *
- * A mutex allows only one task to hold the lock at a time.
- * Other tasks attempting to acquire the lock will wait until it is released.
+ * A mutex allows only one task to hold the lock at a time. Other tasks
+ * attempting to acquire the lock will wait until it is released.
  *
  * The order of lock acquisition is guaranteed to be FIFO (first-in-first-out).
  */

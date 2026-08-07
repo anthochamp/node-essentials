@@ -3,25 +3,19 @@ import { type RoundingMethod, round } from "../../math/round.js";
 import { defaults } from "../object/defaults.js";
 
 export type ToFixedLengthOptions = {
-	/**
-	 * Maximum number of fraction digits to include in the output.
-	 * Default is `0`.
-	 */
+	/** Maximum number of fraction digits to include in the output. Default is `0`. */
 	maxFractionDigits?: number;
 
 	/**
-	 * Whether to always include the maximum number of fraction digits,
-	 * even if it means adding trailing zeros. Default is `false`.
+	 * Whether to always include the maximum number of fraction digits, even if it
+	 * means adding trailing zeros. Default is `false`.
 	 *
 	 * If `false`, the function will try to reduce the number of fraction digits
 	 * to fit the specified length.
 	 */
 	fixedFractionDigits?: boolean;
 
-	/**
-	 * Rounding method to use when rounding the number.
-	 * Default is `"round"`.
-	 */
+	/** Rounding method to use when rounding the number. Default is `"round"`. */
 	roundingMethod?: RoundingMethod;
 };
 
@@ -32,53 +26,35 @@ const TO_FIXED_LENGTH_DEFAULT_OPTIONS: Required<ToFixedLengthOptions> = {
 };
 
 /**
- * Format a number to a fixed length string, with options for maximum fraction digits,
- * fixed fraction digits, and rounding method. If the number exceeds the maximum value
- * that can be represented with the given length and fraction digits, it will be clamped
- * to that maximum value.
+ * Format a number to a fixed length string, with options for maximum fraction
+ * digits, fixed fraction digits, and rounding method. If the number exceeds the
+ * maximum value that can be represented with the given length and fraction
+ * digits, it will be clamped to that maximum value.
  *
  * Examples with fixedLength=5, fractionDigits=2, fixedFractionDigits=true :
- *      0.012 => 00.01 (rounded)
- *      0.123 => 00.12 (rounded)
- *      1.234 => 01.23 (rounded)
- *     12.345 => 12.35 (rounded)
- *    123.456 => 99.99 (max)
- *          ..
- * 123456.789 => 99.99 (max)
+ * 0.012 => 00.01 (rounded) 0.123 => 00.12 (rounded) 1.234 => 01.23 (rounded)
+ * 12.345 => 12.35 (rounded) 123.456 => 99.99 (max) .. 123456.789 => 99.99
+ * (max)
  *
  * Examples with fixedLength=5, fractionDigits=2, fixedFractionDigits=false :
- *      0.012 => 00.01 (rounded)
- *      0.123 => 00.12 (rounded)
- *      1.234 => 01.23 (rounded)
- *     12.345 => 12.35 (rounded)
- *    123.456 => 123.5 (rounded)
- *   1234.567 => 999.9 (max)
- *  12345.678 => 12346 (rounded)
- * 123456.789 => 99999 (max)
+ * 0.012 => 00.01 (rounded) 0.123 => 00.12 (rounded) 1.234 => 01.23 (rounded)
+ * 12.345 => 12.35 (rounded) 123.456 => 123.5 (rounded) 1234.567 => 999.9 (max)
+ * 12345.678 => 12346 (rounded) 123456.789 => 99999 (max)
  *
  * Examples with fixedLength=5, fractionDigits=3, fixedFractionDigits=false :
- *      0.012 => 0.012
- *      0.123 => 0.123
- *      1.234 => 1.234
- *     12.345 => 12.35 (rounded)
- *    123.456 => 123.5 (rounded)
- *   1234.567 => 999.9 (max)
- *  12345.678 => 12346 (rounded)
- * 123456.789 => 99999 (max)
+ * 0.012 => 0.012 0.123 => 0.123 1.234 => 1.234 12.345 => 12.35 (rounded)
+ * 123.456 => 123.5 (rounded) 1234.567 => 999.9 (max) 12345.678 => 12346
+ * (rounded) 123456.789 => 99999 (max)
  *
  * Examples with fixedLength=6, fractionDigits=2, fixedFractionDigits=false :
- *       0.012 => 000.01 (rounded)
- *       0.123 => 000.12 (rounded)
- *       1.234 => 001.23 (rounded)
- *      12.345 => 012.35 (rounded)
- *     123.456 => 123.46 (rounded)
- *    1234.567 => 1234.6 (rounded)
- *   12345.678 => 9999.9 (max)
- *  123456.789 => 123457 (rounded)
+ * 0.012 => 000.01 (rounded) 0.123 => 000.12 (rounded) 1.234 => 001.23 (rounded)
+ * 12.345 => 012.35 (rounded) 123.456 => 123.46 (rounded) 1234.567 => 1234.6
+ * (rounded) 12345.678 => 9999.9 (max) 123456.789 => 123457 (rounded)
  * 1234567.891 => 999999 (max)
  *
  * @param value The number to format.
- * @param length The fixed length of the output string (including decimal point if any).
+ * @param length The fixed length of the output string (including decimal point
+ *   if any).
  * @param options Options for formatting.
  * @returns The formatted number as a string.
  */

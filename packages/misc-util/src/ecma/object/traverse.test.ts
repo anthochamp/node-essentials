@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+
 import {
 	TraverseBreak,
 	TraverseContinue,
@@ -1034,7 +1035,7 @@ describe("traverse", () => {
 		});
 
 		it("should not visit sparse array indices", () => {
-			// biome-ignore lint/suspicious/noSparseArray: test
+			// eslint-disable-next-line no-sparse-arrays
 			const array = [10, , 30]; // sparse array with a missing element at index 1
 
 			const visitor = vi
@@ -3428,7 +3429,7 @@ describe("traverse", () => {
 		});
 
 		it("should preserve array holes when not visiting indices", () => {
-			// biome-ignore lint/suspicious/noSparseArray: test
+			// eslint-disable-next-line no-sparse-arrays
 			const sparse = [1, , 3];
 
 			const result = traverse(sparse, () => TraverseContinue, {

@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { LockNotAcquiredError } from "./ilock.js";
 import { Mutex } from "./mutex.js";
 

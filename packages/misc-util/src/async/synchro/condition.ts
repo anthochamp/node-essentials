@@ -9,35 +9,33 @@ import { Mutex } from "./mutex.js";
  * Allows tasks to wait until they are signaled to continue.
  *
  * @example
- * const mutex = new Mutex();
- * const condition = new Condition();
- * let ready = false;
+ * 	const mutex = new Mutex();
+ * 	const condition = new Condition();
+ * 	let ready = false;
  *
- * // Task 1
- * async function task1() {
- *     await mutex.lock();
- *     while (!ready) {
- *         await condition.wait(mutex);
- *     }
- *     // Proceed with task
- *     mutex.unlock();
- * }
+ * 	// Task 1
+ * 	async function task1() {
+ * 		await mutex.lock();
+ * 		while (!ready) {
+ * 			await condition.wait(mutex);
+ * 		}
+ * 		// Proceed with task
+ * 		mutex.unlock();
+ * 	}
  *
- * // Task 2
- * async function task2() {
- *     await mutex.lock();
- *     ready = true;
- *     condition.signal(); // or condition.broadcast() to wake all waiting tasks
- *     mutex.unlock();
- * }
+ * 	// Task 2
+ * 	async function task2() {
+ * 		await mutex.lock();
+ * 		ready = true;
+ * 		condition.signal(); // or condition.broadcast() to wake all waiting tasks
+ * 		mutex.unlock();
+ * 	}
  */
 export class Condition {
 	private readonly waiters = new Queue<Callable>();
 	private readonly waitersLock = new Mutex();
 
-	/**
-	 * Signal one waiting task, if any.
-	 */
+	/** Signal one waiting task, if any. */
 	async signal(): Promise<void> {
 		let waiter: Callable | undefined;
 
@@ -51,9 +49,7 @@ export class Condition {
 		waiter?.();
 	}
 
-	/**
-	 * Broadcast to all waiting tasks, if any.
-	 */
+	/** Broadcast to all waiting tasks, if any. */
 	async broadcast(): Promise<void> {
 		let waiters: Callable[];
 

@@ -1,4 +1,5 @@
 import { promisify } from "node:util";
+
 import { flock } from "fs-ext";
 
 export type FlockFlags = Parameters<typeof flock>[1];

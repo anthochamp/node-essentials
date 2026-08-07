@@ -1,4 +1,5 @@
 import type { RequiredKeysOf } from "type-fest";
+
 import { type IError, isErrorLike } from "../../ecma/error/error.js";
 
 /**

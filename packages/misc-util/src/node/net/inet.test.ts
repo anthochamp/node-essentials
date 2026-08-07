@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { UnsupportedError } from "../../ecma/error/unsupported-error.js";
 import { composeInetAddress } from "./inet.js";
 

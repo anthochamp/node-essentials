@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { HttpTrailers } from "./http-trailers.js";
 
 describe("HttpTrailers", () => {

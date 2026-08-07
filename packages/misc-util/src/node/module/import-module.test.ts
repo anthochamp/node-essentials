@@ -1,4 +1,5 @@
 import { expect, suite, test } from "vitest";
+
 import { importModule } from "./import-module.js";
 
 suite("importModule", () => {
