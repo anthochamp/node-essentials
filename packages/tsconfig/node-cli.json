@@ -6,7 +6,9 @@
 
 		"resolveJsonModule": null,
 
-		"module": "Preserve"
+		"module": "Preserve",
+
+		"types": ["node"]
 	},
 	"extends": "./base.json"
 }

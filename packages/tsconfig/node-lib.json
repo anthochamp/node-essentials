@@ -10,7 +10,8 @@
 		"sourceMap": true,
 
 		"module": "NodeNext",
-		"moduleResolution": "NodeNext"
+		"moduleResolution": "NodeNext",
+		"types": ["node"]
 	},
 	"extends": "./base.json"
 }
