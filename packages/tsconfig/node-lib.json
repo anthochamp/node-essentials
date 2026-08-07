@@ -11,6 +11,7 @@
 
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
+
 		"types": ["node"]
 	},
 	"extends": "./base.json"
