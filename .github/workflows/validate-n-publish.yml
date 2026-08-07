@@ -15,13 +15,13 @@ on:
 
 jobs:
   validate:
-    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@190998d2269b0f87e1bd7d39f4b08ef98b8783df # main
+    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@246954aae0ae6ba5611890b1ab3d9bb1273ef11f # main
     with:
       node-package-manager: "yarn"
 
   publish:
     needs: validate
-    uses: anthochamp/dev-toolbox/.github/workflows/node-lib-publish.yml@190998d2269b0f87e1bd7d39f4b08ef98b8783df # main
+    uses: anthochamp/dev-toolbox/.github/workflows/node-lib-publish.yml@246954aae0ae6ba5611890b1ab3d9bb1273ef11f # main
     with:
       node-package-manager: yarn
       dry-run: ${{ inputs.dry-run == 'true' }}
