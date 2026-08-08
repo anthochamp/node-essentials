@@ -4,6 +4,7 @@ import {
 	type JsonMakeAllReplacersFunctionOptions,
 	jsonMakeAllReplacersFunction,
 } from "./replacers/all-replacers.js";
+import { JsonReplacer } from "./types.js";
 
 export type JsonSerializeOptions = JsonMakeAllReplacersFunctionOptions;
 

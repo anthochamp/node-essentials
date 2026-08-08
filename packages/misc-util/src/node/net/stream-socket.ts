@@ -65,7 +65,7 @@ export type StreamSocketEvents = {
  * - Strongly-typed lifecycle events via {@link StreamSocketEvents}.
  *
  * It is intentionally transport-agnostic: it does not assume a particular
- * address family or protocol. Concrete subclasses such as {@link TcpClient} add
+ * address family or protocol. Concrete subclasses such as {@link TcpSocket} add
  * protocol-specific concerns (for example `InetEndpoint` accessors, TCP
  * keep-alive configuration, or DNS resolution events) on top of this base.
  *
@@ -208,8 +208,7 @@ export class StreamSocket<
 	/**
 	 * Writes data to the socket and resolves once the write completes.
 	 *
-	 * @param data The data to write
-	 * @param options Optional encoding if `data` is a string.
+	 * @param data The data to write.
 	 */
 	write(data: Uint8Array): Promise<void> {
 		return new Promise((resolve, reject) => {

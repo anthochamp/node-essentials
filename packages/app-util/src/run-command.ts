@@ -4,8 +4,8 @@ import * as path from "node:path";
 import {
 	defaults,
 	ProcessExitError,
-	type ShellExecOptions,
 	shellExec,
+	type ShellExecOptions,
 	shortenPosixPath,
 	stringifyEnvVariable,
 } from "@ac-essentials/misc-util";

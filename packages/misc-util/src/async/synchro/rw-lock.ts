@@ -150,8 +150,6 @@ export class RwLock {
 	/**
 	 * Downgrade a held write lock to a read lock. The caller must already hold
 	 * the write lock.
-	 *
-	 * @param signal Optional AbortSignal to cancel the wait.
 	 */
 	async writeToReadLock(): Promise<void> {
 		await this.mutex.lock();

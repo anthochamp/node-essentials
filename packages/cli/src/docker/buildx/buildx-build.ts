@@ -2,9 +2,9 @@ import type { Url } from "node:url";
 
 import { escapePosixShSqe, execAsync } from "@ac-essentials/misc-util";
 
-export interface DockerBuildxBuildOptions {
+export type DockerBuildxBuildOptions = {
 	tags?: string[];
-}
+};
 
 export async function dockerBuildxBuild(
 	pathOrUrl: string | Url,

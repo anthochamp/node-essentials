@@ -2,7 +2,7 @@ import contentDispositionLib from "content-disposition";
 import contentTypeLib from "content-type";
 
 import { httpAsctimeDatePattern } from "./_http-field-value-util.js";
-import { HttpFields } from "./_http-fields.js";
+import { HttpFields } from "./http-fields.js";
 
 export type HttpContentType = contentTypeLib.ContentType;
 export type HttpContentDisposition = contentDispositionLib.ContentDisposition;

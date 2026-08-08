@@ -2,11 +2,11 @@ import { escapePosixShSqe, execAsync } from "@ac-essentials/misc-util";
 
 import type { DockerContainerId, DockerContainerName } from "../types.js";
 
-interface DockerContainerRmOptions {
+export type DockerContainerRmOptions = {
 	force?: boolean;
 	link?: boolean;
 	volumes?: boolean;
-}
+};
 
 export async function dockerContainerRm(
 	containers: (DockerContainerId | DockerContainerName)[],

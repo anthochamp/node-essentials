@@ -3,6 +3,7 @@ import { readFile, type writeFile } from "node:fs/promises";
 import type { JsonValue, Simplify } from "type-fest";
 
 import { chardetCharsetToBufferEncoding } from "../../3rdparty/chardet/chardet-charset-to-buffer-encoding.js";
+import { JsonReplacer, JsonReviver } from "../../ecma/json/types.js";
 import { defaults } from "../../ecma/object/defaults.js";
 import {
 	READ_TEXT_FILE_DEFAULT_OPTIONS,
@@ -11,25 +12,25 @@ import {
 	type TextFileFormat,
 	type TextFileFormatOptions,
 	WRITE_TEXT_FILE_DEFAULT_OPTIONS,
-	type WriteTextFileOptions,
 	writeTextFile,
+	type WriteTextFileOptions,
 } from "./text-file.js";
 
+/**
+ * JSON-specific file format information.
+ *
+ * `indentation` is `null` when the indentation style cannot be determined.
+ */
 export type JsonFileFormat = TextFileFormat & {
-	/**
-	 * The indentation string of the JSON file.
-	 *
-	 * If `null`, the indentation style is unknown.
-	 */
 	indentation: string | null;
 };
 
+/**
+ * JSON-specific file writing options.
+ *
+ * `indentation` defaults to an empty string, meaning no pretty-printing.
+ */
 export type JsonFileFormatOptions = TextFileFormatOptions & {
-	/**
-	 * The indentation string of the JSON file.
-	 *
-	 * Defaults to an empty string (no indentation).
-	 */
 	indentation?: string;
 };
 

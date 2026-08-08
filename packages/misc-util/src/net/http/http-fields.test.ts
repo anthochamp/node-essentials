@@ -2,7 +2,7 @@ import { inspect } from "node:util";
 
 import { expect, suite, test } from "vitest";
 
-import { HttpFields } from "./_http-fields.js";
+import { HttpFields } from "./http-fields.js";
 
 suite("HttpHeaders", () => {
 	test("should create empty fields", () => {

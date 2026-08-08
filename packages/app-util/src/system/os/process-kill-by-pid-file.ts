@@ -44,7 +44,8 @@ const PROCESS_KILL_BY_PID_FILE_DEFAULT_OPTIONS: Required<ProcessKillByPidFileOpt
  * necessary.
  *
  * @param pidFile The path to the PID file.
- * @param signal The signal to send to the process
+ * @param killSignal The signal to send to the process.
+ * @param options Optional abort and wait settings.
  */
 export async function processKillByPidFile(
 	pidFile: PathLike,

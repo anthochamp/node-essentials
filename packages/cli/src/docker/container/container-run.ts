@@ -6,12 +6,12 @@ import {
 
 import type { DockerContainerName } from "../types.js";
 
-export interface DockerContainerRunOptions {
+export type DockerContainerRunOptions = {
 	detach?: boolean;
 	env?: Record<string, string | number | bigint | boolean | null>;
 	name?: DockerContainerName;
 	publish?: string[]; // ip:[hostPort]:containerPort | [hostPort:]containerPort
-}
+};
 
 export async function dockerContainerRun(
 	image: string,

@@ -302,7 +302,7 @@ export async function getProcessesSnapshotWin32<
 	throw new UnimplementedError();
 }
 
-type GetProcessesSnapshot = <
+export type GetProcessesSnapshot = <
 	O extends GetProcessesSnapshotOptions = GetProcessesSnapshotOptions,
 	R = O["fields"] extends never[]
 		? ProcessInfo

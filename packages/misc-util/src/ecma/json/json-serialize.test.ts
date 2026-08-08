@@ -1,6 +1,7 @@
 import { expect, suite, test, vi } from "vitest";
 
 import { jsonSerialize } from "./json-serialize.js";
+import { JsonReplacer } from "./types.js";
 
 suite("jsonSerialize", () => {
 	test("should serialize primitive values correctly", () => {

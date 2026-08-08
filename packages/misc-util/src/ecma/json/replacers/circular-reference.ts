@@ -1,5 +1,6 @@
 import { defaults } from "../../object/defaults.js";
 import { jsonMakeReplacerFunction } from "../make-replacer-function.js";
+import { JsonReplacer, JsonReplacerFunction } from "../types.js";
 
 export type JsonMakeCircularReferenceReplacerFunctionOptions = {
 	placeholder?: string;

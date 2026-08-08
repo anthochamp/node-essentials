@@ -2,10 +2,10 @@ import { escapePosixShSqe, execAsync } from "@ac-essentials/misc-util";
 
 type DockerImageId = string;
 
-interface DockerImageRmOptions {
+export type DockerImageRmOptions = {
 	force?: boolean;
 	noPrune?: boolean;
-}
+};
 
 export async function dockerImageRm(
 	images: DockerImageId[],

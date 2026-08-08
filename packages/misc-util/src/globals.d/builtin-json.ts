@@ -1,26 +1,8 @@
 import type { JsonValue } from "type-fest";
 
+import { JsonReplacer, JsonReviver } from "../ecma/json/types.js";
+
 declare global {
-	/** The function type of the `replacer` parameter in `JSON.stringify` method. */
-	export type JsonReplacerFunction = (
-		this: unknown,
-		key: string,
-		value: unknown,
-	) => unknown;
-
-	/** The type of the `replacer` parameter in `JSON.stringify` method. */
-	export type JsonReplacer = JsonReplacerFunction | (string | number)[] | null;
-
-	/** The function type of the `reviver` parameter in `JSON.parse` method. */
-	export type JsonReviverFunction = (
-		this: unknown,
-		key: string,
-		value: unknown,
-	) => unknown;
-
-	/** The type of the `reviver` parameter in `JSON.parse` method. */
-	export type JsonReviver = JsonReviverFunction | null;
-
 	/**
 	 * Override the global JSON interface to use the custom JsonReplacer and
 	 * JsonReviver types and to fix the return type of JSON.stringify to include

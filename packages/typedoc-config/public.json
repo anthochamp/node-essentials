@@ -4,5 +4,26 @@
 	"excludeNotDocumented": false,
 	"excludeInternal": true,
 	"excludePrivate": true,
-	"excludeProtected": false
+	"excludeProtected": false,
+	"externalSymbolLinkMappings": {
+		"@types/node": {
+			"\"dgram\".Socket": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.setBroadcast": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.addMembership": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.setRecvBufferSize": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.getRecvBufferSize": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.setSendBufferSize": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.getSendBufferSize": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.dropMembership": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.addSourceSpecificMembership": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.dropSourceSpecificMembership": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.setMulticastInterface": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.setMulticastLoopback": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.setMulticastTTL": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.setTTL": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.getSendQueueCount": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"dgram\".Socket.getSendQueueSize": "https://nodejs.org/api/dgram.html#class-dgramsocket",
+			"\"net\".Socket": "https://nodejs.org/api/net.html#class-netsocket"
+		}
+	}
 }

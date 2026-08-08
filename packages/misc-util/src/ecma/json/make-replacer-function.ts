@@ -1,3 +1,5 @@
+import { JsonReplacer, JsonReplacerFunction } from "./types.js";
+
 /**
  * Create a JSON replacer function that combines a base replacer function with
  * an optional user-defined replacer (function or property list).

@@ -1,4 +1,4 @@
-import { HttpFields } from "./_http-fields.js";
+import { HttpFields } from "./http-fields.js";
 
 /**
  * HTTP trailer headers.

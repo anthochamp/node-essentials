@@ -1,3 +1,4 @@
+import { JsonReplacer, JsonReplacerFunction } from "../types.js";
 import { jsonMakeBigIntReplacerFunction } from "./big-int.js";
 import {
 	type JsonMakeCircularReferenceReplacerFunctionOptions,

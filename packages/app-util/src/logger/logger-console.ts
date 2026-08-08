@@ -1,6 +1,6 @@
 import { Console, type ConsoleConstructor } from "node:console";
 import { EOL } from "node:os";
-import { formatWithOptions, type InspectOptions, inspect } from "node:util";
+import { formatWithOptions, inspect, type InspectOptions } from "node:util";
 
 import {
 	captureStackTrace,
@@ -308,6 +308,7 @@ export class LoggerConsole implements Console {
 			"trace",
 			[
 				joinNonEmpty(["Trace", this.format(data)], ": "),
+				// oxlint-disable-next-line typescript/unbound-method
 				...captureStackTrace({ reference: this.trace }),
 			].join(EOL),
 		);

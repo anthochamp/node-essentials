@@ -1,6 +1,7 @@
 import type { IAggregateError } from "../../error/aggregate-error.js";
 import type { ISuppressedError } from "../../error/suppressed-error.js";
 import { jsonMakeReplacerFunction } from "../make-replacer-function.js";
+import { JsonReplacer, JsonReplacerFunction } from "../types.js";
 
 /**
  * Create a JSON replacer function that converts Error objects into plain

@@ -1,4 +1,5 @@
 import { jsonMakeReplacerFunction } from "../make-replacer-function.js";
+import { JsonReplacer, JsonReplacerFunction } from "../types.js";
 
 /**
  * Create a JSON replacer function that converts BigInt values to either numbers
