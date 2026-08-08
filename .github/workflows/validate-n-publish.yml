@@ -22,6 +22,7 @@ jobs:
   publish:
     needs: validate
     permissions:
+      contents: read
       id-token: write
     uses: anthochamp/dev-toolbox/.github/workflows/node-lib-publish.yml@bd4502879fa8fc2072ce954b20e4a14c8b6a8591 # main
     with:
