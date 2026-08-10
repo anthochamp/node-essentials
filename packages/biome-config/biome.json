@@ -18,7 +18,9 @@
 					"options": {
 						"ignoreTypes": false
 					}
-				}
+				},
+				"noShadow": "info",
+				"noUnnecessaryConditions": "warn"
 			},
 			"complexity": {
 				"noUselessUndefined": "error"
@@ -29,8 +31,6 @@
 			"nursery": {
 				"noFloatingPromises": "error",
 				"noMisusedPromises": "error",
-				"noShadow": "info",
-				"noUnnecessaryConditions": "warn",
 				"useExhaustiveSwitchCases": "error"
 			}
 		}
