@@ -3,8 +3,6 @@
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM", "WebWorker"],
 
-		"isolatedDeclarations": true,
-
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,

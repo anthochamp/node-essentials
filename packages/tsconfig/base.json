@@ -1,18 +1,19 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"compilerOptions": {
-		"resolveJsonModule": true,
 		"allowArbitraryExtensions": true,
-		"noEmitOnError": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"strict": true,
 		"exactOptionalPropertyTypes": false,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedDeclarations": false,
+		"noEmitOnError": true,
 		"noImplicitOverride": true,
 		"noUncheckedIndexedAccess": true,
+		"noUncheckedSideEffectImports": true,
+		"resolveJsonModule": true,
 		"skipDefaultLibCheck": true,
 		"skipLibCheck": true,
-		"noUncheckedSideEffectImports": true
+		"strict": true
 	}
 }

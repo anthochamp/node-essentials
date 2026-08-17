@@ -3,8 +3,6 @@
 	"compilerOptions": {
 		"lib": ["ESNext"],
 
-		"isolatedDeclarations": true,
-
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,

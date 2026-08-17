@@ -2,15 +2,15 @@ import type { Except, TaggedUnion } from "type-fest";
 
 import { defaults } from "./defaults.js";
 import {
-	type GetObjectKeysOptions,
 	getObjectKeys,
+	type GetObjectKeysOptions,
 	type ObjectKey,
 } from "./get-object-keys.js";
 
-export const TraverseSkip: symbol = Symbol("TraverseSkip"); // Skip recursion into children while continuing traversal
-export const TraverseBreak: symbol = Symbol("TraverseBreak"); // Skip visiting sibling properties and ascend to parent
-export const TraverseHalt: symbol = Symbol("TraverseHalt"); // Halt visiting entirely
-export const TraverseContinue: symbol = Symbol("TraverseContinue"); // Continue traversal as normal
+export const TraverseSkip = Symbol("TraverseSkip"); // Skip recursion into children while continuing traversal
+export const TraverseBreak = Symbol("TraverseBreak"); // Skip visiting sibling properties and ascend to parent
+export const TraverseHalt = Symbol("TraverseHalt"); // Halt visiting entirely
+export const TraverseContinue = Symbol("TraverseContinue"); // Continue traversal as normal
 
 export type TraverseKey = TaggedUnion<
 	"kind",
