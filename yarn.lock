@@ -75,7 +75,7 @@ __metadata:
     "@types/shallow-clone": "npm:3.0.2"
     chardet: "npm:^2.1.0"
     content-disposition: "npm:^2.0.0"
-    content-type: "npm:^2.0.0"
+    content-type: "npm:^3.0.0"
     editorconfig: "npm:^3.0.1"
     fs-ext: "npm:^2.1.1"
     iconv-lite: "npm:^0.7.0"
@@ -1418,17 +1418,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"content-type@npm:*":
+"content-type@npm:*, content-type@npm:^3.0.0":
   version: 3.0.0
   resolution: "content-type@npm:3.0.0"
   checksum: 10c0/4ecb17b151ef272fe3143d2414b78edeea9c7baa45724e2bbcbfc0dbd4bbc5b68d654733df6df2d9c600016af841a25aa26b0a4d290e366b5120705796072d98
-  languageName: node
-  linkType: hard
-
-"content-type@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "content-type@npm:2.1.0"
-  checksum: 10c0/f5d420f55fd0c7a7f7cbae9637777ce67a074aa79b489d8d9fee8599089592b5f8bb194e1d6885741fee20271034baca0d68d5419535b52d070c4f7e39f4b448
   languageName: node
   linkType: hard
 
