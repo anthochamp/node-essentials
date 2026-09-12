@@ -39,7 +39,7 @@
 		"@types/node": "^24.5.2",
 		"chardet": "^2.1.0",
 		"content-disposition": "^2.0.0",
-		"content-type": "^2.0.0",
+		"content-type": "^3.0.0",
 		"editorconfig": "^3.0.1",
 		"fs-ext": "^2.1.1",
 		"iconv-lite": "^0.7.0",
