@@ -1,0 +1,96 @@
+---
+title: Glossary
+description: The domain terms these pages use, defined once.
+sidebar:
+  order: 3
+---
+
+Terms that appear across the guide and the reference, in plain language. Where a
+term has a precise technical meaning as well, the plain one comes first.
+
+## Numbers and precision
+
+**binary64** — The only number type JavaScript has for arithmetic (`number`).
+64 bits, about 15–17 decimal digits of precision, and a range up to roughly
+`1.8e308`. Everything below is a consequence of that being finite.
+
+**ulp** — "Unit in the last place": the gap between one representable number and
+the next one along. Saying a result is "three ulps off" means it is three
+representable steps away from the true answer — a far more useful measure than a
+fixed decimal count, because the gap grows with the magnitude.
+
+**overflow** — What happens when a result is too large to represent. In binary64
+it becomes `Infinity`, and every digit is lost at once.
+
+**underflow** — The same at the small end: a result too close to zero becomes
+exactly `0`. This is how a tail probability quietly disappears.
+
+**catastrophic cancellation** — Subtracting two nearly equal numbers. The
+leading digits agree and cancel out, leaving only the rounding noise that was
+below them. This is why `1 - erf(x)` fails and `erfc(x)` exists.
+
+**tolerance** — How close is close enough. Every iterative routine takes one;
+what it is measured *against* differs per routine and is documented on each.
+
+**convergence** — An iterative routine closing in on its answer. A routine
+*converged* if it met its tolerance, and did not if it ran out of iterations
+first. See
+[convergence and iteration limits](/node-essentials/topics/math/calculus/convergence/).
+
+## Statistics
+
+**distribution** — A description of how likely each possible outcome is.
+
+**CDF (cumulative distribution function)** — "What fraction of outcomes are no
+bigger than this?" Always between 0 and 1, and always increasing.
+
+**survival function** — The complement of the CDF: "what fraction are bigger
+than this?" Usually the one you want when the answer is small.
+
+**quantile** — The CDF run backwards: "which value sits at the 90th
+percentile?". Also called the inverse CDF or the percent-point function.
+
+**p-value** — The probability of seeing a result at least as extreme as the one
+observed, if nothing interesting were going on. Computed from a survival
+function, which is why the small-answer accuracy of those functions matters.
+
+**regularized** — Normalized so the result lands in `[0, 1]`. The word is spelled
+out in these function names because libraries disagree about whether the bare
+name means the ratio or the unnormalised integral, and the difference is silent.
+
+**shape parameter** — A number that changes the form of a distribution rather
+than shifting or stretching it. Conventionally `a` and `b` in these pages.
+
+## Numerical methods
+
+**closed form** — An answer you can write down as a finite expression. Most of
+what is on these pages exists because the thing being computed has none.
+
+**bracket** — Two points with a root guaranteed between them, because the
+function has opposite signs at each. See
+[root finding](/node-essentials/topics/math/calculus/root-finding/).
+
+**quadrature** — The traditional name for numerical integration: computing an
+area under a curve by evaluating the curve at points rather than by integrating
+symbolically.
+
+**discretisation error** — The error you get from approximating a smooth thing
+with a finite number of pieces. Shrinks as you add pieces, unlike rounding
+error, which grows.
+
+**continued fraction** — An expression of the form `b₀ + a₁/(b₁ + a₂/(b₂ + ⋯))`.
+Often converges much faster than the equivalent infinite sum. See
+[continued fractions](/node-essentials/topics/math/calculus/series/).
+
+## This project
+
+**portable (P)** — Runs on any JavaScript runtime: Node, browsers, Deno, Bun and
+edge. Imports no host built-ins.
+
+**host-bound (H)** — Depends on a specific runtime, in practice Node. A portable
+package never depends on a host-bound one.
+
+**illustration** — A figure showing what something typically produces.
+
+**evidence** — A figure demonstrating a specific measurable claim the prose
+makes. Labelled as such, and backed by a test that asserts the same claim.

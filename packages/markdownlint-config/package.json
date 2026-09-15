@@ -1,8 +1,29 @@
 {
-	"name": "@ac-essentials/markdownlint-config",
-	"version": "0.1.1",
+	"name": "@ac-kit/markdownlint-config",
+	"version": "0.1.0",
+	"description": "Shareable markdownlint configuration.",
+	"keywords": [
+		"config",
+		"linter",
+		"markdown",
+		"markdownlint"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/markdownlint-config#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/markdownlint-config"
+	},
 	"main": "./index.js",
 	"publishConfig": {
 		"access": "public"
+	},
+	"engines": {
+		"node": ">=24"
 	}
 }

@@ -1,0 +1,48 @@
+{
+	"name": "@ac-kit/fixture-x509",
+	"version": "0.1.0",
+	"private": true,
+	"description": "NIST PKITS, OpenSSL, BouncyCastle and pyca/cryptography certificate corpora for X.509 test suites.",
+	"keywords": [
+		"fixtures",
+		"pkits",
+		"test-vectors",
+		"x509"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/fixture-x509#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/fixture-x509"
+	},
+	"type": "module",
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"setup": "tsx src/setup.ts",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"test": "yarn run -T vitest run"
+	},
+	"dependencies": {
+		"@ac-kit/fixture-util": "workspace:^"
+	},
+	"devDependencies": {
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/node": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"tsx": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
+	},
+	"peerDependencies": {
+		"vitest": ">=4.0.0"
+	}
+}

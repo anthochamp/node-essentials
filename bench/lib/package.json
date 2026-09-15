@@ -1,0 +1,78 @@
+{
+	"name": "@ac-bench/lib",
+	"version": "0.1.0",
+	"description": "Programmatic benchmark API for @ac-bench: fork orchestration and protocol, the environment monitor and cooldown gate, and the escalation decision.",
+	"keywords": [
+		"benchmark",
+		"fork",
+		"measurement",
+		"performance"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/bench/lib#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "bench/lib"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts",
+		"./child": "./src/child/main.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js",
+			"./child": "./dist/child/main.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json --outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-bench/core": "workspace:^",
+		"@ac-kit/algo": "workspace:^",
+		"@ac-kit/app-report": "workspace:^",
+		"@ac-kit/app-system": "workspace:^",
+		"@ac-kit/app-terminal": "workspace:^",
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/format-ansi": "workspace:^",
+		"@ac-kit/format-monospace": "workspace:^",
+		"@ac-kit/math-random": "workspace:^",
+		"@ac-kit/math-stats": "workspace:^",
+		"@ac-kit/model-dataset": "workspace:^",
+		"@ac-kit/node": "workspace:^",
+		"tsx": "catalog:fixed"
+	},
+	"devDependencies": {
+		"@ac-kit/async": "workspace:*",
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/node": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

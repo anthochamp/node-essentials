@@ -1,0 +1,15 @@
+export const INT8_MIN = -128n;
+export const INT8_MAX = 127n;
+export const UINT8_MAX = 255n;
+export const INT16_MIN = -32_768n;
+export const INT16_MAX = 32_767n;
+export const UINT16_MAX = 65_535n;
+export const INT32_MIN = -2_147_483_648n;
+export const INT32_MAX = 2_147_483_647n;
+export const UINT32_MAX = 4_294_967_295n;
+export const INT64_MIN = -(2n ** 63n);
+export const INT64_MAX = 2n ** 63n - 1n;
+export const UINT64_MAX = 2n ** 64n - 1n;
+export const INT128_MIN = -(2n ** 127n);
+export const INT128_MAX = 2n ** 127n - 1n;
+export const UINT128_MAX = 2n ** 128n - 1n;

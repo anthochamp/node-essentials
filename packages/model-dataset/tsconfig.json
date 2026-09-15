@@ -1,0 +1,7 @@
+{
+	"extends": "@ac-kit/tsconfig/base-lib",
+	"include": ["src/**/*"],
+	"compilerOptions": {
+		"rootDir": "src"
+	}
+}

@@ -1,0 +1,568 @@
+# French display names for the CSS colour keywords.
+# Each msgid is a CSS <color> keyword; each msgstr is how it is presented to a
+# reader. The extracted comment carries the keyword's value, so a translator can
+# see the colour being named.
+msgid ""
+msgstr ""
+"Project-Id-Version: @ac-kit/format-css-color\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. #f0f8ff
+msgid "aliceblue"
+msgstr "Bleu Alice"
+
+#. #faebd7
+msgid "antiquewhite"
+msgstr "Blanc antique"
+
+#. #7fffd4
+msgid "aquamarine"
+msgstr "Aigue-marine"
+
+#. #f0ffff
+msgid "azure"
+msgstr "Azuré"
+
+#. #f5f5dc
+msgid "beige"
+msgstr "Beige clair"
+
+#. #ffe4c4
+msgid "bisque"
+msgstr "Bisque"
+
+#. #000000
+msgid "black"
+msgstr "Noir"
+
+#. #ffebcd
+msgid "blanchedalmond"
+msgstr "Amande"
+
+#. #0000ff
+msgid "blue"
+msgstr "Bleu"
+
+#. #8a2be2
+msgid "blueviolet"
+msgstr "Bleu violet"
+
+#. #a52a2a
+msgid "brown"
+msgstr "Brun rouge"
+
+#. #deb887
+msgid "burlywood"
+msgstr "Bois massif"
+
+#. #5f9ea0
+msgid "cadetblue"
+msgstr "Bleu cadet"
+
+#. #7fff00
+msgid "chartreuse"
+msgstr "Chartreuse"
+
+#. #d2691e
+msgid "chocolate"
+msgstr "Brun cacao"
+
+#. #ff7f50
+msgid "coral"
+msgstr "Corail"
+
+#. #6495ed
+msgid "cornflowerblue"
+msgstr "Bleu bleuet"
+
+#. #fff8dc
+msgid "cornsilk"
+msgstr "Jaune maïs doux"
+
+#. #dc143c
+msgid "crimson"
+msgstr "Cramoisi"
+
+#. #00ffff
+msgid "cyan"
+msgstr "Cyan"
+
+#. #00008b
+msgid "darkblue"
+msgstr "Bleu foncé"
+
+#. #008b8b
+msgid "darkcyan"
+msgstr "Cyan foncé"
+
+#. #b8860b
+msgid "darkgoldenrod"
+msgstr "Jaune doré foncé"
+
+#. #a9a9a9
+msgid "darkgray"
+msgstr "Gris foncé"
+
+#. #006400
+msgid "darkgreen"
+msgstr "Vert foncé"
+
+#. #bdb76b
+msgid "darkkhaki"
+msgstr "Kaki foncé"
+
+#. #8b008b
+msgid "darkmagenta"
+msgstr "Magenta foncé"
+
+#. #556b2f
+msgid "darkolivegreen"
+msgstr "Olive verte foncé"
+
+#. #ff8c00
+msgid "darkorange"
+msgstr "Orange foncé"
+
+#. #9932cc
+msgid "darkorchid"
+msgstr "Orchidée foncé"
+
+#. #8b0000
+msgid "darkred"
+msgstr "Fleur de chocolat"
+
+#. #e9967a
+msgid "darksalmon"
+msgstr "Saumon foncé"
+
+#. #8fbc8f
+msgid "darkseagreen"
+msgstr "Vert océan foncé"
+
+#. #483d8b
+msgid "darkslateblue"
+msgstr "Bleu ardoise foncé"
+
+#. #2f4f4f
+msgid "darkslategray"
+msgstr "Gris ardoise foncé"
+
+#. #00ced1
+msgid "darkturquoise"
+msgstr "Turquoise foncé"
+
+#. #9400d3
+msgid "darkviolet"
+msgstr "Violet foncé"
+
+#. #ff1493
+msgid "deeppink"
+msgstr "Rose profond"
+
+#. #00bfff
+msgid "deepskyblue"
+msgstr "Bleu ciel profond"
+
+#. #696969
+msgid "dimgray"
+msgstr "Gris mat"
+
+#. #1e90ff
+msgid "dodgerblue"
+msgstr "Bleu toile"
+
+#. #b22222
+msgid "firebrick"
+msgstr "Brique feu"
+
+#. #fffaf0
+msgid "floralwhite"
+msgstr "Blanc floral"
+
+#. #228b22
+msgid "forestgreen"
+msgstr "Vert forêt"
+
+#. #dcdcdc
+msgid "gainsboro"
+msgstr "Gris étain"
+
+#. #f8f8ff
+msgid "ghostwhite"
+msgstr "Blanc fantôme"
+
+#. #ffd700
+msgid "gold"
+msgstr "Or"
+
+#. #daa520
+msgid "goldenrod"
+msgstr "Jaune doré"
+
+#. #808080
+msgid "gray"
+msgstr "Gris"
+
+#. #008000
+msgid "green"
+msgstr "Vert"
+
+#. #adff2f
+msgid "greenyellow"
+msgstr "Vert jaune"
+
+#. #f0fff0
+msgid "honeydew"
+msgstr "Miellat"
+
+#. #ff69b4
+msgid "hotpink"
+msgstr "Rose vif"
+
+#. #cd5c5c
+msgid "indianred"
+msgstr "Rouge indien"
+
+#. #4b0082
+msgid "indigo"
+msgstr "Bleu-violet"
+
+#. #fffff0
+msgid "ivory"
+msgstr "Blanc ivoire"
+
+#. #f0e68c
+msgid "khaki"
+msgstr "Kaki"
+
+#. #e6e6fa
+msgid "lavender"
+msgstr "Lavande"
+
+#. #fff0f5
+msgid "lavenderblush"
+msgstr "Blanc lavande"
+
+#. #7cfc00
+msgid "lawngreen"
+msgstr "Vert pelouse"
+
+#. #fffacd
+msgid "lemonchiffon"
+msgstr "Mousseline de citron"
+
+#. #add8e6
+msgid "lightblue"
+msgstr "Bleu clair"
+
+#. #f08080
+msgid "lightcoral"
+msgstr "Corail clair"
+
+#. #e0ffff
+msgid "lightcyan"
+msgstr "Cyan clair"
+
+#. #fafad2
+msgid "lightgoldenrodyellow"
+msgstr "Jaune doré clair"
+
+#. #90ee90
+msgid "lightgreen"
+msgstr "Vert clair"
+
+#. #d3d3d3
+msgid "lightgrey"
+msgstr "Gris clair"
+
+#. #ffb6c1
+msgid "lightpink"
+msgstr "Rose clair"
+
+#. #ffa07a
+msgid "lightsalmon"
+msgstr "Saumon clair"
+
+#. #20b2aa
+msgid "lightseagreen"
+msgstr "Vert océan clair"
+
+#. #87cefa
+msgid "lightskyblue"
+msgstr "Bleu ciel clair"
+
+#. #778899
+msgid "lightslategray"
+msgstr "Gris ardoise clair"
+
+#. #b0c4de
+msgid "lightsteelblue"
+msgstr "Bleu acier clair"
+
+#. #ffffe0
+msgid "lightyellow"
+msgstr "Jaune clair"
+
+#. #00ff00
+msgid "lime"
+msgstr "Vert citron"
+
+#. #32cd32
+msgid "limegreen"
+msgstr "Vert citron"
+
+#. #faf0e6
+msgid "linen"
+msgstr "Blanc lin"
+
+#. #ff00ff
+msgid "magenta"
+msgstr "Magenta"
+
+#. #800000
+msgid "maroon"
+msgstr "Bordeaux"
+
+#. #66cdaa
+msgid "mediumaquamarine"
+msgstr "Aigue-marine moyen"
+
+#. #0000cd
+msgid "mediumblue"
+msgstr "Bleu moyen"
+
+#. #ba55d3
+msgid "mediumorchid"
+msgstr "Orchidée moyen"
+
+#. #9370db
+msgid "mediumpurple"
+msgstr "Pourpre moyen"
+
+#. #3cb371
+msgid "mediumseagreen"
+msgstr "Vert océan moyen"
+
+#. #7b68ee
+msgid "mediumslateblue"
+msgstr "Bleu ardoise moyen"
+
+#. #00fa9a
+msgid "mediumspringgreen"
+msgstr "Vert printemps moyen"
+
+#. #48d1cc
+msgid "mediumturquoise"
+msgstr "Turquoise moyen"
+
+#. #c71585
+msgid "mediumvioletred"
+msgstr "Violet moyen"
+
+#. #191970
+msgid "midnightblue"
+msgstr "Bleu nuit"
+
+#. #f5fffa
+msgid "mintcream"
+msgstr "Blanc menthe"
+
+#. #ffe4e1
+msgid "mistyrose"
+msgstr "Rose brumeux"
+
+#. #ffe4b5
+msgid "moccasin"
+msgstr "Mocassin"
+
+#. #ffdead
+msgid "navajowhite"
+msgstr "Blanc navarro"
+
+#. #000080
+msgid "navy"
+msgstr "Bleu marine"
+
+#. #fdf5e6
+msgid "oldlace"
+msgstr "Blanc dentelle"
+
+#. #808000
+msgid "olive"
+msgstr "Jaune olive"
+
+#. #6b8e23
+msgid "olivedrab"
+msgstr "Olivâtre"
+
+#. #ffa500
+msgid "orange"
+msgstr "Orange"
+
+#. #ff4500
+msgid "orangered"
+msgstr "Rouge orange"
+
+#. #da70d6
+msgid "orchid"
+msgstr "Orchidée"
+
+#. #eee8aa
+msgid "palegoldenrod"
+msgstr "Jaune doré pâle"
+
+#. #98fb98
+msgid "palegreen"
+msgstr "Menthe verte"
+
+#. #afeeee
+msgid "paleturquoise"
+msgstr "Turquoise pâle"
+
+#. #db7093
+msgid "palevioletred"
+msgstr "Violet pâle"
+
+#. #ffefd5
+msgid "papayawhip"
+msgstr "Papaye"
+
+#. #ffdab9
+msgid "peachpuff"
+msgstr "Beige pêche"
+
+#. #cd853f
+msgid "peru"
+msgstr "Pérou"
+
+#. #ffc0cb
+msgid "pink"
+msgstr "Rose"
+
+#. #dda0dd
+msgid "plum"
+msgstr "Rouge prune"
+
+#. #b0e0e6
+msgid "powderblue"
+msgstr "Bleu poudre"
+
+#. #800080
+msgid "purple"
+msgstr "Patriarche"
+
+#. #663399
+msgid "rebeccapurple"
+msgstr "Iris"
+
+#. #ff0000
+msgid "red"
+msgstr "Rouge"
+
+#. #bc8f8f
+msgid "rosybrown"
+msgstr "Brun rosé"
+
+#. #4169e1
+msgid "royalblue"
+msgstr "Bleu royal"
+
+#. #8b4513
+msgid "saddlebrown"
+msgstr "Brun cuir"
+
+#. #fa8072
+msgid "salmon"
+msgstr "Saumon"
+
+#. #f4a460
+msgid "sandybrown"
+msgstr "Brun sablé"
+
+#. #2e8b57
+msgid "seagreen"
+msgstr "Vert océan"
+
+#. #fff5ee
+msgid "seashell"
+msgstr "Blanc coquillage"
+
+#. #a0522d
+msgid "sienna"
+msgstr "Terre de sienne"
+
+#. #c0c0c0
+msgid "silver"
+msgstr "Argent"
+
+#. #87ceeb
+msgid "skyblue"
+msgstr "Bleu ciel"
+
+#. #6a5acd
+msgid "slateblue"
+msgstr "Bleu ardoise"
+
+#. #708090
+msgid "slategray"
+msgstr "Gris ardoise"
+
+#. #fffafa
+msgid "snow"
+msgstr "Neige"
+
+#. #00ff7f
+msgid "springgreen"
+msgstr "Vert printemps"
+
+#. #4682b4
+msgid "steelblue"
+msgstr "Bleu acier"
+
+#. #d2b48c
+msgid "tan"
+msgstr "Brun"
+
+#. #008080
+msgid "teal"
+msgstr "Bleu sarcelle"
+
+#. #d8bfd8
+msgid "thistle"
+msgstr "Violet chardon"
+
+#. #ff6347
+msgid "tomato"
+msgstr "Tomate"
+
+#. #40e0d0
+msgid "turquoise"
+msgstr "Turquoise"
+
+#. #ee82ee
+msgid "violet"
+msgstr "Violet"
+
+#. #f5deb3
+msgid "wheat"
+msgstr "Blé"
+
+#. #ffffff
+msgid "white"
+msgstr "Blanc pur"
+
+#. #f5f5f5
+msgid "whitesmoke"
+msgstr "Blanc fumée"
+
+#. #ffff00
+msgid "yellow"
+msgstr "Jaune brillant"
+
+#. #9acd32
+msgid "yellowgreen"
+msgstr "Jaune vert"

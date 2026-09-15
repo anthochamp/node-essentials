@@ -1,5 +1,0 @@
-{
-	"$schema": "https://typedoc.org/schema.json",
-	"extends": ["@ac-essentials/typedoc-config"],
-	"out": "doc/generated"
-}

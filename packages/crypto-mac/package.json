@@ -1,0 +1,70 @@
+{
+	"name": "@ac-kit/crypto-mac",
+	"version": "0.1.0",
+	"description": "Message authentication codes: generic hmac() and hmacVerify() plus named MD5, SHA-1 and SHA-2 HMAC wrappers.",
+	"keywords": [
+		"authentication",
+		"crypto",
+		"hmac",
+		"mac"
+	],
+	"homepage": "https://anthochamp.github.io/node-essentials/api/crypto-mac/",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/crypto-mac"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json -outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/crypto-hash": "workspace:^",
+		"@ac-kit/crypto-safe": "workspace:^",
+		"@types/web": "catalog:"
+	},
+	"devDependencies": {
+		"@ac-kit/fixture-crypto": "workspace:*",
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/node": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
+	},
+	"peerDependencies": {
+		"vitest": ">=4.0.0"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

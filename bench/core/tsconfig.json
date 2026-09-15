@@ -1,0 +1,8 @@
+{
+	"include": ["src/**/*"],
+	"extends": "@ac-kit/tsconfig/web-lib",
+	"compilerOptions": {
+		"rootDir": "src",
+		"types": ["web", "node"]
+	}
+}

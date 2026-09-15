@@ -1,0 +1,76 @@
+{
+	"name": "@ac-kit/format-asn1",
+	"version": "0.1.0",
+	"description": "ASN.1 (X.690) runtime: encoding primitives, the schema model, and the BER, CER, DER and PER codecs as separate subpath exports.",
+	"keywords": [
+		"asn1",
+		"ber",
+		"codec",
+		"der",
+		"x690"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/format-asn1#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/format-asn1"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts",
+		"./ber": "./src/ber.ts",
+		"./cer": "./src/cer.ts",
+		"./der": "./src/der.ts",
+		"./per": "./src/per.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js",
+			"./ber": "./dist/ber.js",
+			"./cer": "./dist/cer.js",
+			"./der": "./dist/der.js",
+			"./per": "./dist/per.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json -outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/format-core": "workspace:^",
+		"@ac-kit/format-oid": "workspace:^",
+		"@ac-kit/format-varint": "workspace:^",
+		"@ac-kit/math-integer": "workspace:^",
+		"@types/node": "catalog:"
+	},
+	"devDependencies": {
+		"@ac-kit/fixture-x509": "workspace:*",
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

@@ -1,0 +1,65 @@
+{
+	"name": "@ac-kit/format-yaml",
+	"version": "0.1.0",
+	"description": "YAML parse and print streams over @ac-kit/format-core.",
+	"keywords": [
+		"config",
+		"parser",
+		"streams",
+		"yaml"
+	],
+	"homepage": "https://anthochamp.github.io/node-essentials/api/format-yaml/",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/format-yaml"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js",
+			"./file": "./dist/file.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json -outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/format-core": "workspace:^",
+		"@types/node": "catalog:",
+		"yaml": "catalog:"
+	},
+	"devDependencies": {
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

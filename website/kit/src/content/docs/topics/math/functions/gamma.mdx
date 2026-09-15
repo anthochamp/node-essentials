@@ -1,0 +1,109 @@
+---
+title: The gamma and beta functions
+description: The factorial, extended to every real number — and the ratio built from it that normalizes half of statistics.
+sidebar:
+  order: 1
+---
+
+import Api from "../../../../../components/Api.astro";
+import Example from "../../../../../components/Example.astro";
+import FurtherReading from "../../../../../components/FurtherReading.astro";
+import Intuition from "../../../../../components/Intuition.astro";
+import Uses from "../../../../../components/Uses.astro";
+
+<Uses pkg="math-analysis" symbols={["gamma", "logGamma", "beta", "logBeta"]} />
+
+<Intuition>
+The factorial only works on whole numbers: `4! = 4 × 3 × 2 × 1`. Ask it for
+`2.5!` and there is nothing to multiply. The **gamma function** fills in the
+gaps — it agrees with the factorial at every whole number and joins those points
+with a single smooth curve, so `Γ(3.5)` is a perfectly good number.
+</Intuition>
+
+**Where you meet it.** Almost every continuous probability distribution has a
+normalizing constant — the number you divide by so the total probability comes
+to 1 — and for the chi-squared, gamma, Student's *t* and *F* distributions, that
+constant is written with gamma functions. If you are computing a p-value, this
+is running underneath.
+
+## Γ(x)
+
+<Api pkg="math-analysis" name="gamma" /> is the function itself.
+`Γ(n) = (n − 1)!` at every positive integer — note the off-by-one, which is a
+historical accident everyone has to live with — and it interpolates smoothly
+between them.
+
+At every non-positive integer it has a **pole**: the curve shoots off to
+infinity, and it goes to `+∞` on one side and `−∞` on the other. There is no
+sensible single answer there, so `gamma` returns `NaN` rather than picking one.
+
+<Example id="math-analysis/gamma" />
+
+## When Γ stops fitting
+
+Gamma grows faster than anything else in ordinary use. `Γ(171)` is about
+`7 × 10³⁰⁷`; `Γ(172)` is past the top of a JavaScript number and comes back as
+`Infinity`.
+
+<Api pkg="math-analysis" name="logGamma" /> computes `ln Γ(x)` directly instead
+of computing `Γ(x)` and then taking its logarithm. That distinction is the whole
+point: it never forms the enormous intermediate value, so it keeps working for
+every argument you can represent.
+
+<Example id="math-analysis/log-gamma-overflow" />
+
+Working in logarithms is not a workaround — it is how these formulas are
+actually written in practice. A likelihood is a product of many small
+probabilities, and the log turns every one of those products into a sum that
+stays comfortably in range.
+
+## B(a, b)
+
+<Api pkg="math-analysis" name="beta" /> computes `B(a, b) = Γ(a)Γ(b) / Γ(a + b)`.
+
+Writing that ratio out by hand overflows for shape parameters far smaller than
+the ones whose *ratio* is still perfectly representable — `gamma(200)` is
+`Infinity`, but `B(200, 200)` is an ordinary small number. That is why it is a
+function rather than an expression.
+
+The beta function is the normalizing constant of the Beta distribution, which
+describes a **proportion**: a conversion rate, a defect rate, a probability you
+are uncertain about. Through that distribution it also reaches the binomial,
+Student's *t* and the *F* distribution.
+
+<Example id="math-analysis/beta" />
+
+`B` decays fast in the other direction — it underflows to exactly zero from
+around `a + b ≈ 1500`. <Api pkg="math-analysis" name="logBeta" /> is what to use
+past that point, and any time the result was going to be logged anyway.
+
+## Two naming rules
+
+Every name in this package spells out **regularized** where it applies, because
+libraries disagree about whether the bare name means the normalized ratio in
+`[0, 1]` or the unnormalised integral. Guessing wrong is silent and off by a
+factor of `Γ(a)`.
+
+Arguments go **parameters first, variable last** —
+`regularizedIncompleteGamma(a, x)`, `regularizedIncompleteBeta(a, b, x)` — so
+the gamma and beta families read the same way round.
+
+<FurtherReading
+  links={[
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Gamma_function",
+      label: "Gamma function (Wikipedia)",
+    },
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Beta_function",
+      label: "Beta function (Wikipedia)",
+    },
+    {
+      kind: "authority",
+      href: "https://dlmf.nist.gov/5",
+      label: "DLMF chapter 5 — Gamma Function",
+    },
+  ]}
+/>

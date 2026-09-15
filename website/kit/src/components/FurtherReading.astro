@@ -1,0 +1,50 @@
+---
+type Link = {
+	href: string;
+	label: string;
+	/**
+	 * `intuition` for an accessible source a newcomer can follow;
+	 * `authority` for the specification or handbook that settles correctness.
+	 */
+	kind: "intuition" | "authority";
+};
+
+type Props = {
+	links: readonly Link[];
+};
+
+const KIND_LABEL: Record<Link["kind"], string> = {
+	intuition: "background",
+	authority: "authoritative",
+};
+
+const { links } = Astro.props;
+---
+
+<section class="further-reading">
+	<h2 id="further-reading">Further reading</h2>
+	<ul>
+		{
+			links.map((link) => (
+				<li>
+					<a href={link.href} rel="noopener noreferrer" target="_blank">
+						{link.label}
+					</a>
+					<span class="further-reading__kind">{KIND_LABEL[link.kind]}</span>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.further-reading__kind {
+		margin-left: 0.5rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+
+	.further-reading__kind::before {
+		content: "— ";
+	}
+</style>

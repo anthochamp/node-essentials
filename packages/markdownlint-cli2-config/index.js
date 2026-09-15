@@ -1,5 +1,5 @@
 module.exports = {
-	config: require("@ac-essentials/markdownlint-config"),
+	config: require("@ac-kit/markdownlint-config"),
 
 	gitignore: true,
 

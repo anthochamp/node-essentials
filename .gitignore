@@ -3,6 +3,13 @@ dist/
 node_modules/
 *-generated.*
 generated/
+*.generated.*
+
+# Astro type-generation and content cache
+.astro/
+
+# TypeDoc markdown, regenerated into the content collection on every site build
+website/*/src/content/docs/api/
 
 .yarn/*
 !.yarn/patches
@@ -18,3 +25,6 @@ generated/
 #!.yarn/cache
 .pnp.*
 
+# Rust / WASM build artefacts
+target/
+*.wasm

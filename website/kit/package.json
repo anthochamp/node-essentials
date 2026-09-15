@@ -1,0 +1,33 @@
+{
+	"name": "website-kit",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"compile:check": "astro check",
+		"clean": "rimraf dist .astro"
+	},
+	"devDependencies": {
+		"@ac-kit/core": "workspace:*",
+		"@ac-kit/markdownlint-config": "workspace:*",
+		"@ac-kit/math-analysis": "workspace:*",
+		"@ac-kit/math-scalar": "workspace:*",
+		"@ac-kit/model-chart": "workspace:*",
+		"@ac-kit/model-dataset": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@astrojs/check": "catalog:fixed",
+		"@astrojs/markdown-remark": "catalog:fixed",
+		"@astrojs/starlight": "catalog:fixed",
+		"@observablehq/plot": "catalog:fixed",
+		"@types/web": "catalog:fixed",
+		"astro": "catalog:fixed",
+		"examples": "workspace:*",
+		"rimraf": "catalog:fixed",
+		"starlight-typedoc": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typedoc-plugin-markdown": "catalog:fixed",
+		"typescript": "catalog:fixed"
+	}
+}

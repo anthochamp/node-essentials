@@ -1,0 +1,26 @@
+---
+import { Aside } from "@astrojs/starlight/components";
+
+type Props = {
+	/** What the concept is called in plain language, when a title helps. */
+	title?: string;
+};
+
+const { title = "Intuition" } = Astro.props;
+---
+
+<div class="intuition">
+	<Aside type="tip" title={title}>
+		<slot />
+	</Aside>
+</div>
+
+<style>
+	/* Marks the plain-language opening of a concept so a reader scanning the
+	   page can find it without reading the formal definition first. */
+	.intuition :global(.starlight-aside) {
+		--sl-color-asides-text-accent: var(--sl-color-purple-high);
+		--sl-color-asides-border: var(--sl-color-purple);
+		background-color: var(--sl-color-purple-low);
+	}
+</style>

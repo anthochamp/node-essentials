@@ -1,0 +1,59 @@
+{
+	"name": "@ac-kit/fixture-util",
+	"version": "0.1.0",
+	"description": "Infrastructure for packages that fetch a pinned, checksummed test-vector corpus: fetch-and-verify, zip extraction, a manifest-driven setup runner and fixture-directory resolution.",
+	"keywords": [
+		"checksum",
+		"fixtures",
+		"test-vectors",
+		"testing"
+	],
+	"homepage": "https://anthochamp.github.io/node-essentials/api/fixture-util/",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/fixture-util"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json --outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/cmd-git": "workspace:^",
+		"@ac-kit/crypto-hash": "workspace:^",
+		"fflate": "catalog:fixed"
+	},
+	"devDependencies": {
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/node": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

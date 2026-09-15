@@ -1,0 +1,62 @@
+---
+import { Code } from "@astrojs/starlight/components";
+
+import { packageEntry } from "../lib/packages.js";
+
+type Props = {
+	/** Package name without the scope, e.g. `math-analysis`. */
+	pkg: string;
+	/** The symbols this page is about, in the order it introduces them. */
+	symbols: readonly string[];
+};
+
+const { pkg, symbols } = Astro.props;
+const specifier = `@ac-kit/${pkg}`;
+const entry = packageEntry(pkg);
+const code = `import { ${symbols.join(", ")} } from "${specifier}";`;
+---
+
+<div class="uses">
+	<p class="uses__meta">
+		<code>{specifier}</code>
+		{
+			entry.portability === "H" ? (
+				<span class="uses__tag uses__tag--host" title="Bound to a host runtime">
+					Node only
+				</span>
+			) : (
+				<span class="uses__tag" title="Runs on any JavaScript runtime">
+					Portable
+				</span>
+			)
+		}
+	</p>
+	<Code code={code} lang="ts" />
+</div>
+
+<style>
+	.uses {
+		margin-bottom: 1.5rem;
+	}
+
+	.uses__meta {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.25rem;
+		font-size: var(--sl-text-sm);
+	}
+
+	.uses__tag {
+		padding: 0.05rem 0.4rem;
+		border: 1px solid var(--sl-color-green);
+		border-radius: 0.25rem;
+		color: var(--sl-color-green-high);
+		font-size: var(--sl-text-xs);
+	}
+
+	.uses__tag--host {
+		border-color: var(--sl-color-orange);
+		color: var(--sl-color-orange-high);
+	}
+</style>

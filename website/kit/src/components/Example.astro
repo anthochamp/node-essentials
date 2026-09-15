@@ -1,0 +1,135 @@
+---
+import { Code } from "@astrojs/starlight/components";
+
+import { getExample } from "../lib/examples.js";
+
+type Props = {
+	/** `<package>/<subject>`, e.g. `math-analysis/gamma`. */
+	id: string;
+};
+
+const { id } = Astro.props;
+const { example, snippet } = getExample(id);
+const { claim } = example;
+---
+
+<figure class:list={["example", claim !== undefined && "example--evidence"]}>
+	<figcaption class="example__caption">
+		{
+			claim !== undefined && (
+				<p class="example__claim">
+					<span class="example__badge">Evidence</span>
+					{claim}
+				</p>
+			)
+		}
+		<strong>{example.title}</strong>
+		<p>{example.description}</p>
+	</figcaption>
+
+	<div class="example__runner" data-example={id}>
+		<noscript>
+			This example is computed in your browser, so it needs JavaScript. The code
+			below is what it runs.
+		</noscript>
+	</div>
+
+	<Code code={snippet} lang="ts" title={`${id}.example.ts`} />
+</figure>
+
+<script>
+	import { mountExamples } from "../lib/runner.js";
+
+	mountExamples();
+</script>
+
+<style>
+	.example {
+		margin: 2rem 0;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		overflow: hidden;
+	}
+
+	.example__caption p {
+		margin-top: 0.25rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+
+	.example__caption {
+		padding: 1rem 1rem 0;
+	}
+
+	.example--evidence {
+		border-color: var(--sl-color-accent);
+	}
+
+	.example__claim {
+		margin: 0 0 0.5rem;
+		font-size: var(--sl-text-sm);
+	}
+
+	.example__badge {
+		display: inline-block;
+		margin-right: 0.5rem;
+		padding: 0.1rem 0.45rem;
+		border-radius: 0.25rem;
+		background: var(--sl-color-accent-low);
+		color: var(--sl-color-white);
+		font-size: var(--sl-text-xs);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.example__runner {
+		padding: 1rem;
+	}
+
+	.example :global(.example-controls) {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 1.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.example :global(.example-control) {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: var(--sl-text-xs);
+	}
+
+	.example :global(.example-control__label) {
+		font-weight: 600;
+	}
+
+	.example :global(.example-control__value) {
+		font-variant-numeric: tabular-nums;
+		min-width: 3.5ch;
+		text-align: right;
+	}
+
+	.example :global(.example-control__hint) {
+		grid-column: 1 / -1;
+		color: var(--sl-color-gray-3);
+	}
+
+	.example :global(.example-output__error) {
+		color: var(--sl-color-red);
+	}
+
+	.example :global(figure[class^="plot-"]) {
+		background: transparent;
+		margin: 0;
+	}
+
+	/* Scales the plot down rather than letting it overflow: an overflow here
+	   would toggle a scrollbar, and a toggling scrollbar oscillates the width
+	   the runner measures. */
+	.example :global(figure[class^="plot-"] svg) {
+		max-width: 100%;
+		height: auto;
+	}
+</style>

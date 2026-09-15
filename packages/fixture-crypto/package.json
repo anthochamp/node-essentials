@@ -1,0 +1,49 @@
+{
+	"name": "@ac-kit/fixture-crypto",
+	"version": "0.1.0",
+	"private": true,
+	"description": "NIST CAVP, Wycheproof and RFC known-answer vectors for the @ac-kit crypto test suites.",
+	"keywords": [
+		"cavp",
+		"fixtures",
+		"test-vectors",
+		"wycheproof"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/fixture-crypto#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/fixture-crypto"
+	},
+	"type": "module",
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"setup": "tsx src/setup.ts",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"test": "yarn run -T vitest run"
+	},
+	"dependencies": {
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/fixture-util": "workspace:^"
+	},
+	"devDependencies": {
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/node": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"tsx": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
+	},
+	"peerDependencies": {
+		"vitest": ">=4.0.0"
+	}
+}

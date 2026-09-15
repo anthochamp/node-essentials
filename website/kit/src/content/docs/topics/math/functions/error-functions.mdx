@@ -1,0 +1,76 @@
+---
+title: The error function
+description: How much of a bell curve lies within a given distance of its centre — and why the complement is a separate function.
+sidebar:
+  order: 2
+---
+
+import Api from "../../../../../components/Api.astro";
+import Example from "../../../../../components/Example.astro";
+import FurtherReading from "../../../../../components/FurtherReading.astro";
+import Intuition from "../../../../../components/Intuition.astro";
+import Uses from "../../../../../components/Uses.astro";
+
+<Uses pkg="math-analysis" symbols={["erf", "erfc"]} />
+
+<Intuition>
+Picture the bell curve. Pick a distance either side of the middle and shade
+everything between. The **error function** tells you what fraction of the total
+area you just shaded: near zero for a narrow band, approaching 1 as the band
+widens to swallow the whole curve.
+</Intuition>
+
+**Where you meet it.** "Three sigma" is a claim about the error function. So is
+every p-value from a normal test, every process-capability index on a factory
+floor, and the confidence interval on any measurement assumed to be normally
+distributed. It also turns up far from statistics — heat diffusion and signal
+attenuation are described by the same integral.
+
+Formally, <Api pkg="math-analysis" name="erf" /> computes
+`erf(x) = 2/√π ∫₀ˣ e^(−t²) dt`, which is the probability that a standard normal
+measurement lands within `x√2` of its mean.
+
+## The complement is not a subtraction
+
+<Api pkg="math-analysis" name="erfc" /> computes `1 − erf(x)` — the area
+*outside* the band rather than inside it. That is the quantity you want for a
+tail probability: "how unlikely is a result at least this extreme?"
+
+It exists as its own function because computing it as a subtraction destroys it.
+`erf(x)` reaches exactly `1` in floating point at about `x = 6`, and `1 - 1` is
+`0`. Everything past that point — every tail probability smaller than about
+`1e-17` — is gone.
+
+Computed directly, `erfc` keeps full relative precision all the way down to the
+underflow limit near `x = 26.5`, which is what makes a tail probability of
+`1e-100` a number rather than a zero.
+
+<Example id="math-analysis/erf-erfc" />
+
+The rule generalises across this whole package:
+
+> **Reach for the upper form when the answer is small.**
+
+The same pairing appears in
+[the incomplete gamma family](/node-essentials/topics/math/functions/incomplete-gamma-beta/),
+for exactly the same reason.
+
+<FurtherReading
+  links={[
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Error_function",
+      label: "Error function (Wikipedia)",
+    },
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule",
+      label: "The 68–95–99.7 rule (Wikipedia)",
+    },
+    {
+      kind: "authority",
+      href: "https://dlmf.nist.gov/7",
+      label: "DLMF chapter 7 — Error Functions",
+    },
+  ]}
+/>

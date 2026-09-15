@@ -1,0 +1,57 @@
+---
+title: Packages
+description: Every package in the tree, what it is for, where it runs, and which part of these pages covers it.
+sidebar:
+  order: 2
+tableOfContents: false
+---
+
+import { DOMAINS, domainPackages } from "../../../lib/packages.js";
+import { documentedPackages } from "../../../lib/api.js";
+
+export const documented = new Set(documentedPackages());
+
+The guide is organised by subject rather than by package, so this page is the
+bridge: it is how you get from a package name you already have — in an error
+message, in a `package.json`, in somebody else's import — to the pages that
+explain it.
+
+Install any of them with your package manager of choice; every name below is
+published under the `@ac-kit` scope.
+
+**Portable** packages import no host built-ins and run under Node, browsers,
+Deno, Bun and edge runtimes alike. **Node only** packages are bound to a host,
+and a portable package will never depend on one.
+
+{DOMAINS.map((domain) => (
+  <section>
+    <h2 id={domain.id}>{domain.label}</h2>
+    <p>{domain.blurb}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>package</th>
+          <th>runs on</th>
+          <th>what it is for</th>
+        </tr>
+      </thead>
+      <tbody>
+        {domainPackages(domain.id).map((entry) => (
+          <tr>
+            <td>
+              {documented.has(entry.name) ? (
+                <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/api/${entry.name}/`}>
+                  <code>@ac-kit/{entry.name}</code>
+                </a>
+              ) : (
+                <code>@ac-kit/{entry.name}</code>
+              )}
+            </td>
+            <td>{entry.portability === "H" ? "Node only" : "Anywhere"}</td>
+            <td>{entry.summary}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+))}

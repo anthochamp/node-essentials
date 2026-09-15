@@ -1,47 +1,40 @@
 # node-essentials
 
-Reusable configuration and utility packages for Node.js and TypeScript projects.
-**Primarily for my own use, but feel free to use them if they help you too!**
+`@ac-kit` is a family of small, focused TypeScript libraries: language
+extensions, data structures, numeric domains, cryptography, data formats,
+network protocols and application helpers. Every package is ESM-only, strictly
+typed, and independently installable — take the one you need without dragging in
+the rest.
+
+Most of the tree is **portable**: no `node:` imports, no native bindings, so it
+runs unchanged in Node, browsers, Deno, Bun and edge runtimes. Where a Web API
+covers the job (`TransformStream`, `TextDecoder`, `crypto.getRandomValues`), it
+is used instead of the Node built-in. Packages that genuinely need system access
+— sockets, filesystem, processes, terminals — are marked host-bound and kept
+separate, so a portable package can never pull one in.
 
 ## Packages
 
-| Package                                                                       | Description                                                         | Docs                                                                |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| [**app-util**](./packages/app-util/README.md)                                 | Utilities for Node.js apps: logging, config, process/system helpers | [API Docs](https://anthochamp.github.io/node-essentials/app-util/)  |
-| [**cli**](./packages/cli/README.md)                                           | CLI helpers for Docker, ps, git, etc.                               | [API Docs](https://anthochamp.github.io/node-essentials/cli/)       |
-| [**misc-util**](./packages/misc-util/README.md)                               | Foundational JS/TS utilities: string, object, async, types          | [API Docs](https://anthochamp.github.io/node-essentials/misc-util/) |
-| [**tsconfig**](./packages/tsconfig/README.md)                                 | Strict, reusable TypeScript config presets                          | –                                                                   |
-| [**markdownlint-config**](./packages/markdownlint-config/README.md)           | Shareable markdownlint config for Node.js/TS                        | –                                                                   |
-| [**markdownlint-cli2-config**](./packages/markdownlint-cli2-config/README.md) | Config for markdownlint-cli2, tailored for Node.js/TS               | –                                                                   |
-| [**biome-config**](./packages/biome-config/README.md)                         | Biome config for Node.js/TS: linting & formatting                   | –                                                                   |
-| [**typedoc**](./packages/typedoc-config/README.md)                            | Typedoc config and helpers for TS docs                              | –                                                                   |
+| family                       | what it covers                                                                                                                |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `core`, `node`               | language and standard-library extensions; the host-bound counterpart                                                          |
+| `algo`, `data`               | general algorithms; generic collections (list, queue, deque, stack, heap, priority queue)                                     |
+| `async`                      | channels, broadcasts, locks, semaphores and other coordination primitives                                                     |
+| `math-*`                     | numeric domains — scalar, integer, algebra, complex, linear, random, stats, geometry, signal, colour, …                       |
+| `format-*`                   | parsers and printers — JSON family, YAML, TOML, INI, CSV, CBOR, ASN.1, HTTP, glob, regex, cron, Markdown, PO, EditorConfig, … |
+| `crypto-*`, `noncrypto-hash` | cryptographic primitives (hash, MAC, random, constant-time) and non-cryptographic digests                                     |
+| `net-*`                      | protocol implementations — HTTP, IMAP, POP3, SMTP, socketmap — over a pluggable transport                                     |
+| `app-*`                      | application building blocks — configuration, logging, reporting, terminal, i18n, system                                       |
+| `cmd-*`                      | typed wrappers over independently installed programs (`git`, `docker`)                                                        |
 
-## Contributing
+Each package has its own `README.md` with its API and usage. Published API
+documentation is generated per package.
 
-Contributions are welcome! If you find a bug or have a feature request, please
-open an issue or submit a pull request.
-
-### Installation
-
-Clone the repo and install dependencies:
+## Install
 
 ```sh
-git clone https://github.com/anthochamp/node-essentials.git
-cd node-essentials
-yarn install
+npm install @ac-kit/core
 ```
 
-### Usage
-
-After installing dependencies, you can use the following primary commands from
-the monorepo root:
-
-```sh
-yarn build
-yarn test
-yarn lint
-yarn compile:check
-```
-
-Each package can also be used independently. See the README in each package for
-details and usage examples.
+Node.js: the version in [`.nvmrc`](.nvmrc). Packages are ESM-only — there is no
+CommonJS build and none is planned.

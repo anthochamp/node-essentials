@@ -1,4 +1,4 @@
-# @ac-essentials/tsconfig
+# @ac-kit/tsconfig
 
 Hey! This package is just a collection of handy, reusable TypeScript config
 files for Node.js and TS projects. **It's primarily for my own use, but feel
@@ -39,16 +39,16 @@ The following configs are available (see the actual files for details):
 1. **Install it:**
 
    ```sh
-   yarn add -D @ac-essentials/tsconfig
+   yarn add -D @ac-kit/tsconfig
    # or
-   npm install --save-dev @ac-essentials/tsconfig
+   npm install --save-dev @ac-kit/tsconfig
    ```
 
 2. **Extend one of the configs in your own `tsconfig.json`:**
 
    ```json
    {
-     "extends": "@ac-essentials/tsconfig/base.json",
+     "extends": "@ac-kit/tsconfig/base.json",
      "include": ["src/**/*"],
      "compilerOptions": {
        // Add or override options here
@@ -60,7 +60,7 @@ The following configs are available (see the actual files for details):
 
    ```json
    {
-     "extends": "@ac-essentials/tsconfig/node-cli.json",
+     "extends": "@ac-kit/tsconfig/node-cli.json",
      "include": ["src/**/*"]
    }
    ```
@@ -80,7 +80,7 @@ The following configs are available (see the actual files for details):
 
 ```json
 {
-  "extends": "@ac-essentials/tsconfig/node-lib.json",
+  "extends": "@ac-kit/tsconfig/node-lib.json",
   "include": ["src/**/*.ts"],
   "compilerOptions": {
     "declaration": true
@@ -108,9 +108,3 @@ The following configs are available (see the actual files for details):
 - See the actual config files in `packages/tsconfig/` for details.
 - For more on extending configs:
   <https://www.typescriptlang.org/tsconfig#extends>
-
-## Contributing
-
-Contributions are welcome! If you find a bug or have a feature request, please
-open an issue on the
-[GitHub repository](https://github.com/anthochamp/node-essentials).

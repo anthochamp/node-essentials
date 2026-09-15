@@ -1,4 +1,4 @@
-# @ac-essentials/oxlint-config
+# @ac-kit/oxlint-config
 
 This package provides reusable, shareable oxlint and oxfmt configurations for
 Node.js and TypeScript projects. It's mainly for my own workflow, but you're
@@ -21,16 +21,16 @@ consistent, and easy to maintain—without having to copy-paste config everywher
 1. **Install it:**
 
    ```sh
-   yarn add -D @ac-essentials/oxlint-config
+   yarn add -D @ac-kit/oxlint-config
    # or
-   npm install --save-dev @ac-essentials/oxlint-config
+   npm install --save-dev @ac-kit/oxlint-config
    ```
 
 2. **Reference it in your `.oxlintrc.json`:**
 
    ```json
    {
-     "extends": ["@ac-essentials/oxlint-config"]
+     "extends": ["@ac-kit/oxlint-config"]
    }
    ```
 
@@ -48,7 +48,7 @@ consistent, and easy to maintain—without having to copy-paste config everywher
 
    ```json
    {
-     "extends": ["@ac-essentials/oxlint-config/oxfmtrc"]
+     "extends": ["@ac-kit/oxlint-config/oxfmtrc"]
    }
    ```
 

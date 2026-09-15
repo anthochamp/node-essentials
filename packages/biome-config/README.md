@@ -1,4 +1,4 @@
-# @ac-essentials/biome-config
+# @ac-kit/biome-config
 
 This package provides a reusable, shareable Biome configuration for Node.js and
 TypeScript projects. It's mainly for my own workflow, but you're welcome to use
@@ -18,16 +18,16 @@ easy to maintain—without having to copy-paste config everywhere.
 1. **Install it:**
 
    ```sh
-   yarn add -D @ac-essentials/biome-config
+   yarn add -D @ac-kit/biome-config
    # or
-   npm install --save-dev @ac-essentials/biome-config
+   npm install --save-dev @ac-kit/biome-config
    ```
 
 2. **Reference it in your `biome.json`:**
 
    ```json
    {
-     "extends": "@ac-essentials/biome-config"
+     "extends": "@ac-kit/biome-config"
    }
    ```
 
@@ -74,9 +74,3 @@ settings.
 ## References
 
 - See the actual config file in `packages/biome-config/` for details
-
-## Contributing
-
-Contributions are welcome! If you find a bug or have a feature request, please
-open an issue on the
-[GitHub repository](https://github.com/anthochamp/node-essentials).

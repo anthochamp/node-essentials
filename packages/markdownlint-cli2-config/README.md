@@ -1,4 +1,4 @@
-# @ac-essentials/markdownlint-cli2-config
+# @ac-kit/markdownlint-cli2-config
 
 This package provides a ready-to-use, shareable configuration for
 markdownlint-cli2, tailored for Node.js and TypeScript projects. It's mainly for
@@ -19,16 +19,16 @@ repos—without having to copy-paste config everywhere.
 1. **Install it:**
 
    ```sh
-   yarn add -D @ac-essentials/markdownlint-cli2-config
+   yarn add -D @ac-kit/markdownlint-cli2-config
    # or
-   npm install --save-dev @ac-essentials/markdownlint-cli2-config
+   npm install --save-dev @ac-kit/markdownlint-cli2-config
    ```
 
 2. **Reference it in your `.markdownlint-cli2.jsonc` or CLI2 config:**
 
    ```jsonc
    {
-     "config": "@ac-essentials/markdownlint-cli2-config",
+     "config": "@ac-kit/markdownlint-cli2-config",
    }
    ```
 
@@ -52,8 +52,7 @@ repos—without having to copy-paste config everywhere.
 
 ### Explicitly Set in This Config
 
-- `config`: Uses `@ac-essentials/markdownlint-config` as the base markdownlint
-  ruleset
+- `config`: Uses `@ac-kit/markdownlint-config` as the base markdownlint ruleset
 - `gitignore`: Enabled, so files ignored by `.gitignore` are skipped
 - `globs`: Only files matching `**/*.{md,mdx}` are linted
 
@@ -65,9 +64,3 @@ settings.
 - ["If you can't measure it, you can't manage it." [A brief analysis of markdownlint rule popularity]](https://dlaa.me/blog/post/markdownlintanalyzeconfig)
   by David Anson
 - See the actual config file in `packages/markdownlint-cli2-config/` for details
-
-## Contributing
-
-Contributions are welcome! If you find a bug or have a feature request, please
-open an issue on the
-[GitHub repository](https://github.com/anthochamp/node-essentials).

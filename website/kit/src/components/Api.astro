@@ -1,0 +1,25 @@
+---
+import { apiSymbol } from "../lib/api.js";
+
+type Props = {
+	/** Package name without the scope, e.g. `math-analysis`. */
+	pkg: string;
+	/** Exported symbol name, exactly as spelled in the source. */
+	name: string;
+	/** Overrides the rendered label; the link target is unaffected. */
+	label?: string;
+};
+
+const { pkg, name, label } = Astro.props;
+const symbol = apiSymbol(pkg, name);
+---
+
+<a class="api-link" href={symbol.href}><code>{label ?? symbol.label}</code></a>
+
+<style>
+	.api-link code {
+		background: transparent;
+		border: none;
+		padding: 0;
+	}
+</style>

@@ -1,11 +1,32 @@
 {
-	"name": "@ac-essentials/markdownlint-cli2-config",
+	"name": "@ac-kit/markdownlint-cli2-config",
 	"version": "0.1.0",
+	"description": "Shareable markdownlint-cli2 configuration.",
+	"keywords": [
+		"config",
+		"markdown",
+		"markdownlint",
+		"markdownlint-cli2"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/markdownlint-cli2-config#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/markdownlint-cli2-config"
+	},
 	"main": "./index.js",
 	"publishConfig": {
 		"access": "public"
 	},
 	"dependencies": {
-		"@ac-essentials/markdownlint-config": "workspace:^"
+		"@ac-kit/markdownlint-config": "workspace:^"
+	},
+	"engines": {
+		"node": ">=24"
 	}
 }

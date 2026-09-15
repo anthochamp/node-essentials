@@ -1,4 +1,4 @@
-# @ac-essentials/typedoc-config
+# @ac-kit/typedoc-config
 
 Reusable Typedoc configuration for TypeScript projects. This package provides a
 shareable `public.json` config for generating clean, public-facing API
@@ -37,15 +37,15 @@ By using `public.json`, your generated documentation will:
 1. **Install Typedoc and this config:**
 
    ```sh
-   yarn add -D typedoc @ac-essentials/typedoc-config
+   yarn add -D typedoc @ac-kit/typedoc-config
    # or
-   npm install --save-dev typedoc @ac-essentials/typedoc-config
+   npm install --save-dev typedoc @ac-kit/typedoc-config
    ```
 
 2. **Reference the config in your Typedoc command:**
 
    ```sh
-   typedoc --options node_modules/@ac-essentials/typedoc-config/public.json
+   typedoc --options node_modules/@ac-kit/typedoc-config/public.json
    # or, if installed locally:
    typedoc --options ./packages/typedoc-config/public.json
    ```
@@ -59,7 +59,7 @@ By using `public.json`, your generated documentation will:
 
 ```json
 {
-  "extends": "@ac-essentials/typedoc-config/public.json",
+  "extends": "@ac-kit/typedoc-config/public.json",
   "entryPoints": ["src/index.ts"],
   "out": "doc/generated"
 }
@@ -70,9 +70,3 @@ By using `public.json`, your generated documentation will:
 - See the actual config file in `packages/typedoc-config/public.json` for
   details.
 - Typedoc options reference: <https://typedoc.org/options/>
-
-## Contributing
-
-Contributions are welcome! If you find a bug or have a feature request, please
-open an issue on the
-[GitHub repository](https://github.com/anthochamp/node-essentials).

@@ -1,0 +1,64 @@
+{
+	"name": "@ac-kit/net-http",
+	"version": "0.1.0",
+	"description": "Portable HTTP building blocks: field collections, a field-value codec, status codes, a streaming message parser, and client and server protocol logic.",
+	"keywords": [
+		"client",
+		"http",
+		"parser",
+		"portable",
+		"protocol"
+	],
+	"homepage": "https://anthochamp.github.io/node-essentials/api/net-http/",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/net-http"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json -outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/format-http": "workspace:^"
+	},
+	"devDependencies": {
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/node": "catalog:",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

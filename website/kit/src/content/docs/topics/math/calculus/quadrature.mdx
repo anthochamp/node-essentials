@@ -1,0 +1,72 @@
+---
+title: Numerical integration
+description: The area under a curve, computed by slicing it up — and what the error does when you slice it finer.
+sidebar:
+  order: 2
+---
+
+import Api from "../../../../../components/Api.astro";
+import Example from "../../../../../components/Example.astro";
+import FurtherReading from "../../../../../components/FurtherReading.astro";
+import Intuition from "../../../../../components/Intuition.astro";
+import Uses from "../../../../../components/Uses.astro";
+
+<Uses pkg="math-analysis" symbols={["trapezoidalRule"]} />
+
+<Intuition>
+To measure the area of an oddly shaped field, you could slice it into narrow
+strips, treat each strip as a straight-sided shape whose area you *can* compute,
+and add them up. Narrower strips, closer answer.
+
+That is **numerical integration**, and the trapezoidal rule is its simplest
+form: each strip becomes a trapezoid, with its top being the straight line
+between the curve's two endpoints.
+</Intuition>
+
+**Where you meet it.** Total energy consumed from a power reading taken every
+second. Distance travelled from a speed log. The area under a
+precision-recall curve. Expected value of anything described by a density you
+can evaluate but not integrate on paper — which is most of them.
+
+## The rule
+
+<Api pkg="math-analysis" name="trapezoidalRule" /> splits `[lower, upper]` into
+`intervals` equal panels, evaluates `f` at each boundary, and sums the
+trapezoids.
+
+Each panel is wrong by however much the real curve bulges away from the straight
+line across it. That error shrinks as `O(h²)` in the panel width `h`, which
+means something concrete and checkable: **double the number of panels and the
+error should quarter.**
+
+<Example id="math-analysis/trapezoidal-rule" />
+
+## Where it stops improving
+
+Push the panel count far enough and the measured error leaves the theoretical
+line and flattens out. Nothing is broken — the *discretisation* error has fallen
+below the *rounding* error accumulated across all those additions, and beyond
+that point adding panels buys nothing but time.
+
+That floor is why "just use more panels" is not a strategy. Getting past it
+needs a better rule, not a finer one.
+
+<FurtherReading
+  links={[
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Trapezoidal_rule",
+      label: "Trapezoidal rule (Wikipedia)",
+    },
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Numerical_integration",
+      label: "Numerical integration (Wikipedia)",
+    },
+    {
+      kind: "authority",
+      href: "https://dlmf.nist.gov/3.5",
+      label: "DLMF §3.5 — Quadrature",
+    },
+  ]}
+/>

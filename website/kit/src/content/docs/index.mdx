@@ -1,0 +1,42 @@
+---
+title: "@ac-kit"
+description: Reusable, portable-first TypeScript packages for Node, browsers, Deno, Bun and edge runtimes.
+template: splash
+hero:
+  tagline: Language extensions, data structures, numeric domains, cryptography, data formats and network protocols — one small package per subject, ESM only, no ambient globals.
+  actions:
+    - text: Browse the documentation
+      link: start/reading-these-pages
+      icon: right-arrow
+    - text: Source on GitHub
+      link: https://github.com/anthochamp/node-essentials
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid>
+  <Card title="Portable by default" icon="rocket">
+    A portable package carries no `node:` import and no native binding, so the
+    same build runs in Node, a browser, Deno, Bun and edge runtimes. Anything
+    that genuinely needs system access is a separate, host-bound package, and a
+    portable one can never depend on it.
+  </Card>
+  <Card title="Examples you can move" icon="setting">
+    Every example on this site runs in your browser as you read it. Drag a
+    control and the chart is recomputed by the same package you would install —
+    and the code shown beneath it is the code that just ran, read out of a
+    type-checked, unit-tested source file.
+  </Card>
+  <Card title="One subject per package" icon="open-book">
+    The topic prefix in a name says what a package is about, never what layer it
+    sits in. Install the numeric domain you need without pulling in a chart
+    vocabulary or a protocol stack.
+  </Card>
+  <Card title="Documented by contract" icon="approve-check">
+    Exported symbols document their parameters, their return value, what they
+    throw, and their complexity where it is not obviously constant — because
+    this is a library of primitives other code builds loops around.
+  </Card>
+</CardGrid>

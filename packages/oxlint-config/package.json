@@ -1,6 +1,25 @@
 {
-	"name": "@ac-essentials/oxlint-config",
+	"name": "@ac-kit/oxlint-config",
 	"version": "0.1.0",
+	"description": "Shareable oxlint and oxfmt configurations.",
+	"keywords": [
+		"config",
+		"formatter",
+		"linter",
+		"oxfmt",
+		"oxlint"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/oxlint-config#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/oxlint-config"
+	},
 	"type": "module",
 	"main": "./oxlintrc.js",
 	"exports": {
@@ -16,8 +35,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"peerDependencies": {
-		"oxfmt": "^0.62.0 || ^0.63.0 || ^0.64.0 || ^0.65.0",
-		"oxlint": "^1.77.0"
+	"engines": {
+		"node": ">=24"
 	}
 }

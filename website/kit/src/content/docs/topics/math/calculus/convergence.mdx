@@ -1,0 +1,81 @@
+---
+title: Convergence and iteration limits
+description: How every iterative routine decides it is finished — and what it does when it is not.
+sidebar:
+  order: 4
+---
+
+import Api from "../../../../../components/Api.astro";
+import Example from "../../../../../components/Example.astro";
+import FurtherReading from "../../../../../components/FurtherReading.astro";
+import Intuition from "../../../../../components/Intuition.astro";
+import Uses from "../../../../../components/Uses.astro";
+
+<Uses
+  pkg="math-analysis"
+  symbols={["ConvergenceOptions", "ConvergenceResult", "ConvergenceError"]}
+/>
+
+<Intuition>
+Most of the functions on these pages do not compute their answer outright. They
+guess, check, improve the guess, and repeat until the improvement gets too small
+to care about. **Converging** is what that closing-in is called, and every such
+routine needs two instructions from you: how close is close enough, and how long
+to keep trying before giving up.
+</Intuition>
+
+## One options object, everywhere
+
+<Api pkg="math-analysis" name="ConvergenceOptions" /> is the same shape on every
+iterative routine in the package — `tolerance`, `maxIterations` and an
+`AbortSignal`. Every field is optional and every routine documents its own
+defaults.
+
+What `tolerance` is measured *against* is deliberately not fixed here, because
+it genuinely differs: for
+[`bisect`](/node-essentials/topics/math/calculus/root-finding/) it is the width
+of the remaining bracket, for
+[`continuedFractionEval`](/node-essentials/topics/math/calculus/series/) it is
+the relative size of the last update. Each function states it on its own
+parameter, where you will be reading it.
+
+## Two ways to fail
+
+A routine that runs out of iterations still has a best-so-far answer. What it
+does with that answer depends on whether you would be able to tell:
+
+- **It returns a <Api pkg="math-analysis" name="ConvergenceResult" />.** The
+  value comes back alongside `converged: false` and the iteration count. Check
+  the flag — an unconverged value looks exactly like a converged one.
+- **It returns a bare number, and throws
+  <Api pkg="math-analysis" name="ConvergenceError" />.** There is nowhere to put
+  the flag, so silence would be indistinguishable from success. The error names
+  the routine and how many iterations it spent.
+
+<Example id="math-analysis/convergence-budget" />
+
+Catching a `ConvergenceError` is rarely the right response. It almost always
+means the input was outside the regime the routine covers, or that
+`maxIterations` was set too low for the accuracy asked of it — raise one, or
+loosen the other.
+
+## Cancelling
+
+Passing a `signal` aborts the iteration. It is checked once per iteration rather
+than inside the work an iteration does, so the cost of supporting it is bounded
+by `maxIterations` and not by the integrand.
+
+<FurtherReading
+  links={[
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Rate_of_convergence",
+      label: "Rate of convergence (Wikipedia)",
+    },
+    {
+      kind: "authority",
+      href: "https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal",
+      label: "AbortSignal (MDN)",
+    },
+  ]}
+/>

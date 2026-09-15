@@ -1,0 +1,69 @@
+{
+	"name": "@ac-kit/app-report",
+	"version": "0.1.0",
+	"description": "Shared event-pipeline contracts for logging, reporting and process output: one ReportEvent shape, one ISink interface, one ScopeTracker, fed to pluggable sinks and formatters.",
+	"keywords": [
+		"events",
+		"logging",
+		"pipeline",
+		"reporting",
+		"sink"
+	],
+	"homepage": "https://anthochamp.github.io/node-essentials/api/app-report/",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/app-report"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json -outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/app-terminal": "workspace:^",
+		"@ac-kit/async": "workspace:^",
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/data": "workspace:^",
+		"@ac-kit/format-ansi": "workspace:^",
+		"@ac-kit/format-monospace": "workspace:^",
+		"@types/web": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

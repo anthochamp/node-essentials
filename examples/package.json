@@ -1,0 +1,25 @@
+{
+	"name": "examples",
+	"private": true,
+	"type": "module",
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"test": "yarn run -T vitest run"
+	},
+	"devDependencies": {
+		"@ac-kit/core": "workspace:*",
+		"@ac-kit/math-analysis": "workspace:*",
+		"@ac-kit/math-scalar": "workspace:*",
+		"@ac-kit/model-chart": "workspace:*",
+		"@ac-kit/model-dataset": "workspace:*",
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/web": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"typescript": "catalog:fixed"
+	}
+}

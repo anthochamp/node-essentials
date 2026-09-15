@@ -1,0 +1,47 @@
+---
+title: All symbols
+description: Every documented export across every package, in one alphabetical list.
+sidebar:
+  order: 1
+tableOfContents: false
+---
+
+import { allSymbols } from "../../../lib/api.js";
+
+export const symbols = allSymbols();
+export const letters = [...new Set(symbols.map((symbol) => symbol.name[0].toUpperCase()))];
+
+When you know the name but not the package, start here. Everything below links
+into the generated reference.
+
+<p>
+  {letters.map((letter) => (
+    <a href={`#${letter}`} style="margin-right: 0.75rem">{letter}</a>
+  ))}
+</p>
+
+{letters.map((letter) => (
+  <section>
+    <h2 id={letter}>{letter}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>symbol</th>
+          <th>kind</th>
+          <th>package</th>
+        </tr>
+      </thead>
+      <tbody>
+        {symbols
+          .filter((symbol) => symbol.name[0].toUpperCase() === letter)
+          .map((symbol) => (
+            <tr>
+              <td><a href={symbol.href}><code>{symbol.label}</code></a></td>
+              <td>{symbol.kind}</td>
+              <td><code>@ac-kit/{symbol.pkg}</code></td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
+  </section>
+))}

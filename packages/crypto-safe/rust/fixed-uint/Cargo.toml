@@ -1,0 +1,21 @@
+[package]
+name = "fixed-uint"
+version = "0.1.0"
+edition = "2021"
+description = "Constant-time fixed-width unsigned integer arithmetic for WASM"
+
+[lib]
+crate-type = ["cdylib"]
+
+# ---- Release profile ----
+#
+# `opt-level = "s"` optimises for code size, not speed, but neither setting can
+# introduce a secret-dependent branch that the source does not already have —
+# LLVM only reorders and eliminates *existing* control flow. The constant-time
+# property is a property of the source (mask-based select, no secret-dependent
+# `if`/`match`), not of the optimisation level. See src/lib.rs's module doc.
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"

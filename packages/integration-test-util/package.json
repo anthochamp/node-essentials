@@ -1,0 +1,63 @@
+{
+	"name": "@ac-kit/integration-test-util",
+	"version": "0.1.0",
+	"description": "Test helpers that drive and probe external services — Docker containers, TCP and TLS banner checks — from a package's integration tests.",
+	"keywords": [
+		"docker",
+		"integration",
+		"tcp",
+		"testing"
+	],
+	"homepage": "https://anthochamp.github.io/node-essentials/api/integration-test-util/",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/integration-test-util"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json -outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/cmd-docker": "workspace:^",
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/crypto-random": "workspace:^",
+		"@ac-kit/node": "workspace:^"
+	},
+	"devDependencies": {
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/node": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
+	},
+	"peerDependencies": {
+		"vitest": ">=4.0.0"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

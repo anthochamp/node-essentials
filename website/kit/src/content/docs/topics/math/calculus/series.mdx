@@ -1,0 +1,76 @@
+---
+title: Continued fractions
+description: Evaluating an expression that never ends, without deciding up front where to stop.
+sidebar:
+  order: 3
+---
+
+import Api from "../../../../../components/Api.astro";
+import Example from "../../../../../components/Example.astro";
+import FurtherReading from "../../../../../components/FurtherReading.astro";
+import Intuition from "../../../../../components/Intuition.astro";
+import Uses from "../../../../../components/Uses.astro";
+
+<Uses pkg="math-analysis" symbols={["continuedFractionEval", "ContinuedFraction"]} />
+
+<Intuition>
+A decimal expansion builds a number by adding ever-smaller pieces:
+`3 + 0.1 + 0.04 + …`. A **continued fraction** builds it by nesting ever-deeper
+divisions instead:
+
+```text
+b₀ + a₁ / (b₁ + a₂ / (b₂ + a₃ / (b₃ + ⋯)))
+```
+
+It goes on forever, but the deeper terms matter less and less, so stopping
+somewhere gives an answer — and for many functions it closes in on the true
+value far faster than the equivalent sum would.
+</Intuition>
+
+**Where you meet it.** Mostly underneath other things. The
+[incomplete gamma and beta functions](/node-essentials/topics/math/functions/incomplete-gamma-beta/)
+in this package are computed with continued fractions, because their power
+series becomes unusably slow exactly where the fraction becomes fast. Outside
+numerics they are how "best rational approximation" problems are solved — the
+reason a year is 365 + 97/400 days in the Gregorian calendar.
+
+## Evaluating one
+
+<Api pkg="math-analysis" name="continuedFractionEval" /> takes a
+<Api pkg="math-analysis" name="ContinuedFraction" />: two functions giving the
+`aⱼ` and `bⱼ` coefficients for any depth. Supplying them as functions rather than
+arrays is what lets a genuinely unbounded fraction be described in a few lines.
+
+The evaluation works *forwards*, from `b₀` outward, so it never has to decide in
+advance how deep to go. Each step multiplies the running value by a factor that
+tends towards 1, and the iteration stops once that factor is within tolerance of
+1 — in other words, once another term would no longer change the answer.
+
+The alternative, working backwards from the deepest term, has to pick a depth
+first and start over when the pick turns out to have been too shallow.
+
+<Example id="math-analysis/continued-fraction-eval" />
+
+Like every iterative routine here, it can run out of budget before it runs out
+of work. It reports that rather than throwing — see
+[convergence and iteration limits](/node-essentials/topics/math/calculus/convergence/).
+
+<FurtherReading
+  links={[
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Continued_fraction",
+      label: "Continued fraction (Wikipedia)",
+    },
+    {
+      kind: "authority",
+      href: "https://dlmf.nist.gov/1.12",
+      label: "DLMF §1.12 — Continued Fractions",
+    },
+    {
+      kind: "authority",
+      href: "https://doi.org/10.1364/AO.15.000668",
+      label: "Lentz, Generating Bessel functions by continued fraction (1976)",
+    },
+  ]}
+/>

@@ -1,0 +1,76 @@
+{
+	"name": "@ac-bench/measure-duration",
+	"version": "0.1.0",
+	"description": "Duration measure for @ac-bench: adaptive sampling, duration statistics and quality warnings for outliers, high variance and overhead dominance.",
+	"keywords": [
+		"benchmark",
+		"duration",
+		"sampling",
+		"statistics"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/bench/measure-duration#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "bench/measure-duration"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts",
+		"./plugin": "./src/plugin.ts",
+		"./iteration-child": "./src/iteration-child.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js",
+			"./plugin": "./dist/plugin.js",
+			"./iteration-child": "./dist/iteration-child.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "tsc -p ./tsconfig.build.json --outDir dist",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist",
+		"build": "yarn clean && yarn compile",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-bench/core": "workspace:^",
+		"@ac-bench/util": "workspace:^",
+		"@ac-kit/app-report": "workspace:^",
+		"@ac-kit/app-system": "workspace:^",
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/math-stats": "workspace:^",
+		"@ac-kit/model-dataset": "workspace:^",
+		"@ac-kit/node": "workspace:^",
+		"@types/node": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"tsx": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

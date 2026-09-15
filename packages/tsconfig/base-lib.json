@@ -1,0 +1,14 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"lib": ["ESNext"],
+
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext"
+	},
+	"extends": "./base.json"
+}

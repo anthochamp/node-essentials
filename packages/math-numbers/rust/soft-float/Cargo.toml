@@ -1,0 +1,15 @@
+[package]
+name = "soft-float"
+version = "0.1.0"
+edition = "2021"
+description = "IEEE 754 binary soft-float arithmetic engine for WASM"
+
+[lib]
+crate-type = ["cdylib"]
+
+# ---- Release profile: maximally small and fast WASM ----
+[profile.release]
+opt-level = "s" # optimise for size (small .wasm download)
+lto = true # link-time optimisation for dead-code elimination
+codegen-units = 1 # single codegen unit → better LTO
+panic = "abort" # remove unwind machinery; traps on panic (WASM unreachable)

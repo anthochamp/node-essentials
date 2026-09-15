@@ -1,0 +1,72 @@
+{
+	"name": "@ac-kit/crypto-safe",
+	"version": "0.1.0",
+	"description": "Constant-time primitives: operations whose runtime does not depend on secret data.",
+	"keywords": [
+		"constant-time",
+		"crypto",
+		"side-channel",
+		"timing-safe"
+	],
+	"homepage": "https://anthochamp.github.io/node-essentials/api/crypto-safe/",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/crypto-safe"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": [
+		"./src/load-constant-time-wasm.ts",
+		"./dist/load-constant-time-wasm.js"
+	],
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "yarn build-wasm && tsc -p ./tsconfig.build.json -outDir dist",
+		"compile:check": "yarn build-wasm && tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist wasm **/*.generated.ts",
+		"build": "yarn clean && yarn compile",
+		"build-wasm": "bash ./rust/fixed-uint/build.sh && node scripts/embed-wasm.mjs",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/math-integer": "workspace:^"
+	},
+	"devDependencies": {
+		"@ac-kit/math-random": "workspace:*",
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/web": "catalog:",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
+	},
+	"peerDependencies": {
+		"vitest": ">=4.0.0"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

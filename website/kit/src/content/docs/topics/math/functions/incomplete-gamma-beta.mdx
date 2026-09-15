@@ -1,0 +1,105 @@
+---
+title: Incomplete gamma and beta
+description: Cumulative distributions — what fraction lies below a value — and the quantiles that run them backwards.
+sidebar:
+  order: 3
+---
+
+import Api from "../../../../../components/Api.astro";
+import Example from "../../../../../components/Example.astro";
+import FurtherReading from "../../../../../components/FurtherReading.astro";
+import Intuition from "../../../../../components/Intuition.astro";
+import Uses from "../../../../../components/Uses.astro";
+
+<Uses
+  pkg="math-analysis"
+  symbols={[
+    "regularizedIncompleteGamma",
+    "regularizedIncompleteGammaUpper",
+    "regularizedIncompleteBeta",
+    "inverseRegularizedIncompleteGamma",
+    "inverseRegularizedIncompleteBeta",
+  ]}
+/>
+
+<Intuition>
+[The gamma and beta functions](/node-essentials/topics/math/functions/gamma/)
+each describe the area under a whole curve. Stop partway along and you get an
+**incomplete** version: the area up to that point. Divide by the whole and you
+get a fraction between 0 and 1 — which is exactly the question "what proportion
+of outcomes are no bigger than this?"
+
+That fraction is a **cumulative distribution function**, and these four are the
+ones that statistics runs on.
+</Intuition>
+
+**Where you meet them.** Every time software reports a p-value it evaluates one
+of these. A chi-squared test goes through the gamma family; a *t*-test, an
+*F*-test and a binomial confidence interval all go through the beta family. If
+you have ever read `p = 0.003` off a screen, this is the code that produced it.
+
+**Regularized** means the normalized version, in `[0, 1]`. The word is in the
+name because libraries disagree about what the bare name means, and the
+difference is a factor of `Γ(a)` that no type system will catch for you.
+
+## The gamma family
+
+<Api pkg="math-analysis" name="regularizedIncompleteGamma" /> computes `P(a, x)`
+— the proportion of a `Gamma(a, 1)` distribution at or below `x`. It is the
+cumulative function of the gamma, chi-squared and Poisson distributions.
+
+<Api pkg="math-analysis" name="regularizedIncompleteGammaUpper" /> computes
+`Q(a, x) = 1 − P(a, x)`, the proportion *above* `x`. In practice this is the
+p-value, and it is a separate function for the same reason
+[`erfc` is](/node-essentials/topics/math/functions/error-functions/): when the
+answer is small, subtracting it out of 1 has already thrown it away.
+
+<Example id="math-analysis/regularized-incomplete-gamma" />
+
+## The beta family
+
+<Api pkg="math-analysis" name="regularizedIncompleteBeta" /> computes
+`Iₓ(a, b)`, the cumulative function of the Beta distribution — the distribution
+of a *proportion*. Through it come Student's *t*, the *F* distribution and the
+binomial tail, which is why it appears far more often than its name suggests.
+
+<Example id="math-analysis/regularized-incomplete-beta" />
+
+## Running them backwards
+
+A cumulative function answers "which percentile is this value at?". Very often
+you want the other direction: "which value sits at the 95th percentile?" That is
+the **quantile**, and it is what turns a confidence level into a critical value.
+
+<Api pkg="math-analysis" name="inverseRegularizedIncompleteGamma" /> and
+<Api pkg="math-analysis" name="inverseRegularizedIncompleteBeta" /> do that
+inversion. Neither has a closed form, so both refine an estimate until it stops
+moving — see
+[convergence and iteration limits](/node-essentials/topics/math/calculus/convergence/)
+for how that termination is controlled.
+
+An inverse is only as good as the round trip it survives: put a probability in,
+get a value out, feed that value back through the forward function, and see how
+far you have drifted.
+
+<Example id="math-analysis/inverse-round-trip" />
+
+<FurtherReading
+  links={[
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Cumulative_distribution_function",
+      label: "Cumulative distribution function (Wikipedia)",
+    },
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Quantile_function",
+      label: "Quantile function (Wikipedia)",
+    },
+    {
+      kind: "authority",
+      href: "https://dlmf.nist.gov/8",
+      label: "DLMF chapter 8 — Incomplete Gamma and Related Functions",
+    },
+  ]}
+/>

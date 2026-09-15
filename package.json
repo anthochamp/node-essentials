@@ -2,38 +2,46 @@
 	"private": true,
 	"workspaces": [
 		"packages/*",
-		"privatePackages/*",
-		"types/*",
-		"tools",
-		"util/*",
-		"examples/*"
+		"packages/*/example",
+		"bench/*",
+		"benchmarks",
+		"examples",
+		"website/*"
 	],
 	"scripts": {
 		"postinstall": "is-ci || lefthook install",
 		"compile:check": "yarn workspaces foreach -Ap run compile:check",
-		"lint": "oxlint && markdownlint-cli2",
+		"lint": "oxlint && markdownlint-cli2 && node ./scripts/check-readme-examples.mjs",
 		"lint:fix": "oxlint --fix && markdownlint-cli2 --fix",
 		"format": "oxfmt",
 		"format:check": "oxfmt --check",
 		"test": "vitest run",
 		"test:watch": "vitest watch",
 		"test:coverage": "vitest run --coverage",
+		"bench": "yarn workspace benchmarks run start",
 		"clean": "yarn workspaces foreach -Ap run clean",
 		"build-doc": "./scripts/yarn-workspaces-exec-if-dep.sh devDependencies typedoc typedoc",
 		"build": "yarn workspaces foreach -Apt run build",
-		"publish": "yarn workspaces foreach -A --no-private npm publish --tolerate-republish"
+		"check:tree": "./scripts/check-committed-tree.sh",
+		"changeset": "changeset",
+		"changeset:version": "changeset version",
+		"changeset:publish": "yarn build && changeset publish"
 	},
 	"devDependencies": {
-		"@ac-essentials/markdownlint-cli2-config": "workspace:*",
-		"@ac-essentials/oxlint-config": "workspace:*",
-		"@vitest/coverage-v8": "4.1.11",
-		"is-ci": "4.1.0",
-		"lefthook": "2.1.10",
-		"markdownlint-cli2": "0.23.2",
-		"oxfmt": "0.65.0",
-		"oxlint": "1.80.0",
-		"oxlint-tsgolint": "7.0.2001",
-		"vitest": "4.1.11"
+		"@ac-kit/markdownlint-cli2-config": "workspace:*",
+		"@ac-kit/oxlint-config": "workspace:*",
+		"@changesets/cli": "catalog:fixed",
+		"@vitest/coverage-v8": "catalog:fixed",
+		"happy-dom": "catalog:fixed",
+		"is-ci": "catalog:fixed",
+		"lefthook": "catalog:fixed",
+		"markdownlint-cli2": "catalog:fixed",
+		"oxfmt": "catalog:fixed",
+		"oxlint": "catalog:fixed",
+		"oxlint-tsgolint": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typescript": "catalog:fixed",
+		"vitest": "catalog:fixed"
 	},
 	"packageManager": "yarn@4.18.0"
 }

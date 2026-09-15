@@ -1,8 +1,28 @@
 {
-	"name": "@ac-essentials/tsconfig",
-	"version": "0.5.2",
+	"name": "@ac-kit/tsconfig",
+	"version": "0.1.0",
+	"description": "Shareable TypeScript configurations for Node.js projects.",
+	"keywords": [
+		"config",
+		"tsconfig",
+		"typescript"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/tsconfig#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/tsconfig"
+	},
 	"main": "./base.json",
 	"publishConfig": {
 		"access": "public"
+	},
+	"engines": {
+		"node": ">=24"
 	}
 }

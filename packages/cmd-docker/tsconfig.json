@@ -1,0 +1,7 @@
+{
+	"include": ["src/**/*"],
+	"extends": "@ac-kit/tsconfig/node-lib",
+	"compilerOptions": {
+		"rootDir": "src"
+	}
+}

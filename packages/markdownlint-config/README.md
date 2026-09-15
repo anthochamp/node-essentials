@@ -1,4 +1,4 @@
-# @ac-essentials/markdownlint-config
+# @ac-kit/markdownlint-config
 
 This package gives you a ready-to-use, shareable markdownlint configuration for
 Node.js and TypeScript projects. It's mainly for my own workflow, but you're
@@ -19,16 +19,16 @@ config everywhere.
 1. **Install it:**
 
    ```sh
-   yarn add -D @ac-essentials/markdownlint-config
+   yarn add -D @ac-kit/markdownlint-config
    # or
-   npm install --save-dev @ac-essentials/markdownlint-config
+   npm install --save-dev @ac-kit/markdownlint-config
    ```
 
 2. **Reference it in your `.markdownlint.json` or `.markdownlint.yaml`:**
 
    ```json
    {
-     "extends": "@ac-essentials/markdownlint-config"
+     "extends": "@ac-kit/markdownlint-config"
    }
    ```
 
@@ -36,7 +36,7 @@ config everywhere.
 
    ```jsonc
    {
-     "config": "@ac-essentials/markdownlint-config",
+     "config": "@ac-kit/markdownlint-config",
    }
    ```
 
@@ -75,9 +75,3 @@ settings.
 - ["If you can't measure it, you can't manage it." [A brief analysis of markdownlint rule popularity]](https://dlaa.me/blog/post/markdownlintanalyzeconfig)
   by David Anson
 - See the actual config file in `packages/markdownlint-config/` for details
-
-## Contributing
-
-Contributions are welcome! If you find a bug or have a feature request, please
-open an issue on the
-[GitHub repository](https://github.com/anthochamp/node-essentials).

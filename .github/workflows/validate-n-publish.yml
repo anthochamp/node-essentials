@@ -22,12 +22,50 @@ jobs:
   publish:
     needs: validate
     permissions:
-      contents: read
+      contents: write
       id-token: write
-    uses: anthochamp/dev-toolbox/.github/workflows/node-lib-publish.yml@01bc7864a1b72e05343f09d75c2bb3ce1e46e08f # main
-    with:
-      node-package-manager: yarn
-      dry-run: ${{ inputs.dry-run == 'true' }}
+    runs-on: ubuntu-latest
+    outputs:
+      published-tags: ${{ steps.publish.outputs.tags }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Install and enable corepack
+        run: |
+          npm install -g corepack
+          corepack enable
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .nvmrc
+          registry-url: "https://registry.npmjs.org"
+      - name: Install dependencies
+        run: yarn install
+      - name: Publish to npm
+        id: publish
+        shell: bash
+        env:
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.dry-run }}" = "true" ]; then
+            yarn build
+            yarn workspaces foreach -A --no-private npm publish --dry-run
+            exit 0
+          fi
+          yarn changeset:publish | tee publish.log
+          tags=$(sed -n 's/^.*New tag: *//p' publish.log)
+          {
+            echo "tags<<GH_EOF"
+            echo "$tags"
+            echo "GH_EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Push release tags
+        if: inputs.dry-run != 'true' && steps.publish.outputs.tags != ''
+        run: git push --follow-tags
 
   generate_and_publish_doc:
     permissions:
@@ -49,19 +87,34 @@ jobs:
           node-version-file: .nvmrc
       - name: Install dependencies
         run: yarn install
-      - name: Build docs for all packages
+      - name: Build the documentation sites
         run: |
-          yarn run build-doc
-      - name: Prepare docs for GitHub Pages
+          # Each site builds its own API reference through starlight-typedoc,
+          # keyed on the npm package name. The per-package `doc/generated` HTML
+          # this replaced was keyed on the directory basename, so `core` and
+          # `net-core` — and `math-random` and `crypto-random` — overwrote each
+          # other in the published tree.
+          for site_dir in website/*/; do
+            [ -f "$site_dir/package.json" ] || continue
+            site=$(basename "$site_dir")
+            echo "::group::Building $site"
+            yarn workspace "website-$site" run build
+            echo "::endgroup::"
+          done
+      - name: Assemble the GitHub Pages tree
         run: |
+          # One Pages site per repository, so the kit site owns the root and
+          # every other site takes a subdirectory named after its workspace.
+          # Matches each site's own `base`, which must agree or its internal
+          # links break.
           mkdir gh-pages
-          # Prepare docs for all packages
-          for pkg_dir in $(yarn workspaces list --json | jq -r '.location'); do
-            pkg=$(basename "$pkg_dir")
-            if [ -d "$pkg_dir/doc/generated" ]; then
-              mkdir -p "gh-pages/$pkg"
-              cp -r "$pkg_dir/doc/generated/." "gh-pages/$pkg/"
-            fi
+          cp -r website/kit/dist/. gh-pages/
+          for site_dir in website/*/; do
+            site=$(basename "$site_dir")
+            [ "$site" = "kit" ] && continue
+            [ -d "$site_dir/dist" ] || continue
+            mkdir -p "gh-pages/$site"
+            cp -r "$site_dir/dist/." "gh-pages/$site/"
           done
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4

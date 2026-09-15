@@ -10,4 +10,8 @@ module.exports = {
 	MD024: {
 		siblings_only: true,
 	},
+
+	// MD060/table-column-style
+	// Table column style : https://github.com/DavidAnson/markdownlint/blob/v0.41.1/doc/md060.md
+	MD060: false,
 };

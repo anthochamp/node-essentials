@@ -1,8 +1,30 @@
 {
-	"name": "@ac-essentials/biome-config",
-	"version": "0.5.0",
-	"main": "./biome.json",
+	"name": "@ac-kit/biome-config",
+	"version": "0.1.0",
+	"description": "Shareable Biome configuration for Node.js and TypeScript projects.",
+	"keywords": [
+		"biome",
+		"config",
+		"formatter",
+		"linter",
+		"typescript"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/biome-config#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/biome-config"
+	},
+	"main": "./2_5.json",
 	"publishConfig": {
 		"access": "public"
+	},
+	"engines": {
+		"node": ">=24"
 	}
 }

@@ -1,0 +1,20 @@
+{
+	"name": "app-logger-example",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "tsx ./src/index.ts",
+		"compile:check": "tsc -noEmit -p ./tsconfig.json"
+	},
+	"devDependencies": {
+		"@ac-kit/app-logger": "workspace:*",
+		"@ac-kit/app-report": "workspace:*",
+		"@ac-kit/app-system": "workspace:*",
+		"@ac-kit/node": "workspace:*",
+		"@ac-kit/tsconfig": "workspace:*",
+		"@types/node": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"tsx": "catalog:fixed",
+		"typescript": "catalog:fixed"
+	}
+}

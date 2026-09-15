@@ -1,0 +1,77 @@
+---
+title: Root finding
+description: Finding where a function crosses zero, when you can evaluate it but cannot solve it.
+sidebar:
+  order: 1
+---
+
+import Api from "../../../../../components/Api.astro";
+import Example from "../../../../../components/Example.astro";
+import FurtherReading from "../../../../../components/FurtherReading.astro";
+import Intuition from "../../../../../components/Intuition.astro";
+import Uses from "../../../../../components/Uses.astro";
+
+<Uses pkg="math-analysis" symbols={["bisect"]} />
+
+<Intuition>
+You are guessing a number between 1 and 100 and you get told "higher" or "lower"
+after each guess. Guess the middle every time and you halve the possibilities at
+each step — seven guesses and you have it.
+
+**Bisection** is that game played on a function. You give it two points where
+the function has opposite signs; somewhere between them it must pass through
+zero. It tries the midpoint, keeps whichever half still straddles zero, and
+repeats.
+</Intuition>
+
+**Where you meet it.** Solving for a break-even price, an interest rate that
+produces a given yield, the temperature at which two curves meet, or — inside
+this very package — the value at a given percentile, where the quantile has no
+closed form. Any time you can compute `f(x)` but cannot rearrange `f(x) = 0` to
+get `x` on its own.
+
+## What it guarantees
+
+<Api pkg="math-analysis" name="bisect" /> requires a **bracket**: two points
+where `f` has opposite signs. That requirement is the whole strength of the
+method. The intermediate value theorem then guarantees a root inside the
+bracket, and bisection can never leave it — so it cannot fail, cannot diverge,
+and cannot return something wildly wrong.
+
+If the signs match, there is no such guarantee and it throws rather than
+guessing.
+
+Each step halves the interval, so the error after `n` steps is at most
+`(upper − lower) / 2ⁿ`. One bit of accuracy per step, forever.
+
+<Example id="math-analysis/bisect" />
+
+## Why not Newton's method?
+
+Newton's method converges much faster — roughly doubling the number of correct
+digits each step rather than adding one bit. But it needs the derivative, and it
+has no bracket to stay inside: from a poor starting point it can shoot off and
+never come back, with nothing in the output to say so.
+
+Reliability wins by default here. A method that is slow is an inconvenience; a
+method that silently returns a wrong answer is a bug you ship.
+
+<FurtherReading
+  links={[
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Bisection_method",
+      label: "Bisection method (Wikipedia)",
+    },
+    {
+      kind: "intuition",
+      href: "https://en.wikipedia.org/wiki/Intermediate_value_theorem",
+      label: "Intermediate value theorem (Wikipedia)",
+    },
+    {
+      kind: "authority",
+      href: "https://doi.org/10.1137/1.9781611971538",
+      label: "Brent, Algorithms for Minimization without Derivatives",
+    },
+  ]}
+/>

@@ -1,0 +1,6 @@
+# Cargo build artefacts. The compiled binary belongs in ../../wasm/, put there
+# by build.sh; nothing under target/ is an input to the TypeScript build.
+/target/
+
+# Lockfile for a cdylib with no dependencies — it pins nothing worth committing.
+Cargo.lock

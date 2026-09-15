@@ -1,0 +1,28 @@
+{
+	"name": "@ac-kit/vitest-config",
+	"version": "0.1.0",
+	"description": "Shareable Vitest configuration for @ac-kit packages: Node environment, type-checking enabled.",
+	"keywords": [
+		"config",
+		"testing",
+		"vitest"
+	],
+	"homepage": "https://github.com/anthochamp/node-essentials/tree/main/packages/vitest-config#readme",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/vitest-config"
+	},
+	"type": "module",
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

@@ -1,0 +1,74 @@
+---
+title: Mathematics
+description: Numbers and the things done with them — what floating point guarantees, special functions, and numerical calculus.
+sidebar:
+  order: 0
+  label: Overview
+---
+
+Mathematics here is split the way mathematical software conventionally splits
+it, not the way the packages are. Where a function lives on npm is an
+engineering detail; what it is _for_ is what you came looking for.
+
+## Basic features
+
+What the machine's own numbers can and cannot promise, and how to generate
+numbers on purpose.
+
+- **Floating point and tolerance** — why `0.1 + 0.2 !== 0.3`, what an _ulp_ is,
+  and how to compare two results that should be equal but are not.
+  (`@ac-kit/math-scalar`)
+- **Random number generation** — fast seedable generators for simulation, and
+  the separate, slower ones you must use for anything a person could attack.
+  (`@ac-kit/math-random`, `@ac-kit/crypto-random`)
+
+## Number representations
+
+When binary64 is the wrong container.
+
+- **Integers and modular arithmetic** (`@ac-kit/math-integer`)
+- **Arbitrary precision, decimals and fractions** (`@ac-kit/math-numbers`)
+- **Complex numbers** (`@ac-kit/math-complex`)
+- **Algebraic structures** — groups, rings and fields as values you pass to an
+  algorithm (`@ac-kit/math-algebra`)
+
+## Mathematical functions
+
+The named functions that statistics, physics and engineering are written in.
+Everything in this group takes numbers and returns a number.
+
+- [The gamma and beta functions](/node-essentials/topics/math/functions/gamma/)
+  — the factorial, extended to every real number, and the ratio built from it
+- [The error function](/node-essentials/topics/math/functions/error-functions/)
+  — how much of a bell curve lies within a given distance of its centre
+- [Incomplete gamma and beta](/node-essentials/topics/math/functions/incomplete-gamma-beta/)
+  — cumulative distributions and the quantiles that invert them
+
+## Numerical calculus
+
+Answering a question about a function you can only evaluate, one sample at a
+time. Everything in this group takes a _function_ and calls it repeatedly.
+
+- [Root finding](/node-essentials/topics/math/calculus/root-finding/) — where
+  does this cross zero?
+- [Numerical integration](/node-essentials/topics/math/calculus/quadrature/) —
+  what is the area under it?
+- [Continued fractions](/node-essentials/topics/math/calculus/series/) — how do
+  you evaluate an expression that never ends?
+- [Convergence and iteration limits](/node-essentials/topics/math/calculus/convergence/)
+  — how every routine here decides it is done, and what it does when it is not
+
+## Structured spaces and applied areas
+
+- **Linear algebra** — vectors, matrices and rotations (`@ac-kit/math-linear`)
+- **Discrete grids** — lattices, tiling and pixel conversion (`@ac-kit/math-grid`)
+- **Geometry** — shapes, coordinate systems and meshes (`@ac-kit/math-geometry`)
+- **Curves** — Bézier curves, splines and arc length (`@ac-kit/math-curves`)
+- **Statistics** — descriptive statistics, distributions and regression
+  (`@ac-kit/math-stats`)
+- **Combinatorics** — factorials, binomial coefficients and generators
+  (`@ac-kit/math-combinatorics`)
+- **Signal processing** — transforms, convolution, filters and windows
+  (`@ac-kit/math-signal`)
+- **Colour** — colour spaces, gamut mapping and perceptual difference
+  (`@ac-kit/math-color`)

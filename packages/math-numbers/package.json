@@ -1,0 +1,67 @@
+{
+	"name": "@ac-kit/math-numbers",
+	"version": "0.1.0",
+	"description": "Concrete numeric representations: the number tower from naturals to reals, plus the fixed-width and arbitrary-precision types that model each set.",
+	"keywords": [
+		"arbitrary-precision",
+		"decimal",
+		"ieee754",
+		"rational"
+	],
+	"homepage": "https://anthochamp.github.io/node-essentials/api/math-numbers/",
+	"bugs": {
+		"url": "https://github.com/anthochamp/node-essentials/issues"
+	},
+	"license": "BSD-3-Clause",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anthochamp/node-essentials.git",
+		"directory": "packages/math-numbers"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"publishConfig": {
+		"main": "./dist/index.js",
+		"exports": {
+			".": "./dist/index.js"
+		},
+		"access": "public"
+	},
+	"scripts": {
+		"compile": "yarn build-wasm && tsc -p ./tsconfig.build.json -outDir dist",
+		"compile:check": "yarn build-wasm && tsc -noEmit -p ./tsconfig.json",
+		"clean": "rimraf dist wasm **/*.generated.ts",
+		"build": "yarn clean && yarn build-wasm && yarn compile",
+		"build-wasm": "bash ./rust/soft-float/build.sh && node scripts/embed-wasm.mjs",
+		"test": "yarn run -T vitest run",
+		"prepack": "yarn build"
+	},
+	"dependencies": {
+		"@ac-kit/core": "workspace:^",
+		"@ac-kit/math-algebra": "workspace:^",
+		"@ac-kit/math-integer": "workspace:^",
+		"@types/web": "catalog:"
+	},
+	"devDependencies": {
+		"@ac-kit/math-random": "workspace:*",
+		"@ac-kit/tsconfig": "workspace:*",
+		"@ac-kit/typedoc-config": "workspace:*",
+		"@ac-kit/vitest-config": "workspace:*",
+		"@types/node": "catalog:fixed",
+		"@typescript/native": "catalog:fixed",
+		"rimraf": "catalog:fixed",
+		"typedoc": "catalog:fixed",
+		"typescript": "catalog:fixed"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}
