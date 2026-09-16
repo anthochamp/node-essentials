@@ -1,5 +1,3 @@
-/** Error types for the `@phero/oid` package. */
-
 /**
  * Thrown when an OID value is structurally invalid or cannot be parsed.
  *

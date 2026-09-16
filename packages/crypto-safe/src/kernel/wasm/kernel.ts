@@ -73,7 +73,6 @@ let cachedKernel: ConstantTimeKernel | undefined;
  *   );
  *   ```;
  *
- * @param exports - Exports of the instantiated module.
  * @returns A kernel ready to install.
  */
 export async function createWasmConstantTimeKernel(): Promise<ConstantTimeKernel> {
