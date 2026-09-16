@@ -65,6 +65,7 @@ export * from "./buffer/stream/byte-builder.js";
 export * from "./buffer/stream/byte-reader.js";
 export * from "./buffer/text/decode-text.js";
 export * from "./buffer/text/encode-text.js";
+export * from "./buffer/text/next-utf8-boundary.js";
 export * from "./buffer/text/text-encoding-name.js";
 export * from "./constants/ascii.js";
 export * from "./constants/float.js";
