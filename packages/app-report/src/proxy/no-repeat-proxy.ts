@@ -11,10 +11,7 @@ export type NoRepeatProxyOptions<TData> = {
 	 */
 	maxDelayMs?: number;
 
-	/**
-	 * Max repeat count before a pending repeat summary is force-flushed. Default
-	 * 200.
-	 */
+	/** Max repeat count before a pending repeat summary is force-flushed. Default 200. */
 	maxCount?: number;
 
 	/** Equality check between two `data` payloads. Default `isDeepEqual`. */

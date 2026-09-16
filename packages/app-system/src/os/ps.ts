@@ -57,17 +57,19 @@ export type PsOptions = {
 	 * included in the result.
 	 *
 	 * Available fields are: - `args`: Command and arguments. - `comm`: Name to be
-	 * used for accounting. - `etime`: Elapsed time since the process was started.
-	 * - `group`: Text name of effective group ID. - `nice`: The process
-	 * scheduling increment (see setpriority(2)). - `pcpu`: The CPU utilization of
-	 * the process; this is a decaying average over up to a minute of previous
-	 * (real) time. Since the time base over which this is computed varies (since
-	 * processes may be very young), it is possible for the sum of all %cpu fields
-	 * to exceed 100%. - `pgid`: Process group number. - `pid`: Process ID. -
-	 * `ppid`: Parent process ID. - `rgroup`: Text name of real group ID. -
-	 * `ruser`: User name (from ruid). - `time`: Accumulated CPU time, user +
-	 * system. - `tty`: Full name of controlling terminal. - `user`: User name
-	 * (from uid). - `vsz`: Virtual size, in Kilobytes.
+	 * used for accounting. - `etime`: Elapsed time since the process was
+	 * started.
+	 *
+	 * - `group`: Text name of effective group ID. - `nice`: The process scheduling
+	 *   increment (see setpriority(2)). - `pcpu`: The CPU utilization of the
+	 *   process; this is a decaying average over up to a minute of previous
+	 *   (real) time. Since the time base over which this is computed varies
+	 *   (since processes may be very young), it is possible for the sum of all
+	 *   %cpu fields to exceed 100%. - `pgid`: Process group number. - `pid`:
+	 *   Process ID. - `ppid`: Parent process ID. - `rgroup`: Text name of real
+	 *   group ID. - `ruser`: User name (from ruid). - `time`: Accumulated CPU
+	 *   time, user + system. - `tty`: Full name of controlling terminal. -
+	 *   `user`: User name (from uid). - `vsz`: Virtual size, in Kilobytes.
 	 */
 	fields?: (keyof PsResult)[] | null;
 

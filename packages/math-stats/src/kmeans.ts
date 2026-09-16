@@ -48,10 +48,7 @@ export type KmeansOps<T> = {
 };
 
 export type KmeansOptions = {
-	/**
-	 * Maximum number of assignment–update iterations before stopping. Default
-	 * 200.
-	 */
+	/** Maximum number of assignment–update iterations before stopping. Default 200. */
 	maxIterations?: number;
 	/**
 	 * Stop when the largest centroid movement in an iteration is below this

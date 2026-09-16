@@ -41,6 +41,7 @@
 		"oxlint-tsgolint": "catalog:fixed",
 		"rimraf": "catalog:fixed",
 		"typescript": "catalog:fixed",
+		"vite": "catalog:fixed",
 		"vitest": "catalog:fixed"
 	},
 	"packageManager": "yarn@4.18.0"

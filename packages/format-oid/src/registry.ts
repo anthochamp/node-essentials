@@ -104,9 +104,9 @@ export class OidRegistry {
  * A pre-populated `OidRegistry` instance covering commonly used OIDs from: -
  * Hash algorithms (NIST FIPS 180-4 / FIPS 202, RFC 8017) - RSA, EC, and EdDSA
  * algorithms (RFC 5480, RFC 8017, RFC 8410) - EC named curves (RFC 5480) -
- * X.509 extensions (RFC 5280) - PKIX access methods and extended key usage (RFC
- * 5280) - X.500 attribute types (X.520, RFC 4519) - PKCS #9 and PKCS content
- * types (RFC 2985, RFC 5652, RFC 7292)
+ * X.509 extensions (RFC 5280) - PKIX access methods and extended key usage (RFC 5280) -
+ * X.500 attribute types (X.520, RFC 4519) - PKCS #9 and PKCS content types (RFC
+ * 2985, RFC 5652, RFC 7292)
  */
 export const wellKnownOidRegistry: OidRegistry = new OidRegistry();
 

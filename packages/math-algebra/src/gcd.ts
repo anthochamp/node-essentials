@@ -27,7 +27,8 @@ export function gcd<T>(a: T, b: T, domain: EuclideanDomain<T>): T {
 
 /**
  * Bézout coefficients alongside the greatest common divisor, satisfying `a · x
- * + b · y = g`.
+ *
+ * - B · y = g`.
  *
  * @template T - The carrier set of the domain.
  */

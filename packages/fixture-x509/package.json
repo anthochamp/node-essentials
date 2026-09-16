@@ -40,6 +40,7 @@
 		"@typescript/native": "catalog:fixed",
 		"tsx": "catalog:fixed",
 		"typescript": "catalog:fixed",
+		"vite": "catalog:fixed",
 		"vitest": "catalog:fixed"
 	},
 	"peerDependencies": {

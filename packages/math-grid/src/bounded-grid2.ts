@@ -3,8 +3,9 @@ import { GridSize2 } from "./grid-size2.js";
 import { Grid2 } from "./grid2.js";
 
 /**
- * Bounded grid: fixed row and column counts. Flat 1D storage: cells[row * cols
- * + col].
+ * Bounded grid: fixed row and column counts.
+ *
+ * Flat 1D storage: cells[row * cols + col].
  */
 export class BoundedGrid2<T> extends Grid2<T> {
 	readonly rows: number;

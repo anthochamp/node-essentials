@@ -20,7 +20,8 @@ import type { IGraph } from "./igraph.js";
  *
  * Time complexity: O(1) for every node and edge operation; O(degree) to delete
  * a node, since each neighbor's own adjacency has to drop it. Space is O(nodes
- * + edges).
+ *
+ * - Edges).
  *
  * Nodes are compared by `SameValueZero`, native `Map` semantics.
  *

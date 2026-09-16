@@ -74,6 +74,7 @@
 		"tsx": "catalog:fixed",
 		"typedoc": "catalog:fixed",
 		"typescript": "catalog:fixed",
+		"vite": "catalog:fixed",
 		"vitest": "catalog:fixed"
 	},
 	"engines": {

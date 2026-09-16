@@ -60,10 +60,7 @@ export type OklabPaletteOptions = {
 	 */
 	chromaThreshold?: IsLabAchromaticStrictness | number;
 
-	/**
-	 * OKLab Hue angle distance threshold in degrees for merging clusters. Default
-	 * 25.
-	 */
+	/** OKLab Hue angle distance threshold in degrees for merging clusters. Default 25. */
 	chromaticMergeThreshold?: number;
 
 	/**

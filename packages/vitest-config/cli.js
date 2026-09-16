@@ -5,6 +5,7 @@ export function defineProject(options) {
 		...options,
 		test: {
 			environment: "node",
+			fsModuleCache: true,
 			...options?.test,
 		},
 	});

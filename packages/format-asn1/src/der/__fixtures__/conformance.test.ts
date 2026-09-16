@@ -7,9 +7,9 @@ import { existsSync, readFileSync } from "node:fs";
  * specification examples — inline canonical ground truth 2. NIST PKITS — 405
  * DER-encoded X.509 certificates (decode→re-encode identity) 3. OpenSSL
  * test/certs — 346 PEM files (valid round-trips + malformed rejection) 4.
- * Bouncy Castle — non-PKITS certs covering EC, RSA, PQC, S/MIME (round-trips)
- * 5. Peter Gutmann pathological encodings via pyca/cryptography custom vectors
- * 6. System CA bundle — all installed CA certificates
+ * Bouncy Castle — non-PKITS certs covering EC, RSA, PQC, S/MIME (round-trips) 5.
+ * Peter Gutmann pathological encodings via pyca/cryptography custom vectors 6.
+ * System CA bundle — all installed CA certificates
  */
 import { bytesIsEqual } from "@ac-kit/core";
 import {
