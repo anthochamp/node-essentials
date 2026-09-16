@@ -5,5 +5,5 @@ export async function dockerContextShow(): Promise<string> {
 		encoding: "utf8",
 	});
 
-	return stdout;
+	return stdout.trim();
 }
