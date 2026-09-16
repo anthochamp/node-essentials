@@ -2,6 +2,7 @@ export const DBL_DECIMAL_DIG = 17;
 export const DBL_DIG = 15;
 export const DBL_EPSILON = 2.2204460492503131e-16; // Number.EPSILON
 export const DBL_MANT_DIG = 53;
+// oxlint-disable-next-line no-loss-of-precision -- its actually the maximum representable double precision floating point number
 export const DBL_MAX = 1.7976931348623158e308; // Number.MAX_VALUE
 export const DBL_MAX_10_EXP = 308;
 export const DBL_MAX_EXP = 1024;

@@ -44,6 +44,7 @@ suite("BinaryFp128", () => {
 		});
 
 		test("toPrecision renders beyond 17 significant digits", () => {
+			// oxlint-disable-next-line oxc/number-arg-out-of-range -- applies to Number.prototype.toPrecision, not to BinaryFp128.toPrecision
 			expect(value.toPrecision(23)).not.toMatch(/^1\.0{22}$/);
 		});
 	});

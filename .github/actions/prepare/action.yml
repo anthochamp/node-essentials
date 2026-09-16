@@ -1,0 +1,89 @@
+name: Prepare the workspace
+description:
+  Installs the Node and Rust toolchains and produces every generated source the
+  repository needs before it can be linted, type-checked, tested or built.
+
+inputs:
+  astro-types:
+    description:
+      Generate the Astro content types. Only oxlint's type-aware rules need them
+      up front; `astro check` and `astro build` generate their own.
+    required: false
+    default: "false"
+  fixtures:
+    description:
+      Fetch the pinned test-vector corpora. Only the test job needs them, and
+      they are ~40 MB, so every other job leaves this off.
+    required: false
+    default: "false"
+  registry-url:
+    description: npm registry to configure Node against, for publishing jobs.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Install and enable corepack
+      shell: bash
+      run: |
+        npm install -g corepack
+        corepack enable
+
+    - name: Set up Node.js
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      with:
+        node-version-file: .nvmrc
+        cache: yarn
+        registry-url: ${{ inputs.registry-url }}
+
+    - name: Install dependencies
+      shell: bash
+      run: yarn install
+
+    - name: Set up the Rust WASM toolchain
+      uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
+      with:
+        toolchain: stable
+        targets: wasm32-unknown-unknown
+
+    # `wasm/*.wasm` and the `*.generated.ts` that embeds it are both gitignored,
+    # so a fresh checkout has neither. Without this step oxlint's type-aware
+    # rules, the test suite and the doc build all fail on the missing module.
+    - name: Build the WASM kernels
+      shell: bash
+      run: |
+        yarn workspace @ac-kit/crypto-safe run build-wasm
+        yarn workspace @ac-kit/math-numbers run build-wasm
+
+    # Generates `.astro/types.d.ts`, which declares `astro:content`,
+    # `import.meta.glob` and `import.meta.env`. Gitignored, so the site's
+    # sources are untyped until it exists. Depends on the WASM step above:
+    # starlight-typedoc reads the package sources while syncing.
+    - name: Generate the Astro content types
+      if: inputs.astro-types == 'true'
+      shell: bash
+      run: yarn workspace website-kit exec astro sync
+
+    # Keyed on the manifests, which pin every corpus by URL and SHA-256, so a
+    # hit can only ever be the exact bytes the current manifests ask for.
+    - name: Restore the test-vector corpora
+      id: fixture-cache
+      if: inputs.fixtures == 'true'
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          packages/fixture-crypto/.temp/vectors
+          packages/fixture-x509/.temp/vectors
+        key:
+          fixtures-${{ hashFiles('packages/fixture-crypto/src/manifest.ts',
+          'packages/fixture-x509/src/manifest.ts') }}
+
+    # `setup` wipes and refetches unconditionally, so it must not run on a hit.
+    - name: Fetch the test-vector corpora
+      if:
+        inputs.fixtures == 'true' && steps.fixture-cache.outputs.cache-hit !=
+        'true'
+      shell: bash
+      run: |
+        yarn workspace @ac-kit/fixture-crypto run setup
+        yarn workspace @ac-kit/fixture-x509 run setup

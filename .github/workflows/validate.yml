@@ -5,12 +5,50 @@ on:
     branches: ["main", "v[0-9]+", "v[0-9]+.[0-9]+"]
     tags-ignore: ["v[0-9]+.[0-9]+.[0-9]+"]
   pull_request:
+  workflow_call:
 
+permissions:
+  contents: read
+
+# The Node jobs below are hand-rolled rather than delegated to dev-toolbox's
+# `node-validate.yml`: this workspace needs a Rust toolchain, a WASM build, an
+# Astro type-generation pass and a cached corpus download before `lint`, `test`
+# or `compile:check` can run, and a reusable workflow offers no hook to insert
+# steps between its own install and script steps.
 jobs:
-  validate:
-    uses: anthochamp/dev-toolbox/.github/workflows/node-validate.yml@01bc7864a1b72e05343f09d75c2bb3ce1e46e08f # main
+  common-lint:
+    uses: anthochamp/dev-toolbox/.github/workflows/common-lint.yml@5d70e5cabd438ea63cee118cb666ac0837c7baf9 # main
     with:
       node-package-manager: "yarn"
+      node-version-file: ".nvmrc"
+
+  node-common-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Prepare the workspace
+        uses: ./.github/actions/prepare
+        with:
+          astro-types: "true"
+      - name: Check formatting
+        run: yarn format:check
+      - name: Lint
+        run: yarn lint
+      - name: Check TypeScript typings
+        run: yarn compile:check
+
+  node-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Prepare the workspace
+        uses: ./.github/actions/prepare
+        with:
+          fixtures: "true"
+      - name: Run tests
+        run: yarn test
 
   # The documentation sites import package sources directly, so a breaking
   # change to an exported symbol fails here rather than at publish time.
@@ -19,16 +57,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Install and enable corepack
-        run: |
-          npm install -g corepack
-          corepack enable
-      - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version-file: .nvmrc
-      - name: Install dependencies
-        run: yarn install
+      - name: Prepare the workspace
+        uses: ./.github/actions/prepare
       - name: Build every site
         run: |
           for site_dir in website/*/; do

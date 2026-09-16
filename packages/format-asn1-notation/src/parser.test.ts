@@ -11,15 +11,15 @@ import {
 	AstIntegerType,
 	AstSequenceType,
 	AstTaggedType,
+	AstTypeReference,
 	CstAlternativeType,
 	CstAnyAssignment,
 	CstBuiltinPrimitiveType,
 	CstChoiceType,
 	CstComponentType,
-	CstSequenceType,
 	CstReferencedType,
+	CstSequenceType,
 	CstTaggedType,
-	AstTypeReference,
 	cstToAst,
 	parseModule,
 } from "./index.js";
@@ -258,10 +258,15 @@ END`;
 		const options = ast.assignments.find(
 			(a: AnyAstAssignment) => a.name === "Options",
 		);
-		const components = (options?.type as AstSequenceType).components;
+		const components = (options?.type as AstSequenceType | undefined)
+			?.components;
 
-		expect((components[0] as AstComponent).defaultValue).toBeDefined();
-		expect((components[1] as AstComponent).defaultValue).toBeDefined();
+		expect(
+			(components?.[0] as AstComponent | undefined)?.defaultValue,
+		).toBeDefined();
+		expect(
+			(components?.[1] as AstComponent | undefined)?.defaultValue,
+		).toBeDefined();
 	});
 
 	it("keeps a braced default whole instead of only its opening brace", () => {
@@ -270,9 +275,11 @@ END`;
 		const options = ast.assignments.find(
 			(a: AnyAstAssignment) => a.name === "Options",
 		);
-		const components = (options?.type as AstSequenceType).components;
+		const components = (options?.type as AstSequenceType | undefined)
+			?.components;
 
-		const algorithm = (components[2] as AstComponent).defaultValue;
+		const algorithm = (components?.[2] as AstComponent | undefined)
+			?.defaultValue;
 		expect(algorithm).toBeDefined();
 		expect(algorithm).not.toMatchObject({ kind: "literal" });
 	});
