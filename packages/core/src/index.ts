@@ -261,6 +261,7 @@ export * from "./object/is-equal.js";
 export * from "./object/merge-inplace.js";
 export * from "./object/merge-options.js";
 export * from "./object/merge.js";
+export * from "./object/null-if-empty.js";
 export * from "./object/set-at-path.js";
 export * from "./object/traverse.js";
 export * from "./pattern/pattern-trim.js";
