@@ -19,6 +19,21 @@
 		"directory": "packages/vitest-config"
 	},
 	"type": "module",
+	"main": "./lib.js",
+	"exports": {
+		".": {
+			"types": "./lib.d.ts",
+			"default": "./lib.js"
+		},
+		"./cli": {
+			"types": "./cli.d.ts",
+			"default": "./cli.js"
+		},
+		"./lib": {
+			"types": "./lib.d.ts",
+			"default": "./lib.js"
+		}
+	},
 	"publishConfig": {
 		"access": "public"
 	},
