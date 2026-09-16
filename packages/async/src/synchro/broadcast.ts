@@ -144,7 +144,6 @@ export class Broadcast<T extends DefinedValue> {
 	 * Sends a message to all subscribers.
 	 *
 	 * @param message The message to send.
-	 * @param signal An optional AbortSignal to cancel the send operation.
 	 * @returns A promise that resolves when the message has been sent to all
 	 *   subscribers.
 	 */

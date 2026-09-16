@@ -7,7 +7,10 @@ import { createStarlightTypeDocPlugin } from "starlight-typedoc";
 
 const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url));
 
-const SITE_BASE = "https://anthochamp.github.io/node-essentials";
+const ASTRO_SITE = "https://anthochamp.github.io";
+const ASTRO_SITE_BASE = "/node-essentials";
+
+const ASTRO_SITE_FULL = `${ASTRO_SITE}${ASTRO_SITE_BASE}`;
 
 /**
  * Every `@ac-kit` workspace whose manifest claims a generated reference page.
@@ -31,7 +34,7 @@ function apiPackages() {
 		const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 		if (
 			manifest.private === true ||
-			manifest.homepage !== `${SITE_BASE}/api/${directory}/`
+			manifest.homepage !== `${ASTRO_SITE_FULL}/api/${directory}/`
 		) {
 			continue;
 		}
@@ -117,8 +120,8 @@ for (const { name, slug, location, entryPoints } of apiPackages()) {
 }
 
 export default defineConfig({
-	site: "https://anthochamp.github.io",
-	base: "/node-essentials",
+	site: ASTRO_SITE,
+	base: ASTRO_SITE_BASE,
 	srcDir: "./src",
 	integrations: [
 		starlight({
@@ -158,6 +161,9 @@ export default defineConfig({
 			],
 		}),
 	],
+	build: {
+		concurrency: process.env.CI ? 1 : 4,
+	},
 	vite: {
 		server: {
 			// Examples and package sources live outside this workspace's root.

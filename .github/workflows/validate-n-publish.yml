@@ -71,40 +71,7 @@ jobs:
       - name: Prepare the workspace
         uses: ./.github/actions/prepare
       - name: Build the documentation sites
-        run: |
-          # Each site builds its own API reference through starlight-typedoc,
-          # keyed on the npm package name. The per-package `doc/generated` HTML
-          # this replaced was keyed on the directory basename, so `core` and
-          # `net-core` — and `math-random` and `crypto-random` — overwrote each
-          # other in the published tree.
-          for site_dir in website/*/; do
-            [ -f "$site_dir/package.json" ] || continue
-            site=$(basename "$site_dir")
-            echo "::group::Building $site"
-            yarn workspace "website-$site" run build
-            echo "::endgroup::"
-          done
-      - name: Assemble the GitHub Pages tree
-        run: |
-          # One Pages site per repository, so the kit site owns the root and
-          # every other site takes a subdirectory named after its workspace.
-          # Matches each site's own `base`, which must agree or its internal
-          # links break.
-          mkdir gh-pages
-          cp -r website/kit/dist/. gh-pages/
-          for site_dir in website/*/; do
-            site=$(basename "$site_dir")
-            [ "$site" = "kit" ] && continue
-            [ -d "$site_dir/dist" ] || continue
-            mkdir -p "gh-pages/$site"
-            cp -r "$site_dir/dist/." "gh-pages/$site/"
-          done
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./gh-pages
-          force_orphan: true
+        run: yarn doc:publish
 
   release:
     permissions:

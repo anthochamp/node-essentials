@@ -20,12 +20,12 @@
 		"test:coverage": "vitest run --coverage",
 		"bench": "yarn workspace benchmarks run start",
 		"clean": "yarn workspaces foreach -Ap run clean",
-		"build-doc": "./scripts/yarn-workspaces-exec-if-dep.sh devDependencies typedoc typedoc",
+		"doc:publish": "./scripts/publish-doc.sh",
 		"build": "yarn workspaces foreach -Apt run build",
 		"check:tree": "./scripts/check-committed-tree.sh",
 		"changeset": "changeset",
 		"changeset:version": "changeset version",
-		"changeset:publish": "yarn build && changeset publish"
+		"changeset:publish": "yarn workspaces foreach -Apt --no-private run build && changeset publish"
 	},
 	"devDependencies": {
 		"@ac-kit/markdownlint-cli2-config": "workspace:*",
