@@ -1,8 +1,9 @@
 import type { Url } from "node:url";
 
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import { dockerArg, execDocker } from "../_docker-command.js";
+import type { DockerCommonOptions } from "../types.js";
 
-export type DockerBuildxBuildOptions = {
+export type DockerBuildxBuildOptions = DockerCommonOptions & {
 	tags?: string[];
 };
 
@@ -13,11 +14,11 @@ export async function dockerBuildxBuild(
 	const execArgs: string[] = [];
 
 	for (const tag of options?.tags ?? []) {
-		execArgs.push(`--tag ${escapeCommandArg(tag)}`);
+		execArgs.push(`--tag ${dockerArg(tag)}`);
 	}
 
 	// oxlint-disable-next-line typescript/no-base-to-string
-	execArgs.push(escapeCommandArg(pathOrUrl.toString()));
+	execArgs.push(dockerArg(pathOrUrl.toString()));
 
-	await execAsync(`docker buildx build ${execArgs.join(" ")}`);
+	await execDocker("buildx build", execArgs, options);
 }

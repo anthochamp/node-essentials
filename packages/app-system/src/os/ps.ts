@@ -1,19 +1,26 @@
 import type { ExecOptions } from "node:child_process";
 import { EOL } from "node:os";
+import { platform } from "node:process";
 
 import {
+	defaults,
 	MS_PER_DAY,
 	MS_PER_HOUR,
 	MS_PER_MINUTE,
 	MS_PER_SECOND,
-	defaults,
 } from "@ac-kit/core";
 import {
-	escapeCommandArg,
-	execAsync,
-	ProcessExitWithOutputError,
-} from "@ac-kit/node";
+	escapeCommandArg as escapeCommandArgFor,
+	shellDialectForPlatform,
+} from "@ac-kit/format-shell";
+import { execAsync, ProcessExitWithOutputError } from "@ac-kit/node";
 import type { TupleToUnion, UnknownRecord } from "type-fest";
+
+const SHELL_DIALECT_ = shellDialectForPlatform(platform);
+
+function escapeCommandArg(expr: string): string {
+	return escapeCommandArgFor(expr, SHELL_DIALECT_);
+}
 
 export type PsFilters = {
 	// Group ID (argument: -G)

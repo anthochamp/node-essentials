@@ -11,6 +11,11 @@ export type PropertyPath = readonly (string | number)[];
 /**
  * Gets the value at `path` inside `root`.
  *
+ * Unlike `setAtPath`, this does not refuse a path through `__proto__`,
+ * `constructor` or `prototype`: reading one hands back a prototype the caller
+ * could already reach through any object it holds, so refusing it would cost an
+ * honest lookup and prevent nothing.
+ *
  * @param root The root object/array to traverse
  * @param path The path to traverse
  * @returns The value at the path, or `undefined` if the path does not exist.

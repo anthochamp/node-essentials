@@ -30,36 +30,41 @@ suite("dockerContainerExec", () => {
 	});
 
 	test("passes command arguments", async () => {
-		await dockerContainerExec("my-container", "mariadb", [
-			"-u",
-			"root",
-			"-proot",
-			"mydb",
-			"-e",
-			"SELECT 1",
-		]);
+		await dockerContainerExec("my-container", "mariadb", {
+			commandArgs: ["-u", "root", "mydb", "-e", "SELECT 1"],
+		});
 
 		expect(execAsyncMock).toHaveBeenCalledWith(
-			"docker container exec 'my-container' 'mariadb' '-u' 'root' '-proot' 'mydb' '-e' 'SELECT 1'",
+			"docker container exec 'my-container' 'mariadb' '-u' 'root' 'mydb' '-e' 'SELECT 1'",
 			{ encoding: "utf8" },
 		);
 	});
 
 	test("sets --env variables", async () => {
-		await dockerContainerExec("my-container", "env", undefined, {
-			env: { FOO: "bar" },
+		await dockerContainerExec("my-container", "env", {
+			env: { FOO: "bar", NUM: 42, FLAG: true, EMPTY: null },
 		});
 
 		expect(execAsyncMock).toHaveBeenCalledWith(
-			"docker container exec --env 'FOO=bar' 'my-container' 'env'",
+			"docker container exec --env 'FOO=bar' --env 'NUM=42' --env 'FLAG=1' --env 'EMPTY=' 'my-container' 'env'",
+			{ encoding: "utf8" },
+		);
+	});
+
+	test("leaves an --env value literal, quoting it only for the shell", async () => {
+		// The value fills a whole argument, so dotenv quoting would land inside it.
+		await dockerContainerExec("my-container", "env", {
+			env: { JSON: '{"a": 1}' },
+		});
+
+		expect(execAsyncMock).toHaveBeenCalledWith(
+			`docker container exec --env 'JSON={"a": 1}' 'my-container' 'env'`,
 			{ encoding: "utf8" },
 		);
 	});
 
 	test("sets --user", async () => {
-		await dockerContainerExec("my-container", "whoami", undefined, {
-			user: "nobody",
-		});
+		await dockerContainerExec("my-container", "whoami", { user: "nobody" });
 
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker container exec --user 'nobody' 'my-container' 'whoami'",
@@ -68,12 +73,19 @@ suite("dockerContainerExec", () => {
 	});
 
 	test("sets --workdir", async () => {
-		await dockerContainerExec("my-container", "ls", undefined, {
-			workdir: "/tmp",
-		});
+		await dockerContainerExec("my-container", "ls", { workdir: "/tmp" });
 
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker container exec --workdir '/tmp' 'my-container' 'ls'",
+			{ encoding: "utf8" },
+		);
+	});
+
+	test("puts --context before the subcommand", async () => {
+		await dockerContainerExec("my-container", "sh", { context: "remote" });
+
+		expect(execAsyncMock).toHaveBeenCalledWith(
+			"docker --context 'remote' container exec 'my-container' 'sh'",
 			{ encoding: "utf8" },
 		);
 	});

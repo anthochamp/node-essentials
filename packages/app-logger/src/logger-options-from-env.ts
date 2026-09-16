@@ -1,5 +1,5 @@
 import { Attributes } from "@ac-kit/app-report";
-import { parseEnvVariableValueAsBool } from "@ac-kit/core";
+import { parseEnvValueAsBool, ProcessEnv } from "@ac-kit/format-shell";
 
 import { LogLevel } from "./log-level.js";
 
@@ -44,10 +44,8 @@ export type LoggerOptions = {
  *
  * @param env Defaults to `process.env`.
  */
-export function loggerOptionsFromEnv(
-	env: Record<string, string | undefined>,
-): LoggerOptions {
-	if (parseEnvVariableValueAsBool(env.DEBUG) === true) {
+export function loggerOptionsFromEnv(env: ProcessEnv): LoggerOptions {
+	if (parseEnvValueAsBool(env.DEBUG) === true) {
 		return { minLevel: "debug", captureStackAtOrBelow: "debug" };
 	}
 

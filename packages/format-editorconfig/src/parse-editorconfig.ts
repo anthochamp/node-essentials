@@ -1,3 +1,4 @@
+import { setRecordEntry } from "@ac-kit/core";
 import { parseIniDocument } from "@ac-kit/format-ini";
 
 import type { EditorConfigProperties } from "./properties.js";
@@ -60,7 +61,7 @@ function assignProperty(
 	}
 
 	if (!KNOWN_.has(name)) {
-		unknown[name] = raw;
+		setRecordEntry(unknown, name, raw);
 		return;
 	}
 

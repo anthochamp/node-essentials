@@ -1,3 +1,4 @@
+import { setRecordEntry } from "@ac-kit/core";
 import type { UnknownRecord } from "type-fest";
 
 import type { IniDocument } from "./ast.js";
@@ -35,15 +36,17 @@ function assign(
 	value: unknown,
 	policy: NonNullable<IniValueOptions["duplicateKeys"]>,
 ): void {
-	if (!(key in target)) {
-		target[key] = policy === "array" ? [value] : value;
+	// `key in target` would answer true for `constructor` or `toString` on any
+	// object, treating a first occurrence as a duplicate.
+	if (!Object.hasOwn(target, key)) {
+		setRecordEntry(target, key, policy === "array" ? [value] : value);
 		return;
 	}
 	if (policy === "first") {
 		return;
 	}
 	if (policy === "last") {
-		target[key] = value;
+		setRecordEntry(target, key, value);
 		return;
 	}
 	(target[key] as unknown[]).push(value);
@@ -55,7 +58,7 @@ function containerFor(
 ): UnknownRecord {
 	let node = root;
 	for (const part of path) {
-		const existing = node[part];
+		const existing = Object.hasOwn(node, part) ? node[part] : undefined;
 		if (
 			existing === undefined ||
 			typeof existing !== "object" ||
@@ -63,7 +66,7 @@ function containerFor(
 			Array.isArray(existing)
 		) {
 			const created: UnknownRecord = {};
-			node[part] = created;
+			setRecordEntry(node, part, created);
 			node = created;
 			continue;
 		}

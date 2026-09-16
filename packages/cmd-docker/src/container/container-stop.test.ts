@@ -16,6 +16,7 @@ const execAsyncMock = vi.mocked(execAsync);
 suite("dockerContainerStop", () => {
 	beforeEach(() => {
 		execAsyncMock.mockReset();
+		execAsyncMock.mockResolvedValue({ stdout: "", stderr: "" });
 	});
 
 	test("stops a single container", async () => {
@@ -24,6 +25,7 @@ suite("dockerContainerStop", () => {
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker container stop 'my-container'",
+			{ encoding: "utf8" },
 		);
 	});
 
@@ -32,6 +34,7 @@ suite("dockerContainerStop", () => {
 
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker container stop 'container-a' 'container-b'",
+			{ encoding: "utf8" },
 		);
 	});
 
@@ -40,6 +43,16 @@ suite("dockerContainerStop", () => {
 
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker container stop --time 5 'my-container'",
+			{ encoding: "utf8" },
+		);
+	});
+
+	test("puts --context before the subcommand", async () => {
+		await dockerContainerStop(["my-container"], { context: "remote" });
+
+		expect(execAsyncMock).toHaveBeenCalledWith(
+			"docker --context 'remote' container stop 'my-container'",
+			{ encoding: "utf8" },
 		);
 	});
 });

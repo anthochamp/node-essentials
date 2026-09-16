@@ -14,6 +14,7 @@ import {
 	WritableStreamSink,
 } from "@ac-kit/app-report";
 import { nodeTerminal, RotatingFileSink } from "@ac-kit/app-system";
+import { fromProcessEnv } from "@ac-kit/format-shell";
 import { nonClosingWritableStream } from "@ac-kit/node";
 
 import * as packageJson from "../package.json" with { type: "json" };
@@ -48,7 +49,7 @@ const sink = new IdleMarkProxy(
 //    (`DEBUG=1`) additionally turn on stack capture.
 const logger = new Logger(sink, {
 	minLevel: "debug",
-	...loggerOptionsFromEnv(process.env),
+	...loggerOptionsFromEnv(fromProcessEnv(process.env)),
 	attributes: { package: packageJson.name },
 });
 

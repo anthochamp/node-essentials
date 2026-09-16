@@ -46,6 +46,7 @@
 		"@ac-kit/crypto-hash": "workspace:^",
 		"@ac-kit/data": "workspace:^",
 		"@ac-kit/format-ansi": "workspace:^",
+		"@ac-kit/format-shell": "workspace:^",
 		"@ac-kit/node": "workspace:*",
 		"@types/node": "catalog:",
 		"type-fest": "catalog:"

@@ -38,7 +38,7 @@
 		"prepack": "yarn build"
 	},
 	"dependencies": {
-		"@ac-kit/core": "workspace:^",
+		"@ac-kit/format-shell": "workspace:^",
 		"@ac-kit/node": "workspace:^"
 	},
 	"devDependencies": {

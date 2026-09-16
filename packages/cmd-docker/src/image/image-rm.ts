@@ -1,8 +1,7 @@
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import { dockerArg, execDocker } from "../_docker-command.js";
+import type { DockerCommonOptions, DockerImageId } from "../types.js";
 
-type DockerImageId = string;
-
-export type DockerImageRmOptions = {
+export type DockerImageRmOptions = DockerCommonOptions & {
 	force?: boolean;
 	noPrune?: boolean;
 };
@@ -21,8 +20,8 @@ export async function dockerImageRm(
 	}
 
 	for (const image of images) {
-		execArgs.push(escapeCommandArg(image));
+		execArgs.push(dockerArg(image));
 	}
 
-	await execAsync(`docker image rm ${execArgs.join(" ")}`);
+	await execDocker("image rm", execArgs, options);
 }

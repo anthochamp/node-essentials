@@ -350,6 +350,11 @@ export const PACKAGES: Readonly<Record<string, PackageEntry>> = {
 		portability: "P",
 		summary: "Regular expression syntax tree and a Pike virtual machine",
 	},
+	"format-shell": {
+		domain: "formats",
+		portability: "P",
+		summary: "Shell command-line quoting and environment variable syntax",
+	},
 	"format-toml": {
 		domain: "formats",
 		portability: "P",

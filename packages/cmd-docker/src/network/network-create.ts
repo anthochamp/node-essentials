@@ -1,6 +1,7 @@
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import { dockerArg, execDocker } from "../_docker-command.js";
+import type { DockerCommonOptions } from "../types.js";
 
-export type DockerNetworkCreateOptions = {
+export type DockerNetworkCreateOptions = DockerCommonOptions & {
 	driver?: string;
 };
 
@@ -11,10 +12,10 @@ export async function dockerNetworkCreate(
 	const execArgs: string[] = [];
 
 	if (options?.driver && options.driver.length > 0) {
-		execArgs.push(`--driver ${escapeCommandArg(options.driver)}`);
+		execArgs.push(`--driver ${dockerArg(options.driver)}`);
 	}
 
-	execArgs.push(escapeCommandArg(network));
+	execArgs.push(dockerArg(network));
 
-	await execAsync(`docker network create ${execArgs.join(" ")}`);
+	await execDocker("network create", execArgs, options);
 }

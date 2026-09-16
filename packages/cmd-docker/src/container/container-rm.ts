@@ -1,8 +1,11 @@
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import { dockerArg, execDocker } from "../_docker-command.js";
+import type {
+	DockerCommonOptions,
+	DockerContainerId,
+	DockerContainerName,
+} from "../types.js";
 
-import type { DockerContainerId, DockerContainerName } from "../types.js";
-
-export type DockerContainerRmOptions = {
+export type DockerContainerRmOptions = DockerCommonOptions & {
 	force?: boolean;
 	link?: boolean;
 	volumes?: boolean;
@@ -25,8 +28,8 @@ export async function dockerContainerRm(
 	}
 
 	for (const container of containers) {
-		execArgs.push(escapeCommandArg(container));
+		execArgs.push(dockerArg(container));
 	}
 
-	await execAsync(`docker container rm ${execArgs.join(" ")}`);
+	await execDocker("container rm", execArgs, options);
 }

@@ -1,5 +1,5 @@
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import { dockerArg, execDocker } from "../_docker-command.js";
 
 export async function dockerContextUse(context: string): Promise<void> {
-	await execAsync(`docker context use ${escapeCommandArg(context)}`);
+	await execDocker("context use", [dockerArg(context)]);
 }

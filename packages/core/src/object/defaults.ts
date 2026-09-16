@@ -1,5 +1,7 @@
 import type { UnknownRecord } from "type-fest";
 
+import { setRecordEntry } from "./set-record-entry.js";
+
 /**
  * Assign default options to an object.
  *
@@ -24,12 +26,17 @@ export function defaults<R extends {}, P extends Partial<R> = Partial<R>>(
 ): R {
 	return args.reduce((result: P | R, arg) => {
 		if (arg) {
-			for (const key in arg) {
-				if (
-					(result as UnknownRecord)[key] === undefined &&
-					(arg as UnknownRecord)[key] !== undefined
-				) {
-					(result as UnknownRecord)[key] = (arg as UnknownRecord)[key];
+			// Own keys only: `for...in` would walk a hostile source's prototype too,
+			// and reading `result[key]` through the chain hides `__proto__` behind a
+			// value that is never `undefined`.
+			for (const key of Object.keys(arg)) {
+				const value = (arg as UnknownRecord)[key];
+				const current = Object.hasOwn(result, key)
+					? (result as UnknownRecord)[key]
+					: undefined;
+
+				if (current === undefined && value !== undefined) {
+					setRecordEntry(result as UnknownRecord, key, value);
 				}
 			}
 		}

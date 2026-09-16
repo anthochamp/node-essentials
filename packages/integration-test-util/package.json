@@ -41,7 +41,8 @@
 		"@ac-kit/cmd-docker": "workspace:^",
 		"@ac-kit/core": "workspace:^",
 		"@ac-kit/crypto-random": "workspace:^",
-		"@ac-kit/node": "workspace:^"
+		"@ac-kit/node": "workspace:^",
+		"type-fest": "catalog:"
 	},
 	"devDependencies": {
 		"@ac-kit/tsconfig": "workspace:*",

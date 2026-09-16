@@ -1,3 +1,4 @@
+import { bigIntIsSafeNumber } from "../../big-int/is-safe-number.js";
 import { JsonReplacer, JsonReplacerFunction } from "../../types/json.js";
 import { jsonMakeReplacerFunction } from "../json-make-replacer-function.js";
 
@@ -21,14 +22,7 @@ export function jsonMakeBigIntReplacerFunction(
 		if (value instanceof BigInt || typeof value === "bigint") {
 			const num = value.valueOf();
 
-			if (
-				num >= BigInt(Number.MIN_SAFE_INTEGER) &&
-				num <= BigInt(Number.MAX_SAFE_INTEGER)
-			) {
-				return Number(num);
-			}
-
-			return num.toString();
+			return bigIntIsSafeNumber(num) ? Number(num) : num.toString();
 		}
 
 		return value;

@@ -377,6 +377,7 @@ __metadata:
     "@ac-kit/data": "workspace:^"
     "@ac-kit/format-ansi": "workspace:*"
     "@ac-kit/format-monospace": "workspace:*"
+    "@ac-kit/format-shell": "workspace:*"
     "@ac-kit/model-dataset": "workspace:*"
     "@ac-kit/tsconfig": "workspace:*"
     "@ac-kit/typedoc-config": "workspace:*"
@@ -423,6 +424,7 @@ __metadata:
     "@ac-kit/crypto-hash": "workspace:^"
     "@ac-kit/data": "workspace:^"
     "@ac-kit/format-ansi": "workspace:^"
+    "@ac-kit/format-shell": "workspace:^"
     "@ac-kit/node": "workspace:*"
     "@ac-kit/tsconfig": "workspace:*"
     "@ac-kit/typedoc-config": "workspace:*"
@@ -490,7 +492,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ac-kit/cmd-docker@workspace:packages/cmd-docker"
   dependencies:
-    "@ac-kit/core": "workspace:^"
+    "@ac-kit/format-shell": "workspace:^"
     "@ac-kit/node": "workspace:^"
     "@ac-kit/tsconfig": "workspace:*"
     "@ac-kit/typedoc-config": "workspace:*"
@@ -508,6 +510,7 @@ __metadata:
   resolution: "@ac-kit/cmd-git@workspace:packages/cmd-git"
   dependencies:
     "@ac-kit/core": "workspace:^"
+    "@ac-kit/format-shell": "workspace:^"
     "@ac-kit/node": "workspace:^"
     "@ac-kit/tsconfig": "workspace:*"
     "@ac-kit/typedoc-config": "workspace:*"
@@ -1126,6 +1129,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ac-kit/format-shell@workspace:*, @ac-kit/format-shell@workspace:^, @ac-kit/format-shell@workspace:packages/format-shell":
+  version: 0.0.0-use.local
+  resolution: "@ac-kit/format-shell@workspace:packages/format-shell"
+  dependencies:
+    "@ac-kit/core": "workspace:^"
+    "@ac-kit/tsconfig": "workspace:*"
+    "@ac-kit/typedoc-config": "workspace:*"
+    "@ac-kit/vitest-config": "workspace:*"
+    "@types/node": "catalog:"
+    "@typescript/native": "catalog:fixed"
+    rimraf: "catalog:fixed"
+    typedoc: "catalog:fixed"
+    typescript: "catalog:fixed"
+  languageName: unknown
+  linkType: soft
+
 "@ac-kit/format-toml@workspace:packages/format-toml":
   version: 0.0.0-use.local
   resolution: "@ac-kit/format-toml@workspace:packages/format-toml"
@@ -1193,6 +1212,7 @@ __metadata:
     "@types/node": "catalog:fixed"
     "@typescript/native": "catalog:fixed"
     rimraf: "catalog:fixed"
+    type-fest: "catalog:"
     typedoc: "catalog:fixed"
     typescript: "catalog:fixed"
     vite: "catalog:fixed"

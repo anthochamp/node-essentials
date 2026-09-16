@@ -1,4 +1,9 @@
-import { ByteReader, concatBytes, decodeText } from "@ac-kit/core";
+import {
+	ByteReader,
+	concatBytes,
+	decodeText,
+	setRecordEntry,
+} from "@ac-kit/core";
 import { bigIntFromBytesBe } from "@ac-kit/math-integer";
 
 import { DecodingError } from "../_encoding/errors.js";
@@ -253,7 +258,7 @@ function decodeComponentFrom(
 	if (reader.atEnd) {
 		if (comp.optional || comp.defaultValue !== undefined) {
 			if (comp.defaultValue !== undefined)
-				result[comp.name] = comp.defaultValue;
+				setRecordEntry(result, comp.name, comp.defaultValue);
 			return;
 		}
 		throw new DecodingError(`DER: required component "${comp.name}" missing`);
@@ -266,14 +271,14 @@ function decodeComponentFrom(
 	if (expectedTag && !tagsMatch(expectedTag, nextTag)) {
 		if (comp.optional || comp.defaultValue !== undefined) {
 			if (comp.defaultValue !== undefined)
-				result[comp.name] = comp.defaultValue;
+				setRecordEntry(result, comp.name, comp.defaultValue);
 			return;
 		}
 		throw new DecodingError(
 			`DER: required component "${comp.name}" has wrong tag`,
 		);
 	}
-	result[comp.name] = derDecodeReader(comp.type, reader, strict);
+	setRecordEntry(result, comp.name, derDecodeReader(comp.type, reader, strict));
 }
 
 function decodeOfContents(

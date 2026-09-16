@@ -1,4 +1,9 @@
-import { ByteReader, concatBytes, decodeText } from "@ac-kit/core";
+import {
+	ByteReader,
+	concatBytes,
+	decodeText,
+	setRecordEntry,
+} from "@ac-kit/core";
 import { bigIntFromBytesBe } from "@ac-kit/math-integer";
 
 import { DecodingError } from "../_encoding/errors.js";
@@ -261,7 +266,7 @@ function cerDecodeComponentFrom(
 	if (reader.atEnd) {
 		if (comp.optional || comp.defaultValue !== undefined) {
 			if (comp.defaultValue !== undefined)
-				result[comp.name] = comp.defaultValue;
+				setRecordEntry(result, comp.name, comp.defaultValue);
 			return;
 		}
 		throw new DecodingError(`CER: required component "${comp.name}" missing`);
@@ -277,14 +282,14 @@ function cerDecodeComponentFrom(
 	) {
 		if (comp.optional || comp.defaultValue !== undefined) {
 			if (comp.defaultValue !== undefined)
-				result[comp.name] = comp.defaultValue;
+				setRecordEntry(result, comp.name, comp.defaultValue);
 			return;
 		}
 		throw new DecodingError(
 			`CER: required component "${comp.name}" tag mismatch`,
 		);
 	}
-	result[comp.name] = cerDecodeReader(comp.type, reader);
+	setRecordEntry(result, comp.name, cerDecodeReader(comp.type, reader));
 }
 
 function cerDecodeOfContents(

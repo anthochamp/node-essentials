@@ -1,8 +1,11 @@
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import { dockerArg, execDocker } from "../_docker-command.js";
+import type {
+	DockerCommonOptions,
+	DockerContainerId,
+	DockerContainerName,
+} from "../types.js";
 
-import type { DockerContainerId, DockerContainerName } from "../types.js";
-
-export type DockerContainerStopOptions = {
+export type DockerContainerStopOptions = DockerCommonOptions & {
 	/** Seconds to wait before killing the container. */
 	time?: number;
 };
@@ -18,8 +21,8 @@ export async function dockerContainerStop(
 	}
 
 	for (const container of containers) {
-		execArgs.push(escapeCommandArg(container));
+		execArgs.push(dockerArg(container));
 	}
 
-	await execAsync(`docker container stop ${execArgs.join(" ")}`);
+	await execDocker("container stop", execArgs, options);
 }

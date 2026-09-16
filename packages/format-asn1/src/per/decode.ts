@@ -1,4 +1,9 @@
-import { BitReader, bytesForBits, decodeText } from "@ac-kit/core";
+import {
+	BitReader,
+	bytesForBits,
+	decodeText,
+	setRecordEntry,
+} from "@ac-kit/core";
 import { bigIntFromBytesBe } from "@ac-kit/math-integer";
 
 import { DecodingError } from "../_encoding/errors.js";
@@ -233,9 +238,9 @@ function perDecodeSequence(
 		const isOptional = comp.optional || comp.defaultValue !== undefined;
 		if (isOptional) {
 			if (presence[optIdx++]) {
-				result[comp.name] = perDecodeFrom(comp.type, r, aligned);
+				setRecordEntry(result, comp.name, perDecodeFrom(comp.type, r, aligned));
 			} else if (comp.defaultValue !== undefined) {
-				result[comp.name] = comp.defaultValue;
+				setRecordEntry(result, comp.name, comp.defaultValue);
 			}
 		} else {
 			result[comp.name] = perDecodeFrom(comp.type, r, aligned);

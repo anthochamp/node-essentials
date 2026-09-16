@@ -10,6 +10,7 @@ import {
 	type MergedSources,
 	type MergeOptions,
 } from "./merge-options.js";
+import { setRecordEntry } from "./set-record-entry.js";
 
 type Resolved_ = Required<MergeOptions>;
 
@@ -118,8 +119,9 @@ function mergePojo_(
 ): Record<string, unknown> {
 	const output: Record<string, unknown> = { ...target };
 
-	for (const key in source) {
-		output[key] = nested_(target[key], source[key], options);
+	// Own keys only: `for...in` would walk a hostile source's prototype too.
+	for (const key of Object.keys(source)) {
+		setRecordEntry(output, key, nested_(target[key], source[key], options));
 	}
 
 	return output;

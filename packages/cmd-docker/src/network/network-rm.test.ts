@@ -16,6 +16,7 @@ const execAsyncMock = vi.mocked(execAsync);
 suite("dockerNetworkRm", () => {
 	beforeEach(() => {
 		execAsyncMock.mockReset();
+		execAsyncMock.mockResolvedValue({ stdout: "", stderr: "" });
 	});
 
 	test("removes a single network", async () => {
@@ -24,6 +25,7 @@ suite("dockerNetworkRm", () => {
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker network rm 'my-network'",
+			{ encoding: "utf8" },
 		);
 	});
 
@@ -32,6 +34,16 @@ suite("dockerNetworkRm", () => {
 
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker network rm 'net-a' 'net-b'",
+			{ encoding: "utf8" },
+		);
+	});
+
+	test("puts --context before the subcommand", async () => {
+		await dockerNetworkRm(["my-network"], { context: "remote" });
+
+		expect(execAsyncMock).toHaveBeenCalledWith(
+			"docker --context 'remote' network rm 'my-network'",
+			{ encoding: "utf8" },
 		);
 	});
 });

@@ -16,6 +16,7 @@ const execAsyncMock = vi.mocked(execAsync);
 suite("dockerNetworkCreate", () => {
 	beforeEach(() => {
 		execAsyncMock.mockReset();
+		execAsyncMock.mockResolvedValue({ stdout: "", stderr: "" });
 	});
 
 	test("creates a network by name", async () => {
@@ -24,6 +25,7 @@ suite("dockerNetworkCreate", () => {
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker network create 'my-network'",
+			{ encoding: "utf8" },
 		);
 	});
 
@@ -32,6 +34,16 @@ suite("dockerNetworkCreate", () => {
 
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker network create --driver 'overlay' 'my-network'",
+			{ encoding: "utf8" },
+		);
+	});
+
+	test("puts --context before the subcommand", async () => {
+		await dockerNetworkCreate("my-network", { context: "remote" });
+
+		expect(execAsyncMock).toHaveBeenCalledWith(
+			"docker --context 'remote' network create 'my-network'",
+			{ encoding: "utf8" },
 		);
 	});
 });

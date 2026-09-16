@@ -7,12 +7,21 @@ speaking the protocol you expect.
 ```ts
 import { initDockerSuite, isTcpPortOpen } from "@ac-kit/integration-test-util";
 
-// Registers beforeAll/afterAll/afterEach hooks covering the whole container
-// lifecycle: build the image, stop and remove the container between tests.
-const suite = initDockerSuite("./fixtures/postfix");
+// Registers beforeAll/beforeEach/afterEach/afterAll hooks covering the whole
+// container lifecycle: build the image once, run a detached container per test,
+// remove both afterwards. Every name it generates carries a random per-suite
+// id, so concurrent suites never collide.
+const suite = initDockerSuite("./fixtures/postfix", {
+  containerRunOptions: () => ({ publish: ["25:25"] }),
+});
 
 await isTcpPortOpen(25, "127.0.0.1");
 ```
+
+Pass `context` to run every command against one docker context; the suite never
+switches the machine's active one. `onContainerStarting`/`onContainerStarted`
+and `onContainerStopping`/`onContainerStopped` bracket each container, the
+"stopping" hook firing while it is still reachable.
 
 Also exposes `tryTcpConnectAndReadBanner` and `tryTlsConnectAndReadBanner`, for
 waiting until a server is not merely listening but actually answering.

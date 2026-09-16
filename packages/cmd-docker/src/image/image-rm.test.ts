@@ -16,6 +16,7 @@ const execAsyncMock = vi.mocked(execAsync);
 suite("dockerImageRm", () => {
 	beforeEach(() => {
 		execAsyncMock.mockReset();
+		execAsyncMock.mockResolvedValue({ stdout: "", stderr: "" });
 	});
 
 	test("should call docker image rm with image ids", async () => {
@@ -24,6 +25,7 @@ suite("dockerImageRm", () => {
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker image rm 'image1' 'image2'",
+			{ encoding: "utf8" },
 		);
 	});
 
@@ -33,6 +35,7 @@ suite("dockerImageRm", () => {
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker image rm --force --no-prune 'image1'",
+			{ encoding: "utf8" },
 		);
 	});
 
@@ -42,6 +45,7 @@ suite("dockerImageRm", () => {
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker image rm --force 'image1'",
+			{ encoding: "utf8" },
 		);
 	});
 
@@ -51,6 +55,7 @@ suite("dockerImageRm", () => {
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker image rm --no-prune 'image1'",
+			{ encoding: "utf8" },
 		);
 	});
 
@@ -60,6 +65,16 @@ suite("dockerImageRm", () => {
 		expect(execAsyncMock).toHaveBeenCalledTimes(1);
 		expect(execAsyncMock).toHaveBeenCalledWith(
 			"docker image rm 'image'\\''1' 'image\"2'",
+			{ encoding: "utf8" },
+		);
+	});
+
+	test("puts --context before the subcommand", async () => {
+		await dockerImageRm(["image1"], { context: "remote", force: true });
+
+		expect(execAsyncMock).toHaveBeenCalledWith(
+			"docker --context 'remote' image rm --force 'image1'",
+			{ encoding: "utf8" },
 		);
 	});
 });

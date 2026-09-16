@@ -1,10 +1,15 @@
-import { stringifyEnvVariable } from "@ac-kit/core";
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import { EnvVariables, printEnvAssignment } from "@ac-kit/format-shell";
 
-import type { DockerContainerId, DockerContainerName } from "../types.js";
+import { dockerArg, execDocker } from "../_docker-command.js";
+import type {
+	DockerCommonOptions,
+	DockerContainerId,
+	DockerContainerName,
+} from "../types.js";
 
-export type DockerContainerExecOptions = {
-	env?: Record<string, string | number | bigint | boolean | null>;
+export type DockerContainerExecOptions = DockerCommonOptions & {
+	commandArgs?: string[];
+	env?: EnvVariables;
 	user?: string;
 	workdir?: string;
 };
@@ -12,32 +17,26 @@ export type DockerContainerExecOptions = {
 export async function dockerContainerExec(
 	container: DockerContainerId | DockerContainerName,
 	command: string,
-	commandArgs?: string[],
 	options?: DockerContainerExecOptions,
 ): Promise<{ stdout: string; stderr: string }> {
 	const execArgs: string[] = [];
 
-	for (const [k, v] of Object.entries(options?.env ?? {})) {
-		execArgs.push(`--env ${escapeCommandArg(stringifyEnvVariable(k, v))}`);
+	for (const [name, value] of Object.entries(options?.env ?? {})) {
+		execArgs.push(`--env ${dockerArg(printEnvAssignment(name, value))}`);
 	}
 	if (options?.user && options.user.length > 0) {
-		execArgs.push(`--user ${escapeCommandArg(options.user)}`);
+		execArgs.push(`--user ${dockerArg(options.user)}`);
 	}
 	if (options?.workdir && options.workdir.length > 0) {
-		execArgs.push(`--workdir ${escapeCommandArg(options.workdir)}`);
+		execArgs.push(`--workdir ${dockerArg(options.workdir)}`);
 	}
 
-	execArgs.push(escapeCommandArg(container));
-	execArgs.push(escapeCommandArg(command));
+	execArgs.push(dockerArg(container));
+	execArgs.push(dockerArg(command));
 
-	for (const commandArg of commandArgs ?? []) {
-		execArgs.push(escapeCommandArg(commandArg));
+	for (const commandArg of options?.commandArgs ?? []) {
+		execArgs.push(dockerArg(commandArg));
 	}
 
-	const { stdout, stderr } = await execAsync(
-		`docker container exec ${execArgs.join(" ")}`,
-		{ encoding: "utf8" },
-	);
-
-	return { stdout, stderr };
+	return execDocker("container exec", execArgs, options);
 }

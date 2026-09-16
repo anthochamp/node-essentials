@@ -2,7 +2,7 @@ import { expect, suite, test } from "vitest";
 
 import { escapePosixShCommandArg } from "./escape-posix-sh-command-arg.js";
 
-suite("escapeCommandArg", () => {
+suite("escapePosixShCommandArg", () => {
 	test("should escape a string for safe use as a POSIX-compliant shell argument", () => {
 		expect(escapePosixShCommandArg("")).toBe("''");
 		expect(escapePosixShCommandArg("simple")).toBe("'simple'");

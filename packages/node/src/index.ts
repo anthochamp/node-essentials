@@ -32,7 +32,5 @@ export * from "./process/guarded.js";
 export * from "./process/spawn-process.js";
 export * from "./process/spawned-process.js";
 export * from "./process/start-process.js";
-export * from "./shell/escape-command-arg.js";
-export * from "./shell/escape-command.js";
 export * from "./stream/non-closing-writable-stream.js";
 export * from "./stream/write-async.js";

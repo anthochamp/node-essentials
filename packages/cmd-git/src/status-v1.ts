@@ -1,8 +1,15 @@
 import type { ExecOptions } from "node:child_process";
 import { EOL } from "node:os";
+import { platform } from "node:process";
 
 import { joinNonEmpty } from "@ac-kit/core";
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import {
+	escapeCommandArg,
+	shellDialectForPlatform,
+} from "@ac-kit/format-shell";
+import { execAsync } from "@ac-kit/node";
+
+const SHELL_DIALECT_ = shellDialectForPlatform(platform);
 
 // XY two-letter status code
 export type GitStatusCode = [string, string];
@@ -41,7 +48,7 @@ export async function gitStatusV1Sync(
 	pathSpec: string[] = [],
 	options?: GitStatusOptions,
 ): Promise<GitStatusV1Entry[]> {
-	const pathArgs = pathSpec.map((p) => escapeCommandArg(p));
+	const pathArgs = pathSpec.map((p) => escapeCommandArg(p, SHELL_DIALECT_));
 	const args = [
 		...pathArgs,
 		pathArgs.length > 0 ? "--" : "",

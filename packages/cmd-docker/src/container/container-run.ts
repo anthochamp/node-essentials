@@ -1,23 +1,23 @@
-import { stringifyEnvVariable } from "@ac-kit/core";
-import { escapeCommandArg, execAsync } from "@ac-kit/node";
+import { EnvVariables, printEnvAssignment } from "@ac-kit/format-shell";
 
-import type { DockerContainerName } from "../types.js";
+import { dockerArg, execDocker } from "../_docker-command.js";
+import type { DockerCommonOptions, DockerContainerName } from "../types.js";
 
-export type DockerContainerRunOptions = {
+export type DockerContainerRunOptions = DockerCommonOptions & {
+	command?: string;
+	commandArgs?: string[];
 	rm?: boolean;
 	detach?: boolean;
 	name?: DockerContainerName;
 	network?: string;
 	addHost?: string[]; // hostname:ip
-	env?: Record<string, string | number | bigint | boolean | null>;
+	env?: EnvVariables;
 	publish?: string[]; // ip:[hostPort]:containerPort | [hostPort:]containerPort
 	volume?: string[]; // host-src:container-dest[:options]
 };
 
 export async function dockerContainerRun(
 	image: string,
-	command?: string,
-	commandArgs?: string[],
 	options?: DockerContainerRunOptions,
 ): Promise<void> {
 	const execArgs: string[] = [];
@@ -29,33 +29,33 @@ export async function dockerContainerRun(
 		execArgs.push("--detach");
 	}
 	if (options?.name && options.name.length > 0) {
-		execArgs.push(`--name ${escapeCommandArg(options.name)}`);
+		execArgs.push(`--name ${dockerArg(options.name)}`);
 	}
 	if (options?.network && options.network.length > 0) {
-		execArgs.push(`--network ${escapeCommandArg(options.network)}`);
+		execArgs.push(`--network ${dockerArg(options.network)}`);
 	}
-	for (const h of options?.addHost ?? []) {
-		execArgs.push(`--add-host ${escapeCommandArg(h)}`);
+	for (const addHost of options?.addHost ?? []) {
+		execArgs.push(`--add-host ${dockerArg(addHost)}`);
 	}
-	for (const [k, v] of Object.entries(options?.env ?? {})) {
-		execArgs.push(`--env ${escapeCommandArg(stringifyEnvVariable(k, v))}`);
+	for (const [name, value] of Object.entries(options?.env ?? {})) {
+		execArgs.push(`--env ${dockerArg(printEnvAssignment(name, value))}`);
 	}
-	for (const e of options?.publish ?? []) {
-		execArgs.push(`--publish ${escapeCommandArg(e)}`);
+	for (const publish of options?.publish ?? []) {
+		execArgs.push(`--publish ${dockerArg(publish)}`);
 	}
-	for (const v of options?.volume ?? []) {
-		execArgs.push(`--volume ${escapeCommandArg(v)}`);
+	for (const volume of options?.volume ?? []) {
+		execArgs.push(`--volume ${dockerArg(volume)}`);
 	}
 
-	execArgs.push(escapeCommandArg(image));
+	execArgs.push(dockerArg(image));
 
-	if (command) {
-		execArgs.push(escapeCommandArg(command));
+	if (options?.command) {
+		execArgs.push(dockerArg(options.command));
 
-		for (const commandArg of commandArgs ?? []) {
-			execArgs.push(escapeCommandArg(commandArg));
+		for (const commandArg of options?.commandArgs ?? []) {
+			execArgs.push(dockerArg(commandArg));
 		}
 	}
 
-	await execAsync(`docker container run ${execArgs.join(" ")}`);
+	await execDocker("container run", execArgs, options);
 }

@@ -44,6 +44,7 @@
 		"@ac-kit/data": "workspace:^",
 		"@ac-kit/format-ansi": "workspace:*",
 		"@ac-kit/format-monospace": "workspace:*",
+		"@ac-kit/format-shell": "workspace:*",
 		"@ac-kit/model-dataset": "workspace:*",
 		"@types/node": "catalog:",
 		"temporal-spec": "catalog:"

@@ -1,3 +1,4 @@
+import { setRecordEntry } from "@ac-kit/core";
 import type { JsonValue } from "type-fest";
 
 import type { DataValue } from "./ast.js";
@@ -36,7 +37,7 @@ export function dataValueToJson(value: DataValue): JsonValue {
 						`Cannot convert a CBOR map with a non-text-string key (${key.kind}) to a JSON object`,
 					);
 				}
-				result[key.value] = dataValueToJson(entryValue);
+				setRecordEntry(result, key.value, dataValueToJson(entryValue));
 			}
 			return result;
 		}
@@ -65,7 +66,7 @@ export function jsonToDataValue(value: JsonValue): DataValue {
 	if (typeof value === "boolean") return { kind: "bool", value };
 	if (typeof value === "string") return { kind: "text", value };
 	if (typeof value === "number") {
-		if (Number.isInteger(value) && Math.abs(value) <= Number.MAX_SAFE_INTEGER) {
+		if (Number.isSafeInteger(value)) {
 			return { kind: "int", value: BigInt(value) };
 		}
 		return { kind: "float", value };

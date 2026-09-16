@@ -1,7 +1,7 @@
 import type { Except, TaggedUnion } from "type-fest";
 
+import { hasObjectPrototype } from "../guards/has-object-prototype.js";
 import { isMap } from "../guards/is-map.js";
-import { isPlainObject } from "../guards/is-plain-object.js";
 import { isSet } from "../guards/is-set.js";
 import { DefinedValue } from "../types/defined-value.js";
 import { defaults } from "./defaults.js";
@@ -244,8 +244,8 @@ function traverseValue_(
 
 		// Check if we should traverse this object's properties
 		const shouldTraverseObject =
-			(isPlainObject(value) && options.traversePlainObjects) ||
-			(!isPlainObject(value) &&
+			(hasObjectPrototype(value) && options.traversePlainObjects) ||
+			(!hasObjectPrototype(value) &&
 				shouldTraverseCustomObject(value, options.traverseCustomObjects));
 
 		if (shouldTraverseObject) {

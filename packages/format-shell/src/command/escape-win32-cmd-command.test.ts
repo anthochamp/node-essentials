@@ -2,7 +2,7 @@ import { expect, suite, test } from "vitest";
 
 import { escapeWin32CmdCommand } from "./escape-win32-cmd-command.js";
 
-suite("escapeCommand", () => {
+suite("escapeWin32CmdCommand", () => {
 	test("should escape a string for safe use as a Windows cmd.exe command", () => {
 		expect(escapeWin32CmdCommand("simple")).toBe("simple");
 		expect(escapeWin32CmdCommand("'")).toBe("^'");
