@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/app-logger",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Structured logging for Node.js applications.",
 	"keywords": [
 		"logger",

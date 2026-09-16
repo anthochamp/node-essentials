@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/app-report",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Shared event-pipeline contracts for logging, reporting and process output: one ReportEvent shape, one ISink interface, one ScopeTracker, fed to pluggable sinks and formatters.",
 	"keywords": [
 		"events",

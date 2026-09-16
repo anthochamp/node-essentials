@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-geometry",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Computational geometry in 2D, 3D and 4D: shapes, coordinate systems, angles, and the predicates and constructions over them.",
 	"keywords": [
 		"2d",

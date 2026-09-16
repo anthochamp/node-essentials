@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-asn1",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "ASN.1 (X.690) runtime: encoding primitives, the schema model, and the BER, CER, DER and PER codecs as separate subpath exports.",
 	"keywords": [
 		"asn1",

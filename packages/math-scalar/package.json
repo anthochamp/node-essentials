@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-scalar",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Scalar operations on the native IEEE 754 number: the dependency-free foundation of the @ac-kit math packages.",
 	"keywords": [
 		"float",

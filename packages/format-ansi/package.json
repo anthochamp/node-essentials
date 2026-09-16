@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-ansi",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "ANSI/VT100/xterm escape sequences: stripping, cursor movement, OSC 8 hyperlinks, and SGR colour and style with colour-depth-aware downsampling.",
 	"keywords": [
 		"ansi",

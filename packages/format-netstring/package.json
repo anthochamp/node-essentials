@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-netstring",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Netstring framing: a decoder, an encoder, the codec pairing them, and TransformStreams over both.",
 	"keywords": [
 		"codec",

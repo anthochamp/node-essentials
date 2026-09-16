@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-cbor",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "CBOR (RFC 8949) codec: a binary encoder and decoder including an incremental one, a diagnostic-notation lexer, parser and printer, and a JSON bridge.",
 	"keywords": [
 		"binary",

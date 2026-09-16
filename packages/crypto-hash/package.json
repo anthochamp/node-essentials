@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/crypto-hash",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Cryptographic hash functions — MD5, SHA-1, SHA-2, SHA-3/SHAKE, BLAKE2, RIPEMD-160, SM3 — verified against published test vectors.",
 	"keywords": [
 		"blake2",

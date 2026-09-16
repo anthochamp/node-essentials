@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-csv",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "RFC 4180 CSV: renders a DataFrame as CSV and parses CSV text back into rows of strings.",
 	"keywords": [
 		"csv",

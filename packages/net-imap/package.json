@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/net-imap",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "An IMAP client built on the @ac-kit/net-core Transport.",
 	"keywords": [
 		"client",

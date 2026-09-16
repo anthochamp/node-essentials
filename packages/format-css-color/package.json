@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-css-color",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Parse, serialise and evaluate the CSS <color> production.",
 	"keywords": [
 		"color",

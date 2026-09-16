@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-ini",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "INI: an order-preserving syntax tree, parse and print, in-place editing, and a line-oriented decoder and encoder.",
 	"keywords": [
 		"config",

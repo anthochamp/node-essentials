@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-random",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Non-cryptographic pseudo-random number generators: mulberry32, pcg32, sfc32, splitmix64 and xoshiro.",
 	"keywords": [
 		"pcg",

@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-signal",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Digital signal processing: Fourier analysis, convolution, filtering and window functions over uniformly sampled sequences.",
 	"keywords": [
 		"convolution",

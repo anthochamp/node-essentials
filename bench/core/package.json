@@ -1,6 +1,6 @@
 {
 	"name": "@ac-bench/core",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Core contracts for @ac-bench: condition and case registration, the per-condition runner, the MeasureData wire shape, and the measure and reporter plugin interfaces.",
 	"keywords": [
 		"benchmark",

@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/node",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Node.js extensions and zero-dependency wrappers over node: built-ins — promise-based TCP, TLS, IPC and UDP sockets, file I/O helpers and process utilities.",
 	"keywords": [
 		"fs",

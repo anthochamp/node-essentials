@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/cmd-git",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Typed wrapper over the git CLI: invocation plus git status porcelain v1 parsing.",
 	"keywords": [
 		"cli",

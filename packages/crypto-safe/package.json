@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/crypto-safe",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Constant-time primitives: operations whose runtime does not depend on secret data.",
 	"keywords": [
 		"constant-time",

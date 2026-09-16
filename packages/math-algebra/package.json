@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-algebra",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "The universal-algebra vocabulary shared by every @ac-kit numeric type: the magma-to-field interface hierarchy, order and Euclidean extensions, and typeclass-style evidence types.",
 	"keywords": [
 		"algebra",

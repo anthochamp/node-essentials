@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/markdownlint-cli2-config",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Shareable markdownlint-cli2 configuration.",
 	"keywords": [
 		"config",

@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-json",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "JSON parse and print streams over @ac-kit/format-core.",
 	"keywords": [
 		"codec",

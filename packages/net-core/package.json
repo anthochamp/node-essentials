@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/net-core",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "The shared network-protocol substrate: framing, codecs, session handling, an exchange registry, and the Transport type protocol packages build on instead of talking to sockets.",
 	"keywords": [
 		"framing",

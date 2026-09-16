@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-yaml",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "YAML parse and print streams over @ac-kit/format-core.",
 	"keywords": [
 		"config",

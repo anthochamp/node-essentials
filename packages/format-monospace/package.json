@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-monospace",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Fixed-width text layout: table rendering over a shared width, alignment and styling core.",
 	"keywords": [
 		"cli",
