@@ -1,6 +1,6 @@
-import { IntervalHistogram, monitorEventLoopDelay } from "perf_hooks";
+import { ELDHistogram, monitorEventLoopDelay } from "node:perf_hooks";
 
-import { registerCondition, registerCase } from "@ac-bench/core/runner";
+import { registerCase, registerCondition } from "@ac-bench/core/runner";
 import { MaybeAsyncCallable, MaybeAsyncCallableNoArgs } from "@ac-kit/core";
 
 import { runJitterCase } from "./_run-case.js";
@@ -25,7 +25,7 @@ export function jitterCondition(
 			? [undefined, optionsOrFn]
 			: [optionsOrFn, fn!];
 
-	let loopDelay: IntervalHistogram;
+	let loopDelay: ELDHistogram;
 
 	registerCondition("jitter", title, callback, {
 		onBegin: () => {
