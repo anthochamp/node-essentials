@@ -3,6 +3,7 @@ import * as net from "node:net";
 import { InetAddress, InetEndpoint } from "@ac-kit/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { ConnectionClosedError } from "./connection-closed-error.js";
 import { TcpSocket } from "./tcp-socket.js";
 
 describe("TcpSocket", () => {
@@ -288,10 +289,33 @@ describe("TcpSocket", () => {
 				controller.abort();
 				await expect(connectPromise).rejects.toThrow();
 			});
+
+			it("should reject when the socket closes before connecting", async () => {
+				const socket = TcpSocket.from();
+				// TEST-NET-1 (RFC 5737): non-routable, connect hangs indefinitely.
+				const connectPromise = socket.connect(80, { host: "192.0.2.1" });
+				// A close without a preceding error would otherwise leave the promise
+				// pending forever.
+				socket.stream.emit("close");
+
+				await expect(connectPromise).rejects.toThrow(ConnectionClosedError);
+				socket.destroy();
+			});
 		});
 	});
 
 	describe("events forwarding", () => {
+		it("should dispatch a forwarded event exactly once", () => {
+			const mockSocket = new net.Socket();
+			const socket = new TcpSocket(mockSocket);
+			const listener = vi.fn();
+			socket.subscribe("connect", listener);
+
+			mockSocket.emit("connect");
+
+			expect(listener).toHaveBeenCalledTimes(1);
+		});
+
 		it("should forward connect event", async () => {
 			const mockSocket = new net.Socket();
 			const socket = new TcpSocket(mockSocket);

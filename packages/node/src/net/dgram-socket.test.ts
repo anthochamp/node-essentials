@@ -430,7 +430,7 @@ describe("DgramSocket", () => {
 				});
 				// Emit an error directly on the underlying socket to test error forwarding
 				// (Note: bind errors are handled specially by bind() and won't be re-emitted)
-				(socket as any).sock.emit("error", testError);
+				(socket as any).socket.emit("error", testError);
 				const error = await errorPromise;
 				expect(error).toBe(testError);
 			});

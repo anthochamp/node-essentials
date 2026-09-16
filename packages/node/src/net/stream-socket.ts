@@ -4,6 +4,8 @@ import type * as stream from "node:stream";
 import { EventDispatcherMapBase, IEventDispatcherMap } from "@ac-kit/async";
 import { type IError } from "@ac-kit/core";
 
+import { ConnectionClosedError } from "./connection-closed-error.js";
+
 /**
  * Event map for {@link StreamSocket} lifecycle events.
  *
@@ -51,6 +53,27 @@ export type StreamSocketEvents = {
 	timeout: [];
 };
 
+/** Options accepted by {@link StreamSocket.from}. */
+export type StreamSocketOptions = net.SocketConstructorOpts;
+
+/** Options accepted by {@link StreamSocket.end}. */
+export type StreamSocketEndOptions = {
+	/**
+	 * Waits for the remote side to close as well, instead of resolving as soon as
+	 * the local FIN is queued.
+	 */
+	waitForClose?: boolean;
+};
+
+/** Options accepted by {@link StreamSocket.awaitReady}. */
+export type StreamSocketAwaitReadyOptions = {
+	/** Aborts the attempt, destroying the socket. */
+	signal?: AbortSignal;
+
+	/** Starts the attempt, once the settlement listeners are in place. */
+	start?: () => void;
+};
+
 /**
  * Base class for stream-oriented client sockets.
  *
@@ -72,7 +95,7 @@ export type StreamSocketEvents = {
  * underlying {@link net.Socket} counterparts.
  */
 export class StreamSocket<
-	TSock extends net.Socket = net.Socket,
+	TSocket extends net.Socket = net.Socket,
 	TEvents extends StreamSocketEvents = StreamSocketEvents,
 >
 	extends EventDispatcherMapBase<TEvents>
@@ -86,16 +109,16 @@ export class StreamSocket<
 	 * @param options Options for creating the underlying Node.js socket.
 	 * @returns A new `StreamSocket` instance.
 	 */
-	static from(options?: net.SocketConstructorOpts): StreamSocket {
+	static from(options?: StreamSocketOptions): StreamSocket {
 		return new StreamSocket(new net.Socket(options));
 	}
 
 	/**
 	 * Creates a new {@link StreamSocket} instance.
 	 *
-	 * @param sock The underlying Node.js socket.
+	 * @param socket The underlying Node.js socket.
 	 */
-	constructor(protected readonly sock: TSock) {
+	constructor(protected readonly socket: TSocket) {
 		super();
 		this.setupEventForwarding();
 	}
@@ -107,37 +130,37 @@ export class StreamSocket<
 	 * to APIs that expect a Node.js stream.
 	 */
 	get stream(): stream.Duplex {
-		return this.sock;
+		return this.socket;
 	}
 
 	/** Indicates whether the socket has been fully closed. */
 	get closed(): boolean {
-		return this.sock.closed;
+		return this.socket.closed;
 	}
 
 	/** Indicates whether the underlying socket has been destroyed. */
 	get destroyed(): boolean {
-		return this.sock.destroyed;
+		return this.socket.destroyed;
 	}
 
 	/** Total number of bytes read from the socket so far. */
 	get bytesRead(): number {
-		return this.sock.bytesRead;
+		return this.socket.bytesRead;
 	}
 
 	/** Total number of bytes written to the socket so far. */
 	get bytesWritten(): number {
-		return this.sock.bytesWritten;
+		return this.socket.bytesWritten;
 	}
 
 	/** Whether the socket is currently in the process of connecting. */
 	get connecting(): boolean {
-		return this.sock.connecting;
+		return this.socket.connecting;
 	}
 
 	/** Current inactivity timeout in milliseconds, or `null` if disabled. */
 	get timeout(): number | null {
-		return this.sock.timeout ?? null;
+		return this.socket.timeout ?? null;
 	}
 
 	/**
@@ -148,7 +171,7 @@ export class StreamSocket<
 	 * `null` disables the timeout entirely.
 	 */
 	set timeout(timeout: number | null) {
-		this.sock.setTimeout(timeout ?? 0);
+		this.socket.setTimeout(timeout ?? 0);
 	}
 
 	/**
@@ -156,7 +179,7 @@ export class StreamSocket<
 	 * while the socket is active.
 	 */
 	ref(): void {
-		this.sock.ref();
+		this.socket.ref();
 	}
 
 	/**
@@ -164,7 +187,7 @@ export class StreamSocket<
 	 * if the socket is still active.
 	 */
 	unref(): void {
-		this.sock.unref();
+		this.socket.unref();
 	}
 
 	/**
@@ -178,28 +201,28 @@ export class StreamSocket<
 	 * @param options Optional settings for ending the socket.
 	 * @returns A promise that resolves once the socket has ended.
 	 */
-	end(options?: { waitForClose?: boolean }): Promise<void> {
+	end(options?: StreamSocketEndOptions): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const handleError = (error: IError) => {
 				this.handledErrorEvents.add(error);
 				reject(error);
 			};
 			const handleEnd = () => {
-				this.sock.removeListener("error", handleError);
+				this.socket.removeListener("error", handleError);
 				resolve();
 			};
 
-			this.sock.prependOnceListener("error", handleError);
+			this.socket.prependOnceListener("error", handleError);
 
-			if (options?.waitForClose && !this.sock.closed) {
-				this.sock.prependOnceListener("close", () => {
-					this.sock.removeListener("error", handleError);
+			if (options?.waitForClose && !this.socket.closed) {
+				this.socket.prependOnceListener("close", () => {
+					this.socket.removeListener("error", handleError);
 					resolve();
 				});
 			}
 
-			this.sock.end(
-				options?.waitForClose && !this.sock.closed ? undefined : handleEnd,
+			this.socket.end(
+				options?.waitForClose && !this.socket.closed ? undefined : handleEnd,
 			);
 		});
 	}
@@ -225,7 +248,7 @@ export class StreamSocket<
 				resolve();
 			};
 
-			this.sock.write(data, callback);
+			this.socket.write(data, callback);
 		});
 	}
 
@@ -237,11 +260,84 @@ export class StreamSocket<
 	 * still be invoked.
 	 */
 	destroy(): void {
-		this.sock.destroy();
+		this.socket.destroy();
+	}
+
+	/**
+	 * Runs an operation that establishes the connection and resolves once the
+	 * socket emits `readyEvent`.
+	 *
+	 * The promise always settles: an "error" event rejects it and is consumed so
+	 * it is not also dispatched to subscribers, a "close" event without a
+	 * preceding error rejects with {@link ConnectionClosedError}, and aborting the
+	 * signal destroys the socket and rejects with the abort reason.
+	 *
+	 * @param readyEvent Underlying socket event signalling a usable connection.
+	 * @param options Abort signal and the operation that starts the connection.
+	 * @returns A promise that resolves once the connection is established.
+	 */
+	protected awaitReady(
+		readyEvent: string,
+		options?: StreamSocketAwaitReadyOptions,
+	): Promise<void> {
+		const { signal, start } = options ?? {};
+
+		return new Promise<void>((resolve, reject) => {
+			const abortListeners = new AbortController();
+
+			const cleanup = () => {
+				abortListeners.abort();
+				this.socket.removeListener(readyEvent, handleReady);
+				this.socket.removeListener("error", handleError);
+				this.socket.removeListener("close", handleClose);
+			};
+
+			const handleReady = () => {
+				cleanup();
+				resolve();
+			};
+
+			const handleError = (error: IError) => {
+				this.handledErrorEvents.add(error);
+				cleanup();
+				reject(error);
+			};
+
+			// A peer that drops the transport mid-connection closes it without an
+			// "error"; without this the promise would stay pending forever.
+			const handleClose = () => {
+				cleanup();
+				reject(
+					new ConnectionClosedError(
+						`Socket closed before the "${readyEvent}" event`,
+					),
+				);
+			};
+
+			if (signal) {
+				signal.throwIfAborted();
+
+				signal.addEventListener(
+					"abort",
+					() => {
+						cleanup();
+						this.socket.destroy();
+						reject(signal.reason);
+					},
+					{ once: true, signal: abortListeners.signal },
+				);
+			}
+
+			this.socket.once(readyEvent, handleReady);
+			this.socket.prependOnceListener("error", handleError);
+			this.socket.once("close", handleClose);
+
+			start?.();
+		});
 	}
 
 	protected setupEventForwarding(): void {
-		this.sock.on("error", (err) => {
+		this.socket.on("error", (err) => {
 			if (this.handledErrorEvents.has(err)) {
 				this.handledErrorEvents.delete(err);
 				return;
@@ -249,19 +345,19 @@ export class StreamSocket<
 			this.dispatch("error", [err]);
 		});
 
-		this.sock.on("close", (hadError) => {
+		this.socket.on("close", (hadError) => {
 			this.dispatch("close", [hadError]);
 		});
 
-		this.sock.on("connect", () => {
+		this.socket.on("connect", () => {
 			this.dispatch("connect", []);
 		});
 
-		this.sock.on("ready", () => {
+		this.socket.on("ready", () => {
 			this.dispatch("ready", []);
 		});
 
-		this.sock.on("timeout", () => {
+		this.socket.on("timeout", () => {
 			this.dispatch("timeout", []);
 		});
 	}

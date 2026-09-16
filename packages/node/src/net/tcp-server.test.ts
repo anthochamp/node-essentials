@@ -37,7 +37,7 @@ describe("TcpServer", () => {
 		describe("listening server", () => {
 			beforeEach(async () => {
 				server = TcpServer.from();
-				await server.listen(0, serverHost);
+				await server.listen(0, { host: serverHost });
 			});
 
 			it("should ref and unref", () => {
@@ -105,7 +105,7 @@ describe("TcpServer", () => {
 	describe("listen", () => {
 		it("should start listening on a specified port", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			expect(server.listening).toBe(true);
 			const address = server.address() as InetEndpoint;
@@ -124,7 +124,7 @@ describe("TcpServer", () => {
 
 		it("should assign a random port when port is 0", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const address = server.address() as InetEndpoint;
 			expect(address.port).toBeGreaterThan(0);
@@ -132,7 +132,7 @@ describe("TcpServer", () => {
 
 		it("should reject on bind error", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const address = server.address() as InetEndpoint;
 			const usedPort = address.port;
@@ -143,12 +143,15 @@ describe("TcpServer", () => {
 				// Prevent unhandled error
 			});
 
-			await expect(server2.listen(usedPort, serverHost)).rejects.toThrow();
+			await expect(
+				server2.listen(usedPort, { host: serverHost }),
+			).rejects.toThrow();
 		});
 
 		it("should pass additional listen options", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost, {
+			await server.listen(0, {
+				host: serverHost,
 				backlog: 10,
 			});
 
@@ -159,7 +162,7 @@ describe("TcpServer", () => {
 	describe("close", () => {
 		it("should close the server", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			expect(server.listening).toBe(true);
 
 			await server.close();
@@ -173,7 +176,7 @@ describe("TcpServer", () => {
 
 		it("should allow closing after all connections are closed", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
@@ -199,7 +202,7 @@ describe("TcpServer", () => {
 
 		it("should return InetEndpoint when listening", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const address = server.address() as InetEndpoint;
 			expect(address).toBeDefined();
@@ -212,7 +215,7 @@ describe("TcpServer", () => {
 	describe("getConnections", () => {
 		it("should return 0 when no connections", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const count = await server.getConnections();
 			expect(count).toBe(0);
@@ -220,7 +223,7 @@ describe("TcpServer", () => {
 
 		it("should return the correct connection count", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
@@ -251,7 +254,7 @@ describe("TcpServer", () => {
 
 		it("should decrease count when connections close", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
@@ -281,13 +284,13 @@ describe("TcpServer", () => {
 
 		it("should return true when listening", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			expect(server.listening).toBe(true);
 		});
 
 		it("should return false after closing", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			expect(server.listening).toBe(true);
 
 			await server.close();
@@ -319,7 +322,7 @@ describe("TcpServer", () => {
 	describe("maxConnections", () => {
 		it("should get and set maxConnections", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			server.maxConnections = 5;
 			expect(server.maxConnections).toBe(5);
@@ -358,7 +361,7 @@ describe("TcpServer", () => {
 				server.subscribe("connection", (connectedClient) => {
 					connections.push(connectedClient);
 				});
-				await server.listen(0, serverHost);
+				await server.listen(0, { host: serverHost });
 				const address = server.address() as InetEndpoint;
 				serverPort = address.port;
 				const client = TcpSocket.from();
@@ -375,7 +378,7 @@ describe("TcpServer", () => {
 				server.subscribe("listening", () => {
 					listeningCalled = true;
 				});
-				await server.listen(0, serverHost);
+				await server.listen(0, { host: serverHost });
 				expect(listeningCalled).toBe(true);
 			});
 
@@ -385,7 +388,7 @@ describe("TcpServer", () => {
 				server.subscribe("close", () => {
 					closeCalled = true;
 				});
-				await server.listen(0, serverHost);
+				await server.listen(0, { host: serverHost });
 				await server.close();
 				expect(closeCalled).toBe(true);
 			});
@@ -396,7 +399,7 @@ describe("TcpServer", () => {
 				server.subscribe("error", () => {
 					errorReceived = true;
 				});
-				await server.listen(0, serverHost);
+				await server.listen(0, { host: serverHost });
 				// Error event test - simply verify the listener can be registered
 				expect(errorReceived).toBe(false);
 			});
@@ -411,7 +414,7 @@ describe("TcpServer", () => {
 					},
 					{ once: true },
 				);
-				await server.listen(0, serverHost);
+				await server.listen(0, { host: serverHost });
 				const address = server.address() as InetEndpoint;
 				serverPort = address.port;
 				const client1 = TcpSocket.from();
@@ -434,7 +437,7 @@ describe("TcpServer", () => {
 					connectionCount++;
 				};
 				server.subscribe("connection", listener);
-				await server.listen(0, serverHost);
+				await server.listen(0, { host: serverHost });
 				const address = server.address() as InetEndpoint;
 				serverPort = address.port;
 				const client1 = TcpSocket.from();
@@ -462,7 +465,7 @@ describe("TcpServer", () => {
 					await connectedClient.write(data);
 				});
 			});
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
 			const client = TcpSocket.from();
@@ -486,7 +489,7 @@ describe("TcpServer", () => {
 					receivedData.push(data.toString());
 				});
 			});
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
 			// Connect multiple clients
@@ -522,7 +525,7 @@ describe("TcpServer", () => {
 					});
 				});
 			});
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
 			const client = TcpSocket.from();
@@ -541,7 +544,7 @@ describe("TcpServer", () => {
 					receivedBuffers.push(data);
 				});
 			});
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
 			const client = TcpSocket.from();
@@ -564,7 +567,7 @@ describe("TcpServer", () => {
 					}
 				});
 			});
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
 			const client = TcpSocket.from();
@@ -593,7 +596,7 @@ describe("TcpServer", () => {
 				);
 			});
 
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;
@@ -613,13 +616,13 @@ describe("TcpServer", () => {
 				server.subscribe("listening", resolve, { once: true });
 			});
 
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 			await listeningPromise;
 		});
 
 		it("should emit close event", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const closePromise = new Promise<void>((resolve) => {
 				server.subscribe("close", resolve, { once: true });
@@ -631,7 +634,7 @@ describe("TcpServer", () => {
 
 		it("should emit error event", async () => {
 			server = TcpServer.from();
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const testError = new Error("Connection error");
 
@@ -647,7 +650,7 @@ describe("TcpServer", () => {
 
 			// Emit an error directly on the underlying server to test error forwarding
 			// (Note: bind errors are handled specially by listen() and won't be re-emitted)
-			(server as any).srv.emit("error", testError);
+			(server as any).server.emit("error", testError);
 
 			const error = await errorPromise;
 			expect(error).toBe(testError);
@@ -671,7 +674,7 @@ describe("TcpServer", () => {
 				);
 			});
 
-			await server.listen(0, serverHost);
+			await server.listen(0, { host: serverHost });
 
 			const address = server.address() as InetEndpoint;
 			serverPort = address.port;

@@ -23,6 +23,8 @@ await writeFileAtomic("config.json", JSON.stringify(config));
 ## What it covers
 
 - **Sockets** — promise-based TCP, TLS, IPC and UDP classes.
+- **Servers** — promise-based TCP, TLS and IPC listeners, dispatching typed
+  connection events.
 - **Filesystem** — `walkPaths`, `writeFileAtomic`, `existsAsync`,
   `isDirectoryAsync`, `fileContentEqual`, `compressFile`, `createTempDir`,
   `escapePath`.

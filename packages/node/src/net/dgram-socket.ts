@@ -84,7 +84,7 @@ export class DgramSocket
 	 * Constructs a new `DgramSocket` instance wrapping the provided
 	 * `dgram.Socket`.
 	 */
-	constructor(private readonly sock: dgram.Socket) {
+	constructor(private readonly socket: dgram.Socket) {
 		super();
 		this.setupEventForwarding();
 	}
@@ -94,7 +94,7 @@ export class DgramSocket
 	 * is active.
 	 */
 	ref(): void {
-		this.sock.ref();
+		this.socket.ref();
 	}
 
 	/**
@@ -102,7 +102,7 @@ export class DgramSocket
 	 * active.
 	 */
 	unref(): void {
-		this.sock.unref();
+		this.socket.unref();
 	}
 
 	/**
@@ -115,7 +115,7 @@ export class DgramSocket
 	 * @param flag Whether broadcast should be enabled.
 	 */
 	setBroadcast(flag: boolean): void {
-		this.sock.setBroadcast(flag);
+		this.socket.setBroadcast(flag);
 	}
 
 	/**
@@ -125,7 +125,7 @@ export class DgramSocket
 	 * configures `IP_ADD_MEMBERSHIP` for the given multicast group.
 	 */
 	addMembership(multicastAddress: string, multicastInterface?: string): void {
-		this.sock.addMembership(multicastAddress, multicastInterface);
+		this.socket.addMembership(multicastAddress, multicastInterface);
 	}
 
 	/**
@@ -135,7 +135,7 @@ export class DgramSocket
 	 * sets the `SO_RCVBUF` socket option.
 	 */
 	setRecvBufferSize(size: number): void {
-		this.sock.setRecvBufferSize(size);
+		this.socket.setRecvBufferSize(size);
 	}
 
 	/**
@@ -145,7 +145,7 @@ export class DgramSocket
 	 * reads the `SO_RCVBUF` socket option.
 	 */
 	getRecvBufferSize(): number {
-		return this.sock.getRecvBufferSize();
+		return this.socket.getRecvBufferSize();
 	}
 
 	/**
@@ -155,7 +155,7 @@ export class DgramSocket
 	 * sets the `SO_SNDBUF` socket option.
 	 */
 	setSendBufferSize(size: number): void {
-		this.sock.setSendBufferSize(size);
+		this.socket.setSendBufferSize(size);
 	}
 
 	/**
@@ -165,7 +165,7 @@ export class DgramSocket
 	 * reads the `SO_SNDBUF` socket option.
 	 */
 	getSendBufferSize(): number {
-		return this.sock.getSendBufferSize();
+		return this.socket.getSendBufferSize();
 	}
 
 	/**
@@ -175,7 +175,7 @@ export class DgramSocket
 	 * configures `IP_DROP_MEMBERSHIP` for the given multicast group.
 	 */
 	dropMembership(multicastAddress: string, multicastInterface?: string): void {
-		this.sock.dropMembership(multicastAddress, multicastInterface);
+		this.socket.dropMembership(multicastAddress, multicastInterface);
 	}
 
 	/**
@@ -190,7 +190,7 @@ export class DgramSocket
 		groupAddress: string,
 		multicastInterface?: string,
 	): void {
-		this.sock.addSourceSpecificMembership(
+		this.socket.addSourceSpecificMembership(
 			sourceAddress,
 			groupAddress,
 			multicastInterface,
@@ -209,7 +209,7 @@ export class DgramSocket
 		groupAddress: string,
 		multicastInterface?: string,
 	): void {
-		this.sock.dropSourceSpecificMembership(
+		this.socket.dropSourceSpecificMembership(
 			sourceAddress,
 			groupAddress,
 			multicastInterface,
@@ -223,7 +223,7 @@ export class DgramSocket
 	 * which controls the default outgoing interface for multicast traffic.
 	 */
 	setMulticastInterface(multicastInterface: string): void {
-		this.sock.setMulticastInterface(multicastInterface);
+		this.socket.setMulticastInterface(multicastInterface);
 	}
 
 	/**
@@ -233,7 +233,7 @@ export class DgramSocket
 	 * which toggles the `IP_MULTICAST_LOOP` socket option.
 	 */
 	setMulticastLoop(flag: boolean): void {
-		this.sock.setMulticastLoopback(flag);
+		this.socket.setMulticastLoopback(flag);
 	}
 
 	/**
@@ -243,7 +243,7 @@ export class DgramSocket
 	 * configures the `IP_MULTICAST_TTL` socket option.
 	 */
 	setMulticastTtl(ttl: number): void {
-		this.sock.setMulticastTTL(ttl);
+		this.socket.setMulticastTTL(ttl);
 	}
 
 	/**
@@ -253,7 +253,7 @@ export class DgramSocket
 	 * the `IP_TTL` socket option.
 	 */
 	setTtl(ttl: number): void {
-		this.sock.setTTL(ttl);
+		this.socket.setTTL(ttl);
 	}
 
 	/**
@@ -267,7 +267,7 @@ export class DgramSocket
 	address(): InetEndpoint | null {
 		let addr: net.AddressInfo;
 		try {
-			addr = this.sock.address();
+			addr = this.socket.address();
 		} catch (error) {
 			// dgram throws "Not running" error when socket is not bound/closed
 			if (
@@ -306,22 +306,22 @@ export class DgramSocket
 				this.handledErrorEvents.add(error);
 				reject(error);
 			};
-			this.sock.prependOnceListener("error", handleError);
+			this.socket.prependOnceListener("error", handleError);
 
 			try {
-				this.sock.bind(
+				this.socket.bind(
 					{
 						...options,
 						address,
 						port,
 					},
 					() => {
-						this.sock.removeListener("error", handleError);
+						this.socket.removeListener("error", handleError);
 						resolve();
 					},
 				);
 			} catch (error) {
-				this.sock.removeListener("error", handleError);
+				this.socket.removeListener("error", handleError);
 				reject(error);
 			}
 		});
@@ -338,10 +338,10 @@ export class DgramSocket
 				this.handledErrorEvents.add(error);
 				reject(error);
 			};
-			this.sock.prependOnceListener("error", handleError);
+			this.socket.prependOnceListener("error", handleError);
 
-			this.sock.close(() => {
-				this.sock.removeListener("error", handleError);
+			this.socket.close(() => {
+				this.socket.removeListener("error", handleError);
 				resolve();
 			});
 		});
@@ -355,8 +355,8 @@ export class DgramSocket
 	 */
 	getStat(): DgramSocketStat {
 		return {
-			sendQueueCount: this.sock.getSendQueueCount(),
-			sendQueueSize: this.sock.getSendQueueSize(),
+			sendQueueCount: this.socket.getSendQueueCount(),
+			sendQueueSize: this.socket.getSendQueueSize(),
 		};
 	}
 
@@ -400,24 +400,24 @@ export class DgramSocket
 			};
 
 			if (offset === undefined || length === undefined) {
-				this.sock.send(msg, port, address, callback);
+				this.socket.send(msg, port, address, callback);
 				return;
 			}
 
-			this.sock.send(msg, offset, length, port, address, callback);
+			this.socket.send(msg, offset, length, port, address, callback);
 		});
 	}
 
 	private setupEventForwarding(): void {
-		this.sock.on("close", () => {
+		this.socket.on("close", () => {
 			this.dispatch("close", []);
 		});
 
-		this.sock.on("connect", () => {
+		this.socket.on("connect", () => {
 			this.dispatch("connect", []);
 		});
 
-		this.sock.on("error", (err) => {
+		this.socket.on("error", (err) => {
 			if (this.handledErrorEvents.has(err)) {
 				this.handledErrorEvents.delete(err);
 				return;
@@ -425,11 +425,11 @@ export class DgramSocket
 			this.dispatch("error", [err]);
 		});
 
-		this.sock.on("listening", () => {
+		this.socket.on("listening", () => {
 			this.dispatch("listening", []);
 		});
 
-		this.sock.on("message", (msg, rinfo) => {
+		this.socket.on("message", (msg, rinfo) => {
 			const from: InetEndpoint = {
 				...composeInetAddress(rinfo.family, rinfo.address),
 				port: rinfo.port,
