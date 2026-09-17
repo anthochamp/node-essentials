@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+  - @ac-kit/algo@0.2.0
+  - @ac-kit/core@0.3.0
+  - @ac-kit/math-analysis@0.1.2
+  - @ac-kit/math-scalar@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @ac-kit/integration-test-util
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+  - @ac-kit/node@0.3.0
+  - @ac-kit/core@0.3.0
+  - @ac-kit/cmd-docker@0.2.1
+
 ## 0.2.0
 
 ### Minor Changes

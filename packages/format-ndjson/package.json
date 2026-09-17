@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-ndjson",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Newline-delimited JSON parse and print streams, with a caller-supplied policy for recovering from malformed lines.",
 	"keywords": [
 		"jsonlines",

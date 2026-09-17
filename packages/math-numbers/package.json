@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-numbers",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Concrete numeric representations: the number tower from naturals to reals, plus the fixed-width and arbitrary-precision types that model each set.",
 	"keywords": [
 		"arbitrary-precision",

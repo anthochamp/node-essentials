@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-regex",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "A regex-dialect lexer, parser and printer, with a Thompson-construction and Pike-VM matcher.",
 	"keywords": [
 		"automaton",

@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-curves",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Parametric curves: Bezier segments, splines, and evaluation, subdivision, arc length and closest point over them.",
 	"keywords": [
 		"bezier",

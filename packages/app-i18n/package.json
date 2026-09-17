@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/app-i18n",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Internationalisation: message catalogues, plural rules and locale negotiation.",
 	"keywords": [
 		"gettext",

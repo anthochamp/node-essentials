@@ -1,5 +1,17 @@
 # @ac-bench/reporter-table
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+  - @ac-kit/core@0.3.0
+  - @ac-bench/core@0.1.2
+  - @ac-kit/format-monospace@0.1.2
+  - @ac-kit/math-color@0.1.2
+  - @ac-kit/app-report@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

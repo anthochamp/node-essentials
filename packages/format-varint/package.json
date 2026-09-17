@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-varint",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Variable-length integer encodings: LEB128, VLQ and the other self-delimiting integer formats.",
 	"keywords": [
 		"encoding",

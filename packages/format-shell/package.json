@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-shell",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Shell syntax: command-line quoting per shell dialect, and environment variable parsing and printing per env syntax.",
 	"keywords": [
 		"dotenv",

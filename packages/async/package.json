@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/async",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Concurrency primitives: events, mutex, read-write lock, semaphore, barrier, channel, latch and signal, over a shared ILock interface.",
 	"keywords": [
 		"async",

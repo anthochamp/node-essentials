@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [a5c4d66]
+  - @ac-kit/node@0.3.0
+  - @ac-kit/format-shell@0.1.1
+
 ## 0.2.0
 
 ### Minor Changes

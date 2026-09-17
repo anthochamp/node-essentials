@@ -1,6 +1,6 @@
 {
 	"name": "@ac-bench/measure-jitter",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Timer-lateness measure for @ac-bench: reports drift, overruns and tail lateness from perf_hooks event-loop delay monitoring.",
 	"keywords": [
 		"benchmark",

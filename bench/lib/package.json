@@ -1,6 +1,6 @@
 {
 	"name": "@ac-bench/lib",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Programmatic benchmark API for @ac-bench: fork orchestration and protocol, the environment monitor and cooldown gate, and the escalation decision.",
 	"keywords": [
 		"benchmark",

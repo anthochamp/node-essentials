@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-stats",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Descriptive statistics, probability distributions and statistical inference over samples of number.",
 	"keywords": [
 		"distribution",

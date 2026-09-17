@@ -1,5 +1,13 @@
 # @ac-kit/format-shell
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+  - @ac-kit/core@0.3.0
+
 ## 0.1.0
 
 ### Minor Changes

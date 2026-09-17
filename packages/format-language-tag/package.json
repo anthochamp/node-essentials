@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-language-tag",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "BCP 47 language tags: parse, print and match.",
 	"keywords": [
 		"bcp47",

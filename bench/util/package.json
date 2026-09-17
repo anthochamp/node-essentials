@@ -1,6 +1,6 @@
 {
 	"name": "@ac-bench/util",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Helpers for writing benchmarks: deterministic PRNG workloads, an order-sensitive output hash, an equivalence guard, a controllable event-loop load, and spawn-overhead measurement.",
 	"keywords": [
 		"benchmark",

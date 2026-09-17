@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/test-util",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Dependency-free test-harness primitives, such as a deterministic synchronous delay for timing-sensitive tests.",
 	"keywords": [
 		"test-utils",

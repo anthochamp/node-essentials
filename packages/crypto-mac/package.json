@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/crypto-mac",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Message authentication codes: generic hmac() and hmacVerify() plus named MD5, SHA-1 and SHA-2 HMAC wrappers.",
 	"keywords": [
 		"authentication",

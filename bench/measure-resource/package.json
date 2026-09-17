@@ -1,6 +1,6 @@
 {
 	"name": "@ac-bench/measure-resource",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Resource measure for @ac-bench: CPU time, peak heap, bytes allocated, and garbage-collection count and pause time.",
 	"keywords": [
 		"allocation",

@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/core",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "Foundational JavaScript and TypeScript extensions with no domain knowledge: guards, type helpers, collection and string utilities, JSON, pattern matching, promises, time, errors and a byte cursor.",
 	"keywords": [
 		"esm",

@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-editorconfig",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Parse .editorconfig files, resolve the properties that apply to a path, and apply them to text.",
 	"keywords": [
 		"editorconfig",

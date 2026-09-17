@@ -1,5 +1,16 @@
 # @ac-kit/cmd-git
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+  - @ac-kit/node@0.3.0
+  - @ac-kit/core@0.3.0
+  - @ac-kit/format-shell@0.1.1
+
 ## 0.1.1
 
 ### Patch Changes

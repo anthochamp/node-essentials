@@ -1,5 +1,16 @@
 # @ac-kit/format-editorconfig
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+  - @ac-kit/format-glob@0.2.0
+  - @ac-kit/core@0.3.0
+  - @ac-kit/format-ini@0.2.1
+
 ## 0.1.1
 
 ### Patch Changes

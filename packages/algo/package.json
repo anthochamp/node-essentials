@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/algo",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Classic algorithms that work on your own types rather than on numbers: searching, sorting, grouping, graph traversal and string distance.",
 	"keywords": [
 		"algorithms",

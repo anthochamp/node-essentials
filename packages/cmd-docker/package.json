@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/cmd-docker",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "Typed wrapper over the docker CLI: invocation plus output parsing.",
 	"keywords": [
 		"cli",

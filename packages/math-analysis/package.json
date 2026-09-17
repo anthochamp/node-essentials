@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-analysis",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Numerical analysis: roots, integrals, derivatives and differential equations approximated in a finite number of floating-point steps.",
 	"keywords": [
 		"numerical-analysis",

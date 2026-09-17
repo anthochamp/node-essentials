@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/app-system",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Process lifecycle helpers: PID files, process inspection, log rotation and command execution.",
 	"keywords": [
 		"log-rotation",

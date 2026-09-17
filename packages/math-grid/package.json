@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-grid",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Discrete two-dimensional integer lattices: grid coordinates, storage strategies, and packing and tiling algorithms.",
 	"keywords": [
 		"2d",

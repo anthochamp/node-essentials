@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/integration-test-util",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "Test helpers that drive and probe external services — Docker containers, TCP and TLS banner checks — from a package's integration tests.",
 	"keywords": [
 		"docker",

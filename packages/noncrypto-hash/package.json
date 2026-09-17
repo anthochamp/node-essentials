@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/noncrypto-hash",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Non-cryptographic hashes and checksums over bytes: for hash tables, sharding, cache keys, change detection, error detection and content-defined chunking.",
 	"keywords": [
 		"checksum",

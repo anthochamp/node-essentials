@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/net-http",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Portable HTTP building blocks: field collections, a field-value codec, status codes, a streaming message parser, and client and server protocol logic.",
 	"keywords": [
 		"client",

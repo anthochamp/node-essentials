@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/net-address",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Network addresses: IPv4, IPv6, EUI-48/EUI-64 and ports, over one fixed-width prefix core.",
 	"keywords": [
 		"cidr",

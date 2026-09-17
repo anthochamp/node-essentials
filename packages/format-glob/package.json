@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-glob",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Glob patterns: parse, print and match, with the dialect as a parameter.",
 	"keywords": [
 		"glob",

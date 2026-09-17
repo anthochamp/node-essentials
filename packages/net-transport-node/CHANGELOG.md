@@ -1,5 +1,14 @@
 # @ac-kit/net-transport-node
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [a5c4d66]
+- Updated dependencies [a5c4d66]
+  - @ac-kit/core@0.3.0
+  - @ac-kit/net-core@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

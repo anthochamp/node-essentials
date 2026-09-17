@@ -1,6 +1,6 @@
 {
 	"name": "@ac-bench/measure-duration",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Duration measure for @ac-bench: adaptive sampling, duration statistics and quality warnings for outliers, high variance and overhead dominance.",
 	"keywords": [
 		"benchmark",

@@ -1,6 +1,6 @@
 {
 	"name": "@ac-bench/measure-constant-time",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "dudect-style constant-time measure for @ac-bench: times two closures under a randomly interleaved schedule and reports Welch's t-statistic.",
 	"keywords": [
 		"benchmark",

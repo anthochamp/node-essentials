@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-linear",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Linear algebra over IEEE 754 binary64: vectors, matrices and quaternions of fixed, small dimension.",
 	"keywords": [
 		"linear-algebra",

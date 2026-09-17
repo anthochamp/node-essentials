@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/math-complex",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Complex numbers and their extensions: the finite-dimensional algebras over the reals.",
 	"keywords": [
 		"algebra",

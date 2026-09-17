@@ -1,6 +1,6 @@
 {
 	"name": "@ac-kit/format-http",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "The HTTP header and trailer field grammar (RFC 9110 field-value syntax): HttpFields, HttpHeaders and HttpTrailers.",
 	"keywords": [
 		"headers",
