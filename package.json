@@ -21,7 +21,7 @@
 		"bench": "yarn workspace benchmarks run start",
 		"clean": "yarn workspaces foreach -Ap run clean",
 		"publish:doc": "./scripts/publish-doc.sh",
-		"publish:npm": "printf 'npm token: '; read -rs YARN_NPM_AUTH_TOKEN; printf '\n'; export YARN_NPM_AUTH_TOKEN; yarn changeset:publish; unset YARN_NPM_AUTH_TOKEN",
+		"publish:npm": "bash -c \"printf 'npm token: '; read -rs YARN_NPM_AUTH_TOKEN; printf '\n'; export YARN_NPM_AUTH_TOKEN; yarn changeset:publish; unset YARN_NPM_AUTH_TOKEN\"",
 		"build": "yarn workspaces foreach -Apt run build",
 		"check:tree": "./scripts/check-committed-tree.sh",
 		"changeset": "changeset",
