@@ -1,9 +1,12 @@
 import { afterEach, describe, expect, it } from "vitest";
 
 import { defaults } from "./defaults.js";
+import { flattenRecord } from "./flatten-record.js";
 import { mergeInplace } from "./merge-inplace.js";
 import { merge, mergeAll } from "./merge.js";
 import { setAtPath } from "./set-at-path.js";
+import { setRecordEntry } from "./set-record-entry.js";
+import { unflattenRecord } from "./unflatten-record.js";
 
 type Polluted = { polluted?: unknown };
 
@@ -79,5 +82,76 @@ describe("prototype pollution", () => {
 		setAtPath(root, ["a", "b"], 1);
 
 		expect(root).toStrictEqual({ a: { b: 1 } });
+	});
+
+	it("should flatten a hostile payload into own entries", () => {
+		const flattened = flattenRecord(hostilePayload());
+
+		expect(({} as Polluted).polluted).toBeUndefined();
+		expect(Object.getPrototypeOf(flattened)).toBe(Object.prototype);
+		expect(Object.hasOwn(flattened, "__proto__.polluted")).toBe(true);
+	});
+
+	it("should flatten a nested constructor.prototype payload into own entries", () => {
+		const source: Record<string, unknown> = {
+			constructor: { prototype: { polluted: "yes" } },
+		};
+
+		const flattened = flattenRecord(source);
+
+		expect(({} as Polluted).polluted).toBeUndefined();
+		expect(Object.hasOwn(flattened, "constructor.prototype.polluted")).toBe(
+			true,
+		);
+	});
+
+	it("should flatten an own __proto__ key found below the root", () => {
+		const inner: Record<string, unknown> = {};
+		setRecordEntry(inner, "__proto__", { polluted: "yes" });
+
+		const flattened = flattenRecord({ a: inner });
+
+		expect(({} as Polluted).polluted).toBeUndefined();
+		expect(Object.hasOwn(flattened, "a.__proto__.polluted")).toBe(true);
+	});
+
+	it("should refuse an unflattened path through __proto__", () => {
+		const result = unflattenRecord({ "__proto__.polluted": "yes" });
+
+		expect(({} as Polluted).polluted).toBeUndefined();
+		expect(result).toStrictEqual({});
+	});
+
+	it("should refuse an unflattened path through constructor.prototype", () => {
+		const result = unflattenRecord({ "constructor.prototype.polluted": "yes" });
+
+		expect(({} as Polluted).polluted).toBeUndefined();
+		expect(result).toStrictEqual({});
+	});
+
+	it("should refuse an unflattened path whose last segment is prototype", () => {
+		const result = unflattenRecord({ "a.prototype": "yes" });
+
+		expect(({} as Polluted).polluted).toBeUndefined();
+		expect(result).toStrictEqual({});
+	});
+
+	it("should store a single-segment __proto__ key as an own entry", () => {
+		const result = unflattenRecord(hostilePayload());
+
+		expect(({} as Polluted).polluted).toBeUndefined();
+		expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
+		expect(Object.hasOwn(result, "__proto__")).toBe(true);
+	});
+
+	it("should not let an array-rebuilding unflatten reach Array.prototype", () => {
+		const result = unflattenRecord(
+			{ "a.0.__proto__.polluted": "yes" },
+			{ buildArrays: true },
+		);
+
+		expect((Array.prototype as Polluted).polluted).toBeUndefined();
+		expect(({} as Polluted).polluted).toBeUndefined();
+		expect(result).toStrictEqual({});
 	});
 });

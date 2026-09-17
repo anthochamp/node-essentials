@@ -8,9 +8,6 @@ import { spawnBaselineReportSchema } from "./_spawn-baseline.js";
 import { durationStatisticsSchema } from "./_statistics-schema.js";
 import { durationBenchWarningSchema } from "./_warnings.js";
 
-export type { DurationStatistics } from "./_statistics-schema.js";
-export { durationStatisticsSchema };
-
 export const durationBenchRunCaseResultSchema = z.object({
 	name: z.string(),
 	tags: z.record(z.string(), z.string()),

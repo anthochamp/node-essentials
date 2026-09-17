@@ -11,6 +11,7 @@ import type {
 	RegexQuantified,
 	ShorthandClass,
 } from "../ast.js";
+import { DEFAULT_REGEX_LIMITS, RegexLimitExceededError } from "../limits.js";
 import type { Instruction, RegexProgram } from "./program.js";
 
 const isWordChar = (char: string): boolean =>
@@ -61,11 +62,18 @@ function compileCharClassPredicate(
 class ProgramBuilder {
 	private readonly instructions: Instruction[] = [];
 
+	constructor(private readonly maxProgramSize: number) {}
+
 	get length(): number {
 		return this.instructions.length;
 	}
 
 	emit(instruction: Instruction): number {
+		// Checked here rather than after building: a counted quantifier emits its
+		// copies one at a time, so the array never grows past the bound.
+		if (this.instructions.length >= this.maxProgramSize) {
+			throw new RegexLimitExceededError("programSize", this.maxProgramSize);
+		}
 		this.instructions.push(instruction);
 		return this.instructions.length - 1;
 	}
@@ -220,9 +228,16 @@ function compileQuantified(
  * into the bytecode instead — at the cost of not special-casing patterns that
  * open with `^` (those simply fail `assertStart` at every offset but 0, which
  * is correct, just not the fastest possible instruction count for that case).
+ *
+ * @param maxProgramSize - Most instructions the program may hold; see
+ *   `RegexLimits.maxProgramSize`, whose default this takes.
+ * @throws {RegexLimitExceededError} If the program outgrows `maxProgramSize`.
  */
-export function compileProgram(pattern: RegexPattern): RegexProgram {
-	const builder = new ProgramBuilder();
+export function compileProgram(
+	pattern: RegexPattern,
+	maxProgramSize: number = DEFAULT_REGEX_LIMITS.maxProgramSize,
+): RegexProgram {
+	const builder = new ProgramBuilder(maxProgramSize);
 
 	const scanSplitIndex = builder.emit({ op: "split", first: -1, second: -1 });
 	const tryStart = builder.length;

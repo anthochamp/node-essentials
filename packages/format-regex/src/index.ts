@@ -1,5 +1,6 @@
 export * from "./ast.js";
 export * from "./lexer.js";
+export * from "./limits.js";
 export * from "./parser.js";
 export * from "./printer.js";
 export * from "./regex.js";

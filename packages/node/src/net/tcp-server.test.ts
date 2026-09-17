@@ -1,8 +1,8 @@
 import * as net from "node:net";
 
-import { InetEndpoint } from "@ac-kit/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { InetEndpoint } from "./inet-endpoint.js";
 import { TcpServer } from "./tcp-server.js";
 import { TcpSocket } from "./tcp-socket.js";
 

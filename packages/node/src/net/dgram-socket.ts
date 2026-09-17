@@ -2,10 +2,12 @@ import * as dgram from "node:dgram";
 import type * as net from "node:net";
 
 import { EventDispatcherMapBase, IEventDispatcherMap } from "@ac-kit/async";
-import { composeInetAddress, InetEndpoint, type IError } from "@ac-kit/core";
+import type { IError } from "@ac-kit/core";
 import type { Except, TypedArray } from "type-fest";
 
 import { isNodeErrorWithCode } from "../error/node-error.js";
+import { toInetAddress } from "./inet-address.js";
+import type { InetEndpoint } from "./inet-endpoint.js";
 
 /** Event map for DgramSocket socket-specific events. */
 export type DgramSocketEvents = {
@@ -281,7 +283,7 @@ export class DgramSocket
 		}
 
 		return {
-			...composeInetAddress(addr.family, addr.address),
+			...toInetAddress(addr.family, addr.address),
 			port: addr.port,
 		};
 	}
@@ -431,7 +433,7 @@ export class DgramSocket
 
 		this.socket.on("message", (msg, rinfo) => {
 			const from: InetEndpoint = {
-				...composeInetAddress(rinfo.family, rinfo.address),
+				...toInetAddress(rinfo.family, rinfo.address),
 				port: rinfo.port,
 			};
 			this.dispatch("message", [msg, rinfo.size, from]);

@@ -280,7 +280,7 @@ export const PACKAGES: Readonly<Record<string, PackageEntry>> = {
 		domain: "formats",
 		portability: "P",
 		summary:
-			"Glob syntax tree, parser, printer and matcher, with selectable dialects",
+			"Glob syntax tree, parser, printer and matcher, with selectable dialects and a segment-oriented path face",
 	},
 	"format-http": {
 		domain: "formats",
@@ -475,6 +475,11 @@ export const PACKAGES: Readonly<Record<string, PackageEntry>> = {
 		domain: "model",
 		portability: "P",
 		summary: "DataFrame and its schema: fields, units and number formatting",
+	},
+	"net-address": {
+		domain: "net",
+		portability: "P",
+		summary: "IPv4, IPv6, MAC/EUI and ports: parsing, CIDR arithmetic, scopes",
 	},
 	"net-core": {
 		domain: "net",

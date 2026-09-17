@@ -29,6 +29,7 @@
 		"@ac-kit/math-numbers": "workspace:*",
 		"@ac-kit/math-random": "workspace:*",
 		"@ac-kit/math-stats": "workspace:*",
+		"@ac-kit/net-address": "workspace:*",
 		"@ac-kit/net-core": "workspace:*",
 		"@ac-kit/net-imap": "workspace:*",
 		"@ac-kit/net-pop3": "workspace:*",

@@ -57,7 +57,6 @@
 		"@ac-kit/format-core": "workspace:^",
 		"@ac-kit/format-oid": "workspace:^",
 		"@ac-kit/format-varint": "workspace:^",
-		"@ac-kit/math-integer": "workspace:^",
 		"@types/node": "catalog:"
 	},
 	"devDependencies": {

@@ -1,3 +1,4 @@
+import { DEFAULT_REGEX_LIMITS, RegexLimitExceededError } from "../limits.js";
 import type { Instruction, RegexProgram } from "./program.js";
 
 export interface RegexGroupMatch {
@@ -22,6 +23,21 @@ interface Thread {
 	readonly saved: readonly number[];
 }
 
+/** A run's remaining thread activations, shared by both thread lists. */
+class StepBudget {
+	private remaining: number;
+
+	constructor(private readonly limit: number) {
+		this.remaining = limit;
+	}
+
+	spend(): void {
+		if (this.remaining-- <= 0) {
+			throw new RegexLimitExceededError("steps", this.limit);
+		}
+	}
+}
+
 /**
  * One run of the Pike VM: tracks which `pc`s have already been added this step,
  * to keep each step O(program size).
@@ -31,7 +47,10 @@ class ThreadList {
 	private readonly visitedAt: Int32Array;
 	private generation = 0;
 
-	constructor(programLength: number) {
+	constructor(
+		programLength: number,
+		private readonly budget: StepBudget,
+	) {
 		this.visitedAt = new Int32Array(programLength).fill(-1);
 	}
 
@@ -61,6 +80,7 @@ class ThreadList {
 		pos: number,
 		inputLength: number,
 	): void {
+		this.budget.spend();
 		if (this.hasVisited(pc)) return;
 
 		const instruction = program.instructions[pc]!;
@@ -149,16 +169,24 @@ function extractMatch(
  * lockstep, so this is O(program size × input length) with no backtracking — a
  * pathological pattern like `(a+)+b` cannot exhibit catastrophic (ReDoS)
  * behavior here the way it can in a backtracking engine.
+ *
+ * @param maxSteps - Most thread activations this run may perform; see
+ *   `RegexLimits.maxSteps`, whose default this takes.
+ * @throws {RegexLimitExceededError} If the run outgrows `maxSteps`. Linear is
+ *   not the same as bounded: the work is program size × input length, and a
+ *   caller holding neither factor needs a ceiling on the product.
  */
 export function execProgram(
 	program: RegexProgram,
 	input: string,
+	maxSteps: number = DEFAULT_REGEX_LIMITS.maxSteps,
 ): RegexMatch | undefined {
 	const slotCount = (program.groupCount + 1) * 2;
 	const inputLength = input.length;
+	const budget = new StepBudget(maxSteps);
 
-	let clist = new ThreadList(program.instructions.length);
-	let nlist = new ThreadList(program.instructions.length);
+	let clist = new ThreadList(program.instructions.length, budget);
+	let nlist = new ThreadList(program.instructions.length, budget);
 	clist.add(
 		program,
 		0,

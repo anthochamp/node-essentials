@@ -1,12 +1,10 @@
 import * as net from "node:net";
 
-import {
-	composeInetAddress,
-	InetEndpoint,
-	UnsupportedError,
-} from "@ac-kit/core";
+import { UnsupportedError } from "@ac-kit/core";
 import type { Except } from "type-fest";
 
+import { toInetAddress } from "./inet-address.js";
+import type { InetEndpoint } from "./inet-endpoint.js";
 import { StreamServer, type StreamServerEvents } from "./stream-server.js";
 import { TcpSocket } from "./tcp-socket.js";
 
@@ -102,7 +100,7 @@ export class TcpServer<
 		}
 
 		return {
-			...composeInetAddress(address.family, address.address),
+			...toInetAddress(address.family, address.address),
 			port: address.port,
 		};
 	}
@@ -120,7 +118,7 @@ export class TcpServer<
 				data.localPort !== undefined &&
 				data.localFamily !== undefined
 					? {
-							...composeInetAddress(data.localFamily, data.localAddress),
+							...toInetAddress(data.localFamily, data.localAddress),
 							port: data.localPort,
 						}
 					: null;
@@ -130,7 +128,7 @@ export class TcpServer<
 				data.remotePort !== undefined &&
 				data.remoteFamily !== undefined
 					? {
-							...composeInetAddress(data.remoteFamily, data.remoteAddress),
+							...toInetAddress(data.remoteFamily, data.remoteAddress),
 							port: data.remotePort,
 						}
 					: null;

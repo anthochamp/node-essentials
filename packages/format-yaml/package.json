@@ -31,8 +31,7 @@
 	"publishConfig": {
 		"main": "./dist/index.js",
 		"exports": {
-			".": "./dist/index.js",
-			"./file": "./dist/file.js"
+			".": "./dist/index.js"
 		},
 		"access": "public"
 	},

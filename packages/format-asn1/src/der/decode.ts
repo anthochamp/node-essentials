@@ -1,10 +1,10 @@
 import {
 	ByteReader,
+	bigIntFromBytesBe,
 	concatBytes,
 	decodeText,
 	setRecordEntry,
 } from "@ac-kit/core";
-import { bigIntFromBytesBe } from "@ac-kit/math-integer";
 
 import { DecodingError } from "../_encoding/errors.js";
 import { encodeDefiniteLength, encodeTag } from "../_encoding/tag.js";

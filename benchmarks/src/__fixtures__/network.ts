@@ -1,4 +1,4 @@
-import { getRandomEphemeralPort } from "@ac-kit/core";
+import { getRandomEphemeralPort } from "@ac-kit/net-address";
 
 /** Endpoints the benchmarks connect to, overridable for a remote server. */
 export const endpoints = {

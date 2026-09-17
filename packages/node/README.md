@@ -22,12 +22,15 @@ await writeFileAtomic("config.json", JSON.stringify(config));
 
 ## What it covers
 
-- **Sockets** — promise-based TCP, TLS, IPC and UDP classes.
+- **Sockets** — promise-based TCP, TLS, IPC and UDP classes, addressed with
+  `InetAddress` / `InetEndpoint` and `toInetAddress`, which normalizes the
+  inconsistent `family` field Node reports.
 - **Servers** — promise-based TCP, TLS and IPC listeners, dispatching typed
   connection events.
 - **Filesystem** — `walkPaths`, `writeFileAtomic`, `existsAsync`,
   `isDirectoryAsync`, `fileContentEqual`, `compressFile`, `createTempDir`,
-  `escapePath`.
+  `escapePath`, and `isPathWithin` / `assertPathWithinAsync` for proving a path
+  stays inside a root directory, symbolic links included.
 - **Processes** — `execAsync`, forking, and typed `NodeError` /
   `NodeSystemError` / `NodeExecError` / `ProcessExitError`.
 - **Modules** — `importModule`, `optionalImport`, `resolveModule`.

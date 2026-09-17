@@ -1,5 +1,7 @@
 import { wholeTextParseTransformer } from "@ac-kit/format-core";
-import * as yaml from "yaml";
+import type * as yaml from "yaml";
+
+import { parseYaml } from "./parse.js";
 
 export type YamlParseStreamOptions = yaml.ParseOptions &
 	yaml.DocumentOptions &
@@ -9,10 +11,7 @@ export type YamlParseStreamOptions = yaml.ParseOptions &
 export class YamlParseStream extends TransformStream<Uint8Array, unknown> {
 	constructor(options: YamlParseStreamOptions = {}) {
 		super(
-			wholeTextParseTransformer(
-				(source) => yaml.parse(source, options) as unknown,
-				"YAML",
-			),
+			wholeTextParseTransformer((source) => parseYaml(source, options), "YAML"),
 		);
 	}
 }

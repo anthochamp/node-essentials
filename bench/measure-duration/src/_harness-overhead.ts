@@ -1,8 +1,8 @@
 import { isThenable } from "@ac-kit/core";
 import * as z from "zod/mini";
 
+import { DurationStatistics } from "./_statistics-schema.js";
 import { summarise } from "./_statistics.js";
-import { DurationStatistics } from "./_types.js";
 
 /**
  * The shape of a case body, which decides what its harness costs.

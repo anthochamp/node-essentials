@@ -45,7 +45,9 @@
 		"prepack": "yarn build"
 	},
 	"dependencies": {
+		"@ac-kit/algo": "workspace:^",
 		"@ac-kit/core": "workspace:^",
+		"@ac-kit/format-regex": "workspace:^",
 		"@types/web": "catalog:"
 	},
 	"devDependencies": {

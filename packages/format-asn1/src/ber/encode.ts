@@ -1,11 +1,11 @@
 import {
 	ByteBuilder,
+	bigIntToBytesBe,
 	encodeTextLatin1,
 	encodeTextUtf16Be,
 	encodeTextUtf32Be,
 	encodeTextUtf8,
 } from "@ac-kit/core";
-import { bigIntToBytesBe } from "@ac-kit/math-integer";
 
 import { EncodingError } from "../_encoding/errors.js";
 import { writeTlv, writeTlvIndefinite } from "../_encoding/tlv.js";

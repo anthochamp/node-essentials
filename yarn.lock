@@ -763,7 +763,6 @@ __metadata:
     "@ac-kit/format-core": "workspace:^"
     "@ac-kit/format-oid": "workspace:^"
     "@ac-kit/format-varint": "workspace:^"
-    "@ac-kit/math-integer": "workspace:^"
     "@ac-kit/tsconfig": "workspace:*"
     "@ac-kit/typedoc-config": "workspace:*"
     "@ac-kit/vitest-config": "workspace:*"
@@ -889,7 +888,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ac-kit/format-glob@workspace:packages/format-glob"
   dependencies:
+    "@ac-kit/algo": "workspace:^"
     "@ac-kit/core": "workspace:^"
+    "@ac-kit/format-regex": "workspace:^"
     "@ac-kit/tsconfig": "workspace:*"
     "@ac-kit/typedoc-config": "workspace:*"
     "@ac-kit/vitest-config": "workspace:*"
@@ -1040,6 +1041,7 @@ __metadata:
     "@types/web": "catalog:"
     "@typescript/native": "catalog:fixed"
     rimraf: "catalog:fixed"
+    tsx: "catalog:fixed"
     typedoc: "catalog:fixed"
     typescript: "catalog:fixed"
   languageName: unknown
@@ -1112,7 +1114,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ac-kit/format-regex@workspace:packages/format-regex":
+"@ac-kit/format-regex@workspace:^, @ac-kit/format-regex@workspace:packages/format-regex":
   version: 0.0.0-use.local
   resolution: "@ac-kit/format-regex@workspace:packages/format-regex"
   dependencies:
@@ -1530,6 +1532,24 @@ __metadata:
     "@ac-kit/tsconfig": "workspace:*"
     "@ac-kit/typedoc-config": "workspace:*"
     "@ac-kit/vitest-config": "workspace:*"
+    "@typescript/native": "catalog:fixed"
+    rimraf: "catalog:fixed"
+    typedoc: "catalog:fixed"
+    typescript: "catalog:fixed"
+  languageName: unknown
+  linkType: soft
+
+"@ac-kit/net-address@workspace:*, @ac-kit/net-address@workspace:packages/net-address":
+  version: 0.0.0-use.local
+  resolution: "@ac-kit/net-address@workspace:packages/net-address"
+  dependencies:
+    "@ac-kit/algo": "workspace:^"
+    "@ac-kit/core": "workspace:^"
+    "@ac-kit/math-numbers": "workspace:^"
+    "@ac-kit/tsconfig": "workspace:*"
+    "@ac-kit/typedoc-config": "workspace:*"
+    "@ac-kit/vitest-config": "workspace:*"
+    "@types/web": "catalog:"
     "@typescript/native": "catalog:fixed"
     rimraf: "catalog:fixed"
     typedoc: "catalog:fixed"
@@ -4866,6 +4886,7 @@ __metadata:
     "@ac-kit/math-numbers": "workspace:*"
     "@ac-kit/math-random": "workspace:*"
     "@ac-kit/math-stats": "workspace:*"
+    "@ac-kit/net-address": "workspace:*"
     "@ac-kit/net-core": "workspace:*"
     "@ac-kit/net-imap": "workspace:*"
     "@ac-kit/net-pop3": "workspace:*"

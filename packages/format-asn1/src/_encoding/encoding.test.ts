@@ -1,10 +1,11 @@
 import {
 	ByteReader,
+	bigIntFromBytesBe,
+	bigIntToBytesBe,
 	decodeText,
 	encodeText,
 	encodeTextUtf8,
 } from "@ac-kit/core";
-import { bigIntFromBytesBe, bigIntToBytesBe } from "@ac-kit/math-integer";
 import { describe, expect, it } from "vitest";
 
 import {

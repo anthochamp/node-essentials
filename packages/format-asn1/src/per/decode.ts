@@ -1,10 +1,10 @@
 import {
 	BitReader,
+	bigIntFromBytesBe,
 	bytesForBits,
 	decodeText,
 	setRecordEntry,
 } from "@ac-kit/core";
-import { bigIntFromBytesBe } from "@ac-kit/math-integer";
 
 import { DecodingError } from "../_encoding/errors.js";
 import { decodeOid, decodeReal } from "../_encoding/values.js";

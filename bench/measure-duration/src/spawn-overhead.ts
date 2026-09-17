@@ -1,7 +1,7 @@
 import { isNodeErrorWithCode, spawnProcess } from "@ac-kit/node";
 
+import { DurationStatistics } from "./_statistics-schema.js";
 import { summarise } from "./_statistics.js";
-import { DurationStatistics } from "./_types.js";
 
 export interface SpawnOverheadOptions {
 	/** Unmeasured invocations run first. Defaults to 3. */

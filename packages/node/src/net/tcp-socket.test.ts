@@ -1,9 +1,10 @@
 import * as net from "node:net";
 
-import { InetAddress, InetEndpoint } from "@ac-kit/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ConnectionClosedError } from "./connection-closed-error.js";
+import type { InetAddress } from "./inet-address.js";
+import type { InetEndpoint } from "./inet-endpoint.js";
 import { TcpSocket } from "./tcp-socket.js";
 
 describe("TcpSocket", () => {

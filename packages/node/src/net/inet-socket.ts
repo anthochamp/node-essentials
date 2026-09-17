@@ -1,11 +1,7 @@
 import * as net from "node:net";
 
-import {
-	composeInetAddress,
-	type InetAddress,
-	type InetEndpoint,
-} from "@ac-kit/core";
-
+import { toInetAddress, type InetAddress } from "./inet-address.js";
+import type { InetEndpoint } from "./inet-endpoint.js";
 import { StreamSocket, type StreamSocketEvents } from "./stream-socket.js";
 
 /** Event map for sockets running over an IP transport. */
@@ -62,7 +58,7 @@ export class InetSocket<
 		}
 
 		return {
-			...composeInetAddress(family, address),
+			...toInetAddress(family, address),
 			port,
 		};
 	}
@@ -82,7 +78,7 @@ export class InetSocket<
 		}
 
 		return {
-			...composeInetAddress(family, address),
+			...toInetAddress(family, address),
 			port,
 		};
 	}
@@ -113,7 +109,7 @@ export class InetSocket<
 		this.socket.on("connectionAttempt", (ip, port, family) => {
 			this.dispatch("connectionAttempt", [
 				{
-					...composeInetAddress(family, ip),
+					...toInetAddress(family, ip),
 					port,
 				},
 			]);
@@ -122,7 +118,7 @@ export class InetSocket<
 		this.socket.on("connectionAttemptFailed", (ip, port, family, error) => {
 			this.dispatch("connectionAttemptFailed", [
 				{
-					...composeInetAddress(family, ip),
+					...toInetAddress(family, ip),
 					port,
 				},
 				error,
@@ -132,18 +128,14 @@ export class InetSocket<
 		this.socket.on("connectionAttemptTimeout", (ip, port, family) => {
 			this.dispatch("connectionAttemptTimeout", [
 				{
-					...composeInetAddress(family, ip),
+					...toInetAddress(family, ip),
 					port,
 				},
 			]);
 		});
 
 		this.socket.on("lookup", (error, address, family, host) => {
-			this.dispatch("lookup", [
-				error,
-				composeInetAddress(family, address),
-				host,
-			]);
+			this.dispatch("lookup", [error, toInetAddress(family, address), host]);
 		});
 	}
 }

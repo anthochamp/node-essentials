@@ -22,9 +22,7 @@ truncateToWidth("👋 hello", 4); // never splits a grapheme cluster
 console.log(renderTable(frame, { border: "none" }));
 ```
 
-Column sizing is East-Asian-Width-aware and grapheme-cluster-correct, built on
-`@ac-kit/algo`'s `isInSortedIntervals` and `@ac-kit/core`'s generic
-`truncateCore`. Tables render a `@ac-kit/model-dataset` `DataFrame`.
+Column sizing is East-Asian-Width-aware and grapheme-cluster-correct.
 
 Also exposes `measureColumnWidths`, `measureTableLayout`, `resolveColumns`,
 `padToVisibleWidth`, `graphemeSegments`, `renderTableRow`/`renderRuleLine` for

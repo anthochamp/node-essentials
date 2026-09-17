@@ -1,12 +1,12 @@
 import {
 	ByteBuilder,
+	bigIntToBytesBe,
 	compareBytes,
 	encodeTextLatin1,
 	encodeTextUtf16Be,
 	encodeTextUtf32Be,
 	encodeTextUtf8,
 } from "@ac-kit/core";
-import { bigIntToBytesBe } from "@ac-kit/math-integer";
 
 import { UNIVERSAL_TAG_OCTET_STRING } from "../_encoding/constants.js";
 import { EncodingError } from "../_encoding/errors.js";
