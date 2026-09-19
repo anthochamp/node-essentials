@@ -53,7 +53,7 @@
 		"@types/ndarray": "catalog:fixed",
 		"@types/node": "catalog:fixed",
 		"@types/node-imap": "0.9.3",
-		"@types/nodemailer": "8.0.1",
+		"@types/nodemailer": "8.0.2",
 		"@types/three": "catalog:fixed",
 		"@typescript/native": "catalog:fixed",
 		"async-mutex": "catalog:fixed",
