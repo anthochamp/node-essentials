@@ -17,7 +17,7 @@ permissions:
 # steps between its own install and script steps.
 jobs:
   common-lint:
-    uses: anthochamp/dev-toolbox/.github/workflows/common-lint.yml@5d70e5cabd438ea63cee118cb666ac0837c7baf9 # main
+    uses: anthochamp/dev-toolbox/.github/workflows/common-lint.yml@5d65687d55ebfc004ef3677263e2d067a405ba83 # main
     with:
       node-package-manager: "yarn"
       node-version-file: ".nvmrc"
